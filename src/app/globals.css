@@ -1,0 +1,73 @@
+@import "tailwindcss";
+
+:root {
+    --background: #ffffff;
+    --foreground: #000000;
+    --primary: #00b09f;
+    --primary-foreground: #ffffff;
+    --secondary: #ccefeb;
+    --secondary-foreground: #00b09f;
+    --muted: #e8e8e8;
+    --muted-foreground: #949494;
+    --accent: #00b09f;
+    --accent-foreground: #ffffff;
+    --success: #00c417;
+    --success-foreground: #ffffff;
+    --destructive: #ff0000;
+    --destructive-foreground: #ffffff;
+    --warning: #ff7308;
+    --warning-foreground: #ffffff;
+    --card: #fbfaf9;
+    --card-foreground: #000000;
+    --bar: #ffffff;
+    --bar-foreground: #4a4a4a;
+    --border: #e8e8e8;
+    --input: #f8f8f7;
+}
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-warning: var(--warning);
+    --color-warning-foreground: var(--warning-foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-bar: var(--bar);
+    --color-bar-foreground: var(--bar-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+}
+
+@layer base {
+    body {
+        @apply bg-background text-foreground;
+    }
+
+    main {
+        @apply py-10 md:py-20
+    }
+
+    .container {
+        @apply mx-auto px-4 md:px-8
+    }
+
+    .section-gap {
+        @apply my-8 md:my-16
+    }
+
+    .element-center {
+        @apply flex items-center justify-center
+    }
+}
