@@ -8,33 +8,34 @@ import { Category } from "@/generated/prisma"
 const Links = async () => {
 
     const topLevelCategories = await getCachedTopLevelCategories()
-    const isAuthenticated = true
+    const isAuthenticated = false
 
     return (
-        <div className="lg:flex items-center hidden gap-3 text-bar-foreground">
+        <>
             <Link
                 href={"/cart"}
                 className={`${buttonVariants({ variant: "ghost" })} relative`}
             >
-                <span><FiShoppingCart size={20} /></span>
-                <span className="absolute w-6 h-6 element-center -top-2 -right-2 bg-primary text-primary-foreground text-xs font-semibold rounded-full">12</span>
+                <span><FiShoppingCart size={20} /></span> Cart
+                <span className="absolute w-6 h-6 element-center -top-2 -left-2 bg-primary text-primary-foreground text-xs font-semibold rounded-full">12</span>
             </Link>
             <Link
                 href={"/wishlist"}
                 className={`${buttonVariants({ variant: "ghost" })} relative`}
             >
-                <span><FiHeart size={20} /></span>
-                <span className="absolute w-6 h-6 element-center -top-2 -right-2 bg-primary text-primary-foreground text-xs font-semibold rounded-full">43</span>
+                <span><FiHeart size={20} /></span> Wishlist
+                <span className="absolute w-6 h-6 element-center -top-2 -left-2 bg-primary text-primary-foreground text-xs font-semibold rounded-full">43</span>
             </Link>
             <div className="relative group">
                 <Link
                     href={"/categories"}
                     className={`${buttonVariants({ variant: "ghost" })}`}
                 >
-                    Products Categories <MdOutlineKeyboardArrowDown />
+                    Products Categories <MdOutlineKeyboardArrowDown className="hidden lg:inline" />
                 </Link>
+                {/* mega menu */}
                 <ul
-                    className="absolute hidden group-hover:grid grid-cols-4 gap-8 top-18 group-hover:top-9 left-1/2 -translate-x-1/2 w-[800px] z-20 py-10 px-5 bg-card border border-border uppercase text-muted-foreground rounded-md shadow-md"
+                    className="absolute left-0 -translate-x-3/5 top-12 group-hover:top-9 hidden lg:grid grid-cols-4 gap-8 opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto w-[800px] py-10 px-5 bg-card border border-border uppercase text-muted-foreground rounded-md shadow-md z-20 transition-all"
                 >
                     {topLevelCategories.map(category => (
                         <li key={category.id}>
@@ -57,7 +58,7 @@ const Links = async () => {
                     <FiUser size={20} /> Profile
                 </Link>
             )}
-        </div>
+        </>
     )
 }
 
