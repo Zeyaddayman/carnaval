@@ -1,6 +1,11 @@
-export default async function Home() {
 
+
+import Hero from "@/components/home/Hero"
+
+export default async function Home() {
     return (
-        <div>Home</div>
+        <main>
+            <Hero />
+        </main>
     )
 }
