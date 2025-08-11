@@ -45,7 +45,7 @@ const Links = async () => {
                             >
                                 {category.name}
                             </Link>
-                            <SubCategories categories={category.children} />
+                            <SubCategories subCategories={category.children} />
                         </li>
                     ))}
                 </ul>
@@ -79,20 +79,18 @@ const AuthLinks = () => (
     </>
 )
 
-const SubCategories = ({ categories }: { categories: Category[] }) => {
-    return (
-        <div className="flex flex-col gap-2">
-            {categories.map(subCategory => (
-                <Link
-                    key={subCategory.id}
-                    href={`/categories/${subCategory.slug}`}
-                    className="text-xs text-muted-foreground hover:text-primary transition-colors"
-                >
-                    {subCategory.subCategoryName || subCategory.name}
-                </Link>
-            ))}
-        </div>
-    )
-}
+const SubCategories = ({ subCategories }: { subCategories: Category[] }) => (
+    <div className="flex flex-col gap-2">
+        {subCategories.map(subCategory => (
+            <Link
+                key={subCategory.id}
+                href={`/categories/${subCategory.slug}`}
+                className="text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+                {subCategory.subCategoryName || subCategory.name}
+            </Link>
+        ))}
+    </div>
+)
 
 export default Links
