@@ -1,6 +1,7 @@
 import { getCachedTopLevelCategories } from "@/server/cache"
 import Image from "next/image"
 import Link from "next/link"
+import SectionHeading from "../ui/SectionHeading"
 
 const ExploreCollections = async () => {
 
@@ -9,8 +10,10 @@ const ExploreCollections = async () => {
     return (
         <section className="section-gap">
             <div className="container text-center">
-                <h2 className="text-foreground text-3xl font-bold mb-2">Explore Our Collections</h2>
-                <p className="text-muted-foreground mb-8">Discover something new every day.</p>
+                <SectionHeading
+                    title="Explore Our Collections"
+                    subTitle="Discover something new every day."
+                />
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {topLevelCategories.map((category) => (
                         <Link href={`/categories/${category.slug}`} key={category.id} className="flex flex-col border-border shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
