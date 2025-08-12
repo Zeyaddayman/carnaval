@@ -1,12 +1,12 @@
-import { getCachedTopLevelCategories } from "@/server/cache"
 import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
 import { Category } from "@/generated/prisma"
 import Image from "next/image"
+import { getTopLevelCategories } from "@/server/db/categories"
 
 const ProductsCategories = async () => {
 
-    const topLevelCategories = await getCachedTopLevelCategories()
+    const topLevelCategories = await getTopLevelCategories()
 
     return (
         <div className="grid container grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">

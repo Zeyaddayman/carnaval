@@ -1,11 +1,12 @@
-import { getCachedTopLevelCategories } from "@/server/cache"
+
 import Image from "next/image"
 import Link from "next/link"
 import SectionHeading from "../ui/SectionHeading"
+import { getTopLevelCategories } from "@/server/db/categories"
 
 const ExploreCollections = async () => {
 
-    const topLevelCategories = await getCachedTopLevelCategories()
+    const topLevelCategories = await getTopLevelCategories()
 
     return (
         <section className="section-gap">

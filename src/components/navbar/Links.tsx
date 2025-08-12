@@ -2,12 +2,12 @@ import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
 import { FiHeart, FiShoppingCart, FiUser } from "react-icons/fi"
 import { MdOutlineKeyboardArrowDown } from "react-icons/md"
-import { getCachedTopLevelCategories } from "@/server/cache"
 import { Category } from "@/generated/prisma"
+import { getTopLevelCategories } from "@/server/db/categories"
 
 const Links = async () => {
 
-    const topLevelCategories = await getCachedTopLevelCategories()
+    const topLevelCategories = await getTopLevelCategories()
     const isAuthenticated = false
 
     return (
