@@ -1,4 +1,4 @@
-import ProductsCategories from "@/components/categories"
+import ProductsCategories from "@/components/categories/ProductsCategories"
 import SectionHeading from "@/components/ui/SectionHeading"
 
 const CategoriesPage = () => {

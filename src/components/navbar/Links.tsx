@@ -4,10 +4,18 @@ import { FiHeart, FiShoppingCart, FiUser } from "react-icons/fi"
 import { MdOutlineKeyboardArrowDown } from "react-icons/md"
 import { Category } from "@/generated/prisma"
 import { getTopLevelCategories } from "@/server/db/categories"
+import { getBrands } from "@/server/db/brands"
 
 const Links = async () => {
 
     const topLevelCategories = await getTopLevelCategories()
+
+    const brands = await getBrands()
+
+    const brandsWithThumbnail = brands.filter(brand => brand.thumbnail)
+
+    console.log(brandsWithThumbnail)
+    
     const isAuthenticated = false
 
     return (
