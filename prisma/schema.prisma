@@ -13,7 +13,7 @@ model Product {
   title               String        @unique
   description         String
   categories          Category[]    @relation("ProductCategories")
-  brand               Brand?        @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  brand               Brand?        @relation(fields: [brandId], references: [id])
   brandId             String?
   price               Decimal
   discountPercentage  Float?
