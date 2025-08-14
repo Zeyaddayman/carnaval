@@ -11,10 +11,6 @@ const Links = async () => {
     const topLevelCategories = await getTopLevelCategories()
 
     const brands = await getBrands()
-
-    const brandsWithThumbnail = brands.filter(brand => brand.thumbnail)
-
-    console.log(brandsWithThumbnail)
     
     const isAuthenticated = false
 
@@ -54,6 +50,31 @@ const Links = async () => {
                                 {category.name}
                             </Link>
                             <SubCategories subCategories={category.children} />
+                        </li>
+                    ))}
+                </ul>
+            </div>
+            <div className="relative group">
+                <Link
+                    href={"/brands"}
+                    className={`${buttonVariants({ variant: "ghost" })}`}
+                >
+                    Products Brands <MdOutlineKeyboardArrowDown className="hidden lg:inline" />
+                </Link>
+                <ul
+                    className="absolute left-1/2 -translate-x-1/2 top-12 group-hover:top-9 hidden lg:block max-h-[400px] overflow-y-scroll space-y-3 [&>:not(:last-child)]:border-b [&>:not(:last-child)]:border-border opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto py-5 px-3 bg-card border border-border text-muted-foreground rounded-md shadow-md z-20 transition-all"
+                >
+                    {brands.map(brand => (
+                        <li
+                            key={brand.id}
+                            className="hover:text-primary font-semibold transition"
+                        >
+                            <Link
+                                href={`/brands/${brand.slug}`}
+                                className="block py-2"
+                            >
+                                {brand.name}
+                            </Link>
                         </li>
                     ))}
                 </ul>

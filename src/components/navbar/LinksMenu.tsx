@@ -15,7 +15,7 @@ const LinksMenu = ({ links }: { links: ReactNode }) => {
             className="block lg:hidden"
             onClick={() => setIsOpen(prev => !prev)}
         >
-            <FiMenu size={20} />
+            {isOpen ? <FiX size={20} /> : <FiMenu size={20} />}
         </Button>
         
         <div 
