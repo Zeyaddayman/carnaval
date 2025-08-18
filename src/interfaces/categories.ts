@@ -1,0 +1,1 @@
+export type categoryHierarchy = { name: string; subCategoryName: string; link: string }[]

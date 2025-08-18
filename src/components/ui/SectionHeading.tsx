@@ -1,7 +1,7 @@
 const SectionHeading = ({ title, subTitle }: { title: string, subTitle: string }) => {
     return (
         <div className="container text-center">
-            <h2 className="text-foreground text-2xl lg:text-3xl font-bold mb-2">{title}</h2>
+            <h2 className="text-foreground text-2xl md:text-3xl font-bold mb-2">{title}</h2>
             <p className="text-muted-foreground mb-8">{subTitle}</p>
         </div>
     )
