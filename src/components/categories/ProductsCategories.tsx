@@ -3,29 +3,36 @@ import { buttonVariants } from "../ui/Button"
 import { Category } from "@/generated/prisma"
 import Image from "next/image"
 import { getTopLevelCategories } from "@/server/db/categories"
+import SectionHeading from "../ui/SectionHeading"
 
 const ProductsCategories = async () => {
 
     const topLevelCategories = await getTopLevelCategories()
 
     return (
-        <div className="grid container grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {topLevelCategories.map(category => (
-                <div
-                    key={category.id}
-                    className="p-5 pt-10 bg-card flex flex-col gap-3 border border-border rounded-xl"
-                >
-                    <h4 className="font-semibold">{category.name}</h4>
-                    <SubCategories subCategories={category.children} />
-                    <Link
-                        href={`/categories/${category.slug}`}
-                        className={`${buttonVariants({ variant: "secondary", size: "lg" })} hover:!bg-primary hover:!text-primary-foreground w-full mt-auto`}
+        <section>
+            <SectionHeading
+                title="All Products Categories"
+                subTitle="Browse our extensive collection of products by category."
+            />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                {topLevelCategories.map(category => (
+                    <div
+                        key={category.id}
+                        className="p-5 pt-10 bg-card flex flex-col gap-3 border border-border rounded-xl"
                     >
-                        Explore all products
-                    </Link>
-                </div>
-            ))}
-        </div>
+                        <h4 className="font-semibold">{category.name}</h4>
+                        <SubCategories subCategories={category.children} />
+                        <Link
+                            href={`/categories/${category.slug}`}
+                            className={`${buttonVariants({ variant: "secondary", size: "lg" })} hover:!bg-primary hover:!text-primary-foreground w-full mt-auto`}
+                        >
+                            Explore all products
+                        </Link>
+                    </div>
+                ))}
+            </div>
+        </section>
     )
 }
 

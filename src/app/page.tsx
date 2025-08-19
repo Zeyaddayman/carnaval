@@ -6,8 +6,10 @@ import Hero from "@/components/home/Hero"
 export default function Home() {
     return (
         <main>
-            <Hero />
-            <ExploreCollections />
+            <div className="container">
+                <Hero />
+                <ExploreCollections />
+            </div>
         </main>
     )
 }

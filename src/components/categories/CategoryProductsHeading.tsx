@@ -12,12 +12,12 @@ const CategoryProductsHeading = async ({ slug }: Props) => {
     const CategoryName = category.name
 
     return (
-        <div className="border-2 border-border px-3 py-5 space-y-3 rounded-lg">
+        <section className="border-2 border-border px-3 py-5 space-y-3 rounded-lg">
             <CategoriesChain categoryHierarchy={categoryHierarchy} />
             <div className="flex flex-wrap justify-between items-center gap-3">
                 <h2 className="text-foreground text-2xl md:text-3xl font-bold">{CategoryName}</h2>
             </div>
-        </div>
+        </section>
     )
 }
 
