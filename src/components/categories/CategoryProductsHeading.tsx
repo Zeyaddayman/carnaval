@@ -1,8 +1,9 @@
 import { getCategoryHierarchy } from "@/server/db/categories"
 import CategoriesChain from "./CategoriesChain"
+import { Category } from "@/generated/prisma"
 
 interface Props {
-    slug: string
+    slug: Category["slug"]
 }
 
 const CategoryProductsHeading = async ({ slug }: Props) => {
