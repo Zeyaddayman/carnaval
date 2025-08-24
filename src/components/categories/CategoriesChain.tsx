@@ -1,4 +1,4 @@
-import { categoryHierarchy } from "@/interfaces/categories"
+import { categoryHierarchy } from "@/types/categories"
 import Link from "next/link"
 import { Fragment } from "react"
 

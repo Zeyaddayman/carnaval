@@ -1,7 +1,7 @@
 "server-only"
 
 import { Category } from "@/generated/prisma"
-import { categoryHierarchy } from "@/interfaces/categories"
+import { categoryHierarchy } from "@/types/categories"
 import { db } from "@/lib/prisma"
 import { unstable_cache as nextCache } from "next/cache"
 import { cache as reactCache } from "react"
