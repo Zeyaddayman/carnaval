@@ -13,13 +13,13 @@ const ProductCard = ({ product }: { product: CardProduct }) => {
         : Number(product.price)
 
     return (
-        <div key={product.id} className="relative">
+        <div key={product.id} className="relative bg-card border border-border rounded-lg">
             <span className="absolute top-3 right-3 z-20">
                 <AddToWishlistButton />
             </span>
             <Link
                 href={`/product/${product.id}`}
-                className="p-3 w-78 flex flex-col bg-card border border-border rounded-lg"
+                className="p-3 w-77 h-full flex flex-col"
             >
                 <div
                     className="relative w-full h-78 aspect-square"
@@ -28,7 +28,7 @@ const ProductCard = ({ product }: { product: CardProduct }) => {
                         src={product.thumbnail}
                         alt={product.title}
                         fill
-                        sizes="312px"
+                        sizes="308px"
                         className="rounded-md border border-border"
                     />
                 </div>
