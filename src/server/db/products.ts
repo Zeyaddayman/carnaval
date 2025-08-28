@@ -1,44 +1,59 @@
-import { Category } from "@/generated/prisma"
+import { Category, Prisma } from "@/generated/prisma"
 import { db } from "@/lib/prisma"
-import { unstable_cache as nextCache } from "next/cache"
-import { cache as reactCache } from "react"
+import { ProductsSortOption } from "@/types/products"
 
-export const getProductsByCategory = reactCache(async (slug: Category["slug"]) => nextCache(
-    async () => {
-        console.log(`Fetching products for category with slug: ${slug}`)
+export const getProductsByCategory = async (slug: Category["slug"], sortBy?: ProductsSortOption) => {
 
-        const category = await db.category.findUnique({
-            where: { slug },
-            select: {
-                products: {
-                    where: { stock: { gt: 0 } },
-                    orderBy: { title: "asc" },
-                    select: {
-                        id: true,
-                        title: true,
-                        thumbnail: true,
-                        price: true,
-                        discountPercentage: true,
-                        rating: true,
-                        brand: {
-                            select: {
-                                name: true
-                            }
+    console.log(`Fetching products for category with slug: ${slug}`)
+
+    let orderByOptions: Prisma.ProductOrderByWithRelationInput | Prisma.ProductOrderByWithRelationInput[] | undefined
+
+    switch (sortBy) {
+        case "alphabetical":
+            orderByOptions = { title: "asc" }
+            break
+        case "price-asc":
+            orderByOptions = { price: "asc" }
+            break
+        case "price-desc":
+            orderByOptions = { price: "desc" }
+            break
+        case "top-rated":
+            orderByOptions = { rating: "desc" }
+            break
+        case "top-discount":
+            orderByOptions = { discountPercentage: { sort: "desc", nulls: "last" } }
+            break
+        default:
+            orderByOptions = { title: "asc" }
+    }
+
+    const category = await db.category.findUnique({
+        where: { slug },
+        select: {
+            products: {
+                where: { stock: { gt: 0 } },
+                orderBy: orderByOptions,
+                select: {
+                    id: true,
+                    title: true,
+                    thumbnail: true,
+                    price: true,
+                    discountPercentage: true,
+                    rating: true,
+                    brand: {
+                        select: {
+                            name: true
                         }
                     }
                 }
             }
-        })
+        },
+    })
 
-        if (!category) {
-            throw new Error(`Category with slug "${slug}" not found`)
-        }
-
-        return category.products
-    },
-    [`${slug}-products`],
-    {
-        revalidate: 60 * 60,    // revalidate every 60 minutes
-        tags: [`${slug}-products`]
+    if (!category) {
+        throw new Error(`Category with slug "${slug}" not found`)
     }
-)())
+
+    return category.products
+}

@@ -1,3 +1,4 @@
+import { PRODUCTS_SORT_OPTIONS } from "@/constants"
 import { Prisma } from "@/generated/prisma"
 
 export type CardProduct = Prisma.ProductGetPayload<{
@@ -15,3 +16,5 @@ export type CardProduct = Prisma.ProductGetPayload<{
         }
     }
 }>
+
+export type ProductsSortOption = typeof PRODUCTS_SORT_OPTIONS[number]["value"]
