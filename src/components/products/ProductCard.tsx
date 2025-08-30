@@ -14,7 +14,7 @@ const ProductCard = ({ product }: { product: CardProduct }) => {
 
     return (
         <div key={product.id} className="relative bg-card border border-border rounded-lg">
-            <span className="absolute top-3 right-3 z-20">
+            <span className="absolute top-3 right-3 z-10">
                 <AddToWishlistButton />
             </span>
             <Link

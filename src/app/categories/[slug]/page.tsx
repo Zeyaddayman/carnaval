@@ -1,5 +1,6 @@
 import CategoryProductsHeading from "@/components/categories/CategoryProductsHeading"
 import Subcategories from "@/components/categories/Subcategories"
+import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
 import { getProductsByCategory } from "@/server/db/products"
@@ -24,9 +25,9 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                 <div className="flex flex-col lg:flex-row mt-3 gap-3">
                     <Subcategories slug={slug} />
                     <div>
-                        <div>
+                        <div className="flex justify-between items-center flex-wrap my-3 gap-3">
+                            <ProductsFilters />
                             <ProductsSort />
-                            {/* <ProductsFilter */}
                         </div>
                         <ProductsList products={products} />
                     </div>

@@ -1,5 +1,3 @@
-
-
 import ExploreCollections from "@/components/home/ExploreCollections"
 import Hero from "@/components/home/Hero"
 
