@@ -17,4 +17,5 @@ export type CardProduct = Prisma.ProductGetPayload<{
     }
 }>
 
-export type ProductsSortOption = typeof PRODUCTS_SORT_OPTIONS[number]["value"]
+export type ProductsSortOptionValue = typeof PRODUCTS_SORT_OPTIONS[number]["value"]
+export type ProductsSortOption = typeof PRODUCTS_SORT_OPTIONS[number]

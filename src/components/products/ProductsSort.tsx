@@ -1,39 +1,34 @@
 "use client"
 
 import { PRODUCTS_SORT_OPTIONS } from "@/constants"
-import { ProductsSortOption } from "@/types/products"
+import { ProductsSortOption, ProductsSortOptionValue } from "@/types/products"
 import { useRouter, useSearchParams } from "next/navigation"
+import SelectMenu from "../ui/SelectMenu"
 
-const ProductsSort = () => {
+interface Props {
+    sort: ProductsSortOptionValue
+}
+
+const ProductsSort = ({ sort }: Props) => {
 
     const searchParams = useSearchParams()
     const router = useRouter()
 
-    const handleSortChange = (value: ProductsSortOption) => {
+    const handleSortChange = (option: { value: string, label: string }) => {
         const params = new URLSearchParams(searchParams.toString())
-        params.set("sort", value)
+        params.set("sort", option.value)
         router.push(`?${params.toString()}`)
     }
 
+    const defaultSortOption = PRODUCTS_SORT_OPTIONS.find(option => option.value === (sort || "alphabetical"))
+
     return (
-        <div>
-            <label htmlFor="sort" className="mr-2 font-medium">
-                Sort by:
-            </label>
-            <select
-                id="sort"
-                name="sort"
-                className="border border-gray-300 rounded-md p-2"
-                onChange={(e) => handleSortChange(e.target.value as ProductsSortOption)}
-                value={searchParams.get("sort") || "alphabetical"}
-            >
-                {PRODUCTS_SORT_OPTIONS.map(option => (
-                    <option key={option.value} value={option.value}>
-                        {option.label}
-                    </option>
-                ))}
-            </select>
-        </div>
+        <SelectMenu
+            title="Sort By"
+            selected={defaultSortOption!}
+            setSelected={handleSortChange}
+            options={[...PRODUCTS_SORT_OPTIONS]}
+        />
     )
 }
 

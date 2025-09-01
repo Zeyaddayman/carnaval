@@ -13,7 +13,7 @@ interface Props {
 
 export default function Dialog({ isOpen, close, title, children }: Props) {
     return (
-        <HeadlessDialog open={isOpen} as="div" className="relative z-20 focus:outline-none" onClose={close} __demoMode>
+        <HeadlessDialog open={isOpen} as="div" className="relative z-50 focus:outline-none" onClose={close} __demoMode>
             <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                 <div className="flex min-h-full items-center justify-center p-4">
                     <DialogPanel

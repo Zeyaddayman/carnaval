@@ -4,15 +4,15 @@ import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
 import { getProductsByCategory } from "@/server/db/products"
-import { ProductsSortOption } from "@/types/products"
+import { ProductsSortOptionValue } from "@/types/products"
 
 interface Props {
     params: Promise<{ slug: string }>
-    searchParams: Promise<{ sort: ProductsSortOption }>
+    searchParams: Promise<{ sort: ProductsSortOptionValue }>
 }
 
 const CategoryProductsPage = async ({ params, searchParams }: Props) => {
-    
+
     const { slug } = await params
     const { sort } = await searchParams
 
@@ -27,7 +27,7 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                     <div>
                         <div className="flex justify-between items-center flex-wrap my-3 gap-3">
                             <ProductsFilters />
-                            <ProductsSort />
+                            <ProductsSort sort={sort} />
                         </div>
                         <ProductsList products={products} />
                     </div>

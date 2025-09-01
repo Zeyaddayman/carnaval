@@ -1,8 +1,8 @@
 import { Category, Prisma } from "@/generated/prisma"
 import { db } from "@/lib/prisma"
-import { ProductsSortOption } from "@/types/products"
+import { ProductsSortOptionValue } from "@/types/products"
 
-export const getProductsByCategory = async (slug: Category["slug"], sortBy?: ProductsSortOption) => {
+export const getProductsByCategory = async (slug: Category["slug"], sortBy?: ProductsSortOptionValue) => {
 
     console.log(`Fetching products for category with slug: ${slug}`)
 
