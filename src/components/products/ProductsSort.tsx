@@ -1,7 +1,7 @@
 "use client"
 
-import { PRODUCTS_SORT_OPTIONS } from "@/constants"
-import { ProductsSortOption, ProductsSortOptionValue } from "@/types/products"
+import { PRODUCTS_SORT_OPTIONS } from "@/constants/products"
+import { ProductsSortOptionValue } from "@/types/products"
 import { useRouter, useSearchParams } from "next/navigation"
 import SelectMenu from "../ui/SelectMenu"
 

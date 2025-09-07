@@ -1,10 +1,27 @@
+import { PRODUCTS_FILTERS } from "@/constants/products"
 import { Category, Prisma } from "@/generated/prisma"
 import { db } from "@/lib/prisma"
-import { ProductsSortOptionValue } from "@/types/products"
+import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
 
-export const getProductsByCategory = async (slug: Category["slug"], sortBy?: ProductsSortOptionValue) => {
+export const getProductsByCategory = async (slug: Category["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions) => {
 
     console.log(`Fetching products for category with slug: ${slug}`)
+
+    let whereOptions: Prisma.ProductWhereInput = { 
+        stock: { gt: 0 },
+        price: {
+            gte: filters.minPrice,
+            lte: filters.maxPrice
+        },
+        rating: {
+            gte: filters.minRating,
+            lte: filters.maxRating
+        }
+    }
+
+    if (filters.onlyOnSale) {
+        whereOptions.discountPercentage = { not: null }
+    }
 
     let orderByOptions: Prisma.ProductOrderByWithRelationInput | Prisma.ProductOrderByWithRelationInput[] | undefined
 
@@ -32,7 +49,7 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy?: Pro
         where: { slug },
         select: {
             products: {
-                where: { stock: { gt: 0 } },
+                where: whereOptions,
                 orderBy: orderByOptions,
                 select: {
                     id: true,
@@ -56,4 +73,32 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy?: Pro
     }
 
     return category.products
+}
+
+export const getProductsMinPrice = async (slug: Category["slug"]): Promise<number> => {
+    const result = await db.product.aggregate({
+        where: {
+            categories: { some: { slug } },
+            stock: { gt: 0 }
+        },
+        _min: {
+            price: true
+        }
+    })
+
+    return Number(result._min?.price || PRODUCTS_FILTERS.minPrice)
+}
+
+export const getProductsMaxPrice = async (slug: Category["slug"]): Promise<number> => {
+    const result = await db.product.aggregate({
+        where: {
+            categories: { some: { slug } },
+            stock: { gt: 0 }
+        },
+        _max: {
+            price: true
+        }
+    })
+
+    return Number(result._max?.price || PRODUCTS_FILTERS.maxPrice)
 }
