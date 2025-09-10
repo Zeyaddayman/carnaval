@@ -24,7 +24,7 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
         whereOptions.discountPercentage = { not: null, gt: 0 }
     }
 
-    let orderByOptions: Prisma.ProductOrderByWithRelationInput | Prisma.ProductOrderByWithRelationInput[] | undefined
+    let orderByOptions: Prisma.ProductOrderByWithRelationInput
 
     switch (sortBy) {
         case "alphabetical":

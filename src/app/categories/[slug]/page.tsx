@@ -18,7 +18,7 @@ interface Props {
 
 const CategoryProductsPage = async ({ params, searchParams }: Props) => {
 
-    const filters = PRODUCTS_FILTERS
+    const filters = {...PRODUCTS_FILTERS}
 
     const { slug } = await params
     const { sort, minPrice, maxPrice, minRating, onlyOnSale } = await searchParams
@@ -34,9 +34,7 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
         filters.minRating = productsMinRating
     }
 
-    if (String(onlyOnSale) === "true") {
-        filters.onlyOnSale = true
-    }
+    if (String(onlyOnSale) === "true") filters.onlyOnSale = true
 
     const products = await getProductsByCategory(slug, sort || "alphabetical", filters)
 
