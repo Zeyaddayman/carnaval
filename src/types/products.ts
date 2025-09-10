@@ -1,4 +1,3 @@
-import ProductsFilters from "@/components/products/ProductsFilters"
 import { PRODUCTS_SORT_OPTIONS } from "@/constants/products"
 import { Prisma } from "@/generated/prisma"
 
@@ -25,6 +24,5 @@ export interface ProductsFiltersOptions {
     minPrice: number,
     maxPrice: number,
     minRating: number,
-    maxRating: 5,
     onlyOnSale: boolean
 }

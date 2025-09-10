@@ -3,8 +3,8 @@ import Subcategories from "@/components/categories/Subcategories"
 import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
-import { PRODUCTS_FILTERS } from "@/constants/products"
-import { getProductsMinPrice, getProductsByCategory, getProductsMaxPrice } from "@/server/db/products"
+import { PRODUCTS_MAX_RATING, PRODUCTS_FILTERS } from "@/constants/products"
+import { getProductsMinPrice, getProductsByCategory, getProductsMaxPrice, getProductsMinRating } from "@/server/db/products"
 import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
 
 interface SearchParams extends Partial<ProductsFiltersOptions> {
@@ -18,17 +18,25 @@ interface Props {
 
 const CategoryProductsPage = async ({ params, searchParams }: Props) => {
 
-    const productsFilters = PRODUCTS_FILTERS
+    const filters = PRODUCTS_FILTERS
 
     const { slug } = await params
     const { sort, minPrice, maxPrice, minRating, onlyOnSale } = await searchParams
 
-    productsFilters.minPrice = Number(minPrice) || await getProductsMinPrice(slug)
-    productsFilters.maxPrice = Number(maxPrice) || await getProductsMaxPrice(slug)
+    filters.minPrice = minPrice ? Number(minPrice) : await getProductsMinPrice(slug)
+    filters.maxPrice = maxPrice ? Number(maxPrice) : await getProductsMaxPrice(slug)
 
-    productsFilters.onlyOnSale = Boolean(onlyOnSale || PRODUCTS_FILTERS.onlyOnSale)
+    const productsMinRating = await getProductsMinRating(slug)
 
-    const products = await getProductsByCategory(slug, sort || "alphabetical", productsFilters)
+    if (minRating && Number(minRating) >= productsMinRating) {
+        filters.minRating = Number(minRating)
+    } else {
+        filters.minRating = productsMinRating
+    }
+
+    filters.onlyOnSale = Boolean(onlyOnSale || PRODUCTS_FILTERS.onlyOnSale)
+
+    const products = await getProductsByCategory(slug, sort || "alphabetical", filters)
 
     return (
         <main>
@@ -38,7 +46,10 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                     <Subcategories slug={slug} />
                     <div className="flex-1">
                         <div className="flex justify-between items-center flex-wrap my-3 gap-3">
-                            <ProductsFilters initialFilters={productsFilters} />
+                            <ProductsFilters
+                                initialFilters={filters}
+                                rating={{ min: productsMinRating, max: PRODUCTS_MAX_RATING }}
+                            />
                             <ProductsSort sort={sort || "alphabetical"} />
                         </div>
                         <ProductsList products={products} />

@@ -8,10 +8,12 @@ export const PRODUCTS_SORT_OPTIONS = [
     { value: "top-discount", label: "Top Discount" }
 ] as const
 
+export const PRODUCTS_MIN_RATING = 1
+export const PRODUCTS_MAX_RATING = 5
+
 export const PRODUCTS_FILTERS: ProductsFiltersOptions = {
     minPrice: 0,
     maxPrice: 999999,
-    minRating: 1,
-    maxRating: 5,
+    minRating: PRODUCTS_MIN_RATING,
     onlyOnSale: false
 }
