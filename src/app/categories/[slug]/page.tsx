@@ -34,7 +34,9 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
         filters.minRating = productsMinRating
     }
 
-    filters.onlyOnSale = Boolean(onlyOnSale || PRODUCTS_FILTERS.onlyOnSale)
+    if (String(onlyOnSale) === "true") {
+        filters.onlyOnSale = true
+    }
 
     const products = await getProductsByCategory(slug, sort || "alphabetical", filters)
 

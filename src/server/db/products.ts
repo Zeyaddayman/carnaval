@@ -21,7 +21,7 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
     }
 
     if (filters.onlyOnSale) {
-        whereOptions.discountPercentage = { not: null }
+        whereOptions.discountPercentage = { not: null, gt: 0 }
     }
 
     let orderByOptions: Prisma.ProductOrderByWithRelationInput | Prisma.ProductOrderByWithRelationInput[] | undefined

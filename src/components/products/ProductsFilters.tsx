@@ -7,7 +7,10 @@ import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2"
 import Input from "../ui/Input"
 import { ProductsFiltersOptions } from "@/types/products"
 import { useRouter, useSearchParams } from "next/navigation"
+import { PRODUCTS_FILTERS } from "@/constants/products"
 import { BiStar } from "react-icons/bi"
+import { CiDiscount1 } from "react-icons/ci"
+import { TbRosetteDiscountCheck } from "react-icons/tb"
 
 interface Props {
     initialFilters: ProductsFiltersOptions
@@ -39,19 +42,27 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
         }))
     }
 
-    const handleRatingRangeChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleRatingRangeChange = (minRating: number) => {
         setFilters(prev => ({
             ...prev,
-            minRating: Number(e.target.value)
+            minRating
+        }))
+    }
+
+    const handleOnlyOnSaleChange = (onlyOnSale: boolean) => {
+        console.log(onlyOnSale)
+        setFilters(prev => ({
+            ...prev,
+            onlyOnSale
         }))
     }
 
     const applyFilters = () => {
-
         const params = new URLSearchParams(searchParams.toString())
 
-        params.set("minPrice", filters.minPrice.toString())
-        params.set("maxPrice", filters.maxPrice.toString())
+        Object.keys(PRODUCTS_FILTERS).forEach(filterKey => 
+            params.set(filterKey, String(filters[filterKey as keyof ProductsFiltersOptions]))
+        )
 
         router.push(`?${params.toString()}`)
         close()
@@ -69,7 +80,7 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
                 close={close}
                 title="Filter Products"
             >
-                <div className="space-y-3">
+                <div className="space-y-4">
                     <PriceRange
                         minPrice={filters.minPrice}
                         maxPrice={filters.maxPrice}
@@ -80,6 +91,10 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
                         minRating={rating.min}
                         maxRating={rating.max}
                         handleRatingRangeChange={handleRatingRangeChange}
+                    />
+                    <OnlyOnSaleToggle
+                        onlyOnSale={filters.onlyOnSale}
+                        handleOnlyOnSaleChange={handleOnlyOnSaleChange}
                     />
                 </div>
                 <div className="flex justify-between items-center mt-5">
@@ -137,7 +152,7 @@ const RatingRange = ({
     ratingValue: number,
     minRating: number,
     maxRating: number,
-    handleRatingRangeChange: (e: ChangeEvent<HTMLInputElement>) => void
+    handleRatingRangeChange: (minRating: number) => void
 }) => {
 
     const fillPercentage = (ratingValue - minRating) / (maxRating - minRating) * 100
@@ -156,7 +171,7 @@ const RatingRange = ({
                 max={maxRating}
                 step={0.1}
                 value={ratingValue}
-                onChange={handleRatingRangeChange}
+                onChange={({ target: { value } }) => handleRatingRangeChange(Number(value))}
                 style={{
                     background: `linear-gradient(to right, var(--input) 0%, var(--input) ${fillPercentage}%, var(--primary) ${fillPercentage}%, var(--primary) 100%)`,
                 }}
@@ -164,6 +179,46 @@ const RatingRange = ({
             <div className="flex justify-between items-center">
                 <span className="flex gap-1 items-center">{minRating} <BiStar /></span>
                 <span className="flex gap-1 items-center">{maxRating} <BiStar /></span>
+            </div>
+        </div>
+    )
+}
+
+const OnlyOnSaleToggle = ({ 
+    onlyOnSale,
+    handleOnlyOnSaleChange
+}: {
+    onlyOnSale: boolean,
+    handleOnlyOnSaleChange: (onlyOnSale: boolean) => void
+}) => {
+    return (
+        <div>
+            <h4 className="font-semibold mb-2">Show</h4>
+            <div className="flex gap-2 justify-between items-center">
+                <label
+                    htmlFor="all-products"
+                    className={`${!onlyOnSale ? "border-primary" : "border-border"} border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
+                >
+                    <input
+                        type="radio"
+                        className="sr-only"
+                        id="all-products"
+                        onClick={() => handleOnlyOnSaleChange(false)}
+                    />
+                    <TbRosetteDiscountCheck /> All products
+                </label>
+                <label
+                    htmlFor="only-on-sale"
+                    className={`${onlyOnSale ? "border-primary" : "border-border"} border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
+                >
+                    <input
+                        type="radio"
+                        className="sr-only"
+                        id="only-on-sale"
+                        onClick={() => handleOnlyOnSaleChange(true)}
+                    />
+                    <CiDiscount1 /> On sale only
+                </label>
             </div>
         </div>
     )
