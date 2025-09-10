@@ -68,6 +68,15 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
         close()
     }
 
+    const clearFilters = () => {
+        const params = new URLSearchParams(searchParams.toString())
+
+        Object.keys(PRODUCTS_FILTERS).forEach(filterKey => params.delete(filterKey))
+
+        router.push(`?${params.toString()}`)
+        close()
+    }
+
     return (
         <div>
             <Button
@@ -100,6 +109,7 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
                 <div className="flex justify-between items-center mt-5">
                     <Button
                         variant={"cancel"}
+                        onClick={clearFilters}
                     >
                         Clear Filters
                     </Button>
