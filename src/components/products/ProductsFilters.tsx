@@ -50,7 +50,6 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
     }
 
     const handleOnlyOnSaleChange = (onlyOnSale: boolean) => {
-        console.log(onlyOnSale)
         setFilters(prev => ({
             ...prev,
             onlyOnSale
@@ -60,9 +59,14 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
     const applyFilters = () => {
         const params = new URLSearchParams(searchParams.toString())
 
-        Object.keys(PRODUCTS_FILTERS).forEach(filterKey => 
-            params.set(filterKey, String(filters[filterKey as keyof ProductsFiltersOptions]))
-        )
+        Object.keys(PRODUCTS_FILTERS).forEach(key => {
+            const filterKey = key as keyof ProductsFiltersOptions
+
+            // only update filters that have changed
+            if (filters[filterKey] !== initialFilters[filterKey]) {
+                params.set(filterKey, String(filters[filterKey]))
+            }
+        })
 
         router.push(`?${params.toString()}`)
         close()

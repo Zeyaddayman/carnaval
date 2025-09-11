@@ -23,9 +23,6 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
     const { slug } = await params
     const { sort, minPrice, maxPrice, minRating, onlyOnSale } = await searchParams
 
-    filters.minPrice = minPrice ? Number(minPrice) : await getProductsMinPrice(slug)
-    filters.maxPrice = maxPrice ? Number(maxPrice) : await getProductsMaxPrice(slug)
-
     const productsMinRating = await getProductsMinRating(slug)
 
     if (minRating && Number(minRating) >= productsMinRating) {
@@ -35,6 +32,9 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
     }
 
     if (String(onlyOnSale) === "true") filters.onlyOnSale = true
+
+    filters.minPrice = minPrice ? Number(minPrice) : await getProductsMinPrice(slug, filters)
+    filters.maxPrice = maxPrice ? Number(maxPrice) : await getProductsMaxPrice(slug, filters)
 
     const products = await getProductsByCategory(slug, sort || "alphabetical", filters)
 

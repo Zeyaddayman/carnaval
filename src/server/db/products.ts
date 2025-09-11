@@ -76,12 +76,23 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
     return category.products
 }
 
-export const getProductsMinPrice = async (slug: Category["slug"]): Promise<number> => {
+export const getProductsMinPrice = async (slug: Category["slug"], filters: ProductsFiltersOptions): Promise<number> => {
+
+    const whereOptions: Prisma.ProductWhereInput = {
+        categories: { some: { slug } },
+        stock: { gt: 0 },
+        rating: {
+            gte: filters.minRating,
+            lte: PRODUCTS_MAX_RATING
+        }
+    }
+
+    if (filters.onlyOnSale) {
+        whereOptions.discountPercentage = { not: null, gt: 0 }
+    }
+
     const result = await db.product.aggregate({
-        where: {
-            categories: { some: { slug } },
-            stock: { gt: 0 }
-        },
+        where: whereOptions,
         _min: {
             price: true
         }
@@ -90,12 +101,23 @@ export const getProductsMinPrice = async (slug: Category["slug"]): Promise<numbe
     return Number(result._min.price || PRODUCTS_FILTERS.minPrice)
 }
 
-export const getProductsMaxPrice = async (slug: Category["slug"]): Promise<number> => {
+export const getProductsMaxPrice = async (slug: Category["slug"], filters: ProductsFiltersOptions): Promise<number> => {
+
+    const whereOptions: Prisma.ProductWhereInput = {
+        categories: { some: { slug } },
+        stock: { gt: 0 },
+        rating: {
+            gte: filters.minRating,
+            lte: PRODUCTS_MAX_RATING
+        }
+    }
+
+    if (filters.onlyOnSale) {
+        whereOptions.discountPercentage = { not: null, gt: 0 }
+    }
+
     const result = await db.product.aggregate({
-        where: {
-            categories: { some: { slug } },
-            stock: { gt: 0 }
-        },
+        where: whereOptions,
         _max: {
             price: true
         }
