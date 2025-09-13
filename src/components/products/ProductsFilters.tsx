@@ -68,6 +68,8 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
             }
         })
 
+        params.delete("page")
+
         router.push(`?${params.toString()}`)
         close()
     }
@@ -76,6 +78,8 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
         const params = new URLSearchParams(searchParams.toString())
 
         Object.keys(PRODUCTS_FILTERS).forEach(filterKey => params.delete(filterKey))
+
+        params.delete("page")
 
         router.push(`?${params.toString()}`)
         close()

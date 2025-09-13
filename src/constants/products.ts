@@ -17,3 +17,5 @@ export const PRODUCTS_FILTERS: ProductsFiltersOptions = {
     minRating: PRODUCTS_MIN_RATING,
     onlyOnSale: false
 }
+
+export const PROUDCTS_PAGE_LIMIT = 6

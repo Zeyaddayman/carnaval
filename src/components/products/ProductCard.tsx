@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import RatingStars from "../ui/RatingStars"
 import AddToWishlistButton from "../product/AddToWishlistButton"
-import { formatPrice, formatRating } from "@/lib/utils"
+import { formatPrice, formatRating } from "@/lib/formatters"
 
 const ProductCard = ({ product }: { product: CardProduct }) => {
 

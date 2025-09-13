@@ -1,10 +1,10 @@
-import { PRODUCTS_FILTERS, PRODUCTS_MAX_RATING, PRODUCTS_MIN_RATING } from "@/constants/products"
+import { PRODUCTS_FILTERS, PRODUCTS_MAX_RATING, PRODUCTS_MIN_RATING, PROUDCTS_PAGE_LIMIT } from "@/constants/products"
 import { Category, Prisma } from "@/generated/prisma"
+import { formatRating } from "@/lib/formatters"
 import { db } from "@/lib/prisma"
-import { formatRating } from "@/lib/utils"
 import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
 
-export const getProductsByCategory = async (slug: Category["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions) => {
+export const getProductsByCategory = async (slug: Category["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
 
     console.log(`Fetching products for category with slug: ${slug}`)
 
@@ -46,12 +46,16 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
             orderByOptions = { title: "asc" }
     }
 
+    const skip = (page - 1) * PROUDCTS_PAGE_LIMIT
+
     const category = await db.category.findUnique({
         where: { slug },
         select: {
             products: {
                 where: whereOptions,
                 orderBy: orderByOptions,
+                take: PROUDCTS_PAGE_LIMIT,
+                skip,
                 select: {
                     id: true,
                     title: true,
@@ -65,6 +69,13 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
                         }
                     }
                 }
+            },
+            _count: {
+                select: {
+                    products: {
+                        where: whereOptions
+                    }
+                }
             }
         },
     })
@@ -73,7 +84,13 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
         throw new Error(`Category with slug "${slug}" not found`)
     }
 
-    return category.products
+    return {
+        products: category.products,
+        total: category._count.products,
+        page,
+        pageSize: category.products.length,
+        limit: PROUDCTS_PAGE_LIMIT,
+    }
 }
 
 export const getProductsMinPrice = async (slug: Category["slug"], filters: ProductsFiltersOptions): Promise<number> => {
@@ -98,7 +115,7 @@ export const getProductsMinPrice = async (slug: Category["slug"], filters: Produ
         }
     })
 
-    return Number(result._min.price || PRODUCTS_FILTERS.minPrice)
+    return Number(result._min.price ?? PRODUCTS_FILTERS.minPrice)
 }
 
 export const getProductsMaxPrice = async (slug: Category["slug"], filters: ProductsFiltersOptions): Promise<number> => {
@@ -123,7 +140,7 @@ export const getProductsMaxPrice = async (slug: Category["slug"], filters: Produ
         }
     })
 
-    return Number(result._max.price || PRODUCTS_FILTERS.maxPrice)
+    return Number(result._max.price ?? PRODUCTS_FILTERS.maxPrice)
 }
 
 export const getProductsMinRating = async (slug: Category["slug"]): Promise<number> => {
@@ -137,7 +154,7 @@ export const getProductsMinRating = async (slug: Category["slug"]): Promise<numb
         }
     })
 
-    const formattedRating = formatRating(result._min.rating || PRODUCTS_MIN_RATING)
+    const formattedRating = formatRating(result._min.rating ?? PRODUCTS_MIN_RATING)
 
     return Number(formattedRating)
 }

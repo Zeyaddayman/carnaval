@@ -1,5 +1,6 @@
 import CategoryProductsHeading from "@/components/categories/CategoryProductsHeading"
 import Subcategories from "@/components/categories/Subcategories"
+import Pagination from "@/components/products/Pagination"
 import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
@@ -8,6 +9,7 @@ import { getProductsMinPrice, getProductsByCategory, getProductsMaxPrice, getPro
 import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
 
 interface SearchParams extends Partial<ProductsFiltersOptions> {
+    page?: string
     sort?: ProductsSortOptionValue
 }
 
@@ -21,7 +23,16 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
     const filters = {...PRODUCTS_FILTERS}
 
     const { slug } = await params
-    const { sort, minPrice, maxPrice, minRating, onlyOnSale } = await searchParams
+
+    const {
+        sort = "alphabetical",
+        page: pageinationPage = "1",
+        minPrice,
+        maxPrice,
+        minRating,
+        onlyOnSale
+    
+    } = await searchParams
 
     const productsMinRating = await getProductsMinRating(slug)
 
@@ -36,7 +47,14 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
     filters.minPrice = minPrice ? Number(minPrice) : await getProductsMinPrice(slug, filters)
     filters.maxPrice = maxPrice ? Number(maxPrice) : await getProductsMaxPrice(slug, filters)
 
-    const products = await getProductsByCategory(slug, sort || "alphabetical", filters)
+    const {
+        products,
+        total,
+        page,
+        pageSize,
+        limit
+
+    } = await getProductsByCategory(slug, sort, filters, Number(pageinationPage))
 
     return (
         <main>
@@ -50,9 +68,17 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                                 initialFilters={filters}
                                 rating={{ min: productsMinRating, max: PRODUCTS_MAX_RATING }}
                             />
-                            <ProductsSort sort={sort || "alphabetical"} />
+                            <ProductsSort sort={sort} />
                         </div>
-                        <ProductsList products={products} />
+                        <ProductsList
+                            products={products}
+                            total={total}
+                        />
+                        <Pagination
+                            total={total}
+                            page={page}
+                            limit={limit}
+                        />
                     </div>
                 </div>
             </div>

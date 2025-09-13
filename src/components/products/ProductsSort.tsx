@@ -16,11 +16,14 @@ const ProductsSort = ({ sort }: Props) => {
 
     const handleSortChange = (option: { value: string, label: string }) => {
         const params = new URLSearchParams(searchParams.toString())
+
         params.set("sort", option.value)
+        params.delete("page")
+
         router.push(`?${params.toString()}`)
     }
 
-    const defaultSortOption = PRODUCTS_SORT_OPTIONS.find(option => option.value === (sort || "alphabetical"))
+    const defaultSortOption = PRODUCTS_SORT_OPTIONS.find(option => option.value === sort)
 
     return (
         <SelectMenu
