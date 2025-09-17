@@ -2,7 +2,6 @@
 
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { BiCheck } from 'react-icons/bi'
-import { CgArrowDown } from 'react-icons/cg'
 import { HiMiniChevronUpDown } from 'react-icons/hi2'
 
 type Option = {

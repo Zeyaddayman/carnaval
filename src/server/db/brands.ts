@@ -1,5 +1,6 @@
 "server-only"
 
+import { Category } from "@/generated/prisma"
 import { db } from "@/lib/prisma"
 import { unstable_cache as nextCache } from "next/cache"
 import { cache as reactCache } from "react"
@@ -37,3 +38,22 @@ export const getBrands = reactCache(nextCache(
         tags: ["all-brands"]
     }
 ))
+
+export const getBrand = reactCache(async (slug: Category["slug"]) => nextCache(
+    async () => {
+        const brand = await db.brand.findUnique({
+            where: { slug }
+        })
+
+        if (!brand) {
+            throw new Error(`Brand with slug "${slug}" not found`)
+        }
+
+        return brand
+    },
+    [`${slug}-brand`],
+    {
+        revalidate: 60 * 60,     // revalidate every 60 minutes
+        tags: [`${slug}-brand`]
+    }
+)())

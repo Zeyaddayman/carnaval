@@ -5,7 +5,8 @@ import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
 import { PRODUCTS_MAX_RATING, PRODUCTS_FILTERS } from "@/constants/products"
-import { getProductsMinPrice, getProductsByCategory, getProductsMaxPrice, getProductsMinRating } from "@/server/db/products"
+import { getProductsByCategory } from "@/server/db/products"
+import { getCategoryProductsMaxPrice, getCategoryProductsMinPrice, getCategoryProductsMinRating } from "@/server/db/products-statistics"
 import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
 
 interface SearchParams extends Partial<ProductsFiltersOptions> {
@@ -34,7 +35,7 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
     
     } = await searchParams
 
-    const productsMinRating = await getProductsMinRating(slug)
+    const productsMinRating = await getCategoryProductsMinRating(slug)
 
     if (minRating && Number(minRating) >= productsMinRating) {
         filters.minRating = Number(minRating)
@@ -44,8 +45,8 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
 
     if (String(onlyOnSale) === "true") filters.onlyOnSale = true
 
-    filters.minPrice = minPrice ? Number(minPrice) : await getProductsMinPrice(slug, filters)
-    filters.maxPrice = maxPrice ? Number(maxPrice) : await getProductsMaxPrice(slug, filters)
+    filters.minPrice = minPrice ? Number(minPrice) : await getCategoryProductsMinPrice(slug, filters)
+    filters.maxPrice = maxPrice ? Number(maxPrice) : await getCategoryProductsMaxPrice(slug, filters)
 
     const {
         products,
