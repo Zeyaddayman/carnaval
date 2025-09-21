@@ -8,6 +8,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  password      String
+  name          String
+  role          UserRole       @default(USER)
+  phone         String?
+  country       String?
+  governorate   String?
+  city          String?
+  streetAddress String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
 model Product {
   id                  String        @id @default(cuid())
   title               String        @unique
@@ -36,6 +51,7 @@ model Category {
   parentId        String?
   parent          Category?     @relation("CategoryToCategory", fields: [parentId], references: [id])
   children        Category[]    @relation("CategoryToCategory")
+  brands          Brand[]
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -43,11 +59,17 @@ model Category {
 }
 
 model Brand {
-  id        String    @id @default(uuid())
-  name      String    @unique
-  slug      String    @unique
-  thumbnail String?
-  products  Product[]
+  id         String    @id @default(uuid())
+  name       String    @unique
+  slug       String    @unique
+  thumbnail  String?
+  products   Product[]
+  categories Category[]
 
   @@index([slug])
+}
+
+enum UserRole {
+  USER
+  ADMIN
 }

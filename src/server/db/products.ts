@@ -1,6 +1,5 @@
-import { PRODUCTS_FILTERS, PRODUCTS_MAX_RATING, PRODUCTS_MIN_RATING, PROUDCTS_PAGE_LIMIT } from "@/constants/products"
+import { PRODUCTS_MAX_RATING, PROUDCTS_PAGE_LIMIT } from "@/constants/products"
 import { Brand, Category, Prisma } from "@/generated/prisma"
-import { formatRating } from "@/lib/formatters"
 import { db } from "@/lib/prisma"
 import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
 
