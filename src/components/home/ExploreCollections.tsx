@@ -1,6 +1,6 @@
 import Image from "next/image"
 import Link from "next/link"
-import SectionHeading from "../ui/SectionHeading"
+import Heading from "../ui/Heading"
 import { getTopLevelCategories } from "@/server/db/categories"
 
 const ExploreCollections = async () => {
@@ -9,7 +9,7 @@ const ExploreCollections = async () => {
 
     return (
         <section className="section-gap">
-            <SectionHeading
+            <Heading
                 title="Explore Our Collections"
                 subTitle="Discover something new every day."
             />

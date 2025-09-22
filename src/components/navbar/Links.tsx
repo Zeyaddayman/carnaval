@@ -93,13 +93,13 @@ const Links = async () => {
 const AuthLinks = () => (
     <>
     <Link
-        href={"/login"}
+        href={"/auth/login"}
         className={`${buttonVariants({ variant: "secondary" })}`}
     >
         Login
     </Link>
     <Link
-        href={"/register"}
+        href={"/auth/register"}
         className={`${buttonVariants({ variant: "default" })}`}
     >
         Register

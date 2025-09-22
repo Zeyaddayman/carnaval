@@ -3,7 +3,7 @@ import { buttonVariants } from "../ui/Button"
 import { Category } from "@/generated/prisma"
 import Image from "next/image"
 import { getTopLevelCategories } from "@/server/db/categories"
-import SectionHeading from "../ui/SectionHeading"
+import Heading from "../ui/Heading"
 
 const ProductsCategories = async () => {
 
@@ -11,7 +11,7 @@ const ProductsCategories = async () => {
 
     return (
         <section>
-            <SectionHeading
+            <Heading
                 title="All Products Categories"
                 subTitle="Browse our extensive collection of products by category."
             />

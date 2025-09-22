@@ -1,7 +1,7 @@
 import { getBrands } from "@/server/db/brands"
 import Image from "next/image"
 import Link from "next/link"
-import SectionHeading from "../ui/SectionHeading"
+import Heading from "../ui/Heading"
 
 const ProductsBrands = async () => {
 
@@ -9,7 +9,7 @@ const ProductsBrands = async () => {
 
     return (
         <section>
-            <SectionHeading
+            <Heading
                 title="Explore Our Brands"
                 subTitle="Discover products from your favorite brands."
             />
