@@ -1,48 +1,36 @@
 import { Button } from "@/components/ui/Button"
-import Input from "@/components/ui/Input"
 import Heading from "@/components/ui/Heading"
+import Input from "@/components/ui/Input"
 import Link from "next/link"
 
-const registerFields = [
-    {
-        label: "Full name",
-        name: "name",
-        type: "text",
-        placeholder: "Enter your full name",
-        autoFocus: true
-    },
+const loginFields = [
     {
         label: "Email",
         name: "email",
         type: "email",
-        placeholder: "Enter your email"
+        placeholder: "Enter your email",
+        autoFocus: true
     },
     {
         label: "Password",
         name: "password",
         type: "password",
         placeholder: "Enter your password"
-    },
-    {
-        label: "Confirm password",
-        name: "confirmPassword",
-        type: "password",
-        placeholder: "Re-enter your password"
     }
 ]
 
-const RegisterPage = () => {
+const LoginPage = () => {
     return (
         <div>
             <Heading
-                title="Register"
-                subTitle="Create your Carnaval account to track orders and get exclusive offers."
+                title="Login"
+                subTitle="Welcome back. Login to checkout and track your orders"
             />
             <form
                 action=""
                 className="space-y-2"
             >
-                {registerFields.map(field => (
+                {loginFields.map(field => (
                     <div key={field.name}>
                         <label
                             className="text-xs text-muted-foreground mb-2"
@@ -63,20 +51,20 @@ const RegisterPage = () => {
                     type="submit"
                     className="w-full mt-5"
                 >
-                    Register
+                    Login
                 </Button>
             </form>
             <p className="text-muted-foreground text-sm text-center mt-6">
-                Already have an account? {" "}
+                New to Carnaval? {" "}
                 <Link
-                    href={"/auth/login"}
+                    href={"/auth/register"}
                     className="text-primary font-semibold"
                 >
-                    Login
+                    Register
                 </Link>
             </p>
         </div>
     )
 }
 
-export default RegisterPage
+export default LoginPage
