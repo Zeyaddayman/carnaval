@@ -1,55 +1,43 @@
 "use client"
 
-import { useActionState, useEffect } from "react"
+import toast, { LoaderIcon } from "react-hot-toast"
 import { Button } from "../ui/Button"
 import Input from "../ui/Input"
-import { register, RegisterState } from "@/server/actions/auth"
-import toast, { LoaderIcon } from "react-hot-toast"
+import { useActionState, useEffect } from "react"
+import { login, LoginState } from "@/server/actions/auth"
 import { useRouter } from "next/navigation"
 
-const registerFields = [
-    {
-        label: "Full name",
-        name: "name",
-        type: "text",
-        placeholder: "Enter your full name",
-        autoFocus: true
-    },
+const loginFields = [
     {
         label: "Email",
         name: "email",
         type: "email",
-        placeholder: "Enter your email"
+        placeholder: "Enter your email",
+        autoFocus: true
     },
     {
         label: "Password",
         name: "password",
         type: "password",
         placeholder: "Enter your password"
-    },
-    {
-        label: "Confirm password",
-        name: "confirmPassword",
-        type: "password",
-        placeholder: "Re-enter your password"
     }
 ]
 
-const initialState: RegisterState = {
+const initialState: LoginState = {
     message: "",
     errors: {},
     status: undefined,
     formData: undefined
 }
 
-const RegisterFrom = () => {
+const LoginForm = () => {
 
-    const [state, registerAction, isPending] = useActionState(register, initialState)
+    const [state, loginAction, isPending] = useActionState(login, initialState)
     const router = useRouter()
 
     useEffect(() => {
         if (state.status && state.message) {
-            if (state.status === 201) {
+            if (state.status === 200) {
                 toast.success(state.message)
                 router.push("/")
             } else {
@@ -60,10 +48,10 @@ const RegisterFrom = () => {
 
     return (
         <form
-            action={registerAction}
+            action={loginAction}
             className="space-y-2"
             >
-            {registerFields.map(field => (
+            {loginFields.map(field => (
                 <div key={field.name}>
                     <label
                         className="text-xs text-muted-foreground mb-2"
@@ -91,10 +79,10 @@ const RegisterFrom = () => {
                 className="w-full mt-5"
                 disabled={isPending}
             >
-                {isPending ? (<><LoaderIcon /> Registering...</>) : "Register"}
+                {isPending ? (<><LoaderIcon /> logging...</>) : "Login"}
             </Button>
         </form>
     )
 }
 
-export default RegisterFrom
+export default LoginForm

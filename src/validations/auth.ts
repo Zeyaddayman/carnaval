@@ -8,7 +8,6 @@ export const registerSchema = z.object({
     ,
     email: z
         .email("Must be a valid email")
-        .min(10, " must be at least 10 characters")
     ,
     password: z
         .string()
@@ -20,4 +19,15 @@ export const registerSchema = z.object({
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Password do not match",
     path: ["confirmPassword"]
+})
+
+
+export const loginSchema = z.object({
+    email: z
+        .email("Must be a valid email")
+    ,
+    password: z
+        .string()
+        .min(6, "Password must be at least 6 characters")
+        .max(40, "Password must be at most 40 characters")
 })
