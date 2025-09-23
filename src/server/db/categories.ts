@@ -1,5 +1,3 @@
-"server-only"
-
 import { Category } from "@/generated/prisma"
 import { categoryHierarchy } from "@/types/categories"
 import { db } from "@/lib/prisma"
@@ -110,7 +108,11 @@ export const getSubcategories = reactCache(async (slug: Category["slug"]) => nex
                         slug: true,
                         _count: {
                             select: {
-                                products: true
+                                products: {
+                                    where: {
+                                        stock: { gt: 0 }
+                                    }
+                                }
                             }
                         }
                     }
