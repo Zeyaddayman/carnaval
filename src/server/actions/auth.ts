@@ -3,7 +3,8 @@
 import { db } from "@/lib/prisma"
 import { loginSchema, registerSchema } from "@/validations/auth"
 import bcrypt from "bcrypt"
-import { ACCESS_TOKEN_EXPIRY, generateAccessToken, setToken } from "../tokens"
+import { ACCESS_TOKEN_EXPIRY, generateAccessToken, setToken, verifyToken } from "../tokens"
+import { cookies } from "next/headers"
 
 export interface RegisterState {
     message?: string
@@ -155,4 +156,11 @@ export const login = async (
             formData
         }
     }
+}
+
+export const checkIsAuthenticated = async () => {
+
+    const accessToken = (await cookies()).get("accessToken")
+
+    return verifyToken(accessToken?.value || "")
 }

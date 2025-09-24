@@ -1,4 +1,5 @@
 import { User } from "@/generated/prisma";
+import { UserSession } from "@/types/user";
 import jwt from "jsonwebtoken"
 import { cookies } from "next/headers";
 
@@ -13,15 +14,23 @@ export function generateAccessToken(user: User) {
     )
 }
 
-export async function setToken(name: string, token: string, maxAge: number, httpOnly: boolean = true) {
+export async function setToken(name: string, token: string, maxAge: number) {
 
     const cookiesStore = await cookies()
 
     cookiesStore.set(name, token, {
-        httpOnly,
+        httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
         maxAge, // milliseconds
         path: '/'
     })
+}
+
+export function verifyToken(token: string) {
+    try {
+        return jwt.verify(token, SECRET_KEY) as UserSession;
+    } catch {
+        return null
+    }
 }
