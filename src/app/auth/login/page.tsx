@@ -1,4 +1,3 @@
-
 import LoginForm from "@/components/login/Form"
 import Heading from "@/components/ui/Heading"
 import Link from "next/link"

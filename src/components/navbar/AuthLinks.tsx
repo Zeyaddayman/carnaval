@@ -7,10 +7,12 @@ import { useEffect, useState } from "react";
 import { UserSession } from "@/types/user";
 import { checkIsAuthenticated } from "@/server/actions/auth";
 import { RiAdminLine } from "react-icons/ri";
+import { usePathname } from "next/navigation";
 
 const AuthLinks = ({ refreshKey }: { refreshKey: number }) => {
 
     const [session, setSession] = useState<UserSession | null>(null)
+    const pathname = usePathname()
 
     useEffect(() => {
         checkIsAuthenticated().then(user => setSession(user))
@@ -38,13 +40,13 @@ const AuthLinks = ({ refreshKey }: { refreshKey: number }) => {
         ) : (
             <>
             <Link
-                href={"/auth/login"}
+                href={`/auth/login?redirect=${pathname}`}
                 className={`${buttonVariants({ variant: "secondary" })}`}
             >
                 Login
             </Link>
             <Link
-                href={"/auth/register"}
+                href={`/auth/register?redirect=${pathname}`}
                 className={`${buttonVariants({ variant: "default" })}`}
             >
                 Register

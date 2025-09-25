@@ -5,7 +5,7 @@ import { Button } from "../ui/Button"
 import Input from "../ui/Input"
 import { useActionState, useEffect } from "react"
 import { login, LoginState } from "@/server/actions/auth"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 const loginFields = [
     {
@@ -38,8 +38,15 @@ const LoginForm = () => {
     useEffect(() => {
         if (state.status && state.message) {
             if (state.status === 200) {
+
                 toast.success(state.message)
-                router.push("/")
+
+                // didn't use the useSearchParams hook to prevent wrap this component in Suspense
+                const searchParams = new URLSearchParams(window.location.search)
+                const redirectPath = searchParams.get("redirect") || "/"
+
+                router.push(redirectPath)
+
             } else {
                 toast.error(state.message)
             }

@@ -50,8 +50,15 @@ const RegisterFrom = () => {
     useEffect(() => {
         if (state.status && state.message) {
             if (state.status === 201) {
+
                 toast.success(state.message)
-                router.push("/")
+
+                // didn't use the useSearchParams hook to prevent wrap this component in Suspense
+                const searchParams = new URLSearchParams(window.location.search)
+                const redirectPath = searchParams.get("redirect") || "/"
+
+                router.push(redirectPath)
+
             } else {
                 toast.error(state.message)
             }
