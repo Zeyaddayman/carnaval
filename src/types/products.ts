@@ -1,6 +1,13 @@
 import { PRODUCTS_SORT_OPTIONS } from "@/constants/products"
 import { Prisma } from "@/generated/prisma"
 
+export type ProductWithRelations = Prisma.ProductGetPayload<{
+    include: {
+        categories: true,
+        brand: true
+    }
+}>
+
 export type CardProduct = Prisma.ProductGetPayload<{
     select: {
         id: true,
