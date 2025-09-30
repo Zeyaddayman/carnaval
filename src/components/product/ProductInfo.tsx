@@ -19,7 +19,7 @@ const ProductInfo = ({ product }: Props) => {
     const productRating = formatRating(product.rating)
 
     return (
-        <div className="flex-1">
+        <div>
             <div>
                 <h2 className="text-foreground text-2xl lg:text-3xl font-bold">
                     {product.title}
