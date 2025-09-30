@@ -1,4 +1,5 @@
 import AddToCart from "@/components/product/AddToCart"
+import OutOfStock from "@/components/product/OutOfStock"
 import ProductImagesPreview from "@/components/product/ProductImagesPreview"
 import ProductInfo from "@/components/product/ProductInfo"
 import { getProduct } from "@/server/db/product"
@@ -22,7 +23,11 @@ const productPage = async ({ params }: Props) => {
                     <ProductImagesPreview images={product.images} title={product.title} />
                     <div className="flex-1 space-y-10">
                         <ProductInfo product={product} />
-                        <AddToCart limit={limit} />
+                        {product.stock > 0 ? (
+                            <AddToCart limit={limit} />
+                        ): (
+                            <OutOfStock />
+                        )}
                     </div>
                 </div>
             </div>
