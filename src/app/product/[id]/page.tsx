@@ -1,7 +1,6 @@
 import ProductImagesPreview from "@/components/product/ProductImagesPreview"
 import ProductInfo from "@/components/product/ProductInfo"
 import { getProduct } from "@/server/db/product"
-import Image from "next/image"
 
 interface Props {
     params: Promise<{ id: string }>

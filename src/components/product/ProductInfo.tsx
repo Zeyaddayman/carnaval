@@ -21,7 +21,7 @@ const ProductInfo = ({ product }: Props) => {
     return (
         <div className="flex-1">
             <div>
-                <h2 className="text-foreground text-2xl md:text-3xl font-bold">
+                <h2 className="text-foreground text-2xl lg:text-3xl font-bold">
                     {product.title}
                 </h2>
                 {product.brand && <p className="text-muted-foreground">by {product.brand.name}</p>}
@@ -34,7 +34,7 @@ const ProductInfo = ({ product }: Props) => {
                 <span className="text-foreground">{productRating}</span>
             </div>
             <div className="flex gap-3 items-center">
-                <p className="text-3xl font-bold text-foreground">${finalPrice}</p>
+                <p className="text-2xl lg:text-3xl font-bold text-foreground">${finalPrice}</p>
                 {hasDiscount && (
                     <>
                     <p className="text-lg text-muted-foreground line-through">${productPrice}</p>
