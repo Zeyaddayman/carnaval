@@ -1,4 +1,4 @@
-import AddToCart from "@/components/product/AddToCart"
+import Cart from "@/components/product/cart"
 import OutOfStock from "@/components/product/OutOfStock"
 import ProductImagesPreview from "@/components/product/ProductImagesPreview"
 import ProductInfo from "@/components/product/ProductInfo"
@@ -14,8 +14,6 @@ const productPage = async ({ params }: Props) => {
 
     const product = await getProduct(id)
 
-    const limit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
-
     return (
         <main>
             <div className="container">
@@ -24,7 +22,7 @@ const productPage = async ({ params }: Props) => {
                     <div className="flex-1 space-y-10">
                         <ProductInfo product={product} />
                         {product.stock > 0 ? (
-                            <AddToCart limit={limit} />
+                            <Cart product={product} />
                         ): (
                             <OutOfStock />
                         )}

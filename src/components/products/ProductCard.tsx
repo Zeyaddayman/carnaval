@@ -2,17 +2,18 @@ import { CardProduct } from "@/types/products"
 import Image from "next/image"
 import Link from "next/link"
 import RatingStars from "../ui/RatingStars"
-import AddToWishlistButton from "./AddToWishlistButton"
+import AddToWishlistButton from "../ui/AddToWishlist"
 import { formatPrice, formatRating } from "@/lib/formatters"
 
 const ProductCard = ({ product }: { product: CardProduct }) => {
 
     const hasDiscount = product.discountPercentage && product.discountPercentage > 0
 
-    const productPrice = formatPrice(Number(product.price))
+    const productPrice = formatPrice(product.price)
 
     const finalPrice = hasDiscount
-        ? formatPrice(Number(product.price) - (Number(product.price) * product.discountPercentage! / 100))
+
+        ? formatPrice(product.price - (product.price * product.discountPercentage! / 100))
         : productPrice
 
     const productRating = formatRating(product.rating)

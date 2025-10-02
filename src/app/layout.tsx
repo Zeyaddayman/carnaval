@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { Toaster } from "react-hot-toast";
+import StoreProvider from "@/providers/StoreProvider";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -24,16 +25,18 @@ export default function RootLayout({
       <body
         className={`${inter.className} antialiased`}
       >
-        <Navbar />
-        {children}
-        <Footer />
-        <Toaster
-          position="bottom-center"
-          toastOptions={{
-            duration: 5000,
-            removeDelay: 1000,
-          }}
-        />
+        <StoreProvider>
+          <Navbar />
+          {children}
+          <Footer />
+          <Toaster
+            position="bottom-center"
+            toastOptions={{
+              duration: 5000,
+              removeDelay: 1000,
+            }}
+          />
+        </StoreProvider>
       </body>
     </html>
   );

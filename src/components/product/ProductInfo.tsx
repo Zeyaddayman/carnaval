@@ -21,7 +21,7 @@ const ProductInfo = ({ product }: Props) => {
     return (
         <div>
             <div>
-                <h2 className="text-foreground text-2xl lg:text-3xl font-bold">
+                <h2 className="text-foreground text-3xl lg:text-4xl font-bold">
                     {product.title}
                 </h2>
                 {product.brand && <p className="text-muted-foreground">by {product.brand.name}</p>}
