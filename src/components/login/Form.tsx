@@ -5,7 +5,8 @@ import { Button } from "../ui/Button"
 import Input from "../ui/Input"
 import { useActionState, useEffect } from "react"
 import { login, LoginState } from "@/server/actions/auth"
-import { usePathname, useRouter } from "next/navigation"
+import { useRouter } from "next/navigation"
+import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
 
 const loginFields = [
     {
@@ -34,6 +35,7 @@ const LoginForm = () => {
 
     const [state, loginAction, isPending] = useActionState(login, initialState)
     const router = useRouter()
+    const { refetch } = useGetUserSessionQuery({})
 
     useEffect(() => {
         if (state.status && state.message) {
@@ -44,6 +46,8 @@ const LoginForm = () => {
                 // didn't use the useSearchParams hook to prevent wrap this component in Suspense
                 const searchParams = new URLSearchParams(window.location.search)
                 const redirectPath = searchParams.get("redirect") || "/"
+
+                refetch()
 
                 router.push(redirectPath)
 

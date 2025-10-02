@@ -157,10 +157,3 @@ export const login = async (
         }
     }
 }
-
-export const checkIsAuthenticated = async () => {
-
-    const accessToken = (await cookies()).get("accessToken")
-
-    return verifyToken(accessToken?.value || "")
-}

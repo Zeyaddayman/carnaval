@@ -77,7 +77,7 @@ const Links = async () => {
             <span><FiHeart size={20} /></span> Wishlist
             <span className="absolute w-6 h-6 element-center -top-2 -left-2 bg-primary text-primary-foreground text-xs font-semibold rounded-full">43</span>
         </Link>
-        <AuthLinks refreshKey={Math.random()} />
+        <AuthLinks />
         </>
     )
 }

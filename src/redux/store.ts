@@ -1,11 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
 import localCartReducer from './features/localCartSlice'
+import { UserSessionApi } from './features/userSessionApi'
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             localCart: localCartReducer,
-        }
+            [UserSessionApi.reducerPath]: UserSessionApi.reducer
+        },
+        middleware: (getDefaultMiddleware) =>
+            getDefaultMiddleware().concat(UserSessionApi.middleware)
     })
 }
 

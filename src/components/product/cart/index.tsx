@@ -26,8 +26,6 @@ const Cart = ({ product }: Props) => {
 
     if (!isMounted) return null
 
-    console.log(localCart.items)
-
     const existingProduct = localCart.items.find(item => item.id === product.id)
 
     const limit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock

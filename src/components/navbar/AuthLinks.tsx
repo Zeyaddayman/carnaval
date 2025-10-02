@@ -3,20 +3,16 @@
 import Link from "next/link";
 import { buttonVariants } from "../ui/Button";
 import { FiUser } from "react-icons/fi";
-import { useEffect, useState } from "react";
-import { UserSession } from "@/types/user";
-import { checkIsAuthenticated } from "@/server/actions/auth";
 import { RiAdminLine } from "react-icons/ri";
 import { usePathname } from "next/navigation";
+import { useGetUserSessionQuery } from "@/redux/features/userSessionApi";
 
-const AuthLinks = ({ refreshKey }: { refreshKey: number }) => {
+const AuthLinks = () => {
 
-    const [session, setSession] = useState<UserSession | null>(null)
+    const { data: session, isLoading } = useGetUserSessionQuery({})
     const pathname = usePathname()
 
-    useEffect(() => {
-        checkIsAuthenticated().then(user => setSession(user))
-    }, [refreshKey])
+    if (isLoading) return null
 
     return (
         <>

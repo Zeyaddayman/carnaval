@@ -6,6 +6,7 @@ import Input from "../ui/Input"
 import { register, RegisterState } from "@/server/actions/auth"
 import toast, { LoaderIcon } from "react-hot-toast"
 import { useRouter } from "next/navigation"
+import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
 
 const registerFields = [
     {
@@ -46,6 +47,7 @@ const RegisterFrom = () => {
 
     const [state, registerAction, isPending] = useActionState(register, initialState)
     const router = useRouter()
+    const { refetch } = useGetUserSessionQuery({})
 
     useEffect(() => {
         if (state.status && state.message) {
@@ -56,6 +58,8 @@ const RegisterFrom = () => {
                 // didn't use the useSearchParams hook to prevent wrap this component in Suspense
                 const searchParams = new URLSearchParams(window.location.search)
                 const redirectPath = searchParams.get("redirect") || "/"
+
+                refetch()
 
                 router.push(redirectPath)
 
