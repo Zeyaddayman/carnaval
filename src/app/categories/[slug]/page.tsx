@@ -64,7 +64,7 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                 <div className="flex flex-col lg:flex-row mt-3 gap-3">
                     <Subcategories slug={slug} />
                     <div className="flex-1">
-                        <div className="flex justify-between items-center flex-wrap my-3 gap-3">
+                        <div className="flex justify-between items-center flex-wrap mb-3 gap-3">
                             <ProductsFilters
                                 initialFilters={filters}
                                 rating={{ min: productsMinRating, max: PRODUCTS_MAX_RATING }}

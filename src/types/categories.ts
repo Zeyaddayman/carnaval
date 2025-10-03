@@ -1,1 +1,1 @@
-export type categoryHierarchy = { name: string; subCategoryName: string; link: string }[]
+export type CategoryHierarchy = { name: string; subCategoryName: string; link: string }[]

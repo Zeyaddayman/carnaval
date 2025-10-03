@@ -1,3 +1,4 @@
+import CategoriesChain from "@/components/categories/CategoriesChain"
 import Cart from "@/components/product/cart"
 import OutOfStock from "@/components/product/OutOfStock"
 import ProductImagesPreview from "@/components/product/ProductImagesPreview"
@@ -13,12 +14,13 @@ const productPage = async ({ params }: Props) => {
 
     const { id } = await params
 
-    const product = await getProduct(id)
+    const { product, categoryHierarchy } = await getProduct(id)
 
     return (
         <main>
             <div className="container">
-                <div className="flex flex-col lg:flex-row gap-5">
+                <CategoriesChain categoryHierarchy={categoryHierarchy} />
+                <div className="flex flex-col lg:flex-row gap-5 mt-5">
                     <ProductImagesPreview images={product.images} title={product.title} />
                     <div className="flex-1 space-y-6">
                         <ProductInfo product={product} />

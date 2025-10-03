@@ -61,7 +61,7 @@ const BrandProductsPage = async ({ params, searchParams }: Props) => {
             <div className="container">
                 <BrandProductsHeading slug={slug} />
                 <div>
-                    <div className="flex justify-between items-center flex-wrap my-3 gap-3">
+                    <div className="flex justify-between items-center flex-wrap mb-3 gap-3">
                         <ProductsFilters
                             initialFilters={filters}
                             rating={{ min: productsMinRating, max: PRODUCTS_MAX_RATING }}

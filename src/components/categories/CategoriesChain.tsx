@@ -1,14 +1,14 @@
-import { categoryHierarchy } from "@/types/categories"
+import { CategoryHierarchy } from "@/types/categories"
 import Link from "next/link"
 import { Fragment } from "react"
 
 interface Props {
-    categoryHierarchy: categoryHierarchy
+    categoryHierarchy: CategoryHierarchy
 }
 
 const CategoriesChain = ({ categoryHierarchy }: Props) => {
     return (
-        <div className="flex flex-wrap items-center gap-2 md:gap-3">
+        <div className="space-x-3 overflow-x-auto whitespace-nowrap">
             {categoryHierarchy.map((category, i) => {
                 const isLastCategory = i === categoryHierarchy.length - 1
                 return <Fragment key={category.name}>

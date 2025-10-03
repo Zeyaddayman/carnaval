@@ -1,5 +1,5 @@
 import { Category } from "@/generated/prisma"
-import { categoryHierarchy } from "@/types/categories"
+import { CategoryHierarchy } from "@/types/categories"
 import { db } from "@/lib/prisma"
 import { unstable_cache as nextCache } from "next/cache"
 import { cache as reactCache } from "react"
@@ -33,7 +33,7 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
     async () => {
         console.log(`Fetching category hierarchy for slug: ${slug}`)
 
-        const categories: categoryHierarchy = []
+        const categories: CategoryHierarchy = []
 
         const category = await db.category.findUnique({
             where: { slug },

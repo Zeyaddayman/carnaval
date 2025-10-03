@@ -15,7 +15,7 @@ const Subcategories = async ({ slug }: Props) => {
     return (
         <section className="h-fit border-2 border-border px-3 py-5 rounded-lg">
             <h5 className="text-muted-foreground text-l font-semibold mb-3">Subcategories</h5>
-            <ul className="flex flex-row lg:flex-col overflow-x-scroll lg:overflow-x-auto gap-2">
+            <ul className="flex flex-row lg:flex-col overflow-x-auto gap-2">
                 {subcategories.map((subcategory) => (
                     <li
                         key={subcategory.id}
