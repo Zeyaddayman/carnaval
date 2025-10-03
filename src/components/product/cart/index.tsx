@@ -45,7 +45,7 @@ const Cart = ({ product }: Props) => {
     return (
         <>
         {existingProduct ? (
-            <div className="space-y-10">
+            <div className="space-y-6">
                 <InYourCart
                     quantity={existingProduct.qty}
                 />

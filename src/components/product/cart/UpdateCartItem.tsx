@@ -35,7 +35,7 @@ const UpdateCartItem = ({ productId, limit, initialQuantity, updateItemQty, remo
     }
 
     return (
-        <div className="flex gap-2 items-stretch p-3 bg-secondary rounded-md">
+        <div className="flex gap-2 h-10 rounded-md">
             <p className='text-muted-foreground self-center'>Quantity</p>
             {quantity > 1 ? (
                 <button
@@ -68,6 +68,7 @@ const UpdateCartItem = ({ productId, limit, initialQuantity, updateItemQty, remo
             </button>
             <Button
                 variant={"default"}
+                size={"lg"}
                 onClick={handleUpdateItemQty}
             >
                 Save

@@ -8,7 +8,7 @@ export const InYourCart = ({ quantity }: { quantity: number }) => (
         </div>
         <Link
             href={"/cart"}
-            className="p-3 bg-secondary text-secondary-foreground rounded-md"
+            className="text-primary p-3"
         >
             View cart
         </Link>

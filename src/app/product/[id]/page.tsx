@@ -2,6 +2,7 @@ import Cart from "@/components/product/cart"
 import OutOfStock from "@/components/product/OutOfStock"
 import ProductImagesPreview from "@/components/product/ProductImagesPreview"
 import ProductInfo from "@/components/product/ProductInfo"
+import AddToWishlist from "@/components/ui/AddToWishlist"
 import { getProduct } from "@/server/db/product"
 
 interface Props {
@@ -19,8 +20,11 @@ const productPage = async ({ params }: Props) => {
             <div className="container">
                 <div className="flex flex-col lg:flex-row gap-5">
                     <ProductImagesPreview images={product.images} title={product.title} />
-                    <div className="flex-1 space-y-10">
+                    <div className="flex-1 space-y-6">
                         <ProductInfo product={product} />
+                        <div className="bg-muted p-2 w-fit h-fit rounded-full ml-auto">
+                            <AddToWishlist productId={product.id} />
+                        </div>
                         {product.stock > 0 ? (
                             <Cart product={product} />
                         ): (

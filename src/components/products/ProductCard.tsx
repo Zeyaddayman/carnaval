@@ -2,7 +2,7 @@ import { CardProduct } from "@/types/products"
 import Image from "next/image"
 import Link from "next/link"
 import RatingStars from "../ui/RatingStars"
-import AddToWishlistButton from "../ui/AddToWishlist"
+import AddToWishlist from "../ui/AddToWishlist"
 import { formatPrice, formatRating } from "@/lib/formatters"
 
 const ProductCard = ({ product }: { product: CardProduct }) => {
@@ -21,7 +21,7 @@ const ProductCard = ({ product }: { product: CardProduct }) => {
     return (
         <div key={product.id} className="relative bg-card border border-border rounded-lg">
             <span className="absolute top-3 right-3 z-10">
-                <AddToWishlistButton />
+                <AddToWishlist productId={product.id} />
             </span>
             <Link
                 href={`/product/${product.id}`}
