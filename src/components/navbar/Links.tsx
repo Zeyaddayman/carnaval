@@ -6,6 +6,7 @@ import { Category } from "@/generated/prisma"
 import { getTopLevelCategories } from "@/server/db/categories"
 import { getBrands } from "@/server/db/brands"
 import AuthLinks from "./AuthLinks"
+import CartItemsCount from "./CartItemsCount"
 
 const Links = async () => {
 
@@ -68,7 +69,7 @@ const Links = async () => {
             className={`${buttonVariants({ variant: "ghost" })} relative`}
         >
             <span><FiShoppingCart size={20} /></span> Cart
-            <span className="absolute w-6 h-6 element-center -top-2 -left-2 bg-primary text-primary-foreground text-xs font-semibold rounded-full">12</span>
+            <CartItemsCount />
         </Link>
         <Link
             href={"/wishlist"}
