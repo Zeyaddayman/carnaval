@@ -1,18 +1,15 @@
 "use client"
 
 import { useState } from 'react';;
-import { ProductWithRelations } from '@/types/products';
-import { CartItem } from '@/types/cart';
 import { BsCartPlusFill } from 'react-icons/bs';
 import { Button } from '@/components/ui/Button';
 
 interface Props {
-    product: ProductWithRelations
     limit: number
-    addItemToCart: (cartItem: CartItem) => void
+    addItemToCart: (quantity: number) => void
 }
 
-const AddToCart = ({ product, limit, addItemToCart }: Props) => {
+const AddToCart = ({ limit, addItemToCart }: Props) => {
 
     const [quantity, setQuantity] = useState(1)
 
@@ -26,18 +23,6 @@ const AddToCart = ({ product, limit, addItemToCart }: Props) => {
         if (quantity < limit) {
             setQuantity(prev => prev + 1)
         }
-    }
-
-    const addToCart = () => {
-        addItemToCart({
-            id: product.id,
-            title: product.title,
-            thumbnail: product.thumbnail,
-            brand: product.brand?.name,
-            price: product.price,
-            discountPercentage: product.discountPercentage,
-            qty: quantity
-        })
     }
 
     return (
@@ -67,7 +52,7 @@ const AddToCart = ({ product, limit, addItemToCart }: Props) => {
             <Button
                 className="flex-1"
                 size={"lg"}
-                onClick={addToCart}
+                onClick={() => addItemToCart(quantity)}
             >
                 <BsCartPlusFill size={20} /> Add to Cart
             </Button>

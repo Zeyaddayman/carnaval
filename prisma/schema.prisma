@@ -14,9 +14,37 @@ model User {
   password      String
   name          String
   role          UserRole       @default(USER)
+
   addresses     Address[]
+
+  cart          Cart?
+
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+}
+
+model Cart {
+  id        String       @id @default(uuid())
+
+  items     CartItem[]
+
+  User      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String       @unique
+
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+
+  quantity  Int
+
+  cart      Cart     @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId    String
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
 }
 
 model Address {
@@ -26,7 +54,8 @@ model Address {
   governorate   String?
   city          String?
   streetAddress String?
-  user          User          @relation(fields: [userId], references: [id])
+
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId        String
 }
 
@@ -34,16 +63,21 @@ model Product {
   id                  String        @id @default(cuid())
   title               String        @unique
   description         String
-  categories          Category[]    @relation("ProductCategories")
-  brand               Brand?        @relation(fields: [brandId], references: [id])
-  brandId             String?
+  thumbnail           String
+  images              String[]
   price               Float
   discountPercentage  Float?
   rating              Float
   stock               Int
   limit               Int?
-  images              String[]
-  thumbnail           String
+
+  categories          Category[]    @relation("ProductCategories")
+
+  brand               Brand?        @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  brandId             String?
+
+  CartItems           CartItem[]
+
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
 }
@@ -54,11 +88,16 @@ model Category {
   slug            String        @unique
   subCategoryName String
   thumbnail       String
+
   products        Product[]     @relation("ProductCategories")
+
+  parent          Category?     @relation("CategoryToCategory", fields: [parentId], references: [id], onDelete: SetNull)
   parentId        String?
-  parent          Category?     @relation("CategoryToCategory", fields: [parentId], references: [id])
+
   children        Category[]    @relation("CategoryToCategory")
+
   brands          Brand[]
+
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
 
@@ -70,7 +109,9 @@ model Brand {
   name       String    @unique
   slug       String    @unique
   thumbnail  String?
+
   products   Product[]
+
   categories Category[]
 
   @@index([slug])

@@ -4,7 +4,6 @@ import { addItemToLocalCart, removeItemFromLocalCart, selectLocalCart, updateIte
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { ProductWithRelations } from "@/types/products"
 import AddToCart from "./AddToCart"
-import { CartItem } from "@/types/cart"
 import UpdateCartItem from "./UpdateCartItem"
 import { InYourCart } from "./InYourCart"
 import { useEffect, useState } from "react"
@@ -13,7 +12,7 @@ interface Props {
     product: ProductWithRelations
 }
 
-const Cart = ({ product }: Props) => {
+const LocalCart = ({ product }: Props) => {
 
     const localCart = useAppSelector(selectLocalCart)
     const dispatch = useAppDispatch()
@@ -26,20 +25,26 @@ const Cart = ({ product }: Props) => {
 
     if (!isMounted) return null
 
-    const existingProduct = localCart.items.find(item => item.id === product.id)
+    const existingProduct = localCart.items.find(item => item.productId === product.id)
 
     const limit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
 
-    const addItemToCart = (cartItem: CartItem) => {
-        dispatch(addItemToLocalCart(cartItem))
+    const addItemToCart = (quantity: number) => {
+        dispatch(addItemToLocalCart({
+            id: crypto.randomUUID(),
+            cartId: "local",
+            product: product,
+            productId: product.id,
+            quantity
+        }))
     }
 
-    const updateItemQty = (id: string, qty: number) => {
-        dispatch(updateItemQtyInLocalCart({ id, qty }))
+    const updateItemQty = (quantity: number) => {
+        dispatch(updateItemQtyInLocalCart({ id: product.id, quantity }))
     }
 
-    const removeItemFromCart = (id: string) => {
-        dispatch(removeItemFromLocalCart(id))
+    const removeItemFromCart = () => {
+        dispatch(removeItemFromLocalCart(product.id))
     }
 
     return (
@@ -47,19 +52,17 @@ const Cart = ({ product }: Props) => {
         {existingProduct ? (
             <div className="space-y-6">
                 <InYourCart
-                    quantity={existingProduct.qty}
+                    quantity={existingProduct.quantity}
                 />
                 <UpdateCartItem
-                    productId={product.id}
                     limit={limit}
-                    initialQuantity={existingProduct.qty}
+                    initialQuantity={existingProduct.quantity}
                     updateItemQty={updateItemQty}
                     removeItemFromCart={removeItemFromCart}
                 />
             </div>
         ): (
             <AddToCart
-                product={product}
                 limit={limit}
                 addItemToCart={addItemToCart}
             />
@@ -68,4 +71,4 @@ const Cart = ({ product }: Props) => {
     )
 }
 
-export default Cart
+export default LocalCart

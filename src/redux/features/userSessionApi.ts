@@ -1,3 +1,4 @@
+import { UserSession } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const UserSessionApi = createApi({

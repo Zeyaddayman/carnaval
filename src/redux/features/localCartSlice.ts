@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../store'
-import { CartItem } from '@/types/cart'
+import { CartItemWithProduct } from '@/types/cart'
 
 interface LocalCartState {
-    items: CartItem[]
+    items: CartItemWithProduct[]
 }
 
 const initialState: LocalCartState = {
@@ -20,25 +20,27 @@ export const LocalCartSlice = createSlice({
     name: 'localCart',
     initialState,
     reducers: {
-        addItemToLocalCart: (state, action: PayloadAction<CartItem>) => {
-            const existingItem = state.items.find(item => item.id === action.payload.id)
+        addItemToLocalCart: (state, action: PayloadAction<CartItemWithProduct>) => {
+            const existingItem = state.items.find(item => item.productId === action.payload.id)
 
             if (existingItem) {
-                existingItem.qty = action.payload.qty
+                existingItem.quantity = action.payload.quantity
             } else {
                 state.items.push(action.payload)
             }
             localStorage.setItem("localCart", JSON.stringify(state.items));
         },
-        updateItemQtyInLocalCart: (state, action: PayloadAction<{ id: string, qty: number }>) => {
-            const existingItem = state.items.find(item => item.id === action.payload.id)
+        updateItemQtyInLocalCart: (state, action: PayloadAction<{ id: string, quantity: number }>) => {
+            const existingItem = state.items.find(item => item.productId === action.payload.id)
 
             if (existingItem) {
-                existingItem.qty = action.payload.qty
+                existingItem.quantity = action.payload.quantity
             }
+
+            localStorage.setItem("localCart", JSON.stringify(state.items));
         },
         removeItemFromLocalCart: (state, action: PayloadAction<string>) => {
-            state.items = state.items.filter(item => item.id !== action.payload)
+            state.items = state.items.filter(item => item.productId !== action.payload)
             localStorage.setItem("localCart", JSON.stringify(state.items));
         }
     }

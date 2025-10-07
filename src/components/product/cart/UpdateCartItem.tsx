@@ -3,14 +3,13 @@ import { useState } from "react"
 import { BiTrash } from "react-icons/bi"
 
 interface Props {
-    productId: string
     limit: number
     initialQuantity: number
-    updateItemQty: (id: string, quantity: number) => void
-    removeItemFromCart: (id: string) => void
+    updateItemQty: (quantity: number) => void
+    removeItemFromCart: () => void
 }
 
-const UpdateCartItem = ({ productId, limit, initialQuantity, updateItemQty, removeItemFromCart }: Props) => {
+const UpdateCartItem = ({ limit, initialQuantity, updateItemQty, removeItemFromCart }: Props) => {
 
     const [quantity, setQuantity] = useState(initialQuantity)
 
@@ -24,14 +23,6 @@ const UpdateCartItem = ({ productId, limit, initialQuantity, updateItemQty, remo
         if (quantity < limit) {
             setQuantity(prev => prev + 1)
         }
-    }
-
-    const handleUpdateItemQty = () => {
-        updateItemQty(productId, quantity)
-    }
-
-    const handleRemoveItemFromCart = () => {
-        removeItemFromCart(productId)
     }
 
     return (
@@ -48,7 +39,7 @@ const UpdateCartItem = ({ productId, limit, initialQuantity, updateItemQty, remo
             ): (
                 <button
                     className="bg-destructive text-destructive-foreground px-5 cursor-pointer rounded-md"
-                    onClick={handleRemoveItemFromCart}
+                    onClick={removeItemFromCart}
                     disabled={quantity > 1}
                 >
                     <BiTrash />
@@ -69,7 +60,7 @@ const UpdateCartItem = ({ productId, limit, initialQuantity, updateItemQty, remo
             <Button
                 variant={"default"}
                 size={"lg"}
-                onClick={handleUpdateItemQty}
+                onClick={() => updateItemQty(quantity)}
             >
                 Save
             </Button>
