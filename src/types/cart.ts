@@ -10,3 +10,18 @@ export type CartItemWithProduct = Prisma.CartItemGetPayload<{
         }
     }
 }>
+
+export type CartWithItems = Prisma.CartGetPayload<{
+    include: {
+        items: {
+            include: {
+                product: {
+                    include: {
+                        categories: true,
+                        brand: true
+                    }
+                }
+            }
+        }
+    }
+}>

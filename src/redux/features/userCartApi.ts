@@ -1,38 +1,29 @@
-import { Cart, CartItem } from "@/generated/prisma";
-import { CartItemWithProduct } from "@/types/cart";
+import { CartWithItems } from "@/types/cart";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const UserCartApi = createApi({
     reducerPath: 'UserCartApi',
-    baseQuery: fetchBaseQuery({baseUrl: '/api/cart/'}),
+    baseQuery: fetchBaseQuery({baseUrl: '/api/'}),
     tagTypes: ['user-cart'],
 
     endpoints: (builder) => ({
-        getUserCart: builder.query<Cart & { items: CartItemWithProduct[] }, string>({
-            query: (userId: string) => `${userId}`,
+        getUserCart: builder.query<CartWithItems, void>({
+            query: () => "cart",
             providesTags: ['user-cart']
         }),
-        addItemToUserCart: builder.mutation< Cart & { items: CartItemWithProduct[] }, { userId: string, cartItem: Omit<CartItem, "id"> } >({
-            query: ({ userId, cartItem }) => ({
-                url: `${userId}`,
+        addItemToUserCart: builder.mutation<CartWithItems, { productId: string, quantity: number } >({
+            query: ({ productId, quantity }) => ({
+                url: "cart",
                 method: 'POST',
-                body: cartItem
+                body: { productId, quantity }
             }),
             invalidatesTags: ['user-cart']
         }),
-        updateItemQtyInUserCart: builder.mutation< Cart & { items: CartItemWithProduct[] }, { userId: string, cartItem: Pick<CartItem, "id" | "quantity"> } >({
-            query: ({ userId, cartItem }) => ({
-                url: `${userId}`,
-                method: 'PUT',
-                body: cartItem
-            }),
-            invalidatesTags: ['user-cart']
-        }),
-        removeItemFromUserCart: builder.mutation< Cart & { items: CartItemWithProduct[] }, { userId: string, cartItem: Pick<CartItem, "id"> } >({
-            query: ({ userId, cartItem }) => ({
-                url: `${userId}`,
+        removeItemFromUserCart: builder.mutation<CartWithItems, string >({
+            query: (productId) => ({
+                url: "cart",
                 method: 'DELETE',
-                body: cartItem
+                body: { productId }
             }),
             invalidatesTags: ['user-cart']
         }),
@@ -42,7 +33,6 @@ export const UserCartApi = createApi({
 export const {
     useGetUserCartQuery,
     useAddItemToUserCartMutation,
-    useUpdateItemQtyInUserCartMutation,
     useRemoveItemFromUserCartMutation
 
 } = UserCartApi

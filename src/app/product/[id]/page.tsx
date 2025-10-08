@@ -33,7 +33,7 @@ const productPage = async ({ params }: Props) => {
                         </div>
                         {product.stock > 0 ? 
                             session ? (
-                                <UserCart product={product} userId={session.userId} />
+                                <UserCart product={product} />
                             ) : (
                                 <LocalCart product={product} />
                             )

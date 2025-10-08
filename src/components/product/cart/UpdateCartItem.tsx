@@ -5,11 +5,11 @@ import { BiTrash } from "react-icons/bi"
 interface Props {
     limit: number
     initialQuantity: number
-    updateItemQty: (quantity: number) => void
+    addItemToCart: (quantity: number) => void
     removeItemFromCart: () => void
 }
 
-const UpdateCartItem = ({ limit, initialQuantity, updateItemQty, removeItemFromCart }: Props) => {
+const UpdateCartItem = ({ limit, initialQuantity, addItemToCart, removeItemFromCart }: Props) => {
 
     const [quantity, setQuantity] = useState(initialQuantity)
 
@@ -60,7 +60,7 @@ const UpdateCartItem = ({ limit, initialQuantity, updateItemQty, removeItemFromC
             <Button
                 variant={"default"}
                 size={"lg"}
-                onClick={() => updateItemQty(quantity)}
+                onClick={() => addItemToCart(quantity)}
             >
                 Save
             </Button>
