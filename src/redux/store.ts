@@ -11,7 +11,7 @@ export const makeStore = () => {
             [UserSessionApi.reducerPath]: UserSessionApi.reducer
         },
         middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware().concat([UserCartApi.middleware, UserSessionApi.middleware])
+            getDefaultMiddleware().concat(UserCartApi.middleware, UserSessionApi.middleware)
     })
 }
 

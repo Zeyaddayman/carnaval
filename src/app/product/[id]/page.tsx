@@ -20,6 +20,8 @@ const productPage = async ({ params }: Props) => {
 
     const session = await isAuthenticated()
 
+    const limit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
+
     return (
         <main>
             <div className="container">
@@ -33,7 +35,7 @@ const productPage = async ({ params }: Props) => {
                         </div>
                         {product.stock > 0 ? 
                             session ? (
-                                <UserCart product={product} />
+                                <UserCart product={product} initialLimit={limit} />
                             ) : (
                                 <LocalCart product={product} />
                             )

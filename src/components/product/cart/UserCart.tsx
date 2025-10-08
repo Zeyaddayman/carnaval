@@ -5,14 +5,18 @@ import { ProductWithRelations } from "@/types/products"
 import { InYourCart } from "./InYourCart"
 import UpdateCartItem from "./UpdateCartItem"
 import AddToCart from "./AddToCart"
+import { useState } from "react"
 
 interface Props {
     product: ProductWithRelations
+    initialLimit: number
 }
 
-const UserCart = ({ product }: Props) => {
+const UserCart = ({ product, initialLimit }: Props) => {
 
     const { data: cart, isLoading } = useGetUserCartQuery()
+
+    const [limit, setLimit] = useState(initialLimit)
 
     const [ addItemToUserCart ] = useAddItemToUserCartMutation()
     const [ removeItemFromUserCart ] = useRemoveItemFromUserCartMutation()
@@ -21,11 +25,9 @@ const UserCart = ({ product }: Props) => {
 
     const existingProduct = cart?.items.find(item => item.productId === product.id)
 
-    const limit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
-
     const addItemToCart = (quantity: number) => {
         addItemToUserCart({
-            productId: product.id,
+            product,
             quantity
         })
     }
