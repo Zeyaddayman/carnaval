@@ -8,20 +8,22 @@ export const UserCartApi = createApi({
     tagTypes: ['user-cart'],
 
     endpoints: (builder) => ({
-        getUserCart: builder.query<CartWithItems, void>({
+        getUserCart: builder.query<CartWithItems, string>({
             query: () => "cart",
-            providesTags: ['user-cart']
+
+            providesTags: (result, error, userId) => [{ type: 'user-cart', id: userId }]
         }),
-        addItemToUserCart: builder.mutation<CartWithItems, { product: ProductWithRelations, quantity: number } >({
+
+        addItemToUserCart: builder.mutation<CartWithItems, { product: ProductWithRelations, quantity: number, userId: string } >({
             query: ({ product, quantity }) => ({
                 url: "cart",
                 method: 'POST',
                 body: { productId: product.id, quantity }
             }),
 
-            async onQueryStarted({ product, quantity }, { dispatch, queryFulfilled }) {
+            async onQueryStarted({ product, quantity, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    UserCartApi.util.updateQueryData('getUserCart', undefined, (draft: CartWithItems) => {
+                    UserCartApi.util.updateQueryData('getUserCart', userId, (draft: CartWithItems) => {
 
                         const existingItem = draft.items.find(item => item.productId === product.id)
 
@@ -29,7 +31,7 @@ export const UserCartApi = createApi({
                             existingItem.quantity = quantity
                         } else {
 
-                            // to stringify non-serializable data types like (date, functions, ...etc) in this case Date
+                            // to stringify non-serializable data types like Date
                             const serializableProduct = JSON.parse(JSON.stringify(product))
 
                             const tempItem: CartWithItems["items"][number] = {
@@ -54,16 +56,17 @@ export const UserCartApi = createApi({
             invalidatesTags: ['user-cart']
 
         }),
-        removeItemFromUserCart: builder.mutation<CartWithItems, string >({
-            query: (productId) => ({
+
+        removeItemFromUserCart: builder.mutation<CartWithItems, { productId: string, userId: string } >({
+            query: ({ productId }) => ({
                 url: "cart",
                 method: 'DELETE',
                 body: { productId }
             }),
 
-            async onQueryStarted(productId, { dispatch, queryFulfilled }) {
+            async onQueryStarted({ productId, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    UserCartApi.util.updateQueryData('getUserCart', undefined, (draft: CartWithItems) => {
+                    UserCartApi.util.updateQueryData('getUserCart', userId, (draft: CartWithItems) => {
                         draft.items = draft.items.filter(item => item.productId !== productId)
                     })
                 )

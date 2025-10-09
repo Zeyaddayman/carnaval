@@ -12,11 +12,11 @@ const CartItemsCount = () => {
 
     if (isLoading) return null
 
-    return session ? <UserCartItemsCount /> : <LocalCartItemsCount />
+    return session ? <UserCartItemsCount userId={session.userId} /> : <LocalCartItemsCount />
 }
 
-const UserCartItemsCount = () => {
-    const { data: cart, isLoading } = useGetUserCartQuery()
+const UserCartItemsCount = ({ userId }: { userId: string }) => {
+    const { data: cart, isLoading } = useGetUserCartQuery(userId)
 
     if (isLoading || cart?.items.length === 0) return null
 

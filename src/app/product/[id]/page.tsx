@@ -35,7 +35,11 @@ const productPage = async ({ params }: Props) => {
                         </div>
                         {product.stock > 0 ? 
                             session ? (
-                                <UserCart product={product} initialLimit={limit} />
+                                <UserCart
+                                    userId={session.userId}
+                                    product={product}
+                                    initialLimit={limit}
+                                />
                             ) : (
                                 <LocalCart product={product} />
                             )
