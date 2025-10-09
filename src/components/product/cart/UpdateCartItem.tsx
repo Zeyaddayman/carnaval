@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/Button"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { BiTrash } from "react-icons/bi"
 
 interface Props {
@@ -12,6 +12,10 @@ interface Props {
 const UpdateCartItem = ({ limit, initialQuantity, addItemToCart, removeItemFromCart }: Props) => {
 
     const [quantity, setQuantity] = useState(initialQuantity)
+
+    useEffect(() => {
+        setQuantity(initialQuantity)
+    }, [initialQuantity])
 
     const handleMinus = () => {
         if (quantity > 1) {

@@ -1,11 +1,12 @@
 "use client"
 
-import { useAddItemToUserCartMutation, useGetUserCartQuery, useRemoveItemFromUserCartMutation } from "@/redux/features/userCartApi"
+import { useAddItemToUserCartMutation, useGetUserCartQuery, useRemoveItemFromUserCartMutation, ApiErrorResponse } from "@/redux/features/userCartApi"
 import { ProductWithRelations } from "@/types/products"
 import { InYourCart } from "./InYourCart"
 import UpdateCartItem from "./UpdateCartItem"
 import AddToCart from "./AddToCart"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import toast from "react-hot-toast"
 
 interface Props {
     userId: string
@@ -17,10 +18,48 @@ const UserCart = ({ userId, product, initialLimit }: Props) => {
 
     const { data: cart, isLoading } = useGetUserCartQuery(userId)
 
-    const [limit, setLimit] = useState(initialLimit)
+    const [limit, setLimit] = useState<number>(initialLimit)
 
-    const [ addItemToUserCart ] = useAddItemToUserCartMutation()
-    const [ removeItemFromUserCart ] = useRemoveItemFromUserCartMutation()
+    const [ addItemToUserCart, {
+        isSuccess: isItemAdded,
+        data: addItemResponse,
+        isError: isAddingItemFailed,
+        error: addItemError
+
+    } ] = useAddItemToUserCartMutation()
+
+    const [ removeItemFromUserCart, { isError: isRemovingItemFailed, error: removeItemError } ] = useRemoveItemFromUserCartMutation()
+
+    useEffect(() => {
+
+        // check if the product stock or limit changed in the database so we make this page up to date
+        if (isItemAdded && addItemResponse.modified) {
+            toast.success(addItemResponse.modified)
+            if (addItemResponse.limit) {
+                setLimit(Number(addItemResponse.limit))
+            }
+        }
+
+    }, [isItemAdded])
+    
+    useEffect(() => {
+
+        const typedAddItemError = addItemError as ApiErrorResponse
+
+        if (isAddingItemFailed && typedAddItemError.errorMessage) {
+
+            toast.error(typedAddItemError.errorMessage)
+        }
+    }, [isAddingItemFailed])
+
+    useEffect(() => {
+
+        const typedRemoveItemError = removeItemError as ApiErrorResponse
+
+        if (isRemovingItemFailed && typedRemoveItemError.errorMessage) {
+            toast.error(typedRemoveItemError.errorMessage)
+        }
+    }, [isRemovingItemFailed])
 
     if (isLoading) return null
 

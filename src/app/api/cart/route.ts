@@ -1,14 +1,13 @@
 import { db } from '@/lib/prisma'
 import { isAuthenticated } from '@/server/db/auth'
 import { NextRequest, NextResponse } from 'next/server'
-import { length } from 'zod'
 
 export async function GET() {
 
     const session = await isAuthenticated()
 
     if (!session) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ errorMessage: 'Unauthorized' }, { status: 401 })
     }
 
     const { userId } = session
@@ -35,7 +34,7 @@ export async function GET() {
 
         return NextResponse.json(cart, { status: 200 })
     } catch {
-        return NextResponse.json({ error: 'Failed to fetch user cart' }, { status: 500 })
+        return NextResponse.json({ errorMessage: 'Failed to fetch user cart' }, { status: 500 })
     }
 }
 
@@ -44,12 +43,12 @@ export async function POST(req: NextRequest) {
     const session = await isAuthenticated()
 
     if (!session) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ errorMessage: 'Unauthorized' }, { status: 401 })
     }
 
     const { userId } = session
 
-    let { productId, quantity } = await req.json()
+    const { productId, quantity } = await req.json()
 
     try {
 
@@ -58,13 +57,14 @@ export async function POST(req: NextRequest) {
             select: { limit: true, stock: true }
         })
 
-        let limit;
-
-        if (product) {
-            limit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
+        if (!product) {
+            return NextResponse.json({ errorMessage: 'Failed to add item to cart' }, { status: 500 })
         }
 
-        quantity = (limit && quantity > limit) ? limit : quantity
+        let limit: number = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
+
+        // check if the requested quantity available or not
+        const modifiedQuantity = quantity > limit ? limit : quantity
 
         // get user cart by the sesion userId or create one if not exists
         const cart = await db.cart.upsert({
@@ -84,18 +84,23 @@ export async function POST(req: NextRequest) {
             create: {
                 cartId: cart.id,
                 productId,
-                quantity
+                quantity: modifiedQuantity
             },
             update: { 
-                quantity
+                quantity: modifiedQuantity
             }
         })
 
-    } catch {
-        return NextResponse.json({ error: 'Failed to add item to cart' }, { status: 500 })
-    }
+        // check if we modified the quantity
+        if (modifiedQuantity !== quantity) {
+            return NextResponse.json({ modified: `Only ${modifiedQuantity} items are available`, limit: modifiedQuantity }, { status: 200 })
+        } else {
+            return NextResponse.json({ message: 'Item added to cart' }, { status: 200 })
+        }
 
-    return NextResponse.json({ message: 'Item added to cart' }, { status: 200 })
+    } catch {
+        return NextResponse.json({ errorMessage: 'Failed to add item to cart' }, { status: 500 })
+    }
 }
 
 export async function DELETE(req: NextRequest) {
@@ -103,7 +108,7 @@ export async function DELETE(req: NextRequest) {
     const session = await isAuthenticated()
 
     if (!session) {
-        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ errorMessage: 'Unauthorized' }, { status: 401 })
     }
 
     const { userId } = session
@@ -128,9 +133,9 @@ export async function DELETE(req: NextRequest) {
             }
         })
 
-    } catch {
-        return NextResponse.json({ error: 'Failed to delete cart item' }, { status: 500 })
-    }
+        return NextResponse.json({ message: 'Cart item deleted' }, { status: 200 })
 
-    return NextResponse.json({ message: 'Cart item deleted' }, { status: 200 })
+    } catch {
+        return NextResponse.json({ errorMessage: 'Failed to delete cart item' }, { status: 500 })
+    }
 }

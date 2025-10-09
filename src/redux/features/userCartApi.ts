@@ -2,6 +2,17 @@ import { CartWithItems } from "@/types/cart";
 import { ProductWithRelations } from "@/types/products";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+interface AddItemResponse {
+    message?: string,
+    modified?: string,
+    limit?: number,
+}
+
+export interface ApiErrorResponse {
+    status: number
+    errorMessage?: string
+}
+
 export const UserCartApi = createApi({
     reducerPath: 'UserCartApi',
     baseQuery: fetchBaseQuery({baseUrl: '/api/'}),
@@ -14,11 +25,16 @@ export const UserCartApi = createApi({
             providesTags: (result, error, userId) => [{ type: 'user-cart', id: userId }]
         }),
 
-        addItemToUserCart: builder.mutation<CartWithItems, { product: ProductWithRelations, quantity: number, userId: string } >({
+        addItemToUserCart: builder.mutation<AddItemResponse, { product: ProductWithRelations, quantity: number, userId: string } >({
             query: ({ product, quantity }) => ({
                 url: "cart",
                 method: 'POST',
                 body: { productId: product.id, quantity }
+            }),
+
+            transformErrorResponse: ({ status, data }: { status: number, data: { errorMessage: string } }): ApiErrorResponse => ({
+                status,
+                errorMessage: data.errorMessage
             }),
 
             async onQueryStarted({ product, quantity, userId }, { dispatch, queryFulfilled }) {
@@ -62,6 +78,11 @@ export const UserCartApi = createApi({
                 url: "cart",
                 method: 'DELETE',
                 body: { productId }
+            }),
+
+            transformErrorResponse: ({ status, data }: { status: number, data: { errorMessage: string } }): ApiErrorResponse => ({
+                status,
+                errorMessage: data.errorMessage
             }),
 
             async onQueryStarted({ productId, userId }, { dispatch, queryFulfilled }) {
