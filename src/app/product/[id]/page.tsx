@@ -41,7 +41,7 @@ const productPage = async ({ params }: Props) => {
                                     initialLimit={limit}
                                 />
                             ) : (
-                                <LocalCart product={product} />
+                                <LocalCart product={product} initialLimit={limit} />
                             )
                             : <OutOfStock />
                         }

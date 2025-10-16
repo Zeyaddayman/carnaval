@@ -22,7 +22,7 @@ export const UserCartApi = createApi({
         getUserCart: builder.query<CartWithItems, string>({
             query: () => "cart",
 
-            providesTags: (result, error, userId) => [{ type: 'user-cart', id: userId }]
+            providesTags: ['user-cart']
         }),
 
         addItemToUserCart: builder.mutation<AddItemResponse, { product: ProductWithRelations, quantity: number, userId: string } >({

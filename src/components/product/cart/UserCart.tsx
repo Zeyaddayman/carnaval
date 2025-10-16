@@ -61,6 +61,7 @@ const UserCart = ({ userId, product, initialLimit }: Props) => {
         }
     }, [isRemovingItemFailed])
 
+
     if (isLoading) return null
 
     const existingProduct = cart?.items.find(item => item.productId === product.id)

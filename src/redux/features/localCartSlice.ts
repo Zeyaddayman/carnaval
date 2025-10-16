@@ -21,35 +21,33 @@ export const LocalCartSlice = createSlice({
     initialState,
     reducers: {
         addItemToLocalCart: (state, action: PayloadAction<CartItemWithProduct>) => {
-            const existingItem = state.items.find(item => item.productId === action.payload.id)
+            const existingItem = state.items.find(item => item.productId === action.payload.productId)
 
             if (existingItem) {
                 existingItem.quantity = action.payload.quantity
             } else {
                 state.items.push(action.payload)
             }
-            localStorage.setItem("localCart", JSON.stringify(state.items));
-        },
-        updateItemQtyInLocalCart: (state, action: PayloadAction<{ id: string, quantity: number }>) => {
-            const existingItem = state.items.find(item => item.productId === action.payload.id)
 
-            if (existingItem) {
-                existingItem.quantity = action.payload.quantity
-            }
-
-            localStorage.setItem("localCart", JSON.stringify(state.items));
+            localStorage.setItem("localCart", JSON.stringify(state.items))
         },
         removeItemFromLocalCart: (state, action: PayloadAction<string>) => {
             state.items = state.items.filter(item => item.productId !== action.payload)
-            localStorage.setItem("localCart", JSON.stringify(state.items));
+
+            localStorage.setItem("localCart", JSON.stringify(state.items))
+        },
+        setLocalCartItems: (state, action: PayloadAction<CartItemWithProduct[]>) => {
+            state.items = action.payload
+
+            localStorage.setItem("localCart", JSON.stringify(state.items))
         }
     }
 })
 
 export const {
     addItemToLocalCart,
-    updateItemQtyInLocalCart,
-    removeItemFromLocalCart
+    removeItemFromLocalCart,
+    setLocalCartItems
 
 } = LocalCartSlice.actions
 
