@@ -1,16 +1,20 @@
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
+import { ComponentProps } from "react"
 
 const buttonVariants = cva(
-    "flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium cursor-pointer transition-all disabled:pointer-events-none disabled:opacity-50 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-border focus-visible:ring-border focus-visible:ring-[3px] aria-invalid:ring-destructive/20 aria-invalid:border-destructive",
+    `flex items-center justify-center gap-2 text-sm font-medium whitespace-nowrap rounded-md cursor-pointer transition-all shrink-0 [&_svg]:shrink-0
+    focus:outline-none focus:ring-4 focus:ring-border
+    disabled:pointer-events-none disabled:opacity-50`,
     {
         variants: {
             variant: {
-                default: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
-                secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/90",
+                primary: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 focus:ring-primary/20",
+                secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/90 focus:ring-secondary/20",
                 cancel: "bg-muted text-muted-foreground shadow-xs hover:bg-muted/90",
-                // outline: "border bg-background shadow-xs hover:bg-accent hover:text-white",
-                // destructive: "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20",
+                outline: "border border-border bg-background shadow-xs hover:bg-accent hover:text-white",
+                destructive: "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus:ring-destructive/20",
+                destructiveOutline: "border border-destructive text-destructive shadow-xs hover:bg-destructive hover:text-white focus:ring-destructive/20",
                 ghost: "hover:bg-muted",
                 // link: "text-primary underline-offset-4 hover:underline"
             },
@@ -21,7 +25,7 @@ const buttonVariants = cva(
             }
         },
         defaultVariants: {
-            variant: "default",
+            variant: "primary",
             size: "default",
         }
     }
@@ -32,7 +36,7 @@ function Button({
     variant,
     size,
     ...props
-}: React.ComponentProps<"button"> & VariantProps<typeof buttonVariants>) {
+}: ComponentProps<"button"> & VariantProps<typeof buttonVariants>) {
     return (
         <button
             className={cn(buttonVariants({ variant, size, className }))}

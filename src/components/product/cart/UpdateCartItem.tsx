@@ -62,7 +62,7 @@ const UpdateCartItem = ({ limit, initialQuantity, addItemToCart, removeItemFromC
                 +
             </button>
             <Button
-                variant={"default"}
+                variant={"primary"}
                 size={"lg"}
                 onClick={() => addItemToCart(quantity)}
             >

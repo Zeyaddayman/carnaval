@@ -8,7 +8,7 @@ const Hero = () => {
             <p className="text-xl text-secondary-foreground">Explore a world of fashion, electronics, home goods, and more. Find everything you need with ease and confidence</p>
             <Link
                 href={"/categories"}
-                className={`${buttonVariants({ variant: "default", size: "lg" })} w-fit mx-auto`}
+                className={`${buttonVariants({ variant: "primary", size: "lg" })} w-fit mx-auto`}
             >
                 Shop Now
             </Link>

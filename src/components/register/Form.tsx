@@ -96,7 +96,7 @@ const RegisterFrom = () => {
                 </div>
             ))}
             <Button
-                variant={"default"}
+                variant={"primary"}
                 size={"lg"}
                 type="submit"
                 className="w-full mt-5"
