@@ -29,25 +29,25 @@ const AddToCart = ({ limit, addItemToCart }: Props) => {
         <div className='flex gap-3 flex-wrap'>
             <div className='flex-1 flex gap-2 min-h-10'>
                 <p className='text-muted-foreground self-center'>Quantity</p>
-                <button
-                    className="bg-input px-5 cursor-pointer rounded-md"
+                <Button
+                    variant={"basic"}
                     onClick={handleMinus}
                     disabled={quantity <= 1}
                 >
                     -
-                </button>
+                </Button>
                 <p
                     className='bg-input element-center w-full min-w-30 rounded-md'
                 >
                     {quantity}
                 </p>
-                <button
-                    className="bg-input px-5 cursor-pointer rounded-md"
+                <Button
+                    variant={"basic"}
                     onClick={handlePlus}
                     disabled={quantity >= limit}
                 >
                     +
-                </button>
+                </Button>
             </div>
             <Button
                 className="flex-1"

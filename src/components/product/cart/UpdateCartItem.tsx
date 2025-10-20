@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/Button"
 import { useEffect, useState } from "react"
-import { BiTrash } from "react-icons/bi"
+import { FiTrash2 } from "react-icons/fi"
 
 interface Props {
     limit: number
@@ -33,34 +33,34 @@ const UpdateCartItem = ({ limit, initialQuantity, addItemToCart, removeItemFromC
         <div className="flex gap-2 h-10 rounded-md">
             <p className='text-muted-foreground self-center'>Quantity</p>
             {quantity > 1 ? (
-                <button
-                    className="bg-input px-5 cursor-pointer rounded-md"
+                <Button
+                    variant={"basic"}
                     onClick={handleMinus}
                     disabled={quantity <= 1}
                 >
                     -
-                </button>
+                </Button>
             ): (
-                <button
-                    className="bg-destructive text-destructive-foreground px-5 cursor-pointer rounded-md"
+                <Button
+                    variant={"destructiveOutline"}
                     onClick={removeItemFromCart}
                     disabled={quantity > 1}
                 >
-                    <BiTrash />
-                </button>
+                    <FiTrash2 />
+                </Button>
             )}
             <p
                 className='bg-input element-center w-full min-w-30 rounded-md'
             >
                 {quantity}
             </p>
-            <button
-                className="bg-input px-5 cursor-pointer rounded-md"
+            <Button
+                variant={"basic"}
                 onClick={handlePlus}
                 disabled={quantity >= limit}
             >
                 +
-            </button>
+            </Button>
             <Button
                 variant={"primary"}
                 size={"lg"}
