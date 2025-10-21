@@ -4,17 +4,17 @@ import { ComponentProps } from "react"
 
 const buttonVariants = cva(
     `flex items-center justify-center gap-2 text-sm font-medium whitespace-nowrap rounded-md cursor-pointer transition-all shrink-0 [&_svg]:shrink-0
-    focus:outline-none focus:ring-4 focus:ring-border
+    focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-border
     disabled:pointer-events-none disabled:opacity-50`,
     {
         variants: {
             variant: {
-                primary: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 focus:ring-primary/20",
-                secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/90 focus:ring-secondary/20",
+                primary: "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90 focus-visible:ring-primary/20",
+                secondary: "bg-secondary text-secondary-foreground shadow-xs hover:bg-secondary/90 focus-visible:ring-secondary/20",
                 cancel: "bg-muted text-muted-foreground shadow-xs hover:bg-muted/90",
-                outline: "border border-border bg-background shadow-xs hover:bg-accent hover:text-white",
-                destructive: "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus:ring-destructive/20",
-                destructiveOutline: "border border-destructive text-destructive shadow-xs hover:bg-destructive hover:text-white focus:ring-destructive/20",
+                outline: "border border-black shadow-xs",
+                destructive: "bg-destructive text-white shadow-xs hover:bg-destructive/90 focus-visible:ring-destructive/20",
+                destructiveOutline: "border border-destructive text-destructive shadow-xs hover:bg-destructive hover:text-white focus-visible:ring-destructive/20",
                 basic: "bg-input border border-border",
                 ghost: "hover:bg-muted",
                 // link: "text-primary underline-offset-4 hover:underline"

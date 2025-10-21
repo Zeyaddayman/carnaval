@@ -14,7 +14,7 @@ interface Props {
     initialLimit: number
 }
 
-const LocalCart = ({ product, initialLimit }: Props) => {
+const ProductLocalCart = ({ product, initialLimit }: Props) => {
 
     const [isMounted, setIsMounted] = useState(false)
 
@@ -96,4 +96,4 @@ const LocalCart = ({ product, initialLimit }: Props) => {
     )
 }
 
-export default LocalCart
+export default ProductLocalCart

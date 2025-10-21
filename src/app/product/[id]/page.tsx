@@ -1,6 +1,6 @@
 import CategoriesChain from "@/components/categories/CategoriesChain"
-import UserCart from "@/components/product/cart/UserCart"
-import LocalCart from "@/components/product/cart/LocalCart"
+import ProductLocalCart from "@/components/product/cart/LocalCart"
+import ProductUserCart from "@/components/product/cart/UserCart"
 import OutOfStock from "@/components/product/OutOfStock"
 import ProductImagesPreview from "@/components/product/ProductImagesPreview"
 import ProductInfo from "@/components/product/ProductInfo"
@@ -35,13 +35,13 @@ const productPage = async ({ params }: Props) => {
                         </div>
                         {product.stock > 0 ? 
                             session ? (
-                                <UserCart
+                                <ProductUserCart
                                     userId={session.userId}
                                     product={product}
                                     initialLimit={limit}
                                 />
                             ) : (
-                                <LocalCart product={product} initialLimit={limit} />
+                                <ProductLocalCart product={product} initialLimit={limit} />
                             )
                             : <OutOfStock />
                         }

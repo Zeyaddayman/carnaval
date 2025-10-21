@@ -14,7 +14,7 @@ interface Props {
     initialLimit: number
 }
 
-const UserCart = ({ userId, product, initialLimit }: Props) => {
+const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
 
     const { data: cart, isLoading } = useGetUserCartQuery(userId)
 
@@ -105,4 +105,4 @@ const UserCart = ({ userId, product, initialLimit }: Props) => {
     )
 }
 
-export default UserCart
+export default ProductUserCart
