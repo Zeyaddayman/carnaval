@@ -1,3 +1,4 @@
+import LocalCart from "@/components/cart/LocalCart"
 import UserCart from "@/components/cart/UserCart"
 import Heading from "@/components/ui/Heading"
 import { isAuthenticated } from "@/server/db/auth"
@@ -12,8 +13,10 @@ const CartPage = async () => {
                 <Heading
                     title="Shopping Cart"
                 />
-                {session && (
+                {session ? (
                     <UserCart userId={session.userId} />
+                ): (
+                    <LocalCart />
                 )}
             </div>
         </main>

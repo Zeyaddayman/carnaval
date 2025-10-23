@@ -48,13 +48,16 @@ const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity }: Pro
             >
                 +
             </Button>
-            {quantity !== initialQuantity && (
+            {quantity !== initialQuantity ? (
                 <Button
                     variant={"secondary"}
                     onClick={() => updateQuantity(quantity)}
                 >
                     Update
                 </Button>
+            ): (
+                // placeholder to prevent layout shift
+                <div className="min-w-20 h-9"></div>
             )}
         </div>
     )
