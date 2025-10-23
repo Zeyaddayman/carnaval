@@ -41,7 +41,9 @@ const ProductLocalCart = ({ product, initialLimit }: Props) => {
             cartId: "local",
             product: serializableProduct,
             productId: product.id,
-            quantity
+            quantity,
+            createdAt: JSON.parse(JSON.stringify(new Date())),
+            updatedAt: JSON.parse(JSON.stringify(new Date()))
         }))
 
         fetch(`/api/product/${product.id}/limit`)
@@ -60,7 +62,9 @@ const ProductLocalCart = ({ product, initialLimit }: Props) => {
                             cartId: "local",
                             product: serializableProduct,
                             productId: product.id,
-                            quantity: quantity > productLimit ? productLimit : quantity
+                            quantity: quantity > productLimit ? productLimit : quantity,
+                            createdAt: JSON.parse(JSON.stringify(new Date())),
+                            updatedAt: JSON.parse(JSON.stringify(new Date()))
                         }))
                     }
 

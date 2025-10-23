@@ -1,14 +1,9 @@
-import { verifyToken } from '@/server/tokens'
-import { cookies } from 'next/headers'
+import { isAuthenticated } from '@/server/db/auth'
 import { NextResponse } from 'next/server'
 
 export async function GET() {
 
-    const accessToken = (await cookies()).get("accessToken")
-
-    const session = verifyToken(accessToken?.value || "")
-
-    console.log("user checking his session...")
+    const session = await isAuthenticated()
 
     if (!session) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })

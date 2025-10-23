@@ -32,10 +32,19 @@ export const UserCartApi = createApi({
                 body: { productId: product.id, quantity }
             }),
 
-            transformErrorResponse: ({ status, data }: { status: number, data: { errorMessage: string } }): ApiErrorResponse => ({
-                status,
-                errorMessage: data.errorMessage
-            }),
+            transformErrorResponse: (error: any): ApiErrorResponse => {
+                if (error.data) {
+                    return {
+                        status: error.status,
+                        errorMessage: error.data.errorMessage
+                    }
+                } else {
+                    return {
+                        status: 500,
+                        errorMessage: 'Something went wrong'
+                    }
+                }
+            },
 
             async onQueryStarted({ product, quantity, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
@@ -47,18 +56,20 @@ export const UserCartApi = createApi({
                             existingItem.quantity = quantity
                         } else {
 
-                            // to stringify non-serializable data types like Date
-                            const serializableProduct = JSON.parse(JSON.stringify(product))
-
                             const tempItem: CartWithItems["items"][number] = {
                                 id: crypto.randomUUID(),
-                                productId: product.id,
                                 cartId: "temp",
+                                productId: product.id,
+                                product,
                                 quantity,
-                                product: serializableProduct
+                                createdAt: new Date(),
+                                updatedAt: new Date()
                             }
 
-                            draft.items.push(tempItem)
+                            // to stringify non-serializable data types like Date
+                            const serializableTempItem = JSON.parse(JSON.stringify(tempItem))
+
+                            draft.items.push(serializableTempItem)
                         }
                     })
                 )
@@ -80,10 +91,20 @@ export const UserCartApi = createApi({
                 body: { productId }
             }),
 
-            transformErrorResponse: ({ status, data }: { status: number, data: { errorMessage: string } }): ApiErrorResponse => ({
-                status,
-                errorMessage: data.errorMessage
-            }),
+            transformErrorResponse: (error: any): ApiErrorResponse => {
+                console.log(error)
+                if (error.data) {
+                    return {
+                        status: error.status,
+                        errorMessage: error.data.errorMessage
+                    }
+                } else {
+                    return {
+                        status: 500,
+                        errorMessage: 'Something went wrong'
+                    }
+                }
+            },
 
             async onQueryStarted({ productId, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(

@@ -20,6 +20,9 @@ export async function GET() {
             update: {},
             include: {
                 items: {
+                    orderBy: {
+                        createdAt: 'desc'
+                    },
                     include: {
                         product: {
                             include: {
@@ -30,6 +33,10 @@ export async function GET() {
                     }
                 }
             }
+        })
+
+        cart.items.map(item => {
+            console.log('Cart Item:', `${item.product.title} - Quantity: ${item.quantity}`)
         })
 
         return NextResponse.json(cart, { status: 200 })
