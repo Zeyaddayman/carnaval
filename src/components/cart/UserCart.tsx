@@ -35,6 +35,8 @@ const UserCart = ({ userId }: Props) => {
 
     if (isLoading) return null
 
+    if (!cart || cart.items.length === 0) return null
+
     return (
         <div className="flex flex-col lg:flex-row gap-5">
             <div className="flex-1 space-y-3">
@@ -47,7 +49,7 @@ const UserCart = ({ userId }: Props) => {
                     />
                 ))}
             </div>
-            <CartOrderSummary />
+            <CartOrderSummary cartItems={cart.items} />
         </div>
     )
 }
