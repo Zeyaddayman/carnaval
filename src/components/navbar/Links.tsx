@@ -7,6 +7,7 @@ import { getTopLevelCategories } from "@/server/db/categories"
 import { getBrands } from "@/server/db/brands"
 import AuthLinks from "./AuthLinks"
 import CartItemsCount from "./CartItemsCount"
+import WishlistItemsCount from "./WishlistItemsCount"
 
 const Links = async () => {
 
@@ -76,7 +77,7 @@ const Links = async () => {
             className={`${buttonVariants({ variant: "ghost" })} relative`}
         >
             <span><FiHeart size={20} /></span> Wishlist
-            <span className="absolute w-6 h-6 element-center -top-2 -left-2 bg-primary text-primary-foreground text-xs font-semibold rounded-full">43</span>
+            <WishlistItemsCount />
         </Link>
         <AuthLinks />
         </>
