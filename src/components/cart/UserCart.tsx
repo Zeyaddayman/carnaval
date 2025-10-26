@@ -5,6 +5,8 @@ import UserCartItem from "./UserCartItem"
 import CartOrderSummary from "./CartOrderSummary"
 import toast from "react-hot-toast"
 import { useEffect } from "react"
+import { useAddItemToUserWishlistMutation, UserWishlistResponse } from "@/redux/features/userWishlistApi"
+import { ProductWithRelations } from "@/types/products"
 
 interface Props {
     userId: string
@@ -16,6 +18,8 @@ const UserCart = ({ userId }: Props) => {
 
     const [ removeItemFromUserCart, { isError: isRemovingItemFailed, error: removeItemError } ] = useRemoveItemFromUserCartMutation()
 
+    const [ addItemToUserWishlist, { isError: isAddingItemToWishlistFailed, error: addItemToWishlistError } ] = useAddItemToUserWishlistMutation()
+
     useEffect(() => {
 
         const typedRemoveItemError = removeItemError as ApiErrorResponse
@@ -26,12 +30,36 @@ const UserCart = ({ userId }: Props) => {
 
     }, [isRemovingItemFailed])
 
+    useEffect(() => {
+
+        const typedAddItemToWishlistError = addItemToWishlistError as UserWishlistResponse
+
+        if (isAddingItemToWishlistFailed && typedAddItemToWishlistError.message) {
+            toast.error(typedAddItemToWishlistError.message)
+        }
+
+    }, [isAddingItemToWishlistFailed])
+
+
     const removeItem = (productId: string) => {
         removeItemFromUserCart({
             productId,
             userId
         })
     }
+
+    const moveItemToWishlist = (product: ProductWithRelations) => {
+        removeItemFromUserCart({
+            productId: product.id,
+            userId
+        })
+
+        addItemToUserWishlist({
+            product,
+            userId
+        })
+    }
+
 
     if (isLoading) return null
 
@@ -46,6 +74,7 @@ const UserCart = ({ userId }: Props) => {
                         item={item}
                         userId={userId}
                         removeItem={removeItem}
+                        moveItemToWishlist={moveItemToWishlist}
                     />
                 ))}
             </div>

@@ -9,15 +9,17 @@ import CartItemInfo from "./CartItemInfo"
 import CartItemQuantityCounter from "./CartItemQuantityCounter"
 import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
+import { ProductWithRelations } from "@/types/products"
 
 
 interface Props {
     item: CartItemWithProduct
     userId: string
     removeItem: (productId: string) => void
+    moveItemToWishlist: (product: ProductWithRelations) => void
 }
 
-const UserCartItem = ({ item, userId, removeItem }: Props) => {
+const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist }: Props) => {
 
     const [limit, setLimit] = useState((item.product.limit && item.product.limit <= item.product.stock) ? item.product.limit : item.product.stock)
 
@@ -59,6 +61,10 @@ const UserCartItem = ({ item, userId, removeItem }: Props) => {
         })
     }
 
+    const handleMoveToWishlist = () => {
+        moveItemToWishlist(item.product)
+    }
+
     return (
         <div className="bg-card p-2 flex flex-col md:flex-row gap-3 border border-border rounded-md">
             <Image
@@ -85,6 +91,7 @@ const UserCartItem = ({ item, userId, removeItem }: Props) => {
                 </div>
                 <Button
                     variant={"outline"}
+                    onClick={handleMoveToWishlist}
                 >
                     Move to Wishlist <FiHeart />
                 </Button>
