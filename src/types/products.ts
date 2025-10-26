@@ -24,6 +24,26 @@ export type CardProduct = Prisma.ProductGetPayload<{
     }
 }>
 
+export type WishlistItem = Prisma.WishlistGetPayload<{
+    include: {
+        product: {
+            select: {
+                id: true,
+                title: true,
+                thumbnail: true,
+                price: true,
+                discountPercentage: true,
+                rating: true,
+                brand: {
+                    select: {
+                        name: true
+                    }
+                }
+            }
+        }
+    }
+}>
+
 export type ProductsSortOptionValue = typeof PRODUCTS_SORT_OPTIONS[number]["value"]
 export type ProductsSortOption = typeof PRODUCTS_SORT_OPTIONS[number]
 

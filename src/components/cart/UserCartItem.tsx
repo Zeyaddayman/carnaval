@@ -1,6 +1,6 @@
 "use client"
 
-import { ApiErrorResponse, useAddItemToUserCartMutation, useRemoveItemFromUserCartMutation } from "@/redux/features/userCartApi"
+import { ApiErrorResponse, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
 import { CartItemWithProduct } from "@/types/cart"
 import Image from "next/image"
 import { useEffect, useState } from "react"

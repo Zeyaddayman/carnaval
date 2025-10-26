@@ -13,21 +13,21 @@ export interface ApiErrorResponse {
     errorMessage?: string
 }
 
-export const UserCartApi = createApi({
-    reducerPath: 'UserCartApi',
+export const userCartApi = createApi({
+    reducerPath: 'userCartApi',
     baseQuery: fetchBaseQuery({baseUrl: '/api/'}),
     tagTypes: ['user-cart'],
 
     endpoints: (builder) => ({
         getUserCart: builder.query<CartWithItems, string>({
-            query: () => "cart",
+            query: () => "user/cart",
 
             providesTags: ['user-cart']
         }),
 
         addItemToUserCart: builder.mutation<AddItemResponse, { product: ProductWithRelations, quantity: number, userId: string } >({
             query: ({ product, quantity }) => ({
-                url: "cart",
+                url: "user/cart",
                 method: 'POST',
                 body: { productId: product.id, quantity }
             }),
@@ -48,7 +48,7 @@ export const UserCartApi = createApi({
 
             async onQueryStarted({ product, quantity, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    UserCartApi.util.updateQueryData('getUserCart', userId, (draft: CartWithItems) => {
+                    userCartApi.util.updateQueryData('getUserCart', userId, (draft: CartWithItems) => {
 
                         const existingItem = draft.items.find(item => item.productId === product.id)
 
@@ -86,13 +86,12 @@ export const UserCartApi = createApi({
 
         removeItemFromUserCart: builder.mutation<CartWithItems, { productId: string, userId: string } >({
             query: ({ productId }) => ({
-                url: "cart",
+                url: "user/cart",
                 method: 'DELETE',
                 body: { productId }
             }),
 
             transformErrorResponse: (error: any): ApiErrorResponse => {
-                console.log(error)
                 if (error.data) {
                     return {
                         status: error.status,
@@ -108,7 +107,7 @@ export const UserCartApi = createApi({
 
             async onQueryStarted({ productId, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    UserCartApi.util.updateQueryData('getUserCart', userId, (draft: CartWithItems) => {
+                    userCartApi.util.updateQueryData('getUserCart', userId, (draft: CartWithItems) => {
                         draft.items = draft.items.filter(item => item.productId !== productId)
                     })
                 )
@@ -129,4 +128,4 @@ export const {
     useAddItemToUserCartMutation,
     useRemoveItemFromUserCartMutation
 
-} = UserCartApi
+} = userCartApi

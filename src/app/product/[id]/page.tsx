@@ -31,7 +31,7 @@ const productPage = async ({ params }: Props) => {
                     <div className="flex-1 space-y-6">
                         <ProductInfo product={product} />
                         <div className="bg-muted p-2 w-fit h-fit rounded-full ml-auto">
-                            <AddToWishlist productId={product.id} />
+                            <AddToWishlist session={session} product={product} />
                         </div>
                         {product.stock > 0 ? 
                             session ? (

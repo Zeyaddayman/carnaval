@@ -4,8 +4,11 @@ import Link from "next/link"
 import RatingStars from "../ui/RatingStars"
 import AddToWishlist from "../ui/AddToWishlist"
 import { formatPrice, formatRating } from "@/lib/formatters"
+import { isAuthenticated } from "@/server/db/auth"
 
-const ProductCard = ({ product }: { product: CardProduct }) => {
+const ProductCard = async ({ product }: { product: CardProduct }) => {
+
+    const session = await isAuthenticated()
 
     const hasDiscount = product.discountPercentage && product.discountPercentage > 0
 
@@ -21,7 +24,7 @@ const ProductCard = ({ product }: { product: CardProduct }) => {
     return (
         <div key={product.id} className="relative bg-card border border-border rounded-lg">
             <span className="absolute top-3 right-3 z-10">
-                <AddToWishlist productId={product.id} />
+                <AddToWishlist session={session} product={product} />
             </span>
             <Link
                 href={`/product/${product.id}`}

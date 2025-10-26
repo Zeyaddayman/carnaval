@@ -1,17 +1,16 @@
-import { UserSession } from "@/types/user";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export const UserSessionApi = createApi({
-    reducerPath: 'UserSessionApi',
-    baseQuery: fetchBaseQuery({baseUrl: '/api/auth/'}),
+export const userSessionApi = createApi({
+    reducerPath: 'userSessionApi',
+    baseQuery: fetchBaseQuery({baseUrl: '/api/'}),
     tagTypes: ['user-session'],
 
     endpoints: (builder) => ({
         getUserSession: builder.query({
-            query: () => "session",
+            query: () => "user/session",
             providesTags: ['user-session']
         })
     })
 })
 
-export const { useGetUserSessionQuery } = UserSessionApi
+export const { useGetUserSessionQuery } = userSessionApi

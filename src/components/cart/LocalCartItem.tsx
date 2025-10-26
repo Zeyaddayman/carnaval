@@ -7,10 +7,11 @@ import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 import CartItemInfo from "./CartItemInfo"
 import CartItemQuantityCounter from "./CartItemQuantityCounter"
-import { Button } from "../ui/Button"
+import { Button, buttonVariants } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
 import { useAppDispatch } from "@/redux/hooks"
 import { addItemToLocalCart } from "@/redux/features/localCartSlice"
+import Link from "next/link"
 
 
 interface Props {
@@ -48,7 +49,7 @@ const LocalCartItem = ({ item, removeItem }: Props) => {
                     if (quantity > productLimit) {
 
                         toast.error(`Only ${productLimit} items are available`)
-    
+
                         dispatch(addItemToLocalCart({
                             id: crypto.randomUUID(),
                             cartId: "local",
@@ -62,6 +63,20 @@ const LocalCartItem = ({ item, removeItem }: Props) => {
 
                 }
             })
+    }
+
+    const handleMoveToWishlist = () => {
+        toast(
+            <div className="space-y-2">
+                <p>You must be logged in</p>
+                <Link
+                    href={`/auth/login?redirect=/cart`}
+                    className={buttonVariants({ variant: "secondary", size: "sm" })}
+                >
+                    Login
+                </Link>
+            </div>
+        )
     }
 
     return (
@@ -90,6 +105,7 @@ const LocalCartItem = ({ item, removeItem }: Props) => {
                 </div>
                 <Button
                     variant={"outline"}
+                    onClick={handleMoveToWishlist}
                 >
                     Move to Wishlist <FiHeart />
                 </Button>

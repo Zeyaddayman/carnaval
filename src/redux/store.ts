@@ -1,17 +1,19 @@
 import { configureStore } from '@reduxjs/toolkit'
 import localCartReducer from './features/localCartSlice'
-import { UserCartApi } from './features/userCartApi'
-import { UserSessionApi } from './features/userSessionApi'
+import { userCartApi } from './features/userCartApi'
+import { userSessionApi } from './features/userSessionApi'
+import { userWishlistApi } from './features/userWishlistApi'
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             localCart: localCartReducer,
-            [UserCartApi.reducerPath]: UserCartApi.reducer,
-            [UserSessionApi.reducerPath]: UserSessionApi.reducer
+            [userCartApi.reducerPath]: userCartApi.reducer,
+            [userSessionApi.reducerPath]: userSessionApi.reducer,
+            [userWishlistApi.reducerPath]: userWishlistApi.reducer
         },
         middleware: (getDefaultMiddleware) =>
-            getDefaultMiddleware().concat(UserCartApi.middleware, UserSessionApi.middleware)
+            getDefaultMiddleware().concat(userCartApi.middleware, userSessionApi.middleware, userWishlistApi.middleware)
     })
 }
 

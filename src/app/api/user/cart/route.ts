@@ -35,10 +35,6 @@ export async function GET() {
             }
         })
 
-        cart.items.map(item => {
-            console.log('Cart Item:', `${item.product.title} - Quantity: ${item.quantity}`)
-        })
-
         return NextResponse.json(cart, { status: 200 })
     } catch {
         return NextResponse.json({ errorMessage: 'Failed to fetch user cart' }, { status: 500 })
