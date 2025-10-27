@@ -27,6 +27,7 @@ export async function GET() {
                         price: true,
                         discountPercentage: true,
                         rating: true,
+                        stock: true,
                         brand: {
                             select: {
                                 name: true

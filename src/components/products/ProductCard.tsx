@@ -43,7 +43,13 @@ const ProductCard = async ({ product }: { product: CardProduct }) => {
                 </div>
                 <h3 className="text-lg text-card-foreground font-semibold mt-2 mb-1">{product.title}</h3>
                 {product.brand && <p className="text-muted-foreground">by <span>{product.brand.name}</span></p>}
-                <div className="flex-1 flex items-end flex-wrap gap-3 mt-2 mb-4">
+
+                <div className="flex gap-2 items-center my-3">
+                    <RatingStars rating={product.rating} />
+                    <span className="text-muted-foreground">{productRating}</span>
+                </div>
+
+                <div className="flex-1 flex items-end flex-wrap gap-3">
                     <p className="text-lg font-semibold text-card-foreground">${finalPrice}</p>
                     {hasDiscount && (
                         <>
@@ -51,10 +57,6 @@ const ProductCard = async ({ product }: { product: CardProduct }) => {
                         <p className="bg-success/10 text-success text-sm p-1 rounded-lg">-{product.discountPercentage}%</p>
                         </>
                     )}
-                </div>
-                <div className="flex gap-2 items-center">
-                    <RatingStars rating={product.rating} />
-                    <span className="text-muted-foreground">{productRating}</span>
                 </div>
             </Link>
         </div>

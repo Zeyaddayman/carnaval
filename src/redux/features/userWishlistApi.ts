@@ -1,4 +1,5 @@
-import { CardProduct, WishlistItem } from "@/types/products";
+import { CardProduct } from "@/types/products";
+import { WishlistItem } from "@/types/wishlist";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface UserWishlistResponse {
