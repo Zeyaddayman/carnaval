@@ -1,3 +1,5 @@
+"use client"
+
 import { WishlistItem } from "@/types/wishlist"
 import Image from "next/image"
 import Link from "next/link"
@@ -6,13 +8,17 @@ import { Button } from "../ui/Button"
 import { BsCartPlusFill } from "react-icons/bs"
 import { FiTrash2 } from "react-icons/fi"
 import { formatPrice, formatRating } from "@/lib/formatters"
+import { useState } from "react"
 
 interface Props {
     product: WishlistItem["product"]
     removeItem: (productId: string) => void
+    addItemToCart: (product: WishlistItem["product"]) => void
 }
 
-const WishlistItemCard = ({ product, removeItem }: Props) => {
+const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {
+
+    const [isAddedToCart, setIsAddedToCart] = useState(false)
 
     const hasDiscount = product.discountPercentage && product.discountPercentage > 0
 
@@ -26,11 +32,20 @@ const WishlistItemCard = ({ product, removeItem }: Props) => {
 
     const inStock = product.stock > 0
 
+    const handleAddItemToCart = () => {
+        setIsAddedToCart(true)
+        addItemToCart(product)
+    }
+
+    const handleRemoveItem = () => {
+        removeItem(product.id)
+    }
+
     return (
         <div className="relative flex flex-col gap-3 p-3 bg-card border border-border rounded-lg">
             <Link
                 href={`/product/${product.id}`}
-                className="w-60 flex flex-col"
+                className="w-60 flex flex-col flex-1"
             >
                 {inStock ? (
                     <span className="absolute top-2 right-2 z-10 bg-success text-success-foreground text-sm p-2 rounded-full">In stock</span>
@@ -54,7 +69,7 @@ const WishlistItemCard = ({ product, removeItem }: Props) => {
                     <RatingStars rating={product.rating} />
                     <span className="text-muted-foreground">{productRating}</span>
                 </div>
-                <div className="flex items-center flex-wrap gap-3">
+                <div className="flex items-center flex-wrap gap-3 mt-auto">
                     <p className="text-lg font-semibold text-card-foreground">${finalPrice}</p>
                     {hasDiscount && (
                         <>
@@ -64,15 +79,26 @@ const WishlistItemCard = ({ product, removeItem }: Props) => {
                     )}
                 </div>
             </Link>
-            <div className="flex flex-col gap-2 mt-auto">
-                <Button
-                    variant={"primary"}
-                >
-                    <BsCartPlusFill /> Add to Cart
-                </Button>
+            <div className="flex flex-col gap-2">
+                {inStock ? (
+                    <Button
+                        variant={"primary"}
+                        className={`${isAddedToCart ? "!bg-success !text-success-foreground": ""}`}
+                        onClick={handleAddItemToCart}
+                    >
+                        {isAddedToCart ? (
+                            <>Added to cart</>
+                        ): (
+                            <><BsCartPlusFill /> Add to cart</>
+                        )}
+                    </Button>
+                ): (
+                    // placeholder to maintain button height alignment
+                    <div className="h-9"></div>
+                )}
                 <Button
                     variant={"destructiveOutline"}
-                    onClick={() => removeItem(product.id)}
+                    onClick={handleRemoveItem}
                 >
                     <FiTrash2 /> Remove
                 </Button>

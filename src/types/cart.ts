@@ -3,9 +3,19 @@ import { Prisma } from "@/generated/prisma";
 export type CartItemWithProduct = Prisma.CartItemGetPayload<{
     include: {
         product: {
-            include: {
-                categories: true
-                brand: true
+            select: {
+                id: true,
+                title: true,
+                thumbnail: true,
+                price: true,
+                discountPercentage: true,
+                rating: true,
+                stock: true,
+                brand: {
+                    select: {
+                        name: true
+                    }
+                }
             }
         }
     }
@@ -16,9 +26,19 @@ export type CartWithItems = Prisma.CartGetPayload<{
         items: {
             include: {
                 product: {
-                    include: {
-                        categories: true,
-                        brand: true
+                    select: {
+                        id: true,
+                        title: true,
+                        thumbnail: true,
+                        price: true,
+                        discountPercentage: true,
+                        rating: true,
+                        stock: true,
+                        brand: {
+                            select: {
+                                name: true
+                            }
+                        }
                     }
                 }
             }

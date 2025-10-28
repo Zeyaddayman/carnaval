@@ -25,9 +25,19 @@ export async function GET() {
                     },
                     include: {
                         product: {
-                            include: {
-                                categories: true,
-                                brand: true
+                            select: {
+                                id: true,
+                                title: true,
+                                thumbnail: true,
+                                price: true,
+                                discountPercentage: true,
+                                rating: true,
+                                stock: true,
+                                brand: {
+                                    select: {
+                                        name: true
+                                    }
+                                }
                             }
                         }
                     }

@@ -1,5 +1,4 @@
-import { CartWithItems } from "@/types/cart";
-import { ProductWithRelations } from "@/types/products";
+import { CartItemWithProduct, CartWithItems } from "@/types/cart";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface AddItemResponse {
@@ -25,7 +24,7 @@ export const userCartApi = createApi({
             providesTags: ['user-cart']
         }),
 
-        addItemToUserCart: builder.mutation<AddItemResponse, { product: ProductWithRelations, quantity: number, userId: string } >({
+        addItemToUserCart: builder.mutation<AddItemResponse, { product: CartItemWithProduct["product"], quantity: number, userId: string } >({
             query: ({ product, quantity }) => ({
                 url: "user/cart",
                 method: 'POST',
