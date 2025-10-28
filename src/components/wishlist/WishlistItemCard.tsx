@@ -9,9 +9,10 @@ import { formatPrice, formatRating } from "@/lib/formatters"
 
 interface Props {
     product: WishlistItem["product"]
+    removeItem: (productId: string) => void
 }
 
-const WishlistItemCard = ({ product }: Props) => {
+const WishlistItemCard = ({ product, removeItem }: Props) => {
 
     const hasDiscount = product.discountPercentage && product.discountPercentage > 0
 
@@ -26,12 +27,11 @@ const WishlistItemCard = ({ product }: Props) => {
     const inStock = product.stock > 0
 
     return (
-        <div className="relative bg-card border border-border rounded-lg">
+        <div className="relative flex flex-col gap-3 p-3 bg-card border border-border rounded-lg">
             <Link
                 href={`/product/${product.id}`}
-                className="p-3 w-60 h-full flex flex-col"
+                className="w-60 flex flex-col"
             >
-                <span className="absolute top-2 right-2 z-10 bg-success text-success-foreground text-sm p-2 rounded-full">In stock</span>
                 {inStock ? (
                     <span className="absolute top-2 right-2 z-10 bg-success text-success-foreground text-sm p-2 rounded-full">In stock</span>
                 ) : (
@@ -54,7 +54,7 @@ const WishlistItemCard = ({ product }: Props) => {
                     <RatingStars rating={product.rating} />
                     <span className="text-muted-foreground">{productRating}</span>
                 </div>
-                <div className="flex items-center flex-wrap gap-3 mb-3">
+                <div className="flex items-center flex-wrap gap-3">
                     <p className="text-lg font-semibold text-card-foreground">${finalPrice}</p>
                     {hasDiscount && (
                         <>
@@ -63,20 +63,20 @@ const WishlistItemCard = ({ product }: Props) => {
                         </>
                     )}
                 </div>
-                <div className="mt-auto flex flex-col gap-2">
-                    <Button
-                        variant={"primary"}
-                    >
-                        <BsCartPlusFill /> Add to Cart
-                    </Button>
-                    <Button
-                        variant={"destructiveOutline"}
-                    >
-                        <FiTrash2 /> Remove
-                    </Button>
-
-                </div>
             </Link>
+            <div className="flex flex-col gap-2 mt-auto">
+                <Button
+                    variant={"primary"}
+                >
+                    <BsCartPlusFill /> Add to Cart
+                </Button>
+                <Button
+                    variant={"destructiveOutline"}
+                    onClick={() => removeItem(product.id)}
+                >
+                    <FiTrash2 /> Remove
+                </Button>
+            </div>
         </div>
     )
 }
