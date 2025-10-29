@@ -4,7 +4,7 @@ import ProductUserCart from "@/components/product/cart/UserCart"
 import OutOfStock from "@/components/product/OutOfStock"
 import ProductImagesPreview from "@/components/product/ProductImagesPreview"
 import ProductInfo from "@/components/product/ProductInfo"
-import AddToWishlist from "@/components/ui/AddToWishlist"
+import AddToWishlist from "@/components/ui/ToggleWishlistItem"
 import { isAuthenticated } from "@/server/db/auth"
 import { getProduct } from "@/server/db/product"
 

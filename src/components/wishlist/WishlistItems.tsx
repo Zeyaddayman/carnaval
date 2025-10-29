@@ -44,6 +44,7 @@ const WishlistItems = ({ userId }: Props) => {
         }
     }, [isAddingItemToCartFailed])
 
+
     if (isLoading) return null
 
     if (!wishlist || wishlist.items.length === 0) return null
@@ -65,7 +66,12 @@ const WishlistItems = ({ userId }: Props) => {
         <p className="text-muted-foreground mb-3">{wishlist.items.length} items saved</p>
         <div className="flex flex-wrap justify-center gap-5">
             {wishlist.items.map(item => (
-                <WishlistItemCard key={item.id} product={item.product} removeItem={removeItem} addItemToCart={addItemToCart} />
+                <WishlistItemCard
+                    key={item.id}
+                    product={item.product}
+                    removeItem={removeItem}
+                    addItemToCart={addItemToCart}
+                />
             ))}
         </div>
         </>

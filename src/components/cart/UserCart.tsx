@@ -41,6 +41,10 @@ const UserCart = ({ userId }: Props) => {
     }, [isAddingItemToWishlistFailed])
 
 
+    if (isLoading) return null
+
+    if (!cart || cart.items.length === 0) return null
+
     const removeItem = (productId: string) => {
         removeItemFromUserCart({
             productId,
@@ -59,11 +63,6 @@ const UserCart = ({ userId }: Props) => {
             userId
         })
     }
-
-
-    if (isLoading) return null
-
-    if (!cart || cart.items.length === 0) return null
 
     return (
         <div className="flex flex-col lg:flex-row gap-5">

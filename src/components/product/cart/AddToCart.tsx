@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/Button';
 
 interface Props {
     limit: number
-    addItemToCart: (quantity: number) => void
+    addItem: (quantity: number) => void
 }
 
-const AddToCart = ({ limit, addItemToCart }: Props) => {
+const AddToCart = ({ limit, addItem }: Props) => {
 
     const [quantity, setQuantity] = useState(1)
 
@@ -23,6 +23,10 @@ const AddToCart = ({ limit, addItemToCart }: Props) => {
         if (quantity < limit) {
             setQuantity(prev => prev + 1)
         }
+    }
+
+    const handleAddItem = () => {
+        addItem(quantity)
     }
 
     return (
@@ -52,7 +56,7 @@ const AddToCart = ({ limit, addItemToCart }: Props) => {
             <Button
                 className="flex-1"
                 size={"lg"}
-                onClick={() => addItemToCart(quantity)}
+                onClick={handleAddItem}
             >
                 <BsCartPlusFill size={20} /> Add to Cart
             </Button>

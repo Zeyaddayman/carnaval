@@ -29,7 +29,7 @@ const LocalCart = () => {
     return (
         <div className="flex flex-col lg:flex-row gap-5">
             <div className="flex-1 space-y-3">
-                {localCart.items.map(item => (
+                {localCart.items.toReversed().map(item => (
                     <LocalCartItem
                         key={item.id}
                         item={item}

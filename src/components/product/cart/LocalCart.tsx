@@ -31,7 +31,7 @@ const ProductLocalCart = ({ product, initialLimit }: Props) => {
 
     const existingProduct = localCart.items.find(item => item.productId === product.id)
 
-    const addItemToCart = (quantity: number) => {
+    const addItem = (quantity: number) => {
 
         // to stringify non-serializable data types like Date
         const serializableProduct = JSON.parse(JSON.stringify(product))
@@ -72,7 +72,7 @@ const ProductLocalCart = ({ product, initialLimit }: Props) => {
             })
     }
 
-    const removeItemFromCart = () => {
+    const removeItem = () => {
         dispatch(removeItemFromLocalCart(product.id))
     }
 
@@ -86,14 +86,14 @@ const ProductLocalCart = ({ product, initialLimit }: Props) => {
                 <UpdateCartItem
                     limit={limit}
                     initialQuantity={existingProduct.quantity}
-                    addItemToCart={addItemToCart}
-                    removeItemFromCart={removeItemFromCart}
+                    updateItem={addItem}
+                    removeItem={removeItem}
                 />
             </div>
         ): (
             <AddToCart
                 limit={limit}
-                addItemToCart={addItemToCart}
+                addItem={addItem}
             />
         )}
         </>

@@ -69,7 +69,7 @@ const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
 
     const existingProduct = cart?.items.find(item => item.productId === product.id)
 
-    const addItemToCart = (quantity: number) => {
+    const addItem = (quantity: number) => {
         addItemToUserCart({
             product,
             quantity,
@@ -77,7 +77,7 @@ const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
         })
     }
 
-    const removeItemFromCart = () => {
+    const removeItem = () => {
         removeItemFromUserCart({
             productId: product.id,
             userId
@@ -94,14 +94,14 @@ const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
                 <UpdateCartItem
                     limit={limit}
                     initialQuantity={existingProduct.quantity}
-                    addItemToCart={addItemToCart}
-                    removeItemFromCart={removeItemFromCart}
+                    updateItem={addItem}
+                    removeItem={removeItem}
                 />
             </div>
         ): (
             <AddToCart
                 limit={limit}
-                addItemToCart={addItemToCart}
+                addItem={addItem}
             />
         )}
         </>

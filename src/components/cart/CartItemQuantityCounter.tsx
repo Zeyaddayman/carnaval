@@ -27,6 +27,10 @@ const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity }: Pro
         }
     }
 
+    const handleUpdateQuantity = () => {
+        updateQuantity(quantity)
+    }
+
     return (
         <div className='flex gap-2'>
             <Button
@@ -51,7 +55,7 @@ const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity }: Pro
             {quantity !== initialQuantity ? (
                 <Button
                     variant={"secondary"}
-                    onClick={() => updateQuantity(quantity)}
+                    onClick={handleUpdateQuantity}
                 >
                     Update
                 </Button>

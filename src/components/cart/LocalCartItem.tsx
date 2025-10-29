@@ -64,6 +64,10 @@ const LocalCartItem = ({ item, removeItem }: Props) => {
             })
     }
 
+    const handleRemoveItem = () => {
+        removeItem(item.productId)
+    }
+
     const handleMoveToWishlist = () => {
         toast(
             <div className="space-y-2">
@@ -97,7 +101,7 @@ const LocalCartItem = ({ item, removeItem }: Props) => {
                     />
                     <Button
                         variant={"destructiveOutline"}
-                        onClick={() => removeItem(item.productId)}
+                        onClick={handleRemoveItem}
                     >
                         <FiTrash2 /> Remove
                     </Button>

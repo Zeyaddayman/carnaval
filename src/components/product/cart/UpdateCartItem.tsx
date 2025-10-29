@@ -5,11 +5,11 @@ import { FiTrash2 } from "react-icons/fi"
 interface Props {
     limit: number
     initialQuantity: number
-    addItemToCart: (quantity: number) => void
-    removeItemFromCart: () => void
+    updateItem: (quantity: number) => void
+    removeItem: () => void
 }
 
-const UpdateCartItem = ({ limit, initialQuantity, addItemToCart, removeItemFromCart }: Props) => {
+const UpdateCartItem = ({ limit, initialQuantity, updateItem, removeItem }: Props) => {
 
     const [quantity, setQuantity] = useState(initialQuantity)
 
@@ -29,6 +29,14 @@ const UpdateCartItem = ({ limit, initialQuantity, addItemToCart, removeItemFromC
         }
     }
 
+    const handleUpdateItem = () => {
+        updateItem(quantity)
+    }
+
+    const handleRemoveItem = () => {
+        removeItem()
+    }
+
     return (
         <div className="flex gap-2 h-10 rounded-md">
             <p className='text-muted-foreground self-center'>Quantity</p>
@@ -43,7 +51,7 @@ const UpdateCartItem = ({ limit, initialQuantity, addItemToCart, removeItemFromC
             ): (
                 <Button
                     variant={"destructiveOutline"}
-                    onClick={removeItemFromCart}
+                    onClick={handleRemoveItem}
                     disabled={quantity > 1}
                 >
                     <FiTrash2 />
@@ -64,7 +72,7 @@ const UpdateCartItem = ({ limit, initialQuantity, addItemToCart, removeItemFromC
             <Button
                 variant={"primary"}
                 size={"lg"}
-                onClick={() => addItemToCart(quantity)}
+                onClick={handleUpdateItem}
             >
                 Save
             </Button>

@@ -81,18 +81,19 @@ const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {
             </Link>
             <div className="flex flex-col gap-2">
                 {inStock ? (
-                    <Button
-                        variant={"primary"}
-                        className={`${isAddedToCart ? "!bg-success !text-success-foreground": ""}`}
-                        onClick={handleAddItemToCart}
-                    >
-                        {isAddedToCart ? (
-                            <>Added to cart</>
-                        ): (
-                            <><BsCartPlusFill /> Add to cart</>
-                        )}
-                    </Button>
-                ): (
+                    isAddedToCart ? (
+                        <div className="bg-success text-success-foreground h-9 px-4 py-2 text-sm flex justify-center items-center rounded-md">
+                            Added to cart
+                        </div>
+                    ) : (
+                        <Button
+                            variant={"primary"}
+                            onClick={handleAddItemToCart}
+                        >
+                            <BsCartPlusFill /> Add to cart
+                        </Button>
+                    )
+                ) : (
                     // placeholder to maintain button height alignment
                     <div className="h-9"></div>
                 )}

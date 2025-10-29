@@ -2,7 +2,7 @@ import { CardProduct } from "@/types/products"
 import Image from "next/image"
 import Link from "next/link"
 import RatingStars from "../ui/RatingStars"
-import AddToWishlist from "../ui/AddToWishlist"
+import AddToWishlist from "../ui/ToggleWishlistItem"
 import { formatPrice, formatRating } from "@/lib/formatters"
 import { isAuthenticated } from "@/server/db/auth"
 

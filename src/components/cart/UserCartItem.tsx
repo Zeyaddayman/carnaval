@@ -39,8 +39,6 @@ const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist }: Props) =
 
         if (isItemQuantityUpdated && updateItemResponse.modifiedQuantity) {
             toast.success(`Only ${updateItemResponse.modifiedQuantity} items are available`)
-        } else if (isItemQuantityUpdated) {
-            toast.success(updateItemResponse.message)
         }
 
     }, [isItemQuantityUpdated])
@@ -61,6 +59,10 @@ const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist }: Props) =
             quantity,
             userId
         })
+    }
+
+    const handleRemoveItem = () => {
+        removeItem(item.productId)
     }
 
     const handleMoveToWishlist = () => {
@@ -86,7 +88,7 @@ const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist }: Props) =
                     />
                     <Button
                         variant={"destructiveOutline"}
-                        onClick={() => removeItem(item.productId)}
+                        onClick={handleRemoveItem}
                     >
                         <FiTrash2 /> Remove
                     </Button>

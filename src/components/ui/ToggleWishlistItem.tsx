@@ -16,12 +16,12 @@ interface Props {
     product: WishlistItem["product"]
 }
 
-const AddToWishlist = ({ session, product }: Props) => {
+const ToggleWishlistItem = ({ session, product }: Props) => {
     const pathname = usePathname()
 
     if (session) return <LoggedIn userId={session.userId} product={product} />
 
-    const handleAddToWishlist = () => {
+    const handleToggle = () => {
         toast(
             <div className="space-y-2">
                 <p>You must be logged in</p>
@@ -36,7 +36,7 @@ const AddToWishlist = ({ session, product }: Props) => {
     }
 
     return (
-        <span onClick={handleAddToWishlist} className="group w-12 h-12 bg-white element-center rounded-full cursor-pointer">
+        <span onClick={handleToggle} className="group w-12 h-12 bg-white element-center rounded-full cursor-pointer">
             <FaHeart fill="transparent" strokeWidth={40} size={20} className="group-hover:fill-red-500 group-hover:stroke-red-500 transition-colors" />
         </span>
     )
@@ -73,7 +73,7 @@ const LoggedIn = ({ product, userId }: { userId: string, product: CardProduct })
 
     }, [isRemovingItemFailed])
 
-    const handleAddToWishlist = () => {
+    const handleToggle = () => {
         if (productInWishlist) {
             removeItemFromUserWishlist({
                 productId: product.id,
@@ -88,11 +88,11 @@ const LoggedIn = ({ product, userId }: { userId: string, product: CardProduct })
     }
 
     return (
-        <span onClick={handleAddToWishlist} className="group w-12 h-12 bg-white element-center rounded-full cursor-pointer">
+        <span onClick={handleToggle} className="group w-12 h-12 bg-white element-center rounded-full cursor-pointer">
             <FaHeart fill="transparent" strokeWidth={40} size={20} className={`${productInWishlist ? "fill-red-500 stroke-red-500" : ""} group-hover:fill-red-500 group-hover:stroke-red-500 transition-colors`} />
         </span>
     )
 
 }
 
-export default AddToWishlist
+export default ToggleWishlistItem
