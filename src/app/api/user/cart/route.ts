@@ -7,7 +7,7 @@ export async function GET() {
     const session = await isAuthenticated()
 
     if (!session) {
-        return NextResponse.json({ errorMessage: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
     const { userId } = session
@@ -33,6 +33,7 @@ export async function GET() {
                                 discountPercentage: true,
                                 rating: true,
                                 stock: true,
+                                limit: true,
                                 brand: {
                                     select: {
                                         name: true
@@ -47,7 +48,7 @@ export async function GET() {
 
         return NextResponse.json(cart, { status: 200 })
     } catch {
-        return NextResponse.json({ errorMessage: 'Failed to fetch user cart' }, { status: 500 })
+        return NextResponse.json({ message: 'Failed to fetch user cart' }, { status: 500 })
     }
 }
 
@@ -56,7 +57,7 @@ export async function POST(req: NextRequest) {
     const session = await isAuthenticated()
 
     if (!session) {
-        return NextResponse.json({ errorMessage: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
     const { userId } = session
@@ -71,10 +72,14 @@ export async function POST(req: NextRequest) {
         })
 
         if (!product) {
-            return NextResponse.json({ errorMessage: 'Failed to add item to cart' }, { status: 500 })
+            return NextResponse.json({ message: 'Failed to add item to cart' }, { status: 500 })
         }
 
-        let limit: number = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
+        if (product.stock <= 0) {
+            return NextResponse.json({ message: 'Product is out of stock' }, { status: 400 })
+        }
+
+        const limit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
 
         // check if the requested quantity available or not
         const modifiedQuantity = quantity > limit ? limit : quantity
@@ -104,15 +109,16 @@ export async function POST(req: NextRequest) {
             }
         })
 
-        // check if we modified the quantity
-        if (modifiedQuantity !== quantity) {
-            return NextResponse.json({ modified: `Only ${modifiedQuantity} items are available`, limit: modifiedQuantity }, { status: 200 })
-        } else {
-            return NextResponse.json({ message: 'Item added to cart' }, { status: 200 })
-        }
+        return NextResponse.json({
+                message: 'Item added to cart',
+                limit,
+                modifiedQuantity: modifiedQuantity !== quantity ? modifiedQuantity : undefined
+            },
+            { status: 200 }
+        )
 
     } catch {
-        return NextResponse.json({ errorMessage: 'Failed to add item to cart' }, { status: 500 })
+        return NextResponse.json({ message: 'Failed to add item to cart' }, { status: 500 })
     }
 }
 
@@ -121,7 +127,7 @@ export async function DELETE(req: NextRequest) {
     const session = await isAuthenticated()
 
     if (!session) {
-        return NextResponse.json({ errorMessage: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
     const { userId } = session
@@ -149,6 +155,6 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json({ message: 'Cart item deleted' }, { status: 200 })
 
     } catch {
-        return NextResponse.json({ errorMessage: 'Failed to delete cart item' }, { status: 500 })
+        return NextResponse.json({ message: 'Failed to delete cart item' }, { status: 500 })
     }
 }

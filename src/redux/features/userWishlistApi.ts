@@ -1,9 +1,14 @@
-import { CardProduct } from "@/types/products";
 import { WishlistItem } from "@/types/wishlist";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-export interface UserWishlistResponse {
+interface Response {
     message: string
+    status: number
+}
+
+export interface WishlistErrorResponse {
+    message: string
+    status: number
 }
 
 export const userWishlistApi = createApi({
@@ -18,16 +23,17 @@ export const userWishlistApi = createApi({
             providesTags: ['user-wishlist']
         }),
 
-        addItemToUserWishlist: builder.mutation<Response, { product: CardProduct, userId: string } >({
+        addItemToUserWishlist: builder.mutation<Response, { product: WishlistItem["product"], userId: string } >({
             query: ({ product }) => ({
                 url: "user/wishlist",
                 method: 'POST',
                 body: { productId: product.id }
             }),
 
-            transformErrorResponse: (error: any): UserWishlistResponse => {
+            transformErrorResponse: (error: any): WishlistErrorResponse => {
                 return {
-                    message: error.data ? error.data.message : 'Something went wrong'
+                    message: error.data ? error.data.message : 'Something went wrong',
+                    status: error.data ? error.data.status : 500
                 }
             },
 
@@ -48,6 +54,7 @@ export const userWishlistApi = createApi({
                                 createdAt: new Date()
                             }
 
+                            // to stringfy non-serializable fields like Date
                             const serializableTempItem = JSON.parse(JSON.stringify(tempItem))
 
                             draft.items.push(serializableTempItem)
@@ -72,9 +79,10 @@ export const userWishlistApi = createApi({
                 body: { productId }
             }),
 
-            transformErrorResponse: (error: any): UserWishlistResponse => {
+            transformErrorResponse: (error: any): WishlistErrorResponse => {
                 return {
-                    message: error.data ? error.data.message : 'Something went wrong'
+                    message: error.data ? error.data.message : 'Something went wrong',
+                    status: error.data ? error.data.status : 500
                 }
             },
 

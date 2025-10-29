@@ -1,6 +1,6 @@
 "use client"
 
-import { ApiErrorResponse, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
+import { CartErrorResponse, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
 import { CartItemWithProduct } from "@/types/cart"
 import Image from "next/image"
 import { useEffect, useState } from "react"
@@ -9,14 +9,13 @@ import CartItemInfo from "./CartItemInfo"
 import CartItemQuantityCounter from "./CartItemQuantityCounter"
 import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
-import { ProductWithRelations } from "@/types/products"
 
 
 interface Props {
     item: CartItemWithProduct
     userId: string
     removeItem: (productId: string) => void
-    moveItemToWishlist: (product: ProductWithRelations) => void
+    moveItemToWishlist: (product: CartItemWithProduct["product"]) => void
 }
 
 const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist }: Props) => {
@@ -33,23 +32,26 @@ const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist }: Props) =
 
     useEffect(() => {
 
-        // check if the product stock or limit changed in the database so we make this page up to date
-        if (isItemQuantityUpdated && updateItemResponse.modified) {
-            toast.success(updateItemResponse.modified)
-            if (updateItemResponse.limit) {
-                setLimit(Number(updateItemResponse.limit))
-            }
+        // make sure to update the limit when the server responds with a new limit
+        if (isItemQuantityUpdated && updateItemResponse.limit) {
+            setLimit(Number(updateItemResponse.limit))
+        }
+
+        if (isItemQuantityUpdated && updateItemResponse.modifiedQuantity) {
+            toast.success(`Only ${updateItemResponse.modifiedQuantity} items are available`)
+        } else if (isItemQuantityUpdated) {
+            toast.success(updateItemResponse.message)
         }
 
     }, [isItemQuantityUpdated])
-    
+
     useEffect(() => {
 
-        const typedUpdateItemError = updateItemError as ApiErrorResponse
+        const typedUpdateItemError = updateItemError as CartErrorResponse
 
-        if (isUpdatingItemFailed && typedUpdateItemError.errorMessage) {
+        if (isUpdatingItemFailed && typedUpdateItemError.message) {
 
-            toast.error(typedUpdateItemError.errorMessage)
+            toast.error(typedUpdateItemError.message)
         }
     }, [isUpdatingItemFailed])
 

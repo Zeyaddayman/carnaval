@@ -11,6 +11,7 @@ export type WishlistItem = Prisma.WishlistGetPayload<{
                 discountPercentage: true,
                 rating: true,
                 stock: true,
+                limit: true,
                 brand: {
                     select: {
                         name: true

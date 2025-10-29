@@ -1,6 +1,6 @@
 "use client"
 
-import { addItemToLocalCart, removeItemFromLocalCart, selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
+import { addItemToLocalCart, removeItemFromLocalCart, selectLocalCart } from "@/redux/features/localCartSlice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { ProductWithRelations } from "@/types/products"
 import AddToCart from "./AddToCart"

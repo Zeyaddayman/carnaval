@@ -15,7 +15,7 @@ const WishlistItemsCount = () => {
 const UserWishlistItemsCount = ({ userId }: { userId: string }) => {
 
     const { data: wishlist, isLoading } = useGetUserWishlistQuery(userId)
-    
+
     if (isLoading || wishlist?.items.length === 0) return null
 
     return (

@@ -2,14 +2,19 @@ import { CartItemWithProduct, CartWithItems } from "@/types/cart";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface AddItemResponse {
-    message?: string,
-    modified?: string,
-    limit?: number,
+    message: string
+    limit: number
+    modifiedQuantity?: number
 }
 
-export interface ApiErrorResponse {
+interface RemoveItemResponse {
+    message: string
     status: number
-    errorMessage?: string
+}
+
+export interface CartErrorResponse {
+    status: number
+    message: string
 }
 
 export const userCartApi = createApi({
@@ -31,16 +36,16 @@ export const userCartApi = createApi({
                 body: { productId: product.id, quantity }
             }),
 
-            transformErrorResponse: (error: any): ApiErrorResponse => {
+            transformErrorResponse: (error: any): CartErrorResponse => {
                 if (error.data) {
                     return {
                         status: error.status,
-                        errorMessage: error.data.errorMessage
+                        message: error.data.errorMessage
                     }
                 } else {
                     return {
                         status: 500,
-                        errorMessage: 'Something went wrong'
+                        message: 'Something went wrong'
                     }
                 }
             },
@@ -83,23 +88,23 @@ export const userCartApi = createApi({
 
         }),
 
-        removeItemFromUserCart: builder.mutation<CartWithItems, { productId: string, userId: string } >({
+        removeItemFromUserCart: builder.mutation<RemoveItemResponse, { productId: string, userId: string } >({
             query: ({ productId }) => ({
                 url: "user/cart",
                 method: 'DELETE',
                 body: { productId }
             }),
 
-            transformErrorResponse: (error: any): ApiErrorResponse => {
+            transformErrorResponse: (error: any): CartErrorResponse => {
                 if (error.data) {
                     return {
                         status: error.status,
-                        errorMessage: error.data.errorMessage
+                        message: error.data.errorMessage
                     }
                 } else {
                     return {
                         status: 500,
-                        errorMessage: 'Something went wrong'
+                        message: 'Something went wrong'
                     }
                 }
             },

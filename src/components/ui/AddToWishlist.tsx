@@ -1,6 +1,6 @@
 "use client"
 
-import { useAddItemToUserWishlistMutation, useGetUserWishlistQuery, useRemoveItemFromUserWishlistMutation, UserWishlistResponse } from "@/redux/features/userWishlistApi"
+import { useAddItemToUserWishlistMutation, useGetUserWishlistQuery, useRemoveItemFromUserWishlistMutation, WishlistErrorResponse } from "@/redux/features/userWishlistApi"
 import { CardProduct } from "@/types/products"
 import { UserSession } from "@/types/user"
 import Link from "next/link"
@@ -9,10 +9,11 @@ import toast from "react-hot-toast"
 import { FaHeart } from "react-icons/fa"
 import { buttonVariants } from "./Button"
 import { usePathname } from "next/navigation"
+import { WishlistItem } from "@/types/wishlist"
 
 interface Props {
     session: UserSession | null,
-    product: CardProduct
+    product: WishlistItem["product"]
 }
 
 const AddToWishlist = ({ session, product }: Props) => {
@@ -53,7 +54,7 @@ const LoggedIn = ({ product, userId }: { userId: string, product: CardProduct })
 
     useEffect(() => {
 
-        const typedAddItemError = addItemError as UserWishlistResponse
+        const typedAddItemError = addItemError as WishlistErrorResponse
 
         if (isAddingItemFailed && typedAddItemError.message) {
             toast.error(typedAddItemError.message)
@@ -64,7 +65,7 @@ const LoggedIn = ({ product, userId }: { userId: string, product: CardProduct })
 
     useEffect(() => {
 
-        const typedRemoveItemError = removeItemError as UserWishlistResponse
+        const typedRemoveItemError = removeItemError as WishlistErrorResponse
 
         if (isRemovingItemFailed && typedRemoveItemError.message) {
             toast.error(typedRemoveItemError.message)
@@ -80,7 +81,7 @@ const LoggedIn = ({ product, userId }: { userId: string, product: CardProduct })
             })
         } else {
             addItemToUserWishlist({
-                product: product,
+                product,
                 userId
             })
         }

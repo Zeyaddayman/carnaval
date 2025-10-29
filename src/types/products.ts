@@ -17,6 +17,7 @@ export type CardProduct = Prisma.ProductGetPayload<{
         discountPercentage: true,
         rating: true,
         stock: true,
+        limit: true,
         brand: {
             select: {
                 name: true

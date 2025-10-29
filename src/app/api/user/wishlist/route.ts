@@ -28,6 +28,7 @@ export async function GET() {
                         discountPercentage: true,
                         rating: true,
                         stock: true,
+                        limit: true,
                         brand: {
                             select: {
                                 name: true

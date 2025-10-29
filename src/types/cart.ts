@@ -11,6 +11,7 @@ export type CartItemWithProduct = Prisma.CartItemGetPayload<{
                 discountPercentage: true,
                 rating: true,
                 stock: true,
+                limit: true,
                 brand: {
                     select: {
                         name: true
@@ -34,6 +35,7 @@ export type CartWithItems = Prisma.CartGetPayload<{
                         discountPercentage: true,
                         rating: true,
                         stock: true,
+                        limit: true,
                         brand: {
                             select: {
                                 name: true

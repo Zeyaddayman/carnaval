@@ -62,6 +62,8 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
                     price: true,
                     discountPercentage: true,
                     rating: true,
+                    stock: true,
+                    limit: true,
                     brand: {
                         select: {
                             name: true
@@ -151,6 +153,8 @@ export const getProductsByBrand = async (slug: Brand["slug"], sortBy: ProductsSo
                     price: true,
                     discountPercentage: true,
                     rating: true,
+                    stock: true,
+                    limit: true,
                     brand: {
                         select: {
                             name: true

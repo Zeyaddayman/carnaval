@@ -1,10 +1,10 @@
 "use client"
 
-import { useGetUserWishlistQuery, useRemoveItemFromUserWishlistMutation, UserWishlistResponse } from "@/redux/features/userWishlistApi"
+import { useGetUserWishlistQuery, useRemoveItemFromUserWishlistMutation, WishlistErrorResponse } from "@/redux/features/userWishlistApi"
 import WishlistItemCard from "./WishlistItemCard"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
-import { ApiErrorResponse, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
+import { CartErrorResponse, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
 import { WishlistItem } from "@/types/wishlist"
 
 interface Props {
@@ -26,7 +26,7 @@ const WishlistItems = ({ userId }: Props) => {
 
     useEffect(() => {
 
-        const typedRemoveItemError = removeItemError as UserWishlistResponse
+        const typedRemoveItemError = removeItemError as WishlistErrorResponse
 
         if (isRemovingItemFailed && typedRemoveItemError.message) {
             toast.error(typedRemoveItemError.message)
@@ -36,11 +36,11 @@ const WishlistItems = ({ userId }: Props) => {
 
     useEffect(() => {
 
-        const typedAddItemToCartError = addItemToCartError as ApiErrorResponse
+        const typedAddItemToCartError = addItemToCartError as CartErrorResponse
 
-        if (isAddingItemToCartFailed && typedAddItemToCartError.errorMessage) {
+        if (isAddingItemToCartFailed && typedAddItemToCartError.message) {
 
-            toast.error(typedAddItemToCartError.errorMessage)
+            toast.error(typedAddItemToCartError.message)
         }
     }, [isAddingItemToCartFailed])
 

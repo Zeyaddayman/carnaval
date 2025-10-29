@@ -1,6 +1,6 @@
 "use client"
 
-import { useAddItemToUserCartMutation, useGetUserCartQuery, useRemoveItemFromUserCartMutation, ApiErrorResponse } from "@/redux/features/userCartApi"
+import { CartErrorResponse, useAddItemToUserCartMutation, useGetUserCartQuery, useRemoveItemFromUserCartMutation } from "@/redux/features/userCartApi"
 import { ProductWithRelations } from "@/types/products"
 import { InYourCart } from "./InYourCart"
 import UpdateCartItem from "./UpdateCartItem"
@@ -32,32 +32,35 @@ const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
 
     useEffect(() => {
 
-        // check if the product stock or limit changed in the database so we make this page up to date
-        if (isItemAdded && addItemResponse.modified) {
-            toast.success(addItemResponse.modified)
-            if (addItemResponse.limit) {
-                setLimit(Number(addItemResponse.limit))
-            }
+        // make sure to update the limit when the server responds with a new limit
+        if (isItemAdded && addItemResponse.limit) {
+            setLimit(Number(addItemResponse.limit))
+        }
+
+        if (isItemAdded && addItemResponse.modifiedQuantity) {
+            toast.success(`Only ${addItemResponse.modifiedQuantity} items are available`)
+        } else if (isItemAdded) {
+            toast.success(addItemResponse.message)
         }
 
     }, [isItemAdded])
     
     useEffect(() => {
 
-        const typedAddItemError = addItemError as ApiErrorResponse
+        const typedAddItemError = addItemError as CartErrorResponse
 
-        if (isAddingItemFailed && typedAddItemError.errorMessage) {
+        if (isAddingItemFailed && typedAddItemError.message) {
 
-            toast.error(typedAddItemError.errorMessage)
+            toast.error(typedAddItemError.message)
         }
     }, [isAddingItemFailed])
 
     useEffect(() => {
 
-        const typedRemoveItemError = removeItemError as ApiErrorResponse
+        const typedRemoveItemError = removeItemError as CartErrorResponse
 
-        if (isRemovingItemFailed && typedRemoveItemError.errorMessage) {
-            toast.error(typedRemoveItemError.errorMessage)
+        if (isRemovingItemFailed && typedRemoveItemError.message) {
+            toast.error(typedRemoveItemError.message)
         }
     }, [isRemovingItemFailed])
 
