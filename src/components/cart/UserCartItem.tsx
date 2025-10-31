@@ -1,6 +1,6 @@
 "use client"
 
-import { CartErrorResponse, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
+import { CartErrorResponse, QuantityModifiedItem, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
 import { CartItemWithProduct } from "@/types/cart"
 import Image from "next/image"
 import { useEffect, useState } from "react"
@@ -16,9 +16,10 @@ interface Props {
     userId: string
     removeItem: (productId: string) => void
     moveItemToWishlist: (product: CartItemWithProduct["product"]) => void
+    quantityModified: QuantityModifiedItem | undefined
 }
 
-const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist }: Props) => {
+const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist, quantityModified }: Props) => {
 
     const [limit, setLimit] = useState((item.product.limit && item.product.limit <= item.product.stock) ? item.product.limit : item.product.stock)
 
@@ -80,7 +81,7 @@ const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist }: Props) =
             />
             <div className="flex-1">
                 <CartItemInfo product={item.product} quantity={item.quantity} />
-                <div className="flex gap-2 flex-wrap justify-between min-h-10 my-5">
+                <div className="flex gap-2 flex-wrap justify-between min-h-10 mt-5">
                     <CartItemQuantityCounter
                         initialQuantity={item.quantity}
                         limit={limit}
@@ -93,9 +94,15 @@ const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist }: Props) =
                         <FiTrash2 /> Remove
                     </Button>
                 </div>
+                {quantityModified && (
+                    <p className="mt-2 text-sm p-1 bg-warning/10 text-warning w-fit rounded-md">
+                        Quantity adjusted from {quantityModified.oldQuantity} → {quantityModified.newQuantity} due to stock limits
+                    </p>
+                )}
                 <Button
                     variant={"outline"}
                     onClick={handleMoveToWishlist}
+                    className="mt-5"
                 >
                     Move to Wishlist <FiHeart />
                 </Button>

@@ -10,7 +10,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     })
 
     if (!product) {
-        return NextResponse.json({ message: 'Failed to add item to cart' }, { status: 500 })
+        return NextResponse.json({ message: 'Product not found' }, { status: 404 })
     }
 
     const productLimit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock

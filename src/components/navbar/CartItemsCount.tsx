@@ -16,13 +16,15 @@ const CartItemsCount = () => {
 }
 
 const UserCartItemsCount = ({ userId }: { userId: string }) => {
-    const { data: cart, isLoading } = useGetUserCartQuery(userId)
+    const { data, isLoading } = useGetUserCartQuery(userId)
 
-    if (isLoading || cart?.items.length === 0) return null
+    if (isLoading) return null
+
+    if (!data || data.cart.items.length === 0) return null
 
     return (
         <span className="absolute w-6 h-6 element-center -top-2 -left-2 bg-primary text-primary-foreground text-xs font-semibold rounded-full">
-            {cart?.items.length}
+            {data.cart.items.length}
         </span>
     )
 }

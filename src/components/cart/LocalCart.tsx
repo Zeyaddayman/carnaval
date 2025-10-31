@@ -37,7 +37,7 @@ const LocalCart = () => {
                     />
                 ))}
             </div>
-            <CartOrderSummary cartItems={localCart.items} />
+            <CartOrderSummary cartItems={localCart.items} hasUnavailableItems={false} />
         </div>
     )
 }

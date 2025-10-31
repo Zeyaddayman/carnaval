@@ -16,7 +16,7 @@ interface Props {
 
 const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
 
-    const { data: cart, isLoading } = useGetUserCartQuery(userId)
+    const { data, isLoading } = useGetUserCartQuery(userId)
 
     const [limit, setLimit] = useState<number>(initialLimit)
 
@@ -67,7 +67,7 @@ const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
 
     if (isLoading) return null
 
-    const existingProduct = cart?.items.find(item => item.productId === product.id)
+    const existingProduct = data?.cart.items.find(item => item.productId === product.id)
 
     const addItem = (quantity: number) => {
         addItemToUserCart({

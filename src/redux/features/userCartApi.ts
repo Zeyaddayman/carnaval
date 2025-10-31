@@ -1,6 +1,13 @@
 import { CartItemWithProduct, CartWithItems } from "@/types/cart";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+export type QuantityModifiedItem = { oldQuantity: number, newQuantity: number }
+
+interface CartResponse {
+    cart: CartWithItems
+    quantityModifiedItems: { [id: string]: QuantityModifiedItem }
+}
+
 interface AddItemResponse {
     message: string
     limit: number
@@ -23,7 +30,7 @@ export const userCartApi = createApi({
     tagTypes: ['user-cart'],
 
     endpoints: (builder) => ({
-        getUserCart: builder.query<CartWithItems, string>({
+        getUserCart: builder.query<CartResponse, string>({
             query: () => "user/cart",
 
             providesTags: ['user-cart']
@@ -52,9 +59,9 @@ export const userCartApi = createApi({
 
             async onQueryStarted({ product, quantity, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    userCartApi.util.updateQueryData('getUserCart', userId, (draft: CartWithItems) => {
+                    userCartApi.util.updateQueryData('getUserCart', userId, (draft: CartResponse) => {
 
-                        const existingItem = draft.items.find(item => item.productId === product.id)
+                        const existingItem = draft.cart.items.find(item => item.productId === product.id)
 
                         if (existingItem) {
                             existingItem.quantity = quantity
@@ -73,7 +80,7 @@ export const userCartApi = createApi({
                             // to stringify non-serializable data types like Date
                             const serializableTempItem = JSON.parse(JSON.stringify(tempItem))
 
-                            draft.items.push(serializableTempItem)
+                            draft.cart.items.push(serializableTempItem)
                         }
                     })
                 )
@@ -111,8 +118,8 @@ export const userCartApi = createApi({
 
             async onQueryStarted({ productId, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    userCartApi.util.updateQueryData('getUserCart', userId, (draft: CartWithItems) => {
-                        draft.items = draft.items.filter(item => item.productId !== productId)
+                    userCartApi.util.updateQueryData('getUserCart', userId, (draft: CartResponse) => {
+                        draft.cart.items = draft.cart.items.filter(item => item.productId !== productId)
                     })
                 )
                 try {

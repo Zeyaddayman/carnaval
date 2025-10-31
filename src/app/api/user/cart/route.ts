@@ -46,7 +46,38 @@ export async function GET() {
             }
         })
 
-        return NextResponse.json(cart, { status: 200 })
+        const quantityModifiedItems: { [id: string]: { oldQuantity: number, newQuantity: number } } = {}
+
+        cart.items = await Promise.all(cart.items.map(async (item) => {
+
+            const limit = (item.product.limit && item.product.limit <= item.product.stock) ? item.product.limit : item.product.stock
+
+            if (item.quantity > limit && limit !== 0) {
+
+                const newQuantity = limit
+
+                quantityModifiedItems[item.id] = {
+                    oldQuantity: item.quantity,
+                    newQuantity
+                }
+
+                item.quantity = newQuantity
+
+                await db.cartItem.update({
+                    where: {
+                        cartId_productId: {
+                            cartId: item.cartId,
+                            productId: item.productId
+                        }
+                    },
+                    data: { quantity: newQuantity }
+                })
+            }
+
+            return item
+        }))
+
+        return NextResponse.json({ cart, quantityModifiedItems }, { status: 200 })
     } catch {
         return NextResponse.json({ message: 'Failed to fetch user cart' }, { status: 500 })
     }
