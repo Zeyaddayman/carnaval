@@ -6,19 +6,22 @@ import { useState } from "react"
 import toast from "react-hot-toast"
 import CartItemInfo from "./CartItemInfo"
 import CartItemQuantityCounter from "./CartItemQuantityCounter"
-import { Button, buttonVariants } from "../ui/Button"
+import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
 import { useAppDispatch } from "@/redux/hooks"
 import { addItemToLocalCart } from "@/redux/features/localCartSlice"
-import Link from "next/link"
+import { QuantityModifiedItem } from "@/redux/features/userCartApi"
 
 
 interface Props {
     item: CartItemWithProduct
     removeItem: (productId: string) => void
+    moveItemToWishlist: () => void
+    quantityModified: QuantityModifiedItem | undefined
+    triggerRefresh: () => void
 }
 
-const LocalCartItem = ({ item, removeItem }: Props) => {
+const LocalCartItem = ({ item, removeItem, moveItemToWishlist, quantityModified, triggerRefresh }: Props) => {
 
     const [limit, setLimit] = useState((item.product.limit && item.product.limit <= item.product.stock) ? item.product.limit : item.product.stock)
     const dispatch = useAppDispatch()
@@ -59,9 +62,9 @@ const LocalCartItem = ({ item, removeItem }: Props) => {
                             updatedAt: JSON.parse(JSON.stringify(new Date()))
                         }))
                     }
-
                 }
             })
+            .finally(() => triggerRefresh())
     }
 
     const handleRemoveItem = () => {
@@ -69,17 +72,7 @@ const LocalCartItem = ({ item, removeItem }: Props) => {
     }
 
     const handleMoveToWishlist = () => {
-        toast(
-            <div className="space-y-2">
-                <p>You must be logged in</p>
-                <Link
-                    href={`/auth/login?redirect=/cart`}
-                    className={buttonVariants({ variant: "secondary", size: "sm" })}
-                >
-                    Login
-                </Link>
-            </div>
-        )
+        moveItemToWishlist()
     }
 
     return (
@@ -93,7 +86,7 @@ const LocalCartItem = ({ item, removeItem }: Props) => {
             />
             <div className="flex-1">
                 <CartItemInfo product={item.product} quantity={item.quantity} />
-                <div className="flex gap-2 flex-wrap justify-between min-h-10 my-5">
+                <div className="flex gap-2 flex-wrap justify-between min-h-10 mt-5">
                     <CartItemQuantityCounter
                         initialQuantity={item.quantity}
                         limit={limit}
@@ -105,10 +98,16 @@ const LocalCartItem = ({ item, removeItem }: Props) => {
                     >
                         <FiTrash2 /> Remove
                     </Button>
+                    {quantityModified && (
+                        <p className="mt-2 text-sm p-1 bg-warning/10 text-warning w-fit rounded-md">
+                            Quantity adjusted from {quantityModified.oldQuantity} → {quantityModified.newQuantity} due to stock limits
+                        </p>
+                    )}
                 </div>
                 <Button
                     variant={"outline"}
                     onClick={handleMoveToWishlist}
+                    className="mt-5"
                 >
                     Move to Wishlist <FiHeart />
                 </Button>
