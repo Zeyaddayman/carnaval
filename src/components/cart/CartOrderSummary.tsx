@@ -29,7 +29,7 @@ const CartOrderSummary = ({ cartItems, hasUnavailableItems }: Props) => {
     const total = formatPrice(subtotal + shipping)
 
     return (
-        <div className="w-80 sticky top-5 h-fit rounded-md border border-border bg-card p-4 shadow-sm">
+        <div className="w-80 sticky top-5 h-fit mx-auto rounded-md border border-border bg-card p-4 shadow-sm">
             <p className="text-muted-foreground text-sm">Free shipping over ${SHIPPING_THRESHOLD}</p>
             <h4 className="font-semibold text-xl py-3 border-b border-border">Order Summary</h4>
             <div className="space-y-2 my-3">

@@ -64,7 +64,7 @@ const WishlistItems = ({ userId }: Props) => {
     return (
         <>
         <p className="text-muted-foreground mb-3">{wishlist.items.length} items saved</p>
-        <div className="flex flex-wrap justify-center gap-5">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
             {wishlist.items.map(item => (
                 <WishlistItemCard
                     key={item.id}

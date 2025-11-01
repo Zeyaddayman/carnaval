@@ -42,7 +42,7 @@ const SubCategories = ({ subCategories }: { subCategories: Category[] }) => (
             <Link
                 key={subCategory.id}
                 href={`/categories/${subCategory.slug}`}
-                className="p-3 hover:bg-muted rounded-lg transition-all"
+                className=" p-3 hover:bg-muted rounded-lg transition-colors"
             >
                 <div
                     className="relative w-full aspect-[3/2] "
@@ -52,7 +52,7 @@ const SubCategories = ({ subCategories }: { subCategories: Category[] }) => (
                         alt={subCategory.name}
                         className="rounded-md"
                         fill
-                        sizes="(max-width: 768px) 253px, 120px"
+                        sizes="(max-width: 500px) 120px, (max-width: 768px) 255px, 120px"
                         quality={100}
                     />
                 </div>

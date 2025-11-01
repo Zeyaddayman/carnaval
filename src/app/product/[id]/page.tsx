@@ -4,7 +4,7 @@ import ProductUserCart from "@/components/product/cart/UserCart"
 import OutOfStock from "@/components/product/OutOfStock"
 import ProductImagesPreview from "@/components/product/ProductImagesPreview"
 import ProductInfo from "@/components/product/ProductInfo"
-import AddToWishlist from "@/components/ui/ToggleWishlistItem"
+import ToggleWishlistItem from "@/components/ui/ToggleWishlistItem"
 import { isAuthenticated } from "@/server/db/auth"
 import { getProduct } from "@/server/db/product"
 
@@ -31,7 +31,7 @@ const productPage = async ({ params }: Props) => {
                     <div className="flex-1 space-y-6">
                         <ProductInfo product={product} />
                         <div className="bg-muted p-2 w-fit h-fit rounded-full ml-auto">
-                            <AddToWishlist session={session} product={product} />
+                            <ToggleWishlistItem session={session} product={product} />
                         </div>
                         {product.stock > 0 ? 
                             session ? (

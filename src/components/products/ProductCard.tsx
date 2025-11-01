@@ -2,9 +2,9 @@ import { CardProduct } from "@/types/products"
 import Image from "next/image"
 import Link from "next/link"
 import RatingStars from "../ui/RatingStars"
-import AddToWishlist from "../ui/ToggleWishlistItem"
 import { formatPrice, formatRating } from "@/lib/formatters"
 import { isAuthenticated } from "@/server/db/auth"
+import ToggleWishlistItem from "../ui/ToggleWishlistItem"
 
 const ProductCard = async ({ product }: { product: CardProduct }) => {
 
@@ -22,26 +22,26 @@ const ProductCard = async ({ product }: { product: CardProduct }) => {
     const productRating = formatRating(product.rating)
 
     return (
-        <div key={product.id} className="relative bg-card border border-border rounded-lg">
-            <span className="absolute top-3 right-3 z-10">
-                <AddToWishlist session={session} product={product} />
+        <div className="relative bg-card border border-border rounded-lg">
+            <span className="absolute top-2 right-2 z-10">
+                <ToggleWishlistItem session={session} product={product} />
             </span>
             <Link
                 href={`/product/${product.id}`}
-                className="p-3 w-77 h-full flex flex-col"
+                className="p-3 h-full flex flex-col"
             >
                 <div
-                    className="relative w-full h-78 aspect-square"
+                    className="relative w-full aspect-square"
                 >
                     <Image
                         src={product.thumbnail}
                         alt={product.title}
                         fill
-                        sizes="308px"
+                        sizes="(max-width: 768px) 45vw, (max-width: 1536px) 22vw, 18vw"
                         className="rounded-md border border-border"
                     />
                 </div>
-                <h3 className="text-lg text-card-foreground font-semibold mt-2 mb-1">{product.title}</h3>
+                <h3 className="text-card-foreground lg:text-lg lg:font-semibold mt-2 mb-1">{product.title}</h3>
                 {product.brand && <p className="text-muted-foreground">by <span>{product.brand.name}</span></p>}
 
                 <div className="flex gap-2 items-center my-3">

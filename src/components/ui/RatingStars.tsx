@@ -3,7 +3,7 @@ import { Product } from "@/generated/prisma";
 interface IProps {
     rating: Product["rating"]
     color?: string
-    size?: "sm" | "lg"
+    size?: "sm" | "md" | "lg"
 }
 
 const RatingStars = ({ rating, color = "#e6b800", size = "sm" }: IProps) => {
@@ -23,8 +23,9 @@ const RatingStars = ({ rating, color = "#e6b800", size = "sm" }: IProps) => {
     }
 
     const sizes = {
-        "sm": "22px",
-        "lg": "30px"
+        "sm": "15px",
+        "md": "20px",
+        "lg": "25px"
     }
 
     const starSize = sizes[size]

@@ -21,15 +21,13 @@ const ProductsBrands = async () => {
                         className="w-36 p-3 flex flex-col items-center justify-center gap-3 bg-card hover:bg-muted border border-border rounded-lg transition"
                     >
                         {brand.thumbnail && (
-                            <div className="relative w-33 h-33">
-                                <Image
-                                    src={brand.thumbnail}
-                                    alt={brand.name}
-                                    fill
-                                    sizes="132px"
-                                    className="rounded-md mix-blend-multiply"
-                                />
-                            </div>
+                            <Image
+                                src={brand.thumbnail}
+                                alt={`${brand.name} image`}
+                                width={118}
+                                height={118}
+                                className="rounded-md mix-blend-multiply"
+                            />
                         )}
                         <div className="space-y-1 text-center">
                             <p className="text-foreground font-semibold">{brand.name}</p>

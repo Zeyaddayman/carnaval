@@ -18,7 +18,7 @@ const ProductsList = ({ products, total }: Props) => {
             <p className="my-3 flex items-center gap-2 text-muted-foreground">
                 <PiShootingStarLight size={20} /> Showing {total} products
             </p>
-            <div className="flex flex-wrap justify-center gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-5">
                 {products.map(product => <ProductCard key={product.id} product={product} />)}
             </div>
         </section>

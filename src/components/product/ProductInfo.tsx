@@ -30,7 +30,7 @@ const ProductInfo = ({ product }: Props) => {
                 {product.description}
             </p>
             <div className="flex gap-2 items-center mb-4">
-                <RatingStars rating={product.rating} />
+                <RatingStars size="lg" rating={product.rating} />
                 <span className="text-foreground">{productRating}</span>
             </div>
             <div className="flex gap-3 items-center">

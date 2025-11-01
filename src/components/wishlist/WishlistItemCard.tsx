@@ -45,7 +45,7 @@ const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {
         <div className="relative flex flex-col gap-3 p-3 bg-card border border-border rounded-lg">
             <Link
                 href={`/product/${product.id}`}
-                className="w-60 flex flex-col flex-1"
+                className="w-full flex flex-col flex-1"
             >
                 {inStock ? (
                     <span className="absolute top-2 right-2 z-10 bg-success text-success-foreground text-sm p-2 rounded-full">In stock</span>
@@ -53,17 +53,16 @@ const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {
                     <span className="absolute top-2 right-2 z-10 bg-destructive text-destructive-foreground text-sm p-2 rounded-full">Out of stock</span>
                 )}
                 <div
-                    className="relative w-full h-60 aspect-square"
+                    className="relative w-full aspect-square"
                 >
                     <Image
                         src={product.thumbnail}
                         alt={product.title}
                         fill
-                        sizes="240ox"
                         className="rounded-md border border-border"
                     />
                 </div>
-                <h3 className="text-lg text-card-foreground font-semibold mt-2 mb-1">{product.title}</h3>
+                <h3 className="text-card-foreground sm:text-lg sm:font-semibold mt-2 mb-1">{product.title}</h3>
                 {product.brand && <p className="text-muted-foreground">by <span>{product.brand.name}</span></p>}
                 <div className="flex gap-2 items-center my-3">
                     <RatingStars rating={product.rating} />
