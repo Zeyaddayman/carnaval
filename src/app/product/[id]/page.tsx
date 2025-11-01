@@ -27,7 +27,7 @@ const productPage = async ({ params }: Props) => {
             <div className="container">
                 <CategoriesChain categoryHierarchy={categoryHierarchy} />
                 <div className="flex flex-col lg:flex-row gap-5 mt-5">
-                    <ProductImagesPreview images={product.images} title={product.title} />
+                    <ProductImagesPreview images={product.images} />
                     <div className="flex-1 space-y-6">
                         <ProductInfo product={product} />
                         <div className="bg-muted p-2 w-fit h-fit rounded-full ml-auto">
