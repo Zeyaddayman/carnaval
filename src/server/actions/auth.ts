@@ -4,6 +4,7 @@ import { db } from "@/lib/prisma"
 import { loginSchema, registerSchema } from "@/validations/auth"
 import bcrypt from "bcrypt"
 import { ACCESS_TOKEN_EXPIRY, generateAccessToken, setToken, verifyToken } from "../tokens"
+import { CartItemWithProduct } from "@/types/cart"
 
 export interface RegisterState {
     message?: string
@@ -12,7 +13,8 @@ export interface RegisterState {
     formData?: FormData
 }
 
-export const register = async (
+export const registerAction = async (
+    localCartItems: CartItemWithProduct[],
     prevState: RegisterState,
     formData: FormData,
 
@@ -56,11 +58,20 @@ export const register = async (
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
+        const userCart = localCartItems.map(item => ({ productId: item.productId, quantity: item.quantity }))
+
         const user = await db.user.create({
             data: {
                 email,
                 name,
-                password: hashedPassword
+                password: hashedPassword,
+                cart: {
+                    create: {
+                        items: {
+                            createMany: { data: userCart }
+                        }
+                    }
+                }
             }
         })
 

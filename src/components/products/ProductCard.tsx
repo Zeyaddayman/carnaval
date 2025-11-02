@@ -42,7 +42,7 @@ const ProductCard = async ({ product }: { product: CardProduct }) => {
                     />
                 </div>
                 <h3 className="text-card-foreground lg:text-lg lg:font-semibold mt-2 mb-1">{product.title}</h3>
-                {product.brand && <p className="text-muted-foreground">by <span>{product.brand.name}</span></p>}
+                {product.brand && <p className="text-muted-foreground text-sm">by <span>{product.brand.name}</span></p>}
 
                 <div className="flex gap-2 items-center my-3">
                     <RatingStars rating={product.rating} />

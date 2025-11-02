@@ -3,10 +3,12 @@
 import { useActionState, useEffect } from "react"
 import { Button } from "../ui/Button"
 import Input from "../ui/Input"
-import { register, RegisterState } from "@/server/actions/auth"
+import { registerAction, RegisterState } from "@/server/actions/auth"
 import toast, { LoaderIcon } from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
+import { useAppSelector } from "@/redux/hooks"
+import { selectLocalCart } from "@/redux/features/localCartSlice"
 
 const registerFields = [
     {
@@ -45,7 +47,13 @@ const initialState: RegisterState = {
 
 const RegisterFrom = () => {
 
-    const [state, registerAction, isPending] = useActionState(register, initialState)
+    const localCart = useAppSelector(selectLocalCart)
+
+    const [state, action, isPending] = useActionState(
+        registerAction.bind(null, localCart.items)
+        , initialState
+    )
+
     const router = useRouter()
     const { refetch } = useGetUserSessionQuery({})
 
@@ -71,7 +79,7 @@ const RegisterFrom = () => {
 
     return (
         <form
-            action={registerAction}
+            action={action}
             className="space-y-2"
             >
             {registerFields.map(field => (
