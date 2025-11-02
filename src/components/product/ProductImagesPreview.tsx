@@ -33,24 +33,24 @@ const ProductImagesPreview = ({ images }: Props) => {
                     />
                 ))}
                 <button
-                    className={`${selectedImageIndex === 0 ? "hidden": ""} absolute lg:hidden top-1/2 left-5 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
+                    className={`${selectedImageIndex === 0 ? "hidden": ""} absolute lg:hidden top-1/2 left-0 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
                     onClick={() => handleChangeImage(selectedImageIndex - 1)}
                 >
                     <MdKeyboardArrowLeft size={20} />
                 </button>
                 <button
-                    className={`${selectedImageIndex === images.length - 1 ? "hidden": ""} absolute lg:hidden top-1/2 right-5 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
+                    className={`${selectedImageIndex === images.length - 1 ? "hidden": ""} absolute lg:hidden top-1/2 right-0 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
                     onClick={() => handleChangeImage(selectedImageIndex + 1)}
                 >
                     <MdKeyboardArrowRight size={20} />
                 </button>
             </div>
             {images.length > 1 && (
-                <div className="hidden lg:flex gap-3 flex-wrap">
+                <div className="hidden lg:flex gap-3 overflow-x-auto">
                     {images.map((image, index) => (
                         <div
                             key={image}
-                            className={`${index === selectedImageIndex ? "border-primary": "border-border"} p-3 border-2 rounded-md cursor-pointer transition`}
+                            className={`${index === selectedImageIndex ? "border-primary": "border-border"} p-3 border-2 rounded-md shrink-0 cursor-pointer transition`}
                             onClick={() => handleChangeImage(index)}
                         >
                             <Image

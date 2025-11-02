@@ -38,44 +38,45 @@ const UpdateCartItem = ({ limit, initialQuantity, updateItem, removeItem }: Prop
     }
 
     return (
-        <div className="flex gap-2 h-10 rounded-md">
+        <div className="flex flex-wrap gap-2 rounded-md">
             <p className='text-muted-foreground self-center'>Quantity</p>
-            {quantity > 1 ? (
-                <Button
-                    variant={"basic"}
-                    onClick={handleMinus}
-                    disabled={quantity <= 1}
-                >
-                    -
-                </Button>
-            ): (
-                <Button
-                    variant={"destructiveOutline"}
-                    onClick={handleRemoveItem}
-                    disabled={quantity > 1}
-                >
-                    <FiTrash2 />
-                </Button>
-            )}
+            <Button
+                variant={"basic"}
+                size={"lg"}
+                onClick={handleMinus}
+                disabled={quantity <= 1}
+            >
+                -
+            </Button>
             <p
-                className='bg-input element-center w-full min-w-30 rounded-md'
+                className='bg-input element-center h-10 flex-1 min-w-30 rounded-md'
             >
                 {quantity}
             </p>
             <Button
                 variant={"basic"}
+                size={"lg"}
                 onClick={handlePlus}
                 disabled={quantity >= limit}
             >
                 +
             </Button>
-            <Button
-                variant={"primary"}
-                size={"lg"}
-                onClick={handleUpdateItem}
-            >
-                Save
-            </Button>
+            <div className="flex gap-2">
+                <Button
+                    variant={"secondary"}
+                    size={"lg"}
+                    onClick={handleUpdateItem}
+                >
+                    Update
+                </Button>
+                <Button
+                    variant={"destructiveOutline"}
+                    size={"lg"}
+                    onClick={handleRemoveItem}
+                >
+                    <FiTrash2 />
+                </Button>
+            </div>
         </div>
     )
 }

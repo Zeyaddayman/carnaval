@@ -1,6 +1,7 @@
 import CategoriesChain from "@/components/categories/CategoriesChain"
 import ProductLocalCart from "@/components/product/cart/LocalCart"
 import ProductUserCart from "@/components/product/cart/UserCart"
+import GoBack from "@/components/product/GoBack"
 import OutOfStock from "@/components/product/OutOfStock"
 import ProductImagesPreview from "@/components/product/ProductImagesPreview"
 import ProductInfo from "@/components/product/ProductInfo"
@@ -26,6 +27,9 @@ const productPage = async ({ params }: Props) => {
         <main>
             <div className="container">
                 <CategoriesChain categoryHierarchy={categoryHierarchy} />
+                <div className="w-fit mt-3">
+                    <GoBack />
+                </div>
                 <div className="flex flex-col lg:flex-row gap-5 mt-5">
                     <ProductImagesPreview images={product.images} />
                     <div className="flex-1 space-y-6">

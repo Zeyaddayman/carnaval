@@ -39,8 +39,6 @@ const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
 
         if (isItemAdded && addItemResponse.modifiedQuantity) {
             toast.success(`Only ${addItemResponse.modifiedQuantity} items are available`)
-        } else if (isItemAdded) {
-            toast.success(addItemResponse.message)
         }
 
     }, [isItemAdded])

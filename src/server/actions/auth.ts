@@ -171,8 +171,6 @@ export const loginAction = async (
 
         const mergedCartItems = mergeCartItems(localCartItems, user.cart?.items || [])
 
-        console.log(mergedCartItems)
-
         await db.cart.upsert({
             where: { userId: user.id },
             update: {
