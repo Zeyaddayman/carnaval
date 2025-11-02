@@ -5,6 +5,8 @@ import { loginSchema, registerSchema } from "@/validations/auth"
 import bcrypt from "bcrypt"
 import { ACCESS_TOKEN_EXPIRY, generateAccessToken, setToken, verifyToken } from "../tokens"
 import { CartItemWithProduct } from "@/types/cart"
+import { Prisma } from "@/generated/prisma"
+import { mergeCartItems } from "@/lib/utils"
 
 export interface RegisterState {
     message?: string
@@ -58,7 +60,7 @@ export const registerAction = async (
 
         const hashedPassword = await bcrypt.hash(password, 10)
 
-        const userCart = localCartItems.map(item => ({ productId: item.productId, quantity: item.quantity }))
+        const userCartItems = mergeCartItems(localCartItems, [])
 
         const user = await db.user.create({
             data: {
@@ -68,7 +70,7 @@ export const registerAction = async (
                 cart: {
                     create: {
                         items: {
-                            createMany: { data: userCart }
+                            createMany: { data: userCartItems }
                         }
                     }
                 }
@@ -99,7 +101,8 @@ export interface LoginState {
     formData?: FormData
 }
 
-export const login = async (
+export const loginAction = async (
+    localCartItems: CartItemWithProduct[],
     prevState: LoginState,
     formData: FormData,
 
@@ -131,6 +134,19 @@ export const login = async (
 
         const user = await db.user.findUnique({
             where: { email },
+            include: {
+                cart: {
+                    include: {
+                        items: {
+                            include: {
+                                product: {
+                                    include: { brand: true }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         })
 
         if (!user) {
@@ -141,6 +157,8 @@ export const login = async (
             }
         }
 
+        console.log(user.cart)
+
         const isPasswordValid = await bcrypt.compare(password, user.password)
 
         if (!isPasswordValid) {
@@ -150,6 +168,24 @@ export const login = async (
                 formData
             }
         }
+
+        const mergedCartItems = mergeCartItems(localCartItems, user.cart?.items || [])
+
+        console.log(mergedCartItems)
+
+        await db.cart.upsert({
+            where: { userId: user.id },
+            update: {
+                items: {
+                    deleteMany: {},
+                    create: mergedCartItems
+                }
+            },
+            create: {
+                userId: user.id,
+                items: { create: mergedCartItems }
+            }
+        })
 
         const accessToken = generateAccessToken(user)
 
@@ -167,3 +203,4 @@ export const login = async (
         }
     }
 }
+

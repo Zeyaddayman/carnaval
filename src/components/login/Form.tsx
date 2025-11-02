@@ -4,9 +4,11 @@ import toast, { LoaderIcon } from "react-hot-toast"
 import { Button } from "../ui/Button"
 import Input from "../ui/Input"
 import { useActionState, useEffect } from "react"
-import { login, LoginState } from "@/server/actions/auth"
+import { loginAction, LoginState } from "@/server/actions/auth"
 import { useRouter } from "next/navigation"
 import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
 
 const loginFields = [
     {
@@ -33,7 +35,15 @@ const initialState: LoginState = {
 
 const LoginForm = () => {
 
-    const [state, loginAction, isPending] = useActionState(login, initialState)
+    const localCart = useAppSelector(selectLocalCart)
+
+    const [state, action, isPending] = useActionState(
+        loginAction.bind(null, localCart.items.toReversed()),
+        initialState
+    )
+
+    const dispatch = useAppDispatch()
+
     const router = useRouter()
     const { refetch } = useGetUserSessionQuery({})
 
@@ -49,6 +59,8 @@ const LoginForm = () => {
 
                 refetch()
 
+                dispatch(setLocalCartItems([]))
+
                 router.push(redirectPath)
 
             } else {
@@ -59,7 +71,7 @@ const LoginForm = () => {
 
     return (
         <form
-            action={loginAction}
+            action={action}
             className="space-y-2"
             >
             {loginFields.map(field => (

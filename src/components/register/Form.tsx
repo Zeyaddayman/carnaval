@@ -7,8 +7,8 @@ import { registerAction, RegisterState } from "@/server/actions/auth"
 import toast, { LoaderIcon } from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
-import { useAppSelector } from "@/redux/hooks"
-import { selectLocalCart } from "@/redux/features/localCartSlice"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
+import { selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
 
 const registerFields = [
     {
@@ -50,9 +50,11 @@ const RegisterFrom = () => {
     const localCart = useAppSelector(selectLocalCart)
 
     const [state, action, isPending] = useActionState(
-        registerAction.bind(null, localCart.items)
-        , initialState
+        registerAction.bind(null, localCart.items.toReversed()),
+        initialState
     )
+
+    const dispatch = useAppDispatch()
 
     const router = useRouter()
     const { refetch } = useGetUserSessionQuery({})
@@ -68,6 +70,8 @@ const RegisterFrom = () => {
                 const redirectPath = searchParams.get("redirect") || "/"
 
                 refetch()
+
+                dispatch(setLocalCartItems([]))
 
                 router.push(redirectPath)
 

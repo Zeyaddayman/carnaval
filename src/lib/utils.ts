@@ -1,3 +1,4 @@
+import { CartItemWithProduct } from "@/types/cart"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -60,4 +61,36 @@ export function generatePagination(
     }
 
     return paginationPages
+}
+
+export function mergeCartItems(
+    localCartItems: CartItemWithProduct[],
+    userCartItems: CartItemWithProduct[]
+){
+
+    const mergedCartItems = []
+
+    // add user cart items if exists
+    if (userCartItems) {
+        for (let i = 0; i < userCartItems.length; i++) {
+            const currentItem = userCartItems[i]
+
+            mergedCartItems.push({ productId: currentItem.productId, quantity: currentItem.quantity })
+        }
+    }
+
+    // add local cart items
+    for (let i = 0; i < localCartItems.length; i++) {
+        const currentItem = localCartItems[i]
+
+        const productInCart = mergedCartItems.find(item => item.productId === currentItem.productId)
+
+        if (productInCart) {
+            productInCart.quantity = currentItem.quantity
+        } else {
+            mergedCartItems.push({ productId: currentItem.productId, quantity: currentItem.quantity })
+        }
+    }
+
+    return mergedCartItems
 }
