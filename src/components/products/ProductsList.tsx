@@ -14,7 +14,7 @@ const ProductsList = ({ products, total }: Props) => {
     }
 
     return (
-        <section className="flex-1">
+        <section>
             <p className="my-3 flex items-center gap-2 text-muted-foreground">
                 <PiShootingStarLight size={20} /> Showing {total} products
             </p>

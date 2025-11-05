@@ -90,7 +90,7 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
             <Button
                 onClick={open}
             >
-                <HiOutlineAdjustmentsHorizontal size={20} /> Open Filters
+                <HiOutlineAdjustmentsHorizontal size={20} /> Filters
             </Button>
             <Dialog
                 isOpen={isOpen}

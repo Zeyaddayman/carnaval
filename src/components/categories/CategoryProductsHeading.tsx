@@ -1,22 +1,18 @@
-import { getCategoryHierarchy } from "@/server/db/categories"
 import CategoriesChain from "./CategoriesChain"
-import { Category } from "@/generated/prisma"
+import { CategoryHierarchy } from "@/types/categories"
 
 interface Props {
-    slug: Category["slug"]
+    categoryName: string
+    categoryHierarchy: CategoryHierarchy
 }
 
-const CategoryProductsHeading = async ({ slug }: Props) => {
-
-    const { categoryHierarchy, category  } = await getCategoryHierarchy(slug)
-
-    const CategoryName = category.name
+const CategoryProductsHeading = ({ categoryName, categoryHierarchy }: Props) => {
 
     return (
         <section className="border-2 border-border px-3 py-5 space-y-3 rounded-lg">
             <CategoriesChain categoryHierarchy={categoryHierarchy} />
             <div className="flex flex-wrap justify-between items-center gap-3">
-                <h2 className="text-foreground text-2xl md:text-3xl font-bold">{CategoryName}</h2>
+                <h2 className="text-foreground text-2xl md:text-3xl font-bold">{categoryName}</h2>
             </div>
         </section>
     )

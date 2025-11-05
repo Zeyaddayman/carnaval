@@ -1,28 +1,29 @@
-import { Category } from "@/generated/prisma"
-import { getSubcategories } from "@/server/db/categories"
 import Link from "next/link"
 
-interface Props {
-    slug: Category["slug"]
+interface Category {
+    name: string
+    id: string
+    slug: string
+    _count: {
+        products: number
+    }
 }
 
-const Subcategories = async ({ slug }: Props) => {
+const Subcategories = async ({ categories }: { categories: Category[] }) => {
 
-    const subcategories = await getSubcategories(slug)
-
-    if (subcategories.length === 0) return null
+    if (categories.length === 0) return null
 
     return (
         <section className="h-fit border-2 border-border px-3 py-5 rounded-lg">
             <h5 className="text-muted-foreground text-l font-semibold mb-3">Subcategories</h5>
             <ul className="flex flex-row lg:flex-col overflow-x-auto gap-2">
-                {subcategories.map((subcategory) => (
+                {categories.map((category) => (
                     <li
-                        key={subcategory.id}
+                        key={category.id}
                     >
-                        <Link href={`/categories/${subcategory.slug}`} className="flex justify-between items-center gap-3 bg-card p-3 border border-border rounded-md lg:max-w-50 whitespace-nowrap lg:whitespace-normal">
-                            {subcategory.name}
-                            <span className="text-sm font-medium element-center w-9 h-9 bg-secondary text-secondary-foreground rounded-full">{subcategory._count.products}</span>
+                        <Link href={`/categories/${category.slug}`} className="flex justify-between items-center gap-3 bg-card p-3 border border-border rounded-md lg:max-w-50 whitespace-nowrap lg:whitespace-normal">
+                            {category.name}
+                            <span className="text-sm font-medium element-center w-9 h-9 bg-secondary text-secondary-foreground rounded-full">{category._count.products}</span>
                         </Link>
                     </li>
                 ))}
