@@ -6,6 +6,7 @@ import { useEffect } from "react"
 import toast from "react-hot-toast"
 import { CartErrorResponse, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
 import { WishlistItem } from "@/types/wishlist"
+import WishlistItemsSkeleton from "../skeletons/WishlistItemsSkeleton"
 
 interface Props {
     userId: string
@@ -45,7 +46,7 @@ const WishlistItems = ({ userId }: Props) => {
     }, [isAddingItemToCartFailed])
 
 
-    if (isLoading) return null
+    if (isLoading) return <WishlistItemsSkeleton />
 
     if (!wishlist || wishlist.items.length === 0) return null
 
