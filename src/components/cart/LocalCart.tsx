@@ -12,6 +12,7 @@ import UnavailableCartItem from "./UnavailableCartItem"
 import toast from "react-hot-toast"
 import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
+import CartSkeleton from "../skeletons/CartSkeleton"
 
 
 const LocalCart = () => {
@@ -75,7 +76,7 @@ const LocalCart = () => {
 
     }, [refreshKey])
 
-    if (!isMounted) return null
+    if (!isMounted) return <CartSkeleton />
 
     if (localCart.items.length === 0) return null
 
