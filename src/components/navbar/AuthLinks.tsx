@@ -12,7 +12,7 @@ const AuthLinks = () => {
     const { data: session, isLoading } = useGetUserSessionQuery({})
     const pathname = usePathname()
 
-    if (isLoading) return null
+    if (isLoading) return <LoadingSkeleton />
 
     return (
         <>
@@ -52,5 +52,9 @@ const AuthLinks = () => {
         </>
     )
 }
+
+const LoadingSkeleton = () => (
+    <div role={"status"} className="bg-gray-200 min-w-24 h-9 animate-pulse rounded-md"></div>
+)
 
 export default AuthLinks
