@@ -7,6 +7,7 @@ import UpdateCartItem from "./UpdateCartItem"
 import AddToCart from "./AddToCart"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import ProductCartSkeleton from "@/components/skeletons/ProductCartSkeleton"
 
 interface Props {
     userId: string
@@ -63,7 +64,7 @@ const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
     }, [isRemovingItemFailed])
 
 
-    if (isLoading) return null
+    if (isLoading) return <ProductCartSkeleton />
 
     const existingProduct = data?.cart.items.find(item => item.productId === product.id)
 

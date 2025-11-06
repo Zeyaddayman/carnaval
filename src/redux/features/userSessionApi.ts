@@ -5,6 +5,8 @@ export const userSessionApi = createApi({
     baseQuery: fetchBaseQuery({baseUrl: '/api/'}),
     tagTypes: ['user-session'],
 
+    refetchOnMountOrArgChange: true,
+
     endpoints: (builder) => ({
         getUserSession: builder.query({
             query: () => "user/session",
