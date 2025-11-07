@@ -14,7 +14,7 @@ export function generatePagination(
 {
     const totalPages = Math.ceil(total / limit)
 
-    if (totalPages === 1) return null
+    if (totalPages <= 1 || page > totalPages) return null
 
     const paginationPages: (number|"...")[] = []
 

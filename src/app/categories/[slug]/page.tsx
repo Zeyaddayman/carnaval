@@ -1,5 +1,6 @@
 import CategoryProductsHeading from "@/components/categories/CategoryProductsHeading"
 import Subcategories from "@/components/categories/Subcategories"
+import NoProductsFound from "@/components/products/NoProductsFound"
 import Pagination from "@/components/products/Pagination"
 import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
@@ -86,11 +87,16 @@ const Data = async ({ slug, searchParams }: { slug: string, searchParams: Promis
 
     } = await getProductsByCategory(slug, sort, filters, Number(paginationPage))
 
+    if (!products || products.length < 1) return <NoProductsFound returnLink={`/categories/${slug}`} />
+
     return (
         <>
         <ProductsList
             products={products}
             total={total}
+            page={page}
+            limit={limit}
+            pageSize={pageSize}
         />
         <Pagination
             total={total}

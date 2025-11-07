@@ -14,7 +14,7 @@ const Subcategories = async ({ categories }: { categories: Category[] }) => {
     if (categories.length === 0) return null
 
     return (
-        <section className="h-fit border-2 border-border px-3 py-5 rounded-lg">
+        <section className="h-fit border-2 lg:sticky top-5 border-border px-3 py-5 rounded-lg">
             <h5 className="text-muted-foreground text-l font-semibold mb-3">Subcategories</h5>
             <ul className="flex flex-row lg:flex-col overflow-x-auto gap-2">
                 {categories.map((category) => (
