@@ -7,6 +7,7 @@ import toast from "react-hot-toast"
 import { CartErrorResponse, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
 import { WishlistItem } from "@/types/wishlist"
 import WishlistItemsSkeleton from "../skeletons/WishlistItemsSkeleton"
+import EmptyWishlist from "./EmptyWishlist"
 
 interface Props {
     userId: string
@@ -48,7 +49,7 @@ const WishlistItems = ({ userId }: Props) => {
 
     if (isLoading) return <WishlistItemsSkeleton />
 
-    if (!wishlist || wishlist.items.length === 0) return null
+    if (!wishlist || wishlist.items.length === 0) return <EmptyWishlist />
 
     const removeItem = (productId: string) => {
         removeItemFromUserWishlist({ userId, productId })

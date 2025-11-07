@@ -13,6 +13,7 @@ import toast from "react-hot-toast"
 import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
 import CartSkeleton from "../skeletons/CartSkeleton"
+import EmptyCart from "./EmptyCart"
 
 
 const LocalCart = () => {
@@ -78,7 +79,7 @@ const LocalCart = () => {
 
     if (!isMounted) return <CartSkeleton />
 
-    if (localCart.items.length === 0) return null
+    if (localCart.items.length === 0) return <EmptyCart />
 
     const removeItem = (productId: string) => {
         dispatch(removeItemFromLocalCart(productId))
