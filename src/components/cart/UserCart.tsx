@@ -10,6 +10,7 @@ import { CartItemWithProduct } from "@/types/cart"
 import { CiWarning } from "react-icons/ci"
 import UnavailableCartItem from "./UnavailableCartItem"
 import CartSkeleton from "../skeletons/CartSkeleton"
+import EmptyCart from "./EmptyCart"
 
 interface Props {
     userId: string
@@ -46,7 +47,7 @@ const UserCart = ({ userId }: Props) => {
 
     if (isLoading) return <CartSkeleton />
 
-    if (!data || data.cart.items.length === 0) return null
+    if (!data || data.cart.items.length === 0) return <EmptyCart />
 
 
     const removeItem = (productId: string) => {
