@@ -104,7 +104,6 @@ const FiltersAndSort = async ({ slug, searchParams }: { slug: string, searchPara
 
     const {
         sort = "alphabetical",
-        page: paginationPage = "1",
         minPrice,
         maxPrice,
         minRating,

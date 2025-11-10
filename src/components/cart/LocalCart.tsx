@@ -15,7 +15,6 @@ import { buttonVariants } from "../ui/Button"
 import CartSkeleton from "../skeletons/CartSkeleton"
 import EmptyCart from "./EmptyCart"
 
-
 const LocalCart = () => {
 
     const [isMounted, setIsMounted] = useState(false)
@@ -33,47 +32,64 @@ const LocalCart = () => {
 
     useEffect(() => {
 
+        const abortController = new AbortController()
+        const signal = abortController.signal
+
         const updateProductsData = async () => {
-            const freshCartProducts = await Promise.all(localCart.items.map(async item => {
-
-                const res = await fetch(`/api/product/${item.productId}`)
-                return (await res.json()) as CartItemWithProduct["product"]
-            }))
-
-            const newQuantityModifiedItems: { [id: string]: QuantityModifiedItem } = {}
-
-            const updatedLocalCartItems = localCart.items.map<CartItemWithProduct>(item => {
-
-                const freshProduct = freshCartProducts.find(product => product.id === item.productId)
-
-                if (!freshProduct) return item
-
-                const limit = (freshProduct.limit && freshProduct.limit <= freshProduct.stock) ? freshProduct.limit : freshProduct.stock
-
-                let newQuantity = item.quantity
-
-                if (item.quantity > limit && limit !== 0) {
-
-                    newQuantity = limit
-
-                    newQuantityModifiedItems[item.id] = {
-                        oldQuantity: item.quantity,
-                        newQuantity
+            try {
+                const freshCartProducts = await Promise.all(localCart.items.map(async item => {
+    
+                    const res = await fetch(`/api/product/${item.productId}`, { signal })
+    
+                    if (res.ok) return (await res.json()) as CartItemWithProduct["product"]
+                }))
+    
+                const newQuantityModifiedItems: { [id: string]: QuantityModifiedItem } = {}
+    
+                const updatedLocalCartItems = localCart.items.map<CartItemWithProduct>(item => {
+    
+                    const freshProduct = freshCartProducts.find(product => product?.id === item.productId)
+    
+                    if (!freshProduct) return item
+    
+                    const limit = (freshProduct.limit && freshProduct.limit <= freshProduct.stock) ? freshProduct.limit : freshProduct.stock
+    
+                    let newQuantity = item.quantity
+    
+                    if (item.quantity > limit && limit !== 0) {
+    
+                        newQuantity = limit
+    
+                        newQuantityModifiedItems[item.id] = {
+                            oldQuantity: item.quantity,
+                            newQuantity
+                        }
                     }
+    
+                    return {
+                        ...item,
+                        product: freshProduct ? freshProduct : item.product,
+                        quantity: newQuantity
+                    }
+                })
+    
+                if (signal.aborted) return
+    
+                dispatch(setLocalCartItems(updatedLocalCartItems))
+                setQuantityModifiedItems(newQuantityModifiedItems)
+            }
+            catch (error: any) {
+                if (error.name === 'AbortError') {
+                    console.log("Fetch aborted intentionally")
                 }
-
-                return {
-                    ...item,
-                    product: freshProduct ? freshProduct : item.product,
-                    quantity: newQuantity
-                }
-            })
-
-            dispatch(setLocalCartItems(updatedLocalCartItems))
-            setQuantityModifiedItems(newQuantityModifiedItems)
+            }
         }
 
         updateProductsData()
+
+        return () => {
+            abortController.abort()
+        }
 
     }, [refreshKey])
 

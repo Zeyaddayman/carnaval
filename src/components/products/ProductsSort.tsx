@@ -27,7 +27,7 @@ const ProductsSort = ({ sort }: Props) => {
 
     return (
         <SelectMenu
-            title="Sort By"
+            title="Sort By: "
             selected={defaultSortOption!}
             setSelected={handleSortChange}
             options={[...PRODUCTS_SORT_OPTIONS]}
