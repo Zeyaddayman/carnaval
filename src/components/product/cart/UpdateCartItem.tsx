@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/Button"
+import QuantitySelector from "@/components/ui/QuantitySelector"
 import { useEffect, useState } from "react"
 import { FiTrash2 } from "react-icons/fi"
 
@@ -38,40 +39,40 @@ const UpdateCartItem = ({ limit, initialQuantity, updateItem, removeItem }: Prop
     }
 
     return (
-        <div className="flex flex-wrap gap-2 rounded-md">
-            <p className='text-muted-foreground self-center'>Quantity</p>
+        <div className="flex flex-wrap gap-2 items-center">
+            <p className='text-muted-foreground'>Quantity</p>
             <Button
                 variant={"basic"}
-                size={"lg"}
+                className="!w-10"
                 onClick={handleMinus}
                 disabled={quantity <= 1}
             >
                 -
             </Button>
-            <p
-                className='bg-input element-center h-10 flex-1 min-w-30 rounded-md'
-            >
-                {quantity}
-            </p>
+            <QuantitySelector
+                limit={limit}
+                quantity={quantity}
+                setQuantity={setQuantity}
+            />
             <Button
                 variant={"basic"}
-                size={"lg"}
+                className="!w-10"
                 onClick={handlePlus}
                 disabled={quantity >= limit}
             >
                 +
             </Button>
-            <div className="flex gap-2">
+            <div className="flex-1 flex gap-2">
                 <Button
                     variant={"secondary"}
-                    size={"lg"}
+                    className="flex-1"
                     onClick={handleUpdateItem}
                 >
                     Update
                 </Button>
                 <Button
                     variant={"destructiveOutline"}
-                    size={"lg"}
+                    className="flex-1"
                     onClick={handleRemoveItem}
                 >
                     <FiTrash2 />

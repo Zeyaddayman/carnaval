@@ -21,7 +21,7 @@ const Subcategories = async ({ categories }: { categories: Category[] }) => {
                     <li
                         key={category.id}
                     >
-                        <Link href={`/categories/${category.slug}`} className="flex justify-between items-center gap-3 bg-card p-3 border border-border rounded-md lg:max-w-50 whitespace-nowrap lg:whitespace-normal">
+                        <Link href={`/categories/${category.slug}`} className="flex justify-between items-center gap-3 bg-card p-3 border border-border rounded-md lg:max-w-55 whitespace-nowrap lg:whitespace-normal">
                             {category.name}
                             <span className="text-sm font-medium element-center w-9 h-9 bg-secondary text-secondary-foreground rounded-full">{category._count.products}</span>
                         </Link>

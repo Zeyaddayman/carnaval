@@ -29,6 +29,8 @@ export const userCartApi = createApi({
     baseQuery: fetchBaseQuery({baseUrl: '/api/'}),
     tagTypes: ['user-cart'],
 
+    refetchOnMountOrArgChange: true,
+
     endpoints: (builder) => ({
         getUserCart: builder.query<CartResponse, string>({
             query: () => "user/cart",

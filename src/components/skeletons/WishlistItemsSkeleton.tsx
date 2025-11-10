@@ -12,8 +12,8 @@ const WishlistItemsSkeleton = () => {
                                 </svg>
                             </div>
                             <div className="bg-gray-200 h-6 sm:h-7 w-4/5 mb-1 mt-2 rounded-full"></div>
-                            <div className="bg-gray-200 h-6 w-3/5 rounded-full"></div>
-                            <div className="bg-gray-200 h-6 w-31 my-3 rounded-full"></div>
+                            <div className="bg-gray-200 h-5 w-3/5 rounded-full"></div>
+                            <div className="bg-gray-200 h-5 w-31 my-3 rounded-full"></div>
                             <div className="flex items-center flex-wrap gap-3">
                                 <div className="bg-gray-200 h-7 w-13 rounded-full"></div>
                                 <div className="bg-gray-200 h-7 w-13 rounded-full"></div>

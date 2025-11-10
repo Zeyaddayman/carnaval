@@ -86,7 +86,7 @@ const LocalCartItem = ({ item, removeItem, moveItemToWishlist, quantityModified,
             />
             <div className="flex-1">
                 <CartItemInfo product={item.product} quantity={item.quantity} />
-                <div className="flex gap-2 flex-wrap justify-between min-h-10 mt-5">
+                <div className="flex gap-2 flex-wrap justify-between mt-5">
                     <CartItemQuantityCounter
                         initialQuantity={item.quantity}
                         limit={limit}

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button } from "../ui/Button"
+import QuantitySelector from "../ui/QuantitySelector"
 
 interface Props {
     initialQuantity: number
@@ -9,7 +10,7 @@ interface Props {
 
 const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity }: Props) => {
 
-    const [quantity, setQuantity] = useState(initialQuantity)
+    const [quantity, setQuantity] = useState<number>(initialQuantity)
 
     useEffect(() => {
         setQuantity(initialQuantity)
@@ -35,18 +36,20 @@ const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity }: Pro
         <div className='flex gap-2'>
             <Button
                 variant={"basic"}
+                className="!w-10"
                 disabled={quantity <= 1}
                 onClick={handleMinus}
             >
                 -
             </Button>
-            <p
-                className='bg-input border border-border element-center w-full min-w-20 rounded-md'
-            >
-                {quantity}
-            </p>
+            <QuantitySelector
+                limit={limit}
+                quantity={quantity}
+                setQuantity={setQuantity}
+            />
             <Button
                 variant={"basic"}
+                className="!w-10"
                 disabled={quantity >= limit}
                 onClick={handlePlus}
             >

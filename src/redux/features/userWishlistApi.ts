@@ -16,6 +16,8 @@ export const userWishlistApi = createApi({
     baseQuery: fetchBaseQuery({baseUrl: '/api/'}),
     tagTypes: ['user-wishlist'],
 
+    refetchOnMountOrArgChange: true,
+
     endpoints: (builder) => ({
         getUserWishlist: builder.query<{ items: WishlistItem[] }, string>({
             query: () => "user/wishlist",

@@ -20,7 +20,7 @@ const SelectMenu = ({ title, options, selected, setSelected }: Props) => {
     return (
         <Listbox value={selected} onChange={setSelected}>
             <div className='flex gap-2 items-center min-w-70'>
-                <Label className="">{ title }</Label>
+                <Label>{ title }</Label>
                 <div className="relative flex-1">
                     <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-3 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm/6">
                         <span className="ml-3 block truncate">{selected.label}</span>

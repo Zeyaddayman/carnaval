@@ -3,6 +3,7 @@
 import { useState } from 'react';;
 import { BsCartPlusFill } from 'react-icons/bs';
 import { Button } from '@/components/ui/Button';
+import QuantitySelector from '@/components/ui/QuantitySelector';
 
 interface Props {
     limit: number
@@ -11,7 +12,7 @@ interface Props {
 
 const AddToCart = ({ limit, addItem }: Props) => {
 
-    const [quantity, setQuantity] = useState(1)
+    const [quantity, setQuantity] = useState<number>(1)
 
     const handleMinus = () => {
         if (quantity > 1) {
@@ -30,32 +31,31 @@ const AddToCart = ({ limit, addItem }: Props) => {
     }
 
     return (
-        <div className='flex gap-3 flex-wrap'>
-            <div className='flex-1 flex gap-2 min-h-10'>
-                <p className='text-muted-foreground self-center'>Quantity</p>
-                <Button
-                    variant={"basic"}
-                    onClick={handleMinus}
-                    disabled={quantity <= 1}
-                >
-                    -
-                </Button>
-                <p
-                    className='bg-input element-center w-full min-w-30 rounded-md'
-                >
-                    {quantity}
-                </p>
-                <Button
-                    variant={"basic"}
-                    onClick={handlePlus}
-                    disabled={quantity >= limit}
-                >
-                    +
-                </Button>
-            </div>
+        <div className='flex flex-wrap gap-2 items-center'>
+            <p className='text-muted-foreground'>Quantity</p>
+            <Button
+                variant={"basic"}
+                className="!w-10"
+                onClick={handleMinus}
+                disabled={quantity <= 1}
+            >
+                -
+            </Button>
+            <QuantitySelector
+                limit={limit}
+                quantity={quantity}
+                setQuantity={setQuantity}
+            />
+            <Button
+                variant={"basic"}
+                className="!w-10"
+                onClick={handlePlus}
+                disabled={quantity >= limit}
+            >
+                +
+            </Button>
             <Button
                 className="flex-1"
-                size={"lg"}
                 onClick={handleAddItem}
             >
                 <BsCartPlusFill size={20} /> Add to Cart

@@ -63,10 +63,10 @@ const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {
                     />
                 </div>
                 <h3 className="text-card-foreground sm:text-lg sm:font-semibold mt-2 mb-1">{product.title}</h3>
-                {product.brand && <p className="text-muted-foreground">by <span>{product.brand.name}</span></p>}
+                {product.brand && <p className="text-muted-foreground text-sm">by <span>{product.brand.name}</span></p>}
                 <div className="flex gap-2 items-center my-3">
                     <RatingStars rating={product.rating} />
-                    <span className="text-muted-foreground">{productRating}</span>
+                    <span className="text-muted-foreground text-sm">{productRating}</span>
                 </div>
                 <div className="flex items-center flex-wrap gap-3 mt-auto">
                     <p className="text-lg font-semibold text-card-foreground">${finalPrice}</p>

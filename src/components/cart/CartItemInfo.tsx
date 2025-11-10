@@ -26,10 +26,10 @@ const CartItemInfo = ({ product, quantity }: Props) => {
         <div className="flex gap-2 justify-between">
             <div>
                 <h5 className="font-semibold">{product.title}</h5>
-                {product.brand && <p className="text-muted-foreground">by: {product.brand.name}</p>}
+                {product.brand && <p className="text-muted-foreground text-sm">by: {product.brand.name}</p>}
                 <div className="flex gap-2 items-center my-2">
                     <RatingStars rating={product.rating} />
-                    <span className="text-foreground">{productRating}</span>
+                    <span className="text-foreground text-sm">{productRating}</span>
                 </div>
                 <Link
                     className="underline text-sm"

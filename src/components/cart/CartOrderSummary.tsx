@@ -29,13 +29,13 @@ const CartOrderSummary = ({ cartItems, hasUnavailableItems }: Props) => {
     const total = formatPrice(subtotal + shipping)
 
     return (
-        <div className="w-80 sticky top-5 h-fit mx-auto rounded-md border border-border bg-card p-4 shadow-sm">
+        <div className="w-full lg:w-80 sticky top-5 h-fit rounded-md border border-border bg-card p-4 shadow-sm">
             <p className="text-muted-foreground text-sm">Free shipping over ${SHIPPING_THRESHOLD}</p>
             <h4 className="font-semibold text-xl py-3 border-b border-border">Order Summary</h4>
             <div className="space-y-2 my-3">
-                <p className="flex justify-between items-center flex-wrap">items <span>{itemsCount}</span></p>
-                <p className="flex justify-between items-center flex-wrap">Subtotal <span>${subtotal}</span></p>
-                <p className="flex justify-between items-center flex-wrap">Shipping 
+                <p className="flex justify-between items-center flex-wrap gap-2">items <span>{itemsCount}</span></p>
+                <p className="flex justify-between items-center flex-wrap gap-2">Subtotal <span>${subtotal}</span></p>
+                <p className="flex justify-between items-center flex-wrap gap-2">Shipping 
                     <span className={`${shipping <= 0 ? "text-success" : ""}`}>{shipping <= 0 ? "Free" : `$${shipping}`}</span>
                 </p>
             </div>
@@ -43,7 +43,7 @@ const CartOrderSummary = ({ cartItems, hasUnavailableItems }: Props) => {
             {hasUnavailableItems && (
                 <div className="flex gap-2 items-center p-3 bg-warning/10 text-warning rounded-md mt-2">
                     <CiWarning className="shrink-0" size={20} />
-                    <p className="wrap-break-word">Please resolve unavailable items before checkout.</p>
+                    <p>Please resolve unavailable items before checkout.</p>
                 </div>
             )}
             <Button
