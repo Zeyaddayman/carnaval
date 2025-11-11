@@ -1,6 +1,7 @@
 "use client"
 
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
+import { MouseEventHandler, useRef, useState } from 'react'
 import { BiCheck } from 'react-icons/bi'
 import { HiMiniChevronUpDown } from 'react-icons/hi2'
 
@@ -17,9 +18,26 @@ interface Props {
 }
 
 const SelectMenu = ({ title, options, selected, setSelected }: Props) => {
+
+    const [placement, setPlacement] = useState<'top' | 'bottom'>('bottom')
+    const selectRef = useRef<HTMLDivElement>(null)
+
+    const handlePlacement: MouseEventHandler<HTMLDivElement> = (e) => {
+        const el = selectRef.current
+        if (!el) return
+
+        const rect = el.getBoundingClientRect()
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+        const spaceBelow = viewportHeight - rect.bottom
+        const spaceAbove = rect.top
+        const optionsMaxHeight = 240
+
+        setPlacement(( spaceBelow > optionsMaxHeight) ? 'bottom' : 'top')
+    }
+
     return (
-        <Listbox value={selected} onChange={setSelected}>
-            <div className="relative min-w-70">
+        <Listbox  value={selected} onChange={setSelected}>
+            <div onClick={handlePlacement} ref={selectRef} className="relative min-w-70">
                 <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-3 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm/6">
                     <span className="ml-3 block truncate">{title} {selected.label}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
@@ -29,7 +47,7 @@ const SelectMenu = ({ title, options, selected, setSelected }: Props) => {
 
                 <ListboxOptions
                     transition
-                    className={`absolute max-h-60 w-full z-30 mb-1 overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm`}
+                    className={`absolute max-h-60 w-full z-30 ${placement === "top" ? "bottom-full mb-1" : "mt-1"} overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm`}
                 >
                     {options.map((option) => (
                         <ListboxOption

@@ -1,4 +1,5 @@
 import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react"
+import { MouseEventHandler, useRef, useState } from "react"
 import { BiCheck } from "react-icons/bi"
 import { HiMiniChevronUpDown } from "react-icons/hi2"
 
@@ -9,9 +10,30 @@ interface Props {
 }
 
 const QuantitySelector = ({ limit, quantity, setQuantity }: Props) => {
+
+    const [placement, setPlacement] = useState<'top' | 'bottom'>('bottom')
+    const selectorRef = useRef<HTMLDivElement>(null)
+
+    const handlePlacement: MouseEventHandler<HTMLDivElement> = (e) => {
+        const el = selectorRef.current
+        if (!el) return
+
+        const rect = el.getBoundingClientRect()
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight
+        const spaceBelow = viewportHeight - rect.bottom
+        const spaceAbove = rect.top
+        const optionsMaxHeight = 240
+
+        console.log(viewportHeight)
+        console.log(spaceBelow)
+        console.log(spaceAbove)
+
+        setPlacement(( spaceBelow > optionsMaxHeight) ? 'bottom' : 'top')
+    }
+
     return (
         <Listbox value={quantity} onChange={setQuantity}>
-            <div className="relative min-w-30 flex-1">
+            <div onClick={handlePlacement} ref={selectorRef} className="relative min-w-30 flex-1">
                 <ListboxButton className="relative h-9 w-full flex justify-center items-center cursor-default rounded-md bg-input py-3 pl-3 pr-10 text-left border border-border focus:outline-none focus:border-primary sm:text-sm/6">
                     <span className="truncate">{quantity}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
@@ -21,7 +43,7 @@ const QuantitySelector = ({ limit, quantity, setQuantity }: Props) => {
 
                 <ListboxOptions
                     transition
-                    className={`absolute max-h-60 w-full z-30 mb-1 overflow-auto rounded-md bg-input py-1 text-base shadow-lg border-2 border-border focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm`}
+                    className={`absolute max-h-60 w-full z-30 ${placement === "top" ? "bottom-full mb-1" : "mt-1"} overflow-auto rounded-md bg-input py-1 text-base shadow-lg border-2 border-border focus:outline-none data-[closed]:data-[leave]:opacity-0 data-[leave]:transition data-[leave]:duration-100 data-[leave]:ease-in sm:text-sm`}
                 >
                     {Array.from({ length: limit }, (_, i) => i + 1).map((qty) => (
                         <ListboxOption
