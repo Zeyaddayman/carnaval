@@ -3,9 +3,8 @@
 import { db } from "@/lib/prisma"
 import { loginSchema, registerSchema } from "@/validations/auth"
 import bcrypt from "bcrypt"
-import { ACCESS_TOKEN_EXPIRY, generateAccessToken, setToken, verifyToken } from "../tokens"
+import { ACCESS_TOKEN_EXPIRY, generateAccessToken, setToken } from "../tokens"
 import { CartItemWithProduct } from "@/types/cart"
-import { Prisma } from "@/generated/prisma"
 import { mergeCartItems } from "@/lib/utils"
 
 export interface RegisterState {
@@ -156,8 +155,6 @@ export const loginAction = async (
                 formData
             }
         }
-
-        console.log(user.cart)
 
         const isPasswordValid = await bcrypt.compare(password, user.password)
 

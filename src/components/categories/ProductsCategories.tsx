@@ -56,7 +56,7 @@ const SubCategories = ({ subCategories }: { subCategories: Category[] }) => (
                         quality={100}
                     />
                 </div>
-                <p className="text-center mt-3">{subCategory.subCategoryName}</p>
+                <p className="text-center text-sm mt-3">{subCategory.subCategoryName}</p>
             </Link>
         ))}
     </div>

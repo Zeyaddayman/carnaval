@@ -10,13 +10,13 @@ export function generatePagination(
     total: number,
     page: number,
     limit: number
-): (number|"...")[] | null
+): (number|"..")[] | null
 {
     const totalPages = Math.ceil(total / limit)
 
     if (totalPages <= 1 || page > totalPages) return null
 
-    const paginationPages: (number|"...")[] = []
+    const paginationPages: (number|"..")[] = []
 
     paginationPages.push(page)
 
@@ -33,7 +33,7 @@ export function generatePagination(
     // show the first page if not visible
     if (firstIndex > 1 && firstIndex - 1 > 1) {
 
-        paginationPages.unshift("...")
+        paginationPages.unshift("..")
         paginationPages.unshift(1)
 
     } else if (firstIndex > 1) {
@@ -53,7 +53,7 @@ export function generatePagination(
     // show the last page if not visible
     if (lastIndex < totalPages && lastIndex + 1 < totalPages) {
 
-        paginationPages.push("...")
+        paginationPages.push("..")
         paginationPages.push(totalPages)
 
     } else if (lastIndex < totalPages) {
@@ -75,7 +75,7 @@ export function mergeCartItems(
         for (let i = 0; i < userCartItems.length; i++) {
             const currentItem = userCartItems[i]
 
-            mergedCartItems.push({ productId: currentItem.productId, quantity: currentItem.quantity })
+            mergedCartItems.push({ productId: currentItem.productId, quantity: currentItem.quantity, createdAt: currentItem.createdAt })
         }
     }
 
@@ -88,7 +88,7 @@ export function mergeCartItems(
         if (productInCart) {
             productInCart.quantity = currentItem.quantity
         } else {
-            mergedCartItems.push({ productId: currentItem.productId, quantity: currentItem.quantity })
+            mergedCartItems.push({ productId: currentItem.productId, quantity: currentItem.quantity, createdAt: currentItem.createdAt })
         }
     }
 

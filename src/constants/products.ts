@@ -8,6 +8,8 @@ export const PRODUCTS_SORT_OPTIONS = [
     { value: "top-discount", label: "Top Discount" }
 ] as const
 
+export const DEFAULT_SORT_OPTION = PRODUCTS_SORT_OPTIONS[0]
+
 export const PRODUCTS_MIN_RATING = 1
 export const PRODUCTS_MAX_RATING = 5
 

@@ -3,6 +3,7 @@
 import { generatePagination } from "@/lib/utils"
 import { useRouter, useSearchParams } from "next/navigation"
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri"
+import { Button } from "../ui/Button"
 
 interface Props {
     total: number,
@@ -20,7 +21,7 @@ const Pagination = ({ total, page, limit }: Props) => {
 
     if (!paginationPages) return
 
-    const handleChangePage = (page: number) => {
+    const changePage = (page: number) => {
         const params = new URLSearchParams(searchParams.toString())
 
         params.set("page", String(page))
@@ -29,37 +30,36 @@ const Pagination = ({ total, page, limit }: Props) => {
     }
 
     return (
-        <div className="mt-8 flex gap-3 items-center justify-center rounded-md">
-            <button
-                className="px-4 py-3 border border-border cursor-pointer disabled:opacity-50 disabled:cursor-auto"
-                onClick={() => handleChangePage(page - 1)}
+        <div className="mt-8 flex gap-2 items-center justify-center rounded-md">
+            <Button
+                variant={"basic"}
+                className="!px-2 !h-10"
+                onClick={() => changePage(page - 1)}
                 disabled={page === 1}
             >
                 <RiArrowLeftSLine size={20} />
-            </button>
+            </Button>
             <div className="flex flex-wrap gap-2">
                 {paginationPages.map((paginationPage, i) => (
-                    <button
+                    <Button
                         key={i}
-                        onClick={() => handleChangePage(paginationPage as number)}
-                        className={`
-                            ${page === paginationPage ? "bg-primary text-primary-foreground" : null}
-                            p-3 border border-border cursor-pointer rounded-md disabled:opacity-50 disabled:cursor-auto
-                        `}
-                        disabled={paginationPage === "..."}
+                        variant={"basic"}
+                        onClick={() => changePage(paginationPage as number)}
+                        className={`${page === paginationPage ? "!bg-primary !text-primary-foreground" : null} !w-8 !h-10`}
+                        disabled={paginationPage === ".."}
                     >
                         {paginationPage}
-                    </button>
-                )
-                )}
+                    </Button>
+                ))}
             </div>
-            <button
-                className="px-4 py-3 border border-border cursor-pointer rounded-md disabled:opacity-50 disabled:cursor-auto"
-                onClick={() => handleChangePage(page + 1)}
+            <Button
+                variant={"basic"}
+                className="!px-2 !h-10"
+                onClick={() => changePage(page + 1)}
                 disabled={page === totalPages}
             >
                 <RiArrowRightSLine size={20} />
-            </button>
+            </Button>
         </div>
     )
 }

@@ -14,7 +14,11 @@ export const getBrands = reactCache(nextCache(
                 thumbnail: true,
                 _count: {
                     select: {
-                        products: true
+                        products: {
+                            where: {
+                                stock: { gt: 0 }
+                            }
+                        }
                     }
                 }
             },

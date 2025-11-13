@@ -7,16 +7,15 @@ import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
 import FiltersAndSortSkeleton from "@/components/skeletons/FiltersAndSortSkeleton"
 import ProductsDataSkeleton from "@/components/skeletons/ProductsDataSkeleton"
-import { PRODUCTS_MAX_RATING, PRODUCTS_FILTERS } from "@/constants/products"
+import { PRODUCTS_FILTERS, PRODUCTS_SORT_OPTIONS } from "@/constants/products"
 import { getCategoryHierarchy, getSubcategories } from "@/server/db/categories"
 import { getProductsByCategory } from "@/server/db/products"
 import { getCategoryProductsMaxPrice, getCategoryProductsMinPrice, getCategoryProductsMinRating } from "@/server/db/products-statistics"
-import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
+import { ProductsSortOptionValue } from "@/types/products"
 import { Suspense } from "react"
 
-interface SearchParams extends Partial<ProductsFiltersOptions> {
-    page?: string
-    sort?: ProductsSortOptionValue
+interface SearchParams {
+    [key: string]: string | undefined
 }
 
 interface Props {
@@ -28,12 +27,16 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
 
     const { slug } = await params
 
-    const [ { category, categoryHierarchy }, subcategories ] = await Promise.all([getCategoryHierarchy(slug), getSubcategories(slug)])
+    const [
+        categoryHierarchy,
+        { categoryName, subcategories }
+
+    ] = await Promise.all([getCategoryHierarchy(slug), getSubcategories(slug)])
 
     return (
         <main>
             <div className="container">
-                <CategoryProductsHeading categoryName={category.name} categoryHierarchy={categoryHierarchy} />
+                <CategoryProductsHeading categoryName={categoryName} categoryHierarchy={categoryHierarchy} />
                 <div className="flex flex-col lg:flex-row mt-3 gap-3">
                     <Subcategories categories={subcategories} />
                     <div className="flex-1">
@@ -59,14 +62,18 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
 const Data = async ({ slug, searchParams }: { slug: string, searchParams: Promise<SearchParams> }) => {
 
     const {
-        sort = "alphabetical",
-        page: paginationPage = "1",
+        sort: sortParam,
+        page: pageParam = "1",
         minPrice,
         maxPrice,
         minRating,
         onlyOnSale
     
     } = await searchParams
+
+    const sort: ProductsSortOptionValue = PRODUCTS_SORT_OPTIONS.find(option => option.value === sortParam)?.value || "alphabetical"
+
+    const paginationPage = !isNaN(Number(pageParam)) ? Number(pageParam) : 1
 
     const filters = { ...PRODUCTS_FILTERS }
 
@@ -85,9 +92,9 @@ const Data = async ({ slug, searchParams }: { slug: string, searchParams: Promis
         pageSize,
         limit
 
-    } = await getProductsByCategory(slug, sort, filters, Number(paginationPage))
+    } = await getProductsByCategory(slug, sort, filters, paginationPage)
 
-    if (!products || products.length < 1) return <NoProductsFound returnLink={`/categories/${slug}`} />
+    if (!products || products.length === 0) return <NoProductsFound clearFiltersLink={`/categories/${slug}`} />
 
     return (
         <>
@@ -110,13 +117,15 @@ const Data = async ({ slug, searchParams }: { slug: string, searchParams: Promis
 const FiltersAndSort = async ({ slug, searchParams }: { slug: string, searchParams: Promise<SearchParams> }) => {
 
     const {
-        sort = "alphabetical",
+        sort: sortParam,
         minPrice,
         maxPrice,
         minRating,
         onlyOnSale
     
     } = await searchParams
+
+    const sort: ProductsSortOptionValue = PRODUCTS_SORT_OPTIONS.find(option => option.value === sortParam)?.value || "alphabetical"
 
     const filters = { ...PRODUCTS_FILTERS }
 
@@ -137,7 +146,7 @@ const FiltersAndSort = async ({ slug, searchParams }: { slug: string, searchPara
         <div className="flex justify-between items-center flex-wrap mb-3 gap-3">
             <ProductsFilters
                 initialFilters={filters}
-                rating={{ min: productsMinRating, max: PRODUCTS_MAX_RATING }}
+                productsMinRating={productsMinRating}
             />
             <ProductsSort sort={sort} />
         </div>

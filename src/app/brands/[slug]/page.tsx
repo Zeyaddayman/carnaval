@@ -6,15 +6,14 @@ import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
 import FiltersAndSortSkeleton from "@/components/skeletons/FiltersAndSortSkeleton"
 import ProductsDataSkeleton from "@/components/skeletons/ProductsDataSkeleton"
-import { PRODUCTS_FILTERS, PRODUCTS_MAX_RATING } from "@/constants/products"
+import { PRODUCTS_FILTERS, PRODUCTS_SORT_OPTIONS } from "@/constants/products"
 import { getProductsByBrand } from "@/server/db/products"
 import { getBrandsProductsMaxPrice, getBrandsProductsMinPrice, getBrandsProductsMinRating } from "@/server/db/products-statistics"
-import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
+import { ProductsSortOptionValue } from "@/types/products"
 import { Suspense } from "react"
 
-interface SearchParams extends Partial<ProductsFiltersOptions> {
-    page?: string
-    sort?: ProductsSortOptionValue
+interface SearchParams {
+    [key: string]: string | undefined
 }
 
 interface Props {
@@ -52,14 +51,18 @@ const BrandProductsPage = async ({ params, searchParams }: Props) => {
 const Data = async ({ slug, searchParams }: { slug: string, searchParams: Promise<SearchParams> }) => {
 
     const {
-        sort = "alphabetical",
-        page: paginationPage = "1",
+        page: pageParam = "1",
+        sort: sortParam,
         minPrice,
         maxPrice,
         minRating,
         onlyOnSale
     
     } = await searchParams
+
+    const sort: ProductsSortOptionValue = PRODUCTS_SORT_OPTIONS.find(option => option.value === sortParam)?.value || "alphabetical"
+
+    const paginationPage = !isNaN(Number(pageParam)) ? Number(pageParam) : 1
 
     const filters = { ...PRODUCTS_FILTERS }
 
@@ -78,9 +81,9 @@ const Data = async ({ slug, searchParams }: { slug: string, searchParams: Promis
         pageSize,
         limit
 
-    } = await getProductsByBrand(slug, sort, filters, Number(paginationPage))
+    } = await getProductsByBrand(slug, sort, filters, paginationPage)
 
-    if (!products || products.length < 1) return <NoProductsFound returnLink={`/brands/${slug}`} />
+    if (!products || products.length === 0) return <NoProductsFound clearFiltersLink={`/brands/${slug}`} />
 
     return (
         <>
@@ -103,13 +106,15 @@ const Data = async ({ slug, searchParams }: { slug: string, searchParams: Promis
 const FiltersAndSort = async ({ slug, searchParams }: { slug: string, searchParams: Promise<SearchParams> }) => {
 
     const {
-        sort = "alphabetical",
+        sort: sortParam,
         minPrice,
         maxPrice,
         minRating,
         onlyOnSale
     
     } = await searchParams
+
+    const sort: ProductsSortOptionValue = PRODUCTS_SORT_OPTIONS.find(option => option.value === sortParam)?.value || "alphabetical"
 
     const filters = { ...PRODUCTS_FILTERS }
 
@@ -130,7 +135,7 @@ const FiltersAndSort = async ({ slug, searchParams }: { slug: string, searchPara
         <div className="flex justify-between items-center flex-wrap mb-3 gap-3">
             <ProductsFilters
                 initialFilters={filters}
-                rating={{ min: productsMinRating, max: PRODUCTS_MAX_RATING }}
+                productsMinRating={productsMinRating}
             />
             <ProductsSort sort={sort} />
         </div>

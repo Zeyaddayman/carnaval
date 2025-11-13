@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
 
-const NoProductsFound = ({ returnLink }: { returnLink: string }) => {
+const NoProductsFound = ({ clearFiltersLink }: { clearFiltersLink: string }) => {
     return (
         <div className="flex justify-center items-center mt-10">
             <div className="text-center">
@@ -17,7 +17,7 @@ const NoProductsFound = ({ returnLink }: { returnLink: string }) => {
                 <p className="text-muted-foreground my-3">Let's clear your filters and start over.</p>
                 <div className="flex flex-col gap-2">
                     <Link
-                        href={returnLink}
+                        href={clearFiltersLink}
                         className={`${buttonVariants({ variant: "primary", size: "lg" })}`}
                     >
                         Clear Filters

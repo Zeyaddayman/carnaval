@@ -21,12 +21,7 @@ const QuantitySelector = ({ limit, quantity, setQuantity }: Props) => {
         const rect = el.getBoundingClientRect()
         const viewportHeight = window.innerHeight || document.documentElement.clientHeight
         const spaceBelow = viewportHeight - rect.bottom
-        const spaceAbove = rect.top
         const optionsMaxHeight = 240
-
-        console.log(viewportHeight)
-        console.log(spaceBelow)
-        console.log(spaceAbove)
 
         setPlacement(( spaceBelow > optionsMaxHeight) ? 'bottom' : 'top')
     }
@@ -49,7 +44,7 @@ const QuantitySelector = ({ limit, quantity, setQuantity }: Props) => {
                         <ListboxOption
                             key={qty}
                             value={qty}
-                            className="group relative cursor-default overflow-y-hidden select-none py-3 pl-3 pr-9 text-gray-900 data-[focus]:bg-primary data-[focus]:text-white"
+                            className="group relative cursor-default overflow-y-hidden select-none py-2 pl-3 pr-9 text-gray-900 data-[focus]:bg-primary data-[focus]:text-white"
                         >
                             <span className="ml-3 block truncate font-normal group-data-[selected]:font-semibold">
                                 {qty}

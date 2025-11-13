@@ -31,9 +31,7 @@ export const getTopLevelCategories = reactCache(nextCache(
 
 export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) => nextCache(
     async () => {
-        console.log(`Fetching category hierarchy for slug: ${slug}`)
-
-        const categories: CategoryHierarchy = []
+        const categoryHierarchy: CategoryHierarchy = []
 
         const category = await db.category.findUnique({
             where: { slug },
@@ -49,7 +47,7 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
             throw new Error(`Category with slug "${slug}" not found`)
         }
 
-        categories.push({
+        categoryHierarchy.push({
             name: category.name,
             subCategoryName: category.subCategoryName,
             link: `/categories/${category.slug}`,
@@ -57,7 +55,6 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
         
         let currentCategoryId = category.parentId
 
-        // get the parent categories
         while (currentCategoryId) {
             const category = await db.category.findUnique({
                 where: { id: currentCategoryId },
@@ -68,9 +65,10 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
                     parentId: true
                 }
             })
+
             if (!category) break
 
-            categories.push({
+            categoryHierarchy.push({
                 name: category.name,
                 subCategoryName: category.subCategoryName,
                 link: `/categories/${category.slug}`,
@@ -79,28 +77,23 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
             currentCategoryId = category.parentId
         }
 
-        categories.push({
+        categoryHierarchy.push({
             name: "Categories",
             subCategoryName: "Categories",
             link: "/categories",
         })
 
-        return { categoryHierarchy: categories.reverse(), category }
+        return categoryHierarchy.reverse()
     },
-    [`${slug}-hierarchy`],
-    {
-        revalidate: 60 * 60,    // revalidate every 60 minutes
-        tags: [`${slug}-hierarchy`]
-    }
+    [`${slug}-hierarchy`]
 )())
 
 export const getSubcategories = reactCache(async (slug: Category["slug"]) => nextCache(
     async () => {
-        console.log(`Fetching subcategories for slug: ${slug}`)
-
         const category = await db.category.findUnique({
             where: { slug },
             select: {
+                name: true,
                 children: {
                     select: {
                         id: true,
@@ -124,11 +117,7 @@ export const getSubcategories = reactCache(async (slug: Category["slug"]) => nex
             throw new Error(`Category with slug "${slug}" not found`)
         }
 
-        return category.children
+        return { categoryName: category.name, subcategories: category.children}
     },
-    [`${slug}-subcategories`],
-    {
-        revalidate: 60 * 60,    // revalidate every 60 minutes
-        tags: [`${slug}-subcategories`]
-    }
+    [`${slug}-subcategories`]
 )())

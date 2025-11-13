@@ -29,14 +29,13 @@ const SelectMenu = ({ title, options, selected, setSelected }: Props) => {
         const rect = el.getBoundingClientRect()
         const viewportHeight = window.innerHeight || document.documentElement.clientHeight
         const spaceBelow = viewportHeight - rect.bottom
-        const spaceAbove = rect.top
         const optionsMaxHeight = 240
 
         setPlacement(( spaceBelow > optionsMaxHeight) ? 'bottom' : 'top')
     }
 
     return (
-        <Listbox  value={selected} onChange={setSelected}>
+        <Listbox value={selected} onChange={setSelected}>
             <div onClick={handlePlacement} ref={selectRef} className="relative min-w-70">
                 <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-3 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-primary sm:text-sm/6">
                     <span className="ml-3 block truncate">{title} {selected.label}</span>

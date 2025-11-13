@@ -65,7 +65,6 @@ const RegisterFrom = () => {
 
                 toast.success(state.message)
 
-                // didn't use the useSearchParams hook to prevent wrap this component in Suspense
                 const searchParams = new URLSearchParams(window.location.search)
                 const redirectPath = searchParams.get("redirect") || "/"
 

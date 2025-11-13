@@ -33,18 +33,20 @@ const ProductLocalCart = ({ product, initialLimit }: Props) => {
 
     const addItem = (quantity: number) => {
 
-        // to stringify non-serializable data types like Date
-        const serializableProduct = JSON.parse(JSON.stringify(product))
-
-        dispatch(addItemToLocalCart({
+        const newCartItem = {
             id: crypto.randomUUID(),
             cartId: "local",
-            product: serializableProduct,
+            product: product,
             productId: product.id,
             quantity,
-            createdAt: JSON.parse(JSON.stringify(new Date())),
-            updatedAt: JSON.parse(JSON.stringify(new Date()))
-        }))
+            createdAt: new Date(),
+            updatedAt: new Date()
+        }
+
+        // to stringify non-serializable data types like Date
+        const serializableCartItem = JSON.parse(JSON.stringify(newCartItem))
+
+        dispatch(addItemToLocalCart(serializableCartItem))
 
         fetch(`/api/product/${product.id}/limit`)
             .then(res => res.json())
@@ -56,16 +58,14 @@ const ProductLocalCart = ({ product, initialLimit }: Props) => {
                     if (quantity > productLimit) {
 
                         toast.error(`Only ${productLimit} items are available`)
-    
-                        dispatch(addItemToLocalCart({
-                            id: crypto.randomUUID(),
-                            cartId: "local",
-                            product: serializableProduct,
-                            productId: product.id,
-                            quantity: quantity > productLimit ? productLimit : quantity,
-                            createdAt: JSON.parse(JSON.stringify(new Date())),
-                            updatedAt: JSON.parse(JSON.stringify(new Date()))
+
+                        // to stringify non-serializable data types like Date
+                        const serializableCartItem = JSON.parse(JSON.stringify({
+                            ...newCartItem,
+                            quantity: quantity > productLimit ? productLimit : quantity
                         }))
+    
+                        dispatch(addItemToLocalCart(serializableCartItem))
                     }
 
                 }

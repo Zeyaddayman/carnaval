@@ -1,23 +1,23 @@
 "use client"
 
-import { ChangeEvent, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "../ui/Button"
 import Dialog from "../ui/Dialog"
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2"
 import Input from "../ui/Input"
 import { ProductsFiltersOptions } from "@/types/products"
 import { useRouter, useSearchParams } from "next/navigation"
-import { PRODUCTS_FILTERS } from "@/constants/products"
+import { PRODUCTS_FILTERS, PRODUCTS_MAX_RATING } from "@/constants/products"
 import { BiStar } from "react-icons/bi"
 import { CiDiscount1 } from "react-icons/ci"
 import { TbRosetteDiscountCheck } from "react-icons/tb"
 
 interface Props {
     initialFilters: ProductsFiltersOptions
-    rating: { min: number, max: number }
+    productsMinRating: number
 }
 
-const ProductsFilters = ({ initialFilters, rating }: Props) => {
+const ProductsFilters = ({ initialFilters, productsMinRating }: Props) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -33,27 +33,20 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
         setFilters(initialFilters)
     }, [initialFilters])
 
-    const handlePriceRangeChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target
-
-        setFilters(prev => ({
-            ...prev,
-            [name]: Number(value)
-        }))
+    const setMinPrice = (minPrice: number) => {
+        setFilters(prev => ({ ...prev, minPrice }))
     }
 
-    const handleRatingRangeChange = (minRating: number) => {
-        setFilters(prev => ({
-            ...prev,
-            minRating
-        }))
+    const setMaxPrice = (maxPrice: number) => {
+        setFilters(prev => ({ ...prev, maxPrice }))
     }
 
-    const handleOnlyOnSaleChange = (onlyOnSale: boolean) => {
-        setFilters(prev => ({
-            ...prev,
-            onlyOnSale
-        }))
+    const setMinRating = (minRating: number) => {
+        setFilters(prev => ({ ...prev, minRating }))
+    }
+
+    const setOnlyOnSale = (onlyOnSale: boolean) => {
+        setFilters(prev => ({ ...prev, onlyOnSale }))
     }
 
     const applyFilters = () => {
@@ -88,6 +81,8 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
     return (
         <div>
             <Button
+                variant={"primary"}
+                size={"lg"}
                 onClick={open}
             >
                 <HiOutlineAdjustmentsHorizontal size={20} /> Filters
@@ -101,17 +96,17 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
                     <PriceRange
                         minPrice={filters.minPrice}
                         maxPrice={filters.maxPrice}
-                        handlePriceRangeChange={handlePriceRangeChange}
+                        setMinPrice={setMinPrice}
+                        setMaxPrice={setMaxPrice}
                     />
                     <RatingRange
-                        ratingValue={filters.minRating}
-                        minRating={rating.min}
-                        maxRating={rating.max}
-                        handleRatingRangeChange={handleRatingRangeChange}
+                        productsMinRating={productsMinRating}
+                        minRating={filters.minRating}
+                        setMinRating={setMinRating}
                     />
                     <OnlyOnSaleToggle
                         onlyOnSale={filters.onlyOnSale}
-                        handleOnlyOnSaleChange={handleOnlyOnSaleChange}
+                        setOnlyOnSale={setOnlyOnSale}
                     />
                 </div>
                 <div className="flex justify-between items-center mt-5">
@@ -133,28 +128,30 @@ const ProductsFilters = ({ initialFilters, rating }: Props) => {
 const PriceRange = ({ 
     minPrice,
     maxPrice,
-    handlePriceRangeChange
+    setMinPrice,
+    setMaxPrice
 }: {
     minPrice: number,
     maxPrice: number,
-    handlePriceRangeChange: (e: ChangeEvent<HTMLInputElement>) => void
+    setMinPrice: (minPrice: number) => void,
+    setMaxPrice: (maxPrice: number) => void
 }) => {
     return (
         <div>
             <h4 className="font-semibold mb-2">Price range</h4>
             <div className="flex gap-2 justify-between items-center">
                 <Input 
-                    name="minPrice"
+                    name="min-price"
                     type="number"
                     value={minPrice}
-                    onChange={handlePriceRangeChange}
+                    onChange={(e) => setMinPrice(Number(e.target.value))}
                 />
                 TO
                 <Input
-                    name="maxPrice"
+                    name="max-price"
                     type="number"
                     value={maxPrice}
-                    onChange={handlePriceRangeChange}
+                    onChange={(e) => setMaxPrice(Number(e.target.value))}
                 />
             </div>
         </div>
@@ -162,41 +159,39 @@ const PriceRange = ({
 }
 
 const RatingRange = ({
-    ratingValue,
+    productsMinRating,
     minRating,
-    maxRating,
-    handleRatingRangeChange
+    setMinRating
 }: {
-    ratingValue: number,
+    productsMinRating: number,
     minRating: number,
-    maxRating: number,
-    handleRatingRangeChange: (minRating: number) => void
+    setMinRating: (minRating: number) => void
 }) => {
 
-    const fillPercentage = (ratingValue - minRating) / (maxRating - minRating) * 100
+    const fillPercentage = (minRating - productsMinRating) / (PRODUCTS_MAX_RATING - productsMinRating) * 100
 
     return (
         <div>
             <h4 className="font-semibold mb-2">Rating range</h4>
             <p className="text-primary mb-2">
-                {ratingValue === maxRating ? `Only ${ratingValue} stars` : `${ratingValue} Stars or more`}
+                {minRating === PRODUCTS_MAX_RATING ? `Only ${minRating} stars` : `${minRating} Stars or more`}
             </p>
             <input
                 className="appearance-none w-full h-3 rounded-md cursor-pointer outline-none"
                 id="range-input"
                 type="range"
-                min={minRating}
-                max={maxRating}
+                min={productsMinRating}
+                max={PRODUCTS_MAX_RATING}
                 step={0.1}
-                value={ratingValue}
-                onChange={({ target: { value } }) => handleRatingRangeChange(Number(value))}
+                value={minRating}
+                onChange={(e) => setMinRating(Number(e.target.value))}
                 style={{
                     background: `linear-gradient(to right, var(--input) 0%, var(--input) ${fillPercentage}%, var(--primary) ${fillPercentage}%, var(--primary) 100%)`,
                 }}
             />
             <div className="flex justify-between items-center">
                 <span className="flex gap-1 items-center">{minRating} <BiStar /></span>
-                <span className="flex gap-1 items-center">{maxRating} <BiStar /></span>
+                <span className="flex gap-1 items-center">{PRODUCTS_MAX_RATING} <BiStar /></span>
             </div>
         </div>
     )
@@ -204,10 +199,10 @@ const RatingRange = ({
 
 const OnlyOnSaleToggle = ({ 
     onlyOnSale,
-    handleOnlyOnSaleChange
+    setOnlyOnSale
 }: {
     onlyOnSale: boolean,
-    handleOnlyOnSaleChange: (onlyOnSale: boolean) => void
+    setOnlyOnSale: (onlyOnSale: boolean) => void
 }) => {
     return (
         <div>
@@ -221,7 +216,7 @@ const OnlyOnSaleToggle = ({
                         type="radio"
                         className="sr-only"
                         id="all-products"
-                        onClick={() => handleOnlyOnSaleChange(false)}
+                        onClick={() => setOnlyOnSale(false)}
                     />
                     <TbRosetteDiscountCheck /> All products
                 </label>
@@ -233,7 +228,7 @@ const OnlyOnSaleToggle = ({
                         type="radio"
                         className="sr-only"
                         id="only-on-sale"
-                        onClick={() => handleOnlyOnSaleChange(true)}
+                        onClick={() => setOnlyOnSale(true)}
                     />
                     <CiDiscount1 /> On sale only
                 </label>
