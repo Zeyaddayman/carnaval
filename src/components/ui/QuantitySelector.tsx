@@ -29,7 +29,7 @@ const QuantitySelector = ({ limit, quantity, setQuantity }: Props) => {
     return (
         <Listbox value={quantity} onChange={setQuantity}>
             <div onClick={handlePlacement} ref={selectorRef} className="relative min-w-30 flex-1">
-                <ListboxButton className="relative h-9 w-full flex justify-center items-center cursor-default rounded-md bg-input py-3 pl-3 pr-10 text-left border border-border focus:outline-none focus:border-primary sm:text-sm/6">
+                <ListboxButton className="relative h-9 w-full flex justify-center items-center cursor-default rounded-md bg-input py-3 pl-3 pr-10 text-left border border-border focus:outline-none focus:ring-3 focus:ring-primary/50 sm:text-sm/6">
                     <span className="truncate">{quantity}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                         <HiMiniChevronUpDown />

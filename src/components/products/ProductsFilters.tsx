@@ -177,7 +177,7 @@ const RatingRange = ({
                 {minRating === PRODUCTS_MAX_RATING ? `Only ${minRating} stars` : `${minRating} Stars or more`}
             </p>
             <input
-                className="appearance-none w-full h-3 rounded-md cursor-pointer outline-none"
+                className="appearance-none w-full h-3 rounded-md cursor-pointer outline-none focus:ring-3 focus:ring-primary/50"
                 id="range-input"
                 type="range"
                 min={productsMinRating}
@@ -208,30 +208,36 @@ const OnlyOnSaleToggle = ({
         <div>
             <h4 className="font-semibold mb-2">Show</h4>
             <div className="flex gap-2 justify-between items-center">
-                <label
-                    htmlFor="all-products"
-                    className={`${!onlyOnSale ? "border-primary" : "border-border"} border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
-                >
+                <div className="flex-1">
                     <input
                         type="radio"
-                        className="sr-only"
+                        className="peer sr-only"
                         id="all-products"
-                        onClick={() => setOnlyOnSale(false)}
+                        checked={onlyOnSale === false}
+                        onChange={() => setOnlyOnSale(false)}
                     />
-                    <TbRosetteDiscountCheck /> All products
-                </label>
-                <label
-                    htmlFor="only-on-sale"
-                    className={`${onlyOnSale ? "border-primary" : "border-border"} border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
-                >
+                    <label
+                        htmlFor="all-products"
+                        className={`${!onlyOnSale ? "border-primary" : "border-border"} peer-focus:ring-3 peer-focus:ring-primary/50 border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
+                    >
+                        <TbRosetteDiscountCheck /> All products
+                    </label>
+                </div>
+                <div className="flex-1">
                     <input
                         type="radio"
-                        className="sr-only"
+                        className="peer sr-only"
                         id="only-on-sale"
-                        onClick={() => setOnlyOnSale(true)}
+                        checked={onlyOnSale === true}
+                        onChange={() => setOnlyOnSale(true)}
                     />
-                    <CiDiscount1 /> On sale only
-                </label>
+                    <label
+                        htmlFor="only-on-sale"
+                        className={`${onlyOnSale ? "border-primary" : "border-border"} peer-focus:ring-3 peer-focus:ring-primary/50 border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
+                    >
+                        <CiDiscount1 /> On sale only
+                    </label>
+                </div>
             </div>
         </div>
     )
