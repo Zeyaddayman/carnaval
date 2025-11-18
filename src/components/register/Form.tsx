@@ -19,6 +19,12 @@ const registerFields = [
         autoFocus: true
     },
     {
+        label: "Phone number",
+        name: "phone",
+        type: "text",
+        placeholder: "Enter your phone number"
+    },
+    {
         label: "Email",
         name: "email",
         type: "email",

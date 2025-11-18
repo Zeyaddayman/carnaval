@@ -1,8 +1,11 @@
+"use client"
+
 import { CartItemWithProduct } from "@/types/cart"
 import { Button } from "../ui/Button"
 import { formatPrice } from "@/lib/formatters"
 import { SHIPPING_COST, SHIPPING_THRESHOLD } from "@/constants/cart"
 import { CiWarning } from "react-icons/ci"
+import { useRouter } from "next/navigation"
 
 interface Props {
     cartItems: CartItemWithProduct[]
@@ -10,6 +13,8 @@ interface Props {
 }
 
 const CartOrderSummary = ({ cartItems, hasUnavailableItems }: Props) => {
+
+    const router = useRouter()
 
     const itemsCount = cartItems.reduce((acc, item) => acc + item.quantity, 0)
 
@@ -28,8 +33,14 @@ const CartOrderSummary = ({ cartItems, hasUnavailableItems }: Props) => {
     const shipping = subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST
     const total = formatPrice(subtotal + shipping)
 
+    const goToCheckout = () => {
+        if (!hasUnavailableItems) {
+            router.push("/checkout")
+        }
+    }
+
     return (
-        <div className="w-full lg:w-80 sticky top-5 h-fit rounded-md border border-border bg-card p-4 shadow-sm">
+        <div className="w-full lg:w-80 sticky top-5 h-fit rounded-md border border-border bg-card p-3 shadow-sm">
             <p className="text-muted-foreground text-sm">Free shipping over ${SHIPPING_THRESHOLD}</p>
             <h4 className="font-semibold text-xl py-3 border-b border-border">Order Summary</h4>
             <div className="space-y-2 my-3">
@@ -51,6 +62,7 @@ const CartOrderSummary = ({ cartItems, hasUnavailableItems }: Props) => {
                 size={"lg"}
                 className="w-full mt-4"
                 disabled={hasUnavailableItems}
+                onClick={goToCheckout}
             >
                 Checkout
             </Button>

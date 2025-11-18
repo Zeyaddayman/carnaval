@@ -43,7 +43,7 @@ export const registerAction = async (
     }
 
     try {
-        const { name, email, password } = result.data
+        const { name, email, phone, password } = result.data
 
         const userExist = await db.user.findUnique({
             where: { email }
@@ -65,6 +65,7 @@ export const registerAction = async (
             data: {
                 email,
                 name,
+                phone,
                 password: hashedPassword,
                 cart: {
                     create: {
