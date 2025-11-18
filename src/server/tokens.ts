@@ -8,7 +8,7 @@ export const ACCESS_TOKEN_EXPIRY = 60 * 60 * 24;
 
 export function generateAccessToken(user: User) {
     return jwt.sign(
-        { userId: user.id, email: user.email, role: user.role },
+        { userId: user.id, email: user.email, name: user.name, role: user.role },
         SECRET_KEY,
         { expiresIn: ACCESS_TOKEN_EXPIRY }
     )
