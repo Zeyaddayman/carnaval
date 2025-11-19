@@ -24,8 +24,6 @@ const ProfileSidebar = ({ session }: Props) => {
     const pathname = usePathname()
 
     const isActiveLink = (href: string) => {
-        console.log(href)
-        console.log(href.split("/"))
         return href.split("/").length > 2
             ? pathname.startsWith(href)
             : pathname === href
