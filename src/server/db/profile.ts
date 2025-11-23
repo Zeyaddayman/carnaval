@@ -1,7 +1,8 @@
+import { cache as reactCache } from "react"
 import { db } from "@/lib/prisma";
 import { isAuthenticated } from "./auth";
 
-export const getProfile = async () => {
+export const getProfile = reactCache(async () => {
 
     const session = await isAuthenticated()
 
@@ -25,4 +26,4 @@ export const getProfile = async () => {
     }
 
     return user
-}
+})

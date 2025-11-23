@@ -34,3 +34,9 @@ export function verifyToken(token: string) {
         return null
     }
 }
+
+export async function clearToken(name: string) {
+    const cookiesStore = await cookies()
+
+    cookiesStore.delete(name)
+}
