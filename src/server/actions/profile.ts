@@ -1,10 +1,11 @@
 "use server"
 
-import { editProfileSchema } from "@/validations/profile"
+import { changePasswordSchema, editProfileSchema } from "@/validations/profile"
 import { isAuthenticated } from "../db/auth"
 import { db } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { ACCESS_TOKEN_EXPIRY, clearToken, generateAccessToken, setToken } from "../tokens"
+import bcrypt from "bcrypt"
 
 export interface EditProfileState {
     message?: string
@@ -93,5 +94,100 @@ export const editProfileAction = async (
     }
     finally {
         revalidatePath("/profile")
+    }
+}
+
+
+export interface ChangePasswordState {
+    message?: string
+    errors?: { [error: string]: string }
+    status?: number 
+    formData?: FormData
+}
+
+export const changePasswordAction = async (
+    prevState: ChangePasswordState,
+    formData: FormData,
+
+): Promise<ChangePasswordState> => {
+
+    const formObject = {
+        currentPassword: formData.get("currentPassword") as string,
+        newPassword: formData.get("newPassword"),
+        confirmNewPassword: formData.get("confirmNewPassword"),
+    }
+
+    const result = changePasswordSchema.safeParse(formObject)
+
+    if (!result.success) {
+
+        const errors = result.error.issues.reduce<{ [error: string]: string }>((acc, current) => {
+            const error = String(current.path)
+
+            if (!acc[error]) acc[error] = current.message
+
+            return acc
+        }, {})
+
+        return {
+            errors,
+            formData,
+            status: 400
+        }
+    }
+
+    try {
+        const sesstion = await isAuthenticated()
+
+        if (!sesstion) {
+            return {
+                message: "Unauthorized",
+                status: 401,
+                formData
+            }
+        }
+
+        const userExist = await db.user.findUnique({
+            where: { id: sesstion.userId }
+        })
+
+        if (!userExist) {
+            return {
+                message: "User not found",
+                status: 404,
+                formData
+            }
+        }
+
+        const isPasswordValid = await bcrypt.compare(formObject.currentPassword, userExist.password)
+
+        if (!isPasswordValid) {
+            return {
+                status: 400,
+                formData,
+                errors: { currentPassword: "Current password is incorrect" }
+            }
+        }
+
+        const { newPassword } = result.data
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+        await db.user.update({
+            where: { id: sesstion.userId },
+            data: { password: hashedPassword }
+        })
+
+        return {
+            message: "Password changed successfully",
+            status: 200,
+        }
+    }
+    catch {
+        return {
+            message: "An unexpected error occurred",
+            status: 500,
+            formData
+        }
     }
 }

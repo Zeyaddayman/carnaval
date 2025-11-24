@@ -1,3 +1,4 @@
+import ChangePasswordFrom from "@/components/profile/settings/ChangePasswordFrom"
 import EditProfileForm from "@/components/profile/settings/EditProfileForm"
 import Heading from "@/components/ui/Heading"
 import { getProfile } from "@/server/db/profile"
@@ -10,6 +11,7 @@ const ProfileSettingsPage = () => {
         />
         <div className="grid md:grid-cols-2 gap-5">
             <EditProfileSection />
+            <ChangePasswordSection />
         </div>
         </>
     )
@@ -23,6 +25,15 @@ const EditProfileSection = async () => {
         <section className="px-3 py-6 bg-card border border-border rounded-md">
             <h5 className="text-xl font-semibold mb-5">Personal Inforamtion</h5>
             <EditProfileForm profile={profile} />
+        </section>
+    )
+}
+
+const ChangePasswordSection = () => {
+    return (
+        <section className="px-3 py-6 bg-card border border-border rounded-md">
+            <h5 className="text-xl font-semibold mb-5">Password & Security</h5>
+            <ChangePasswordFrom />
         </section>
     )
 }
