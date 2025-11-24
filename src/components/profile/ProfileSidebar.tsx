@@ -3,10 +3,12 @@
 import { UserSession } from "@/types/user"
 import Link from "next/link"
 import { Button, buttonVariants } from "../ui/Button"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { MdGridView } from "react-icons/md"
 import { FiMapPin, FiShoppingBag } from "react-icons/fi"
 import { IoExitOutline, IoSettingsOutline } from "react-icons/io5"
+import { logoutAction } from "@/server/actions/auth"
+import toast from "react-hot-toast"
 
 const links = [
     { name: "Account Overview", href: "/profile", icon: <MdGridView size={20} /> },
@@ -23,14 +25,29 @@ const ProfileSidebar = ({ session }: Props) => {
 
     const pathname = usePathname()
 
+    const router = useRouter()
+
     const isActiveLink = (href: string) => {
         return href.split("/").length > 2
             ? pathname.startsWith(href)
             : pathname === href
     }
 
+    const logout = () => {
+        logoutAction()
+            .then(({ message }) => {
+                toast.success(message)
+            })
+            .catch(() => {
+                toast.error("Failed to logout")
+            })
+            .finally(() => {
+                router.refresh()
+            })
+    }
+
     return (
-        <aside className="w-fit lg:w-80 bg-card border border-border shadow-sm p-3 rounded-md">
+        <aside className="w-fit lg:w-80 h-fit sticky top-5 bg-card border border-border shadow-sm p-3 rounded-md">
             <div className="py-4">
                 <h2 className="font-semibold text-2xl truncate w-11 lg:w-auto">Hello, {session.name}</h2>
                 <p className="text-muted-foreground text-sm truncate w-11 lg:w-auto">{session.email}</p>
@@ -53,6 +70,7 @@ const ProfileSidebar = ({ session }: Props) => {
             <Button
                 variant={"destructive"}
                 className="!w-full !justify-start"
+                onClick={logout}
             >
                 <IoExitOutline size={20} /> <div className="hidden lg:block">Logout</div>
             </Button>

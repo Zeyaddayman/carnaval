@@ -201,5 +201,15 @@ export const loginAction = async (
 }
 
 export const logoutAction = async () => {
-    await clearToken("accessToken")
+    try {
+        await clearToken("accessToken")
+        return {
+            message: "Logged out successfully",
+        }
+    }
+    catch {
+        return {
+            message: "An unexpected error occurred",
+        }
+    }
 }
