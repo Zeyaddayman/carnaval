@@ -90,7 +90,7 @@ const RegisterFrom = () => {
         <form
             action={action}
             className="space-y-2"
-            >
+        >
             {registerFields.map(field => (
                 <div key={field.name}>
                     <label

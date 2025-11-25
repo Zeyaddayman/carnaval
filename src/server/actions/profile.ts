@@ -1,6 +1,6 @@
 "use server"
 
-import { changePasswordSchema, editProfileSchema } from "@/validations/profile"
+import { addNewAddressSchema, changePasswordSchema, editProfileSchema } from "@/validations/profile"
 import { isAuthenticated } from "../db/auth"
 import { db } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
@@ -189,5 +189,128 @@ export const changePasswordAction = async (
             status: 500,
             formData
         }
+    }
+}
+
+export interface AddNewAddressState {
+    message?: string
+    errors?: { [error: string]: string }
+    status?: number 
+    formData?: FormData
+}
+
+export const addNewAddressAction = async (
+    prevState: AddNewAddressState,
+    formData: FormData
+
+): Promise<AddNewAddressState> => {
+
+    const formObject = Object.fromEntries(formData.entries())
+
+    const result = addNewAddressSchema.safeParse(formObject)
+
+    const isDefault = formObject.default === "on"
+
+    if (!result.success) {
+
+        const errors = result.error.issues.reduce<{ [error: string]: string }>((acc, current) => {
+            const error = String(current.path)
+
+            if (!acc[error]) acc[error] = current.message
+
+            return acc
+        }, {})
+
+        return {
+            errors,
+            formData,
+            status: 400
+        }
+    }
+
+    try {
+        const session = await isAuthenticated()
+
+        if (!session) {
+            return {
+                message: "Unauthorized",
+                status: 401,
+                formData
+            }
+        }
+
+        const userId = session.userId
+
+        const userExist = await db.user.findUnique({
+            where: { id: userId }
+        })
+
+        if (!userExist) {
+            return {
+                message: "User not found",
+                status: 404,
+                formData
+            }
+        }
+
+        const { label, name, phone, country, governorate, city, streetAddress } = result.data
+
+        const addressExist = await db.address.findUnique({
+            where: {
+                userId_label: {
+                    userId,
+                    label
+                }
+            }
+        })
+
+        if (addressExist) {
+            return {
+                message: "Address already exists",
+                status: 400,
+                formData,
+                errors: { label: "Address with this label already exists" }
+            }
+        }
+
+        if (isDefault) {
+            await db.address.updateMany({
+                where: {
+                    userId
+                },
+                data: {
+                    default: false
+                }
+            })
+        }
+
+        await db.address.create({
+            data: {
+                userId,
+                label,
+                name,
+                phone,
+                country,
+                governorate,
+                city,
+                streetAddress,
+                default: isDefault
+            }
+        })
+
+        return {
+            message: "Address added successfully",
+            status: 201
+        }
+    }
+    catch {
+        return {
+            message: "An unexpected error occurred",
+            status: 500,
+            formData
+        }
+    }
+    finally {
+        revalidatePath("/profile/addresses")
     }
 }

@@ -39,10 +39,7 @@ const ChangePasswordFrom =  () => {
 
     const [state, action, isPending] = useActionState(changePasswordAction, initialState)
 
-    console.log(state)
-
     useEffect(() => {
-
         if (state.status && state.message) {
             if (state.status === 200) {
                 toast.success(state.message)

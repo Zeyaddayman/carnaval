@@ -20,7 +20,7 @@ export default function Dialog({ isOpen, close, title, children }: Props) {
                 <div className="flex min-h-full items-center justify-center p-4">
                     <DialogPanel
                         transition
-                        className="w-full max-w-md rounded-xl bg-white border-border shadow-xl p-6 duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
+                        className="w-full max-h-[95vh] overflow-y-auto max-w-md rounded-xl bg-white border-border shadow-xl p-6 duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
                     >
                         <div className='flex justify-between items-center mb-5'>
                             <DialogTitle as="h3" className="text-xl font-semibold text-foreground">

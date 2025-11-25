@@ -1,11 +1,13 @@
 import AddNewAddress from "@/components/profile/addresses/AddNewAddress"
 import AddressCard from "@/components/profile/addresses/AddressCard"
 import Heading from "@/components/ui/Heading"
-import { getUserAddresses } from "@/server/db/profile"
+import { getProfile, getUserAddresses } from "@/server/db/profile"
 
 const ProfileAddressesPage = async () => {
 
     const addresses = await getUserAddresses()
+
+    const profile = await getProfile()
 
     return (
         <>
@@ -17,7 +19,7 @@ const ProfileAddressesPage = async () => {
                 <AddressCard key={address.id} address={address} />
             ))}
         </div>
-        <AddNewAddress />
+        <AddNewAddress userName={profile.name} userPhone={profile.phone} />
         </>
     )
 }

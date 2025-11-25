@@ -1,6 +1,7 @@
 import { cache as reactCache } from "react"
 import { db } from "@/lib/prisma";
 import { isAuthenticated } from "./auth";
+import { Address } from "@/generated/prisma";
 
 export const getProfile = reactCache(async () => {
 
@@ -10,10 +11,10 @@ export const getProfile = reactCache(async () => {
         throw new Error("User is not authenticated")
     }
 
-    const id = session.userId
+    const userId = session.userId
 
     const user = await db.user.findUnique({
-        where: { id },
+        where: { id: userId },
         select: {
             name: true,
             email: true,
@@ -22,7 +23,7 @@ export const getProfile = reactCache(async () => {
     })
 
     if (!user) {
-        throw new Error(`User with id "${id}" not found`)
+        throw new Error(`User with id "${userId}" not found`)
     }
 
     return user
@@ -35,10 +36,10 @@ export const getUserAddresses = async () => {
         throw new Error("User is not authenticated")
     }
 
-    const id = session.userId
+    const userId = session.userId
 
     const addresses = await db.address.findMany({
-        where: { userId: id },
+        where: { userId },
         orderBy: [
             { default: "desc" },
             { createdAt: "desc" }
