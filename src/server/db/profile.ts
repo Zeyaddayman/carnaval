@@ -27,3 +27,23 @@ export const getProfile = reactCache(async () => {
 
     return user
 })
+
+export const getUserAddresses = async () => {
+    const session = await isAuthenticated()
+
+    if (!session) {
+        throw new Error("User is not authenticated")
+    }
+
+    const id = session.userId
+
+    const addresses = await db.address.findMany({
+        where: { userId: id },
+        orderBy: [
+            { default: "desc" },
+            { createdAt: "desc" }
+        ]
+    })
+
+    return addresses
+}
