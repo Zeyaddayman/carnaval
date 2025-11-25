@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button"
 import { Address } from "@/generated/prisma"
+import DeleteAddressButton from "./DeleteAddressButton"
 
 interface Props {
     address: Address
@@ -37,11 +38,7 @@ const AddressCard = ({ address }: Props) => {
                         Edit
                     </Button>
                 </div>
-                <Button
-                    variant={"destructiveOutline"}
-                >
-                    Delete
-                </Button>
+                <DeleteAddressButton addressId={address.id} />
             </div>
         </div>
     )

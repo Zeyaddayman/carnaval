@@ -314,3 +314,52 @@ export const addNewAddressAction = async (
         revalidatePath("/profile/addresses")
     }
 }
+
+export const deleteAddressAction = async (addressId: string) => {
+
+    const session = await isAuthenticated()
+
+    if (!session) {
+        return {
+            message: "Unauthorized",
+            status: 401
+        }
+    }
+
+    try {
+
+        const userId = session.userId
+
+        const userExist = await db.user.findUnique({
+            where: { id: userId }
+        })
+
+        if (!userExist) {
+            return {
+                message: "User not found",
+                status: 404,
+            }
+        }
+
+        await db.address.delete({
+            where: {
+                userId,
+                id: addressId
+            }
+        })
+
+        return {
+            message: "Address deleted successfully",
+            status: 200
+        }
+    }
+    catch {
+        return {
+            message: "An unexpected error occurred",
+            status: 500
+        }
+    }
+    finally {
+        revalidatePath("/profile/addresses")
+    }
+}
