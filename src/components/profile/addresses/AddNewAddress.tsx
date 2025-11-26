@@ -113,7 +113,7 @@ const AddNewAddress = ({ userName, userPhone }: { userName: string, userPhone: s
                     {addNewAddressFields.map(field => (
                         <div key={field.name} className={field.width === "half" ? "col-span-1" : "col-span-2"}>
                             <label
-                                className="text-xs text-muted-foreground mb-2 select-none"
+                                className="text-xs text-muted-foreground mb-2"
                                 htmlFor={field.name}
                             >
                                 {field.label}
@@ -142,7 +142,7 @@ const AddNewAddress = ({ userName, userPhone }: { userName: string, userPhone: s
                             className="scale-125"
                         />
                         <label
-                            className="text-sm"
+                            className="text-sm select-none"
                             htmlFor="default"
                         >
                             Set as Default Address
@@ -160,6 +160,7 @@ const AddNewAddress = ({ userName, userPhone }: { userName: string, userPhone: s
                             variant={"primary"}
                             type="submit"
                             disabled={isPending}
+                            className="min-w-[118px]"
                         >
                             {isPending ? "Adding..." : "Add Address"}
                         </Button>

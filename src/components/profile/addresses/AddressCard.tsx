@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/Button"
 import { Address } from "@/generated/prisma"
 import DeleteAddressButton from "./DeleteAddressButton"
+import SetAsDefaultButton from "./SetAsDefaultButton"
 
 interface Props {
     address: Address
@@ -26,11 +27,7 @@ const AddressCard = ({ address }: Props) => {
             <div className="flex justify-between gap-2 flex-wrap mt-5">
                 <div className="flex justify-between gap-2 flex-wrap">
                     {!(address.default) && (
-                        <Button
-                            variant={"primary"}
-                        >
-                            Set as Default
-                        </Button>
+                        <SetAsDefaultButton addressId={address.id} />
                     )}
                     <Button
                         variant={"secondary"}

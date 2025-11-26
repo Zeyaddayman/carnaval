@@ -311,7 +311,7 @@ export const addNewAddressAction = async (
         }
     }
     finally {
-        revalidatePath("/profile/addresses")
+        revalidatePath("/profile")
     }
 }
 
@@ -360,6 +360,61 @@ export const deleteAddressAction = async (addressId: string) => {
         }
     }
     finally {
-        revalidatePath("/profile/addresses")
+        revalidatePath("/profile")
+    }
+}
+
+export const setAddressAsDefaultAction = async (addressId: string) => {
+
+    const session = await isAuthenticated()
+
+    if (!session) {
+        return {
+            message: "Unauthorized",
+            status: 401
+        }
+    }
+
+    try {
+
+        const userId = session.userId
+
+        const userExist = await db.user.findUnique({
+            where: { id: userId }
+        })
+
+        if (!userExist) {
+            return {
+                message: "User not found",
+                status: 404,
+            }
+        }
+
+        await db.address.updateMany({
+            where: { userId },
+            data: { default: false }
+        })
+
+        await db.address.update({
+            where: {
+                userId,
+                id: addressId
+            },
+            data: { default: true }
+        })
+
+        return {
+            message: "Address set as default successfully",
+            status: 200
+        }
+    }
+    catch {
+        return {
+            message: "An unexpected error occurred",
+            status: 500
+        }
+    }
+    finally {
+        revalidatePath("/profile")
     }
 }
