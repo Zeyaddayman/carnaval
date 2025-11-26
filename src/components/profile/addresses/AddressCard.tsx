@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/Button"
 import { Address } from "@/generated/prisma"
 import DeleteAddressButton from "./DeleteAddressButton"
 import SetAsDefaultButton from "./SetAsDefaultButton"
+import EditAddressButton from "./EditAddressButton"
 
 interface Props {
     address: Address
@@ -29,11 +30,7 @@ const AddressCard = ({ address }: Props) => {
                     {!(address.default) && (
                         <SetAsDefaultButton addressId={address.id} />
                     )}
-                    <Button
-                        variant={"secondary"}
-                    >
-                        Edit
-                    </Button>
+                    <EditAddressButton address={address} />
                 </div>
                 <DeleteAddressButton addressId={address.id} />
             </div>

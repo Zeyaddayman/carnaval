@@ -61,3 +61,5 @@ export const addNewAddressSchema = z.object({
         .trim()
         .min(1, "Street address is required")
 })
+
+export const editAddressSchema = addNewAddressSchema
