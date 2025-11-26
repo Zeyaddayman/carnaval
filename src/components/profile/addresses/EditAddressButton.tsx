@@ -58,6 +58,11 @@ const editAddressFields = [
     }
 ]
 
+interface Props {
+    address: Address,
+    userHasMoreThanOneAddress: boolean
+}
+
 const initialState: EditAddressState = {
     message: "",
     errors: {},
@@ -65,12 +70,17 @@ const initialState: EditAddressState = {
     formData: undefined
 }
 
-const EditAddressButton = ({ address }: { address: Address }) => {
+const EditAddressButton = ({ address, userHasMoreThanOneAddress }: Props) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
     const close = () => setIsOpen(false)
     const open = () => setIsOpen(true)
+
+    const [state, action, isPending] = useActionState(
+        editAddressAction.bind(null, address.id),
+        initialState
+    )
 
     const formData = new FormData()
 
@@ -80,12 +90,8 @@ const EditAddressButton = ({ address }: { address: Address }) => {
         }
     }
 
-    const [state, action, isPending] = useActionState(
-        editAddressAction.bind(null, address.id),
-        initialState
-    )
-
     useEffect(() => {
+
         if (state.status && state.message) {
             if (state.status === 200) {
                 toast.success(state.message)
@@ -136,21 +142,23 @@ const EditAddressButton = ({ address }: { address: Address }) => {
                             </span>
                         </div>
                     ))}
-                    <div className="col-span-2 flex items-center gap-2 mt-2">
-                        <input
-                            type={"checkbox"}
-                            id={"default"}
-                            name={"default"}
-                            defaultChecked={address.default}
-                            className="scale-125"
-                        />
-                        <label
-                            className="text-sm select-none"
-                            htmlFor="default"
-                        >
-                            Set as Default Address
-                        </label>
-                    </div>
+                    {userHasMoreThanOneAddress && (
+                        <div className="col-span-2 flex items-center gap-2 mt-2">
+                            <input
+                                type={"checkbox"}
+                                id={"default"}
+                                name={"default"}
+                                defaultChecked={address.default}
+                                className="scale-125"
+                            />
+                            <label
+                                className="text-sm select-none"
+                                htmlFor="default"
+                            >
+                                Set as Default Address
+                            </label>
+                        </div>
+                    )}
                     <div className="col-span-2 flex justify-between gap-2 mt-5">
                         <Button
                             variant={"cancel"}

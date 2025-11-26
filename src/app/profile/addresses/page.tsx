@@ -10,6 +10,9 @@ const ProfileAddressesPage = async () => {
 
     const profile = await getProfile()
 
+    const userHasNoAddresses = addresses.length === 0
+    const userHasMoreThanOneAddress = addresses.length > 1
+
     return (
         <>
         <Heading
@@ -18,13 +21,21 @@ const ProfileAddressesPage = async () => {
         {addresses.length > 0 ? (
             <div className="grid md:grid-cols-2 gap-5">
                 {addresses.map(address => (
-                    <AddressCard key={address.id} address={address} />
+                    <AddressCard
+                        key={address.id}
+                        address={address}
+                        userHasMoreThanOneAddress={userHasMoreThanOneAddress}
+                    />
                 ))}
             </div>
         ): (
             <NoSavedAddresses />
         )}
-        <AddNewAddress userName={profile.name} userPhone={profile.phone} />
+        <AddNewAddress
+            userName={profile.name}
+            userPhone={profile.phone}
+            isFirstAddress={userHasNoAddresses}
+        />
         </>
     )
 }

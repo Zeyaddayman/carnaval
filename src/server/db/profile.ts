@@ -1,7 +1,6 @@
 import { cache as reactCache } from "react"
-import { db } from "@/lib/prisma";
-import { isAuthenticated } from "./auth";
-import { Address } from "@/generated/prisma";
+import { db } from "@/lib/prisma"
+import { isAuthenticated } from "./auth"
 
 export const getProfile = reactCache(async () => {
 
@@ -30,6 +29,7 @@ export const getProfile = reactCache(async () => {
 })
 
 export const getUserAddresses = async () => {
+
     const session = await isAuthenticated()
 
     if (!session) {
@@ -47,4 +47,24 @@ export const getUserAddresses = async () => {
     })
 
     return addresses
+}
+
+export const getUserDefaultAddress = async () => {
+
+    const session = await isAuthenticated()
+
+    if (!session) {
+        throw new Error("User is not authenticated")
+    }
+
+    const userId = session.userId
+
+    const defaultAddress = await db.address.findFirst({
+        where: {
+            userId,
+            default: true
+        }
+    })
+
+    return defaultAddress
 }

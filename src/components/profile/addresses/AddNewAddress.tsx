@@ -58,6 +58,12 @@ const addNewAddressFields = [
     }
 ]
 
+interface Props {
+    userName: string,
+    userPhone: string,
+    isFirstAddress: boolean
+}
+
 const initialState: AddNewAddressState = {
     message: "",
     errors: {},
@@ -65,7 +71,7 @@ const initialState: AddNewAddressState = {
     formData: undefined
 }
 
-const AddNewAddress = ({ userName, userPhone }: { userName: string, userPhone: string }) => {
+const AddNewAddress = ({ userName, userPhone, isFirstAddress }: Props) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -133,25 +139,25 @@ const AddNewAddress = ({ userName, userPhone }: { userName: string, userPhone: s
                             </span>
                         </div>
                     ))}
-                    <div className="col-span-2 flex items-center gap-2 mt-2">
-                        <input
-                            type={"checkbox"}
-                            id={"default"}
-                            name={"default"}
-                            defaultChecked={true}
-                            className="scale-125"
-                        />
-                        <label
-                            className="text-sm select-none"
-                            htmlFor="default"
-                        >
-                            Set as Default Address
-                        </label>
-                    </div>
+                    {!isFirstAddress && (
+                        <div className="col-span-2 flex items-center gap-2 mt-2">
+                            <input
+                                type={"checkbox"}
+                                id={"default"}
+                                name={"default"}
+                                className="scale-125"
+                            />
+                            <label
+                                className="text-sm select-none"
+                                htmlFor="default"
+                            >
+                                Set as Default Address
+                            </label>
+                        </div>
+                    )}
                     <div className="col-span-2 flex justify-between gap-2 mt-5">
                         <Button
                             variant={"cancel"}
-                            type="reset"
                             onClick={close}
                         >
                             Cancel

@@ -6,9 +6,10 @@ import EditAddressButton from "./EditAddressButton"
 
 interface Props {
     address: Address
+    userHasMoreThanOneAddress: boolean
 }
 
-const AddressCard = ({ address }: Props) => {
+const AddressCard = ({ address, userHasMoreThanOneAddress }: Props) => {
     return (
         <div
             className="px-3 py-6 bg-card border border-border rounded-md"
@@ -30,7 +31,7 @@ const AddressCard = ({ address }: Props) => {
                     {!(address.default) && (
                         <SetAsDefaultButton addressId={address.id} />
                     )}
-                    <EditAddressButton address={address} />
+                    <EditAddressButton address={address} userHasMoreThanOneAddress={userHasMoreThanOneAddress} />
                 </div>
                 <DeleteAddressButton addressId={address.id} />
             </div>

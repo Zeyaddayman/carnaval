@@ -209,7 +209,7 @@ export const addNewAddressAction = async (
 
     const result = addNewAddressSchema.safeParse(formObject)
 
-    const isDefault = formObject.default === "on"
+    let isDefault = formObject.default === "on"
 
     if (!result.success) {
 
@@ -242,7 +242,8 @@ export const addNewAddressAction = async (
         const userId = session.userId
 
         const userExist = await db.user.findUnique({
-            where: { id: userId }
+            where: { id: userId },
+            select: { addresses: true }
         })
 
         if (!userExist) {
@@ -283,6 +284,8 @@ export const addNewAddressAction = async (
                 }
             })
         }
+
+        isDefault = userExist.addresses.length === 0 ? true : isDefault
 
         await db.address.create({
             data: {
@@ -333,7 +336,7 @@ export const editAddressAction = async (
 
     const result = editAddressSchema.safeParse(formObject)
 
-    const isDefault = formObject.default === "on"
+    let isDefault = formObject.default === "on"
 
     if (!result.success) {
 
@@ -366,7 +369,12 @@ export const editAddressAction = async (
         const userId = session.userId
 
         const userExist = await db.user.findUnique({
-            where: { id: userId }
+            where: { id: userId },
+            select: {
+                addresses: {
+                    orderBy: { createdAt: "desc" }
+                }
+            }
         })
 
         if (!userExist) {
@@ -406,6 +414,37 @@ export const editAddressAction = async (
                     default: false
                 }
             })
+        } else {
+            const defaultAddress = await db.address.findFirst({
+                where: {
+                    AND: [
+                        { userId },
+                        { default: true },
+                        { id: { not: addressId } }
+                    ]
+                }
+            })
+
+            if (!defaultAddress) {
+
+                const userAddresses = userExist.addresses
+
+                let lastAddedAddress
+
+                if (userAddresses.length > 1) {
+                    lastAddedAddress = userAddresses.find(address => address.id !== addressId)
+                } else {
+                    lastAddedAddress = userAddresses[0]
+                    isDefault = true
+                }
+
+                if (lastAddedAddress) {
+                    await db.address.update({
+                        where: { id: lastAddedAddress.id },
+                        data: { default: true }
+                    })
+                }
+            }
         }
 
         await db.address.update({
@@ -473,6 +512,28 @@ export const deleteAddressAction = async (addressId: string) => {
                 id: addressId
             }
         })
+
+        const defaultAddress = await db.address.findFirst({
+            where: {
+                userId,
+                default: true
+            }
+        })
+
+        if (!defaultAddress) {
+
+            const lastAddedAddress = await db.address.findFirst({
+                where: { userId },
+                orderBy: { createdAt: "desc" }
+            })
+
+            if (lastAddedAddress) {
+                await db.address.update({
+                    where: { id: lastAddedAddress.id },
+                    data: { default: true }
+                })
+            }
+        }
 
         return {
             message: "Address deleted successfully",
