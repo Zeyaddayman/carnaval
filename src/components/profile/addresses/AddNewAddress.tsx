@@ -93,7 +93,7 @@ const AddNewAddress = ({ userName, userPhone }: { userName: string, userPhone: s
     }, [state])
 
     return (
-        <div className="mt-10">
+        <div className="mt-10 flex justify-center">
             <Button
                 variant={"primary"}
                 size={"lg"}
