@@ -1,4 +1,4 @@
-import AddNewAddress from "@/components/profile/addresses/AddNewAddress"
+import AddNewAddressButton from "@/components/profile/addresses/AddNewAddressButton"
 import AddressCard from "@/components/profile/addresses/AddressCard"
 import NoSavedAddresses from "@/components/profile/addresses/NoSavedAddresses"
 import Heading from "@/components/ui/Heading"
@@ -31,7 +31,7 @@ const ProfileAddressesPage = async () => {
         ): (
             <NoSavedAddresses />
         )}
-        <AddNewAddress
+        <AddNewAddressButton
             userName={profile.name}
             userPhone={profile.phone}
             isFirstAddress={userHasNoAddresses}

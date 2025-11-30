@@ -19,7 +19,7 @@ const CheckoutItemCard = ({ item }: Props) => {
     const totalPrice = formatPrice(finalPrice * item.quantity)
 
     return (
-        <div className="bg-white p-2 flex justify-between items-center gap-2 rounded-lg overflow-x-auto">
+        <div className="bg-white border border-border p-2 flex justify-between items-center gap-2 rounded-lg overflow-x-auto">
             <Image
                 src={item.product.thumbnail}
                 alt={item.product.title}

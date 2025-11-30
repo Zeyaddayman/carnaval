@@ -315,6 +315,7 @@ export const addNewAddressAction = async (
     }
     finally {
         revalidatePath("/profile")
+        revalidatePath("/checkout")
     }
 }
 
@@ -327,7 +328,7 @@ export interface EditAddressState {
 
 export const editAddressAction = async (
     addressId: string,
-    prevState: AddNewAddressState,
+    prevState: EditAddressState,
     formData: FormData
 
 ): Promise<EditAddressState> => {

@@ -1,30 +1,11 @@
-import { SHIPPING_COST, SHIPPING_THRESHOLD } from "@/constants/cart"
-import { formatPrice } from "@/lib/formatters"
-import { CheckoutItem } from "@/types/checkout"
-
 interface Props {
-    items: CheckoutItem[]
+    itemsCount: number
+    subtotal: number
+    shipping: number
+    total: number
 }
 
-const CheckoutOrderSummary = ({ items }: Props) => {
-
-    const itemsCount = items.reduce((acc, item) => acc + item.quantity, 0)
-
-    const subtotal = formatPrice(items.reduce((acc, item) => {
-
-        const hasDiscount = item.product.discountPercentage && item.product.discountPercentage > 0
-    
-        const finalPrice = hasDiscount
-            ? (item.product.price - item.product.price * item.product.discountPercentage! / 100)
-            : item.product.price
-
-        return acc + item.quantity * finalPrice
-
-    }, 0))
-
-    const shipping = subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST
-    const total = formatPrice(subtotal + shipping)
-
+const CheckoutOrderSummary = ({ itemsCount, subtotal, shipping, total }: Props) => {
     return (
         <div className="rounded-md border border-border bg-card p-3 shadow-sm">
             <h4 className="font-semibold text-xl py-3">Order Summary</h4>
