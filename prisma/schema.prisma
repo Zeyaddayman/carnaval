@@ -9,21 +9,25 @@ datasource db {
 }
 
 model User {
-  id            String         @id @default(uuid())
-  email         String         @unique
-  name          String
-  phone         String
-  password      String
-  role          UserRole       @default(USER)
+  id              String         @id @default(uuid())
+  email           String         @unique
+  name            String
+  phone           String
+  password        String
+  role            UserRole       @default(USER)
 
-  addresses     Address[]
+  addresses       Address[]
 
-  cart          Cart?
+  cart            Cart?
 
-  Wishlist      Wishlist[]
+  Wishlist        Wishlist[]
 
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  orders          Order[]
+
+  orderedProducts OrderProduct[]
+
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
 }
 
 model Cart {
@@ -110,6 +114,8 @@ model Product {
 
   Wishlist            Wishlist[]
 
+  orderItems          OrderProduct[]
+
   createdAt           DateTime      @default(now())
   updatedAt           DateTime      @updatedAt
 }
@@ -149,7 +155,50 @@ model Brand {
   @@index([slug])
 }
 
+model Order {
+  id            String         @id @default(uuid())
+  status        OrderStatus    @default(PENDING)
+  itemsCount    Int
+  subtotal      Float
+  shippingFee   Float
+  totalPrice    Float
+  userName      String
+  userPhone     String
+  country       String
+  governorate   String
+  city          String
+  streetAddress String
+
+  products      OrderProduct[]
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model OrderProduct {
+  id       String   @id @default(cuid())
+  quantity Int
+
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   String
+
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+}
+
 enum UserRole {
   USER
   ADMIN
+}
+
+enum OrderStatus {
+  CANCELLED
+  PENDING
+  COMPLETED
 }

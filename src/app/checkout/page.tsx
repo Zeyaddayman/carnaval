@@ -1,5 +1,5 @@
 import CheckoutAddAddressButton from "@/components/checkout/CheckoutAddAddressButton"
-import CheckoutAddress from "@/components/checkout/CheckoutAddress"
+import CheckoutForm from "@/components/checkout/CheckoutForm"
 import CheckoutItemCard from "@/components/checkout/CheckoutItemCard"
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary"
 import Heading from "@/components/ui/Heading"
@@ -20,6 +20,10 @@ const CheckoutPage = async () => {
     }
 
     const items = await getCheckoutItems()
+
+    if (items.length === 0) {
+        redirect('/cart')
+    }
 
     const addresses = await getUserAddresses()
 
@@ -76,7 +80,7 @@ const CheckoutPage = async () => {
                         />
                     </div>
                     <div className="flex-6/10 sticky top-5 rounded-md border border-border bg-card p-3 shadow-sm">
-                        <h4 className="font-semibold text-xl flex gap-2 justify-between items-center py-3 border-b border-border">
+                        <h4 className="font-semibold text-xl flex gap-2 justify-between items-center flex-wrap py-3 border-b border-border">
                             Shipping Address
                             <Link
                                 href={"/profile/addresses"}
@@ -86,7 +90,7 @@ const CheckoutPage = async () => {
                             </Link>
                         </h4>
                         {addresses.length > 0 ? (
-                            <CheckoutAddress
+                            <CheckoutForm
                                 addresses={addresses}
                                 defaultAddress={defaultAddress}
                                 total={total}

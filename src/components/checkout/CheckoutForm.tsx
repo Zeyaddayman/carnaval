@@ -5,6 +5,11 @@ import { useEffect, useState } from "react"
 import { Button } from "../ui/Button"
 import { FaCheck } from "react-icons/fa"
 import CheckoutAddAddressButton from "./CheckoutAddAddressButton"
+import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
+import { userCartApi } from "@/redux/features/userCartApi"
+import { useAppDispatch } from "@/redux/hooks"
+import { checkoutAction } from "@/server/actions/checkout"
 
 interface Props {
     addresses: Address[]
@@ -14,9 +19,13 @@ interface Props {
     userPhone: string
 }
 
-const CheckoutAddress = ({ addresses, defaultAddress, total, userName, userPhone }: Props) => {
+const CheckoutForm = ({ addresses, defaultAddress, total, userName, userPhone }: Props) => {
 
     const [selectedAddress, setSelectedAddress] = useState(defaultAddress)
+    const [isPlacingOrder, setIsPlacingOrder] = useState(false)
+
+    const router = useRouter()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         setSelectedAddress(defaultAddress)
@@ -24,6 +33,30 @@ const CheckoutAddress = ({ addresses, defaultAddress, total, userName, userPhone
 
     const selectAddress = (label: string) => {
         setSelectedAddress(addresses.find(address => address.label === label)!)
+    }
+
+    const placeOrder = () => {
+
+        setIsPlacingOrder(true)
+
+        checkoutAction(selectedAddress.label)
+            .then(({ message, status }) => {
+                if (message && status === 201) {
+                    toast.success(message)
+                    router.push("/profile/orders")
+                } else {
+                    toast.error(message)
+                    router.push("/cart")
+                }
+            })
+            .catch(() => {
+                toast.error("An unexpected error occurred")
+                router.push("/cart")
+            })
+            .finally(() => {
+                setIsPlacingOrder(false)
+                dispatch(userCartApi.util.invalidateTags(['user-cart']))
+            })
     }
 
     return (
@@ -58,10 +91,15 @@ const CheckoutAddress = ({ addresses, defaultAddress, total, userName, userPhone
             <Button
                 variant={"primary"}
                 size={"lg"}
-                disabled={!selectedAddress}
+                disabled={!selectedAddress || isPlacingOrder}
+                onClick={placeOrder}
                 className="!w-full mt-10"
             >
-                <FaCheck /> Place Order (${total})
+                {isPlacingOrder ? (
+                    <>Placing Order...</>
+                ): (
+                    <><FaCheck /> Place Order (${total})</>
+                )}
             </Button>
         </div>
     )
@@ -98,4 +136,4 @@ const AddressRadioBox = ({
     )
 }
 
-export default CheckoutAddress
+export default CheckoutForm

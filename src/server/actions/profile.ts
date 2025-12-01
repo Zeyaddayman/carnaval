@@ -42,9 +42,9 @@ export const editProfileAction = async (
     }
 
     try {
-        const sesstion = await isAuthenticated()
+        const session = await isAuthenticated()
 
-        if (!sesstion) {
+        if (!session) {
             return {
                 message: "Unauthorized",
                 status: 401,
@@ -53,7 +53,7 @@ export const editProfileAction = async (
         }
 
         const userExist = await db.user.findUnique({
-            where: { id: sesstion.userId }
+            where: { id: session.userId }
         })
 
         if (!userExist) {
@@ -67,7 +67,7 @@ export const editProfileAction = async (
         const { name, phone } = result.data
 
         const user = await db.user.update({
-            where: { id: sesstion.userId },
+            where: { id: session.userId },
             data: {
                 name,
                 phone
@@ -137,9 +137,9 @@ export const changePasswordAction = async (
     }
 
     try {
-        const sesstion = await isAuthenticated()
+        const session = await isAuthenticated()
 
-        if (!sesstion) {
+        if (!session) {
             return {
                 message: "Unauthorized",
                 status: 401,
@@ -148,7 +148,7 @@ export const changePasswordAction = async (
         }
 
         const userExist = await db.user.findUnique({
-            where: { id: sesstion.userId }
+            where: { id: session.userId }
         })
 
         if (!userExist) {
@@ -174,7 +174,7 @@ export const changePasswordAction = async (
         const hashedPassword = await bcrypt.hash(newPassword, 10)
 
         await db.user.update({
-            where: { id: sesstion.userId },
+            where: { id: session.userId },
             data: { password: hashedPassword }
         })
 
