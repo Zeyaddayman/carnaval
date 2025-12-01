@@ -36,7 +36,7 @@ const SelectMenu = ({ title, options, selected, setSelected }: Props) => {
 
     return (
         <Listbox value={selected} onChange={setSelected}>
-            <div onClick={handlePlacement} ref={selectRef} className="relative min-w-70">
+            <div onClick={handlePlacement} ref={selectRef} className="relative min-w-60 max-w-70">
                 <ListboxButton className="relative w-full cursor-default rounded-md bg-white py-3 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-3 focus:ring-primary/50 sm:text-sm/6">
                     <span className="ml-3 block truncate">{title} {selected.label}</span>
                     <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">

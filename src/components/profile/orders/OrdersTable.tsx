@@ -3,9 +3,9 @@ import { getUserOrders } from "@/server/db/orders"
 import Link from "next/link"
 import { FaEye } from "react-icons/fa"
 
-const OrdersTable = async () => {
+const OrdersTable = async ({ filter }: { filter: string }) => {
 
-    const orders = await getUserOrders()
+    const orders = await getUserOrders(filter)
 
     return (
         <div className="relative overflow-x-auto bg-card border border-border rounded-md">
