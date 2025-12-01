@@ -16,7 +16,7 @@ const ProfileLayout = async ({ children }: { children: ReactNode }) => {
             <div className="container">
                 <div className="flex gap-5">
                     <ProfileSidebar session={session} />
-                    <div className="flex-1">
+                    <div className="flex-1 overflow-x-auto">
                         {children}
                     </div>
                 </div>

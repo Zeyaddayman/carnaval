@@ -157,6 +157,7 @@ model Brand {
 
 model Order {
   id            String         @id @default(uuid())
+  count         Int            @default(autoincrement())
   status        OrderStatus    @default(PENDING)
   itemsCount    Int
   subtotal      Float
@@ -179,8 +180,9 @@ model Order {
 }
 
 model OrderProduct {
-  id       String   @id @default(cuid())
-  quantity Int
+  id        String   @id @default(cuid())
+  quantity  Int
+  price     Float
 
   order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId   String

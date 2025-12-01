@@ -81,9 +81,16 @@ export const checkoutAction = async (addressLabel: string) => {
                 validItemsQuantities = false
             }
 
+            const hasDiscount = item.product.discountPercentage && item.product.discountPercentage > 0
+        
+            const finalPrice = hasDiscount
+                ? (item.product.price - item.product.price * item.product.discountPercentage! / 100)
+                : item.product.price
+
             return {
                 productId: item.product.id,
                 quantity: item.quantity,
+                price: finalPrice,
                 userId
             }
 
