@@ -43,3 +43,52 @@ export const getUserOrders = async (filter: string ) => {
 
     return orders
 }
+
+export const getOrderDetails = async (id: string) => {
+
+    const session = await isAuthenticated()
+
+    if (!session) {
+        redirect("/auth/login?redirect=/checkout")
+    }
+
+    const userId = session.userId
+
+    const order = await db.order.findUnique({
+        where: { id, userId },
+        select: {
+            count: true,
+            status: true,
+            createdAt: true,
+            itemsCount: true,
+            subtotal: true,
+            shippingFee: true,
+            totalPrice: true,
+            userName: true,
+            userPhone: true,
+            country: true,
+            governorate: true,
+            city: true,
+            streetAddress: true,
+            products: {
+                select: {
+                    price: true,
+                    quantity: true,
+                    product: {
+                        select: {
+                            id: true,
+                            title: true,
+                            thumbnail: true
+                        }
+                    }
+                }
+            }
+        }
+    })
+
+    if (!order) {
+        throw new Error("Order not found")
+    }
+
+    return order
+}

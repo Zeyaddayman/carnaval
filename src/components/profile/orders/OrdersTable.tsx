@@ -1,7 +1,7 @@
-import { Order } from "@/generated/prisma"
 import { getUserOrders } from "@/server/db/orders"
 import Link from "next/link"
 import { FaEye } from "react-icons/fa"
+import OrderStatus from "./OrderStatus"
 
 const OrdersTable = async ({ filter }: { filter: string }) => {
 
@@ -25,7 +25,11 @@ const OrdersTable = async ({ filter }: { filter: string }) => {
                             <td className="py-2 px-4">#{order.count}</td>
                             <td className="py-2 px-4">{new Date(order.createdAt).toLocaleDateString()}</td>
                             <td className="py-2 px-4">{order.itemsCount}</td>
-                            <td className="py-2 px-4"><OrderStatus status={order.status} /></td>
+                            <td className="py-2 px-4">
+                                <div className="flex justify-center items-center">
+                                    <OrderStatus status={order.status} />
+                                </div>
+                            </td>
                             <td className="py-2 px-4">
                                 <Link
                                     href={`/profile/orders/${order.id}`}
@@ -40,26 +44,6 @@ const OrdersTable = async ({ filter }: { filter: string }) => {
             </table>
         </div>
     )
-}
-
-const OrderStatus = ({ status }: { status: Order["status"] }) => {
-
-    const getStatusDisplay = () => {
-        switch (status) {
-            case "CANCELLED": return { style: "bg-destructive text-destructive-foreground", text: "Cancelled" }
-            case "PENDING": return { style: "bg-warning text-warning-foreground", text: "Pending" }
-            case "COMPLETED": return { style: "bg-success text-success-foreground", text: "Completed" }
-        }
-    }
-
-    const { text, style } = getStatusDisplay()
-
-    return (
-        <div className={`py-1.5 px-3 w-fit h-fit mx-auto font-semibold text-sm rounded-full ${style}`}>
-            {text}
-        </div>
-    )
-
 }
 
 export default OrdersTable
