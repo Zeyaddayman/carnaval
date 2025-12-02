@@ -92,3 +92,28 @@ export const getOrderDetails = async (id: string) => {
 
     return order
 }
+
+export const getUserOrdersSummary = async () => {
+
+    const session = await isAuthenticated()
+
+    if (!session) {
+        redirect("/auth/login?redirect=/checkout")
+    }
+
+    const userId = session.userId
+
+    const orders = await db.order.findMany({
+        where: { userId },
+        orderBy: { createdAt: "desc" },
+        select: { createdAt: true, status: true }
+    })
+
+    const pendingOrders = orders.filter(order => order.status === "PENDING")
+
+    return {
+        totalOrders: orders.length,
+        pendingOrders: pendingOrders.length,
+        lastOrderDate: orders[0]?.createdAt
+    }
+}
