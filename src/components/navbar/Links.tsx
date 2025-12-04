@@ -11,9 +11,7 @@ import WishlistItemsCount from "./WishlistItemsCount"
 
 const Links = async () => {
 
-    const topLevelCategories = await getTopLevelCategories()
-
-    const brands = await getBrands()
+    const [topLevelCategories, brands] = await Promise.all([getTopLevelCategories(), getBrands()])
 
     return (
         <>

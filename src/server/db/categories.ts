@@ -6,7 +6,6 @@ import { cache as reactCache } from "react"
 
 export const getTopLevelCategories = reactCache(nextCache(
     async () => {
-        console.log("Fetching categories from the database...")
         return await db.category.findMany({
             where: {
                 AND: [
@@ -24,7 +23,7 @@ export const getTopLevelCategories = reactCache(nextCache(
     },
     ["top-categories"],
     { 
-        revalidate: 60 * 60,    // revalidate every 60 minutes
+        revalidate: 60 * 60,
         tags: ["top-categories"]
     } 
 ))
@@ -85,39 +84,9 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
 
         return categoryHierarchy.reverse()
     },
-    [`${slug}-hierarchy`]
-)())
-
-export const getSubcategories = reactCache(async (slug: Category["slug"]) => nextCache(
-    async () => {
-        const category = await db.category.findUnique({
-            where: { slug },
-            select: {
-                name: true,
-                children: {
-                    select: {
-                        id: true,
-                        name: true,
-                        slug: true,
-                        _count: {
-                            select: {
-                                products: {
-                                    where: {
-                                        stock: { gt: 0 }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        })
-
-        if (!category) {
-            throw new Error(`Category with slug "${slug}" not found`)
-        }
-
-        return { categoryName: category.name, subcategories: category.children}
-    },
-    [`${slug}-subcategories`]
+    [`${slug}-hierarchy`],
+    { 
+        revalidate: 60 * 60,
+        tags: [`${slug}-hierarchy`]
+    } 
 )())

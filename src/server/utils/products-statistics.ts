@@ -66,13 +66,11 @@ export const getCategoryProductsMinRating = async (slug: Category["slug"]): Prom
         }
     })
 
-    const formattedRating = formatRating(result._min.rating ?? PRODUCTS_MIN_RATING)
-
-    return Number(formattedRating)
+    return formatRating(result._min.rating ?? PRODUCTS_MIN_RATING)
 }
 
 // Brands
-export const getBrandsProductsMinPrice = async (slug: Brand["slug"], filters: ProductsFiltersOptions): Promise<number> => {
+export const getBrandProductsMinPrice = async (slug: Brand["slug"], filters: ProductsFiltersOptions): Promise<number> => {
 
     const whereOptions: Prisma.ProductWhereInput = {
         brand: { slug },
@@ -97,7 +95,7 @@ export const getBrandsProductsMinPrice = async (slug: Brand["slug"], filters: Pr
     return Number(result._min.price ?? PRODUCTS_FILTERS.minPrice)
 }
 
-export const getBrandsProductsMaxPrice = async (slug: Brand["slug"], filters: ProductsFiltersOptions): Promise<number> => {
+export const getBrandProductsMaxPrice = async (slug: Brand["slug"], filters: ProductsFiltersOptions): Promise<number> => {
 
     const whereOptions: Prisma.ProductWhereInput = {
         brand: { slug },
@@ -122,7 +120,7 @@ export const getBrandsProductsMaxPrice = async (slug: Brand["slug"], filters: Pr
     return Number(result._max.price ?? PRODUCTS_FILTERS.maxPrice)
 }
 
-export const getBrandsProductsMinRating = async (slug: Brand["slug"]): Promise<number> => {
+export const getBrandProductsMinRating = async (slug: Brand["slug"]): Promise<number> => {
     const result = await db.product.aggregate({
         where: {  
             brand: { slug },
@@ -133,7 +131,5 @@ export const getBrandsProductsMinRating = async (slug: Brand["slug"]): Promise<n
         }
     })
 
-    const formattedRating = formatRating(result._min.rating ?? PRODUCTS_MIN_RATING)
-
-    return Number(formattedRating)
+    return formatRating(result._min.rating ?? PRODUCTS_MIN_RATING)
 }

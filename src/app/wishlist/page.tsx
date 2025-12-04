@@ -1,6 +1,6 @@
 import Heading from "@/components/ui/Heading"
 import WishlistItems from "@/components/wishlist/WishlistItems"
-import { isAuthenticated } from "@/server/db/auth"
+import { isAuthenticated } from "@/server/utils/auth"
 import { redirect } from "next/navigation"
 
 const WishlistPage = async () => {

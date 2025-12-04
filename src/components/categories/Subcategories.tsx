@@ -2,14 +2,13 @@ import Link from "next/link"
 
 interface Category {
     name: string
-    id: string
     slug: string
     _count: {
         products: number
     }
 }
 
-const Subcategories = async ({ categories }: { categories: Category[] }) => {
+const Subcategories = ({ categories }: { categories: Category[] }) => {
 
     if (categories.length === 0) return null
 
@@ -19,7 +18,7 @@ const Subcategories = async ({ categories }: { categories: Category[] }) => {
             <ul className="flex flex-row lg:flex-col overflow-x-auto gap-2">
                 {categories.map((category) => (
                     <li
-                        key={category.id}
+                        key={category.slug}
                     >
                         <Link href={`/categories/${category.slug}`} className="flex justify-between items-center gap-3 bg-card p-3 border border-border rounded-md lg:max-w-55 whitespace-nowrap lg:whitespace-normal">
                             {category.name}

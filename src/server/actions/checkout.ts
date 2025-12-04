@@ -1,7 +1,7 @@
 "use server"
 
 import { db } from "@/lib/prisma"
-import { isAuthenticated } from "../db/auth"
+import { isAuthenticated } from "../utils/auth"
 import { formatPrice } from "@/lib/formatters"
 import { SHIPPING_COST, SHIPPING_THRESHOLD } from "@/constants/cart"
 import { revalidatePath } from "next/cache"
@@ -17,7 +17,7 @@ export const checkoutAction = async (addressLabel: string) => {
             }
         }
 
-        const userId = session.userId
+        const { userId } = session
 
         const user = await db.user.findUnique({
             where: { id: userId },

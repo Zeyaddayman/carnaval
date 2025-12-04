@@ -5,6 +5,7 @@ import ProductInfo from "@/components/product/ProductInfo"
 import WishlistAndCart from "@/components/product/WishlistAndCart"
 import { db } from "@/lib/prisma"
 import { getProduct } from "@/server/db/product"
+import { notFound } from "next/navigation"
 
 interface Props {
     params: Promise<{ id: string }>
@@ -24,7 +25,11 @@ const productPage = async ({ params }: Props) => {
 
     const { id } = await params
 
-    const { product, categoryHierarchy } = await getProduct(id)
+    const data = await getProduct(id)
+
+    if (!data) return notFound()
+
+    const { product, categoryHierarchy } = data
 
     const limit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
 

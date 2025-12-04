@@ -5,7 +5,6 @@ import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary"
 import Heading from "@/components/ui/Heading"
 import { SHIPPING_COST, SHIPPING_THRESHOLD } from "@/constants/cart"
 import { formatPrice } from "@/lib/formatters"
-import { isAuthenticated } from "@/server/db/auth"
 import { getCheckoutItems } from "@/server/db/checkout"
 import { getProfile, getUserAddresses } from "@/server/db/profile"
 import Link from "next/link"
@@ -13,21 +12,18 @@ import { redirect } from "next/navigation"
 
 const CheckoutPage = async () => {
 
-    const session = await isAuthenticated()
+    const [
+        items,
+        addresses,
+        profile
 
-    if (!session) {
-        redirect('/auth/login?redirect=/checkout')
-    }
+    ] = await Promise.all([
+        getCheckoutItems(),
+        getUserAddresses(),
+        getProfile()
+    ])
 
-    const items = await getCheckoutItems()
-
-    if (items.length === 0) {
-        redirect('/cart')
-    }
-
-    const addresses = await getUserAddresses()
-
-    const profile = await getProfile()
+    if (!items || items.length === 0) redirect('/cart')
 
     const defaultAddress = addresses.find(address => address.default) || addresses[0]
 

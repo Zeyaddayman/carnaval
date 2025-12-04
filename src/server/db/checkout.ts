@@ -1,5 +1,5 @@
 import { db } from "@/lib/prisma"
-import { isAuthenticated } from "./auth"
+import { isAuthenticated } from "../utils/auth"
 import { redirect } from "next/navigation"
 
 export const getCheckoutItems = async () => {
@@ -10,9 +10,11 @@ export const getCheckoutItems = async () => {
         redirect("/auth/login?redirect=/checkout")
     }
 
+    const { userId } = session
+
     const cart = await db.cart.findUnique({
         where: {
-            userId: session.userId
+            userId
         },
         select: {
             items: {
@@ -32,9 +34,5 @@ export const getCheckoutItems = async () => {
         }
     })
 
-    if (!cart) {
-        throw new Error("Cart not found")
-    }
-
-    return cart.items
+    return cart?.items
 }

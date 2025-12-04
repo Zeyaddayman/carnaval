@@ -1,5 +1,5 @@
 import ProfileSidebar from "@/components/profile/ProfileSidebar"
-import { isAuthenticated } from "@/server/db/auth"
+import { isAuthenticated } from "@/server/utils/auth"
 import { redirect } from "next/navigation"
 import { ReactNode } from "react"
 

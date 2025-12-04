@@ -1,16 +1,17 @@
 import { cache as reactCache } from "react"
 import { db } from "@/lib/prisma"
-import { isAuthenticated } from "./auth"
+import { isAuthenticated } from "../utils/auth"
+import { redirect } from "next/navigation"
 
 export const getProfile = reactCache(async () => {
 
     const session = await isAuthenticated()
 
     if (!session) {
-        throw new Error("User is not authenticated")
+        redirect("/auth/login?redirect=/profile")
     }
 
-    const userId = session.userId
+    const { userId } = session
 
     const user = await db.user.findUnique({
         where: { id: userId },
@@ -33,10 +34,10 @@ export const getUserAddresses = async () => {
     const session = await isAuthenticated()
 
     if (!session) {
-        throw new Error("User is not authenticated")
+        redirect("/auth/login?redirect=/profile")
     }
 
-    const userId = session.userId
+    const { userId } = session
 
     const addresses = await db.address.findMany({
         where: { userId },
@@ -54,10 +55,10 @@ export const getUserDefaultAddress = async () => {
     const session = await isAuthenticated()
 
     if (!session) {
-        throw new Error("User is not authenticated")
+        redirect("/auth/login?redirect=/profile")
     }
 
-    const userId = session.userId
+    const { userId } = session
 
     const defaultAddress = await db.address.findFirst({
         where: {

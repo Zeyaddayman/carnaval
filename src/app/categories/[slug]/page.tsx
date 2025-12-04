@@ -5,14 +5,15 @@ import Pagination from "@/components/products/Pagination"
 import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
-import FiltersAndSortSkeleton from "@/components/skeletons/FiltersAndSortSkeleton"
-import ProductsDataSkeleton from "@/components/skeletons/ProductsDataSkeleton"
+import { Button } from "@/components/ui/Button"
 import { PRODUCTS_FILTERS, PRODUCTS_SORT_OPTIONS } from "@/constants/products"
-import { getCategoryHierarchy, getSubcategories } from "@/server/db/categories"
+import { getCategoryHierarchy } from "@/server/db/categories"
 import { getProductsByCategory } from "@/server/db/products"
-import { getCategoryProductsMaxPrice, getCategoryProductsMinPrice, getCategoryProductsMinRating } from "@/server/db/products-statistics"
+import { getCategoryProductsMaxPrice, getCategoryProductsMinPrice, getCategoryProductsMinRating } from "@/server/utils/products-statistics"
 import { ProductsSortOptionValue } from "@/types/products"
+import { notFound } from "next/navigation"
 import { Suspense } from "react"
+import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2"
 
 interface SearchParams {
     [key: string]: string | undefined
@@ -25,51 +26,21 @@ interface Props {
 
 const CategoryProductsPage = async ({ params, searchParams }: Props) => {
 
-    const { slug } = await params
-
     const [
-        categoryHierarchy,
-        { categoryName, subcategories }
+        { slug },
+        resolvedSearchParams
 
-    ] = await Promise.all([getCategoryHierarchy(slug), getSubcategories(slug)])
-
-    return (
-        <main>
-            <div className="container">
-                <CategoryProductsHeading categoryName={categoryName} categoryHierarchy={categoryHierarchy} />
-                <div className="flex flex-col lg:flex-row mt-3 gap-3">
-                    <Subcategories categories={subcategories} />
-                    <div className="flex-1">
-                        <Suspense
-                            fallback={<FiltersAndSortSkeleton />}
-                            key={Math.random()}
-                        >
-                            <FiltersAndSort slug={slug} searchParams={searchParams} />
-                        </Suspense>
-                        <Suspense
-                            fallback={<ProductsDataSkeleton />}
-                            key={Math.random()}
-                        >
-                            <Data slug={slug} searchParams={searchParams} />
-                        </Suspense>
-                    </div>
-                </div>
-            </div>
-        </main>
-    )
-}
-
-const Data = async ({ slug, searchParams }: { slug: string, searchParams: Promise<SearchParams> }) => {
+    ] = await Promise.all([params, searchParams])
 
     const {
-        sort: sortParam,
         page: pageParam = "1",
+        sort: sortParam,
         minPrice,
         maxPrice,
         minRating,
         onlyOnSale
-    
-    } = await searchParams
+
+    } = resolvedSearchParams
 
     const sort: ProductsSortOptionValue = PRODUCTS_SORT_OPTIONS.find(option => option.value === sortParam)?.value || "alphabetical"
 
@@ -85,47 +56,80 @@ const Data = async ({ slug, searchParams }: { slug: string, searchParams: Promis
 
     if (maxPrice && !isNaN(Number(maxPrice))) filters.maxPrice = Math.max(0, Number(maxPrice))
 
+
+    const [data, categoryHierarchy] = await Promise.all([
+        getProductsByCategory(slug, sort, filters, paginationPage),
+        getCategoryHierarchy(slug)
+    ])
+
+    if (!data) return notFound()
+
     const {
+        categoryName,
+        subcategories,
         products,
         total,
         page,
         pageSize,
         limit
 
-    } = await getProductsByCategory(slug, sort, filters, paginationPage)
+    } = data
 
-    if (!products || products.length === 0) return <NoProductsFound clearFiltersLink={`/categories/${slug}`} />
+
+    if (!products || products.length === 0) return <NoProductsFound clearFiltersLink={`/categories/${slug}`} /> 
 
     return (
-        <>
-        <ProductsList
-            products={products}
-            total={total}
-            page={page}
-            limit={limit}
-            pageSize={pageSize}
-        />
-        <Pagination
-            total={total}
-            page={page}
-            limit={limit}
-        />
-        </>
+        <main>
+            <div className="container">
+                <CategoryProductsHeading categoryName={categoryName} categoryHierarchy={categoryHierarchy} />
+                <div className="flex flex-col lg:flex-row mt-3 gap-3">
+                    <Subcategories categories={subcategories} />
+                    <div className="flex-1">
+                        <div className="flex justify-between items-center flex-wrap mb-3 gap-3">
+                            <Suspense
+                                fallback={
+                                    <Button
+                                        variant={"primary"}
+                                        size={"lg"}
+                                        disabled={true}
+                                    >
+                                        <HiOutlineAdjustmentsHorizontal size={20} /> Filters
+                                    </Button>
+                                }
+                                key={JSON.stringify(resolvedSearchParams)}
+                            >
+                                <Filters slug={slug} searchParams={resolvedSearchParams} />
+                            </Suspense>
+                                <ProductsSort sort={sort} />
+                            </div>
+                        <ProductsList
+                            products={products}
+                            total={total}
+                            page={page}
+                            limit={limit}
+                            pageSize={pageSize}
+                        />
+                        <Pagination
+                            total={total}
+                            page={page}
+                            limit={limit}
+                        />
+                    </div>
+                </div>
+            </div>
+        </main>
     )
 }
 
-const FiltersAndSort = async ({ slug, searchParams }: { slug: string, searchParams: Promise<SearchParams> }) => {
+const Filters = async ({ slug, searchParams }: { slug: string, searchParams: SearchParams }) => {
 
     const {
-        sort: sortParam,
         minPrice,
         maxPrice,
         minRating,
         onlyOnSale
     
-    } = await searchParams
-
-    const sort: ProductsSortOptionValue = PRODUCTS_SORT_OPTIONS.find(option => option.value === sortParam)?.value || "alphabetical"
+    } = searchParams
 
     const filters = { ...PRODUCTS_FILTERS }
 
@@ -143,13 +147,10 @@ const FiltersAndSort = async ({ slug, searchParams }: { slug: string, searchPara
     filters.maxPrice = maxPrice && !isNaN(Number(maxPrice)) && Number(maxPrice) > 0 ? Number(maxPrice) : await getCategoryProductsMaxPrice(slug, filters)
 
     return (
-        <div className="flex justify-between items-center flex-wrap mb-3 gap-3">
-            <ProductsFilters
-                initialFilters={filters}
-                productsMinRating={productsMinRating}
-            />
-            <ProductsSort sort={sort} />
-        </div>
+        <ProductsFilters
+            initialFilters={filters}
+            productsMinRating={productsMinRating}
+        />
     )
 }
 

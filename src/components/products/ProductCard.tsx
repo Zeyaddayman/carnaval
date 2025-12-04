@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import RatingStars from "../ui/RatingStars"
 import { formatPrice, formatRating } from "@/lib/formatters"
-import { isAuthenticated } from "@/server/db/auth"
+import { isAuthenticated } from "@/server/utils/auth"
 import ToggleWishlistItem from "../ui/ToggleWishlistItem"
 
 const ProductCard = async ({ product }: { product: CardProduct }) => {

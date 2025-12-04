@@ -1,14 +1,12 @@
-import { Category } from "@/generated/prisma"
-import { getBrand } from "@/server/db/brands"
+import { Brand } from "@/generated/prisma"
 import Link from "next/link"
 
 interface Props {
-    slug: Category["slug"]
+    name: Brand["name"],
+    slug: Brand["slug"]
 }
 
-const BrandProductsHeading = async ({ slug }: Props) => {
-
-    const brand = await getBrand(slug)
+const BrandProductsHeading = async ({ name, slug }: Props) => {
 
     return (
         <section className="border-2 border-border px-3 py-5 space-y-3 rounded-lg">
@@ -21,14 +19,14 @@ const BrandProductsHeading = async ({ slug }: Props) => {
                 </Link>
                 <span>&gt;</span>
                 <Link
-                    href={`/brands/${brand.slug}`}
+                    href={`/brands/${slug}`}
                     className={"text-foreground font-semibold"}
                 >
-                    {brand.name}
+                    {name}
                 </Link>
             </div>
             <div className="flex flex-wrap justify-between items-center gap-3">
-                <h2 className="text-foreground text-2xl md:text-3xl font-bold">{brand.name}</h2>
+                <h2 className="text-foreground text-2xl md:text-3xl font-bold">{name}</h2>
             </div>
         </section>
     )

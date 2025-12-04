@@ -5,8 +5,6 @@ import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/product
 
 export const getProductsByCategory = async (slug: Category["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
 
-    console.log(`Fetching products for category with slug: ${slug}`)
-
     let whereOptions: Prisma.ProductWhereInput = { 
         stock: { gt: 0 },
         price: {
@@ -50,6 +48,18 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
     const category = await db.category.findUnique({
         where: { slug },
         select: {
+            name: true,
+            children: {
+                select: {
+                    name: true,
+                    slug: true,
+                    _count: {
+                        select: {
+                            products: true
+                        }
+                    }
+                }
+            },
             products: {
                 where: whereOptions,
                 orderBy: orderByOptions,
@@ -81,22 +91,20 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
         },
     })
 
-    if (!category) {
-        throw new Error(`Category with slug "${slug}" not found`)
-    }
+    if (!category) return null
 
     return {
+        categoryName: category.name,
         products: category.products,
         total: category._count.products,
         page,
         pageSize: category.products.length,
         limit: PROUDCTS_PAGE_LIMIT,
+        subcategories: category.children
     }
 }
 
 export const getProductsByBrand = async (slug: Brand["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
-
-    console.log(`Fetching products for category with slug: ${slug}`)
 
     let whereOptions: Prisma.ProductWhereInput = { 
         stock: { gt: 0 },
@@ -141,6 +149,7 @@ export const getProductsByBrand = async (slug: Brand["slug"], sortBy: ProductsSo
     const brand = await db.brand.findUnique({
         where: { slug },
         select: {
+            name: true,
             products: {
                 where: whereOptions,
                 orderBy: orderByOptions,
@@ -172,15 +181,14 @@ export const getProductsByBrand = async (slug: Brand["slug"], sortBy: ProductsSo
         },
     })
 
-    if (!brand) {
-        throw new Error(`Brand with slug "${slug}" not found`)
-    }
+    if (!brand) return null
 
     return {
+        brandName: brand.name,
         products: brand.products,
         total: brand._count.products,
         page,
         pageSize: brand.products.length,
-        limit: PROUDCTS_PAGE_LIMIT,
+        limit: PROUDCTS_PAGE_LIMIT
     }
 }

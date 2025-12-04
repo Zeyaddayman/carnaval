@@ -1,5 +1,5 @@
 import { db } from '@/lib/prisma'
-import { isAuthenticated } from '@/server/db/auth'
+import { isAuthenticated } from '@/server/utils/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {

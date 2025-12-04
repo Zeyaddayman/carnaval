@@ -11,9 +11,7 @@ export const getProduct = async (id: Product["id"]) => {
         }
     })
 
-    if (!product) {
-        throw new Error(`Product with id "${id}" not found`)
-    }
+    if (!product) return null
 
     const categoryHierarchy: CategoryHierarchy = product.categories.map(category => ({
         name: category.name,

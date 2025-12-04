@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { isAuthenticated } from "./auth"
+import { isAuthenticated } from "../utils/auth"
 import { db } from "@/lib/prisma"
 import { Prisma } from "@/generated/prisma"
 
@@ -11,7 +11,7 @@ export const getUserOrders = async (filter: string ) => {
         redirect("/auth/login?redirect=/checkout")
     }
 
-    const userId = session.userId
+    const { userId } = session
 
     let whereOptions: Prisma.OrderWhereInput = { userId }
 
@@ -52,7 +52,7 @@ export const getOrderDetails = async (id: string) => {
         redirect("/auth/login?redirect=/checkout")
     }
 
-    const userId = session.userId
+    const { userId } = session
 
     const order = await db.order.findUnique({
         where: { id, userId },
@@ -86,9 +86,7 @@ export const getOrderDetails = async (id: string) => {
         }
     })
 
-    if (!order) {
-        throw new Error("Order not found")
-    }
+    if (!order) return null
 
     return order
 }
@@ -101,7 +99,7 @@ export const getUserOrdersSummary = async () => {
         redirect("/auth/login?redirect=/checkout")
     }
 
-    const userId = session.userId
+    const { userId } = session
 
     const orders = await db.order.findMany({
         where: { userId },

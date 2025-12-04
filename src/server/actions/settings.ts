@@ -1,27 +1,30 @@
 "use server"
 
-import { editProfileSchema } from "@/validations/profile"
+import { changePasswordSchema } from "@/validations/profile"
 import { isAuthenticated } from "../utils/auth"
 import { db } from "@/lib/prisma"
-import { revalidatePath } from "next/cache"
-import { ACCESS_TOKEN_EXPIRY, clearToken, generateAccessToken, setToken } from "../utils/tokens"
+import bcrypt from "bcrypt"
 
-export interface EditProfileState {
+export interface ChangePasswordState {
     message?: string
     errors?: { [error: string]: string }
     status?: number 
     formData?: FormData
 }
 
-export const editProfileAction = async (
-    prevState: EditProfileState,
+export const changePasswordAction = async (
+    prevState: ChangePasswordState,
     formData: FormData,
 
-): Promise<EditProfileState> => {
+): Promise<ChangePasswordState> => {
 
-    const formObject = Object.fromEntries(formData.entries())
+    const formObject = {
+        currentPassword: formData.get("currentPassword") as string,
+        newPassword: formData.get("newPassword"),
+        confirmNewPassword: formData.get("confirmNewPassword"),
+    }
 
-    const result = editProfileSchema.safeParse(formObject)
+    const result = changePasswordSchema.safeParse(formObject)
 
     if (!result.success) {
 
@@ -65,24 +68,27 @@ export const editProfileAction = async (
             }
         }
 
-        const { name, phone } = result.data
+        const isPasswordValid = await bcrypt.compare(formObject.currentPassword, userExist.password)
 
-        const user = await db.user.update({
-            where: { id: userId },
-            data: {
-                name,
-                phone
+        if (!isPasswordValid) {
+            return {
+                status: 400,
+                formData,
+                errors: { currentPassword: "Current password is incorrect" }
             }
+        }
+
+        const { newPassword } = result.data
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+        await db.user.update({
+            where: { id: userId },
+            data: { password: hashedPassword }
         })
 
-        await clearToken("accessToken")
-
-        const accessToken = generateAccessToken(user)
-
-        await setToken("accessToken", accessToken, ACCESS_TOKEN_EXPIRY)
-
         return {
-            message: "Profile updated successfully",
+            message: "Password changed successfully",
             status: 200,
         }
     }
@@ -92,8 +98,5 @@ export const editProfileAction = async (
             status: 500,
             formData
         }
-    }
-    finally {
-        revalidatePath("/profile")
     }
 }

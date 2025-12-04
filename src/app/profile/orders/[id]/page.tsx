@@ -2,6 +2,7 @@ import OrderStatus from "@/components/profile/orders/OrderStatus"
 import Heading from "@/components/ui/Heading"
 import { getOrderDetails } from "@/server/db/orders"
 import Image from "next/image"
+import { notFound } from "next/navigation"
 
 interface Props {
     params: Promise<{ id: string }>
@@ -12,6 +13,8 @@ const OrderDetailsPage = async ({ params }: Props) => {
     const { id } = await params
 
     const order = await getOrderDetails(id)
+
+    if (!order) return notFound()
 
     return (
         <>
