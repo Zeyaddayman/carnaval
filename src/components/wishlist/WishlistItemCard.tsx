@@ -1,6 +1,5 @@
 "use client"
 
-import { WishlistItem } from "@/types/wishlist"
 import Image from "next/image"
 import Link from "next/link"
 import RatingStars from "../ui/RatingStars"
@@ -9,11 +8,12 @@ import { BsCartPlusFill } from "react-icons/bs"
 import { FiTrash2 } from "react-icons/fi"
 import { formatPrice, formatRating } from "@/lib/formatters"
 import { useState } from "react"
+import { wishlistItemWithProduct } from "@/types/wishlist"
 
 interface Props {
-    product: WishlistItem["product"]
+    product: wishlistItemWithProduct["product"]
     removeItem: (productId: string) => void
-    addItemToCart: (product: WishlistItem["product"]) => void
+    addItemToCart: (product: wishlistItemWithProduct["product"]) => void
 }
 
 const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {

@@ -2,15 +2,16 @@
 
 import { addItemToLocalCart, removeItemFromLocalCart, selectLocalCart } from "@/redux/features/localCartSlice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { ProductWithRelations } from "@/types/products"
+import { ProductDetails } from "@/types/products"
 import AddToCart from "./AddToCart"
 import UpdateCartItem from "./UpdateCartItem"
 import { InYourCart } from "./InYourCart"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
+import { CartItemWithProduct } from "@/types/cart"
 
 interface Props {
-    product: ProductWithRelations
+    product: ProductDetails
     initialLimit: number
 }
 
@@ -29,24 +30,19 @@ const ProductLocalCart = ({ product, initialLimit }: Props) => {
 
     if (!isMounted) return null
 
-    const existingProduct = localCart.items.find(item => item.productId === product.id)
+    const existingProduct = localCart.items.find(item => item.product.id === product.id)
 
     const addItem = (quantity: number) => {
 
-        const newCartItem = {
+        const newCartItem: CartItemWithProduct = {
             id: crypto.randomUUID(),
             cartId: "local",
             product: product,
-            productId: product.id,
             quantity,
-            createdAt: new Date(),
-            updatedAt: new Date()
+            createdAt: JSON.parse(JSON.stringify(new Date()))
         }
 
-        // to stringify non-serializable data types like Date
-        const serializableCartItem = JSON.parse(JSON.stringify(newCartItem))
-
-        dispatch(addItemToLocalCart(serializableCartItem))
+        dispatch(addItemToLocalCart(newCartItem))
 
         fetch(`/api/product/${product.id}/limit`)
             .then(res => res.json())
@@ -59,13 +55,9 @@ const ProductLocalCart = ({ product, initialLimit }: Props) => {
 
                         toast.error(`Only ${productLimit} items are available`)
 
-                        // to stringify non-serializable data types like Date
-                        const serializableCartItem = JSON.parse(JSON.stringify({
-                            ...newCartItem,
-                            quantity: quantity > productLimit ? productLimit : quantity
-                        }))
+                        newCartItem.quantity = quantity > productLimit ? productLimit : quantity
     
-                        dispatch(addItemToLocalCart(serializableCartItem))
+                        dispatch(addItemToLocalCart(newCartItem))
                     }
 
                 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { CartErrorResponse, useAddItemToUserCartMutation, useGetUserCartQuery, useRemoveItemFromUserCartMutation } from "@/redux/features/userCartApi"
-import { ProductWithRelations } from "@/types/products"
+import { ProductDetails } from "@/types/products"
 import { InYourCart } from "./InYourCart"
 import UpdateCartItem from "./UpdateCartItem"
 import AddToCart from "./AddToCart"
@@ -11,7 +11,7 @@ import ProductCartSkeleton from "@/components/skeletons/ProductCartSkeleton"
 
 interface Props {
     userId: string
-    product: ProductWithRelations
+    product: ProductDetails
     initialLimit: number
 }
 
@@ -66,7 +66,7 @@ const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
 
     if (isLoading) return <ProductCartSkeleton />
 
-    const existingProduct = data?.cart.items.find(item => item.productId === product.id)
+    const existingProduct = data?.cart.items.find(item => item.product.id === product.id)
 
     const addItem = (quantity: number) => {
         addItemToUserCart({

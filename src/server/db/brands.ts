@@ -1,34 +1,17 @@
 import { db } from "@/lib/prisma"
 import { unstable_cache as nextCache } from "next/cache"
 import { cache as reactCache } from "react"
+import { brandWithProductsCountSelector } from "../query-selectors/brand"
 
 export const getBrands = reactCache(nextCache(
     async () => {
         return await db.brand.findMany({
-            select: {
-                id: true,
-                name: true,
-                slug: true,
-                thumbnail: true,
-                _count: {
-                    select: {
-                        products: {
-                            where: {
-                                stock: { gt: 0 }
-                            }
-                        }
-                    }
-                }
-            },
             where: {
-                products: {
-                    some: {}
-                }
+                products: { some: {} }
             },
+            select: brandWithProductsCountSelector,
             orderBy: {
-                products: {
-                    _count: "desc"
-                }
+                products: { _count: "desc" }
             }
         })
     },

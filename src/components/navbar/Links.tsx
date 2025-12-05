@@ -8,6 +8,7 @@ import { getBrands } from "@/server/db/brands"
 import AuthLinks from "./AuthLinks"
 import CartItemsCount from "./CartItemsCount"
 import WishlistItemsCount from "./WishlistItemsCount"
+import { MenuCategory } from "@/types/categories"
 
 const Links = async () => {
 
@@ -27,7 +28,7 @@ const Links = async () => {
                 className="absolute left-1/2 -translate-x-1/3 top-12 group-hover:top-9 hidden lg:grid grid-cols-4 gap-8 invisible group-hover:lg:visible opacity-0 group-hover:opacity-100 w-[800px] py-10 px-5 bg-card border border-border uppercase text-muted-foreground rounded-md shadow-md z-20 transition-all"
             >
                 {topLevelCategories.map(category => (
-                    <li key={category.id}>
+                    <li key={category.slug}>
                         <Link
                             href={`/categories/${category.slug}`}
                             className="block text-foreground hover:text-primary mb-3 font-semibold transition"
@@ -82,16 +83,16 @@ const Links = async () => {
     )
 }
 
-const SubCategories = ({ subCategories }: { subCategories: Category[] }) => {
+const SubCategories = ({ subCategories }: { subCategories: MenuCategory["children"] }) => {
     return (
         <div className="flex flex-col gap-2">
             {subCategories.map(subCategory => (
                 <Link
-                    key={subCategory.id}
+                    key={subCategory.slug}
                     href={`/categories/${subCategory.slug}`}
                     className="text-xs text-muted-foreground hover:text-primary transition-colors"
                 >
-                    {subCategory.subCategoryName || subCategory.name}
+                    {subCategory.subCategoryName}
                 </Link>
             ))}
         </div>

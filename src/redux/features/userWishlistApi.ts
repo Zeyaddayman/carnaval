@@ -1,4 +1,4 @@
-import { WishlistItem } from "@/types/wishlist";
+import { wishlistItemWithProduct } from "@/types/wishlist";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 interface Response {
@@ -19,13 +19,13 @@ export const userWishlistApi = createApi({
     refetchOnMountOrArgChange: true,
 
     endpoints: (builder) => ({
-        getUserWishlist: builder.query<{ items: WishlistItem[] }, string>({
+        getUserWishlist: builder.query<{ items: wishlistItemWithProduct[] }, string>({
             query: () => "user/wishlist",
 
             providesTags: ['user-wishlist']
         }),
 
-        addItemToUserWishlist: builder.mutation<Response, { product: WishlistItem["product"], userId: string } >({
+        addItemToUserWishlist: builder.mutation<Response, { product: wishlistItemWithProduct["product"], userId: string } >({
             query: ({ product }) => ({
                 url: "user/wishlist",
                 method: 'POST',
@@ -41,25 +41,16 @@ export const userWishlistApi = createApi({
 
             async onQueryStarted({ product, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    userWishlistApi.util.updateQueryData('getUserWishlist', userId, (draft: { items: WishlistItem[] }) => {
+                    userWishlistApi.util.updateQueryData('getUserWishlist', userId, (draft: { items: wishlistItemWithProduct[] }) => {
 
-                        const existingItem = draft.items.find(item => item.productId === product.id)
+                        const existingItem = draft.items.find(item => item.product.id === product.id)
 
                         if (existingItem) return
                         else {
 
-                            const tempItem: WishlistItem = {
-                                id: crypto.randomUUID(),
-                                userId,
-                                productId: product.id,
-                                product: product,
-                                createdAt: new Date()
-                            }
+                            const tempItem: wishlistItemWithProduct = { product }
 
-                            // to stringfy non-serializable fields like Date
-                            const serializableTempItem = JSON.parse(JSON.stringify(tempItem))
-
-                            draft.items.push(serializableTempItem)
+                            draft.items.push(tempItem)
                         }
                     })
                 )
@@ -90,9 +81,9 @@ export const userWishlistApi = createApi({
 
             async onQueryStarted({ productId, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    userWishlistApi.util.updateQueryData('getUserWishlist', userId, (draft: { items: WishlistItem[] }) => {
+                    userWishlistApi.util.updateQueryData('getUserWishlist', userId, (draft: { items: wishlistItemWithProduct[] }) => {
 
-                        draft.items = draft.items.filter(item => item.productId !== productId)
+                        draft.items = draft.items.filter(item => item.product.id !== productId)
                     })
                 )
                 try {

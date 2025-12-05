@@ -28,22 +28,17 @@ const LocalCartItem = ({ item, removeItem, moveItemToWishlist, quantityModified,
 
     const updateQuantity = (quantity: number) => {
 
-        const newCartItem = {
+        const newCartItem: CartItemWithProduct = {
             id: crypto.randomUUID(),
             cartId: "local",
             product: item.product,
-            productId: item.product.id,
             quantity,
-            createdAt: new Date(),
-            updatedAt: new Date()
+            createdAt: JSON.parse(JSON.stringify(new Date()))
         }
 
-        // to stringify non-serializable data types like Date
-        const serializableCartItem = JSON.parse(JSON.stringify(newCartItem))
+        dispatch(addItemToLocalCart(newCartItem))
 
-        dispatch(addItemToLocalCart(serializableCartItem))
-
-        fetch(`/api/product/${item.productId}/limit`)
+        fetch(`/api/product/${item.product.id}/limit`)
             .then(res => res.json())
             .then((productLimit: number | undefined) => {
                 if (productLimit && productLimit !== limit) {
@@ -54,13 +49,9 @@ const LocalCartItem = ({ item, removeItem, moveItemToWishlist, quantityModified,
 
                         toast.error(`Only ${productLimit} items are available`)
 
-                        // to stringify non-serializable data types like Date
-                        const serializableCartItem = JSON.parse(JSON.stringify({
-                            ...newCartItem,
-                            quantity: quantity > productLimit ? productLimit : quantity
-                        }))
+                        newCartItem.quantity = quantity > productLimit ? productLimit : quantity
 
-                        dispatch(addItemToLocalCart(serializableCartItem))
+                        dispatch(addItemToLocalCart(newCartItem))
                     }
                 }
             })
@@ -68,7 +59,7 @@ const LocalCartItem = ({ item, removeItem, moveItemToWishlist, quantityModified,
     }
 
     const handleRemoveItem = () => {
-        removeItem(item.productId)
+        removeItem(item.product.id)
     }
 
     const handleMoveToWishlist = () => {

@@ -2,6 +2,7 @@ import { redirect } from "next/navigation"
 import { isAuthenticated } from "../utils/auth"
 import { db } from "@/lib/prisma"
 import { Prisma } from "@/generated/prisma"
+import { orderDetailsSelector, tableOrderSelector } from "../query-selectors/order"
 
 export const getUserOrders = async (filter: string ) => {
 
@@ -31,14 +32,8 @@ export const getUserOrders = async (filter: string ) => {
 
     const orders = await db.order.findMany({
         where: whereOptions,
+        select: tableOrderSelector,
         orderBy: { createdAt: "desc" },
-        select: {
-            id: true,
-            count: true,
-            createdAt: true,
-            itemsCount: true,
-            status: true
-        }
     })
 
     return orders
@@ -56,34 +51,7 @@ export const getOrderDetails = async (id: string) => {
 
     const order = await db.order.findUnique({
         where: { id, userId },
-        select: {
-            count: true,
-            status: true,
-            createdAt: true,
-            itemsCount: true,
-            subtotal: true,
-            shippingFee: true,
-            totalPrice: true,
-            userName: true,
-            userPhone: true,
-            country: true,
-            governorate: true,
-            city: true,
-            streetAddress: true,
-            products: {
-                select: {
-                    price: true,
-                    quantity: true,
-                    product: {
-                        select: {
-                            id: true,
-                            title: true,
-                            thumbnail: true
-                        }
-                    }
-                }
-            }
-        }
+        select: orderDetailsSelector
     })
 
     if (!order) return null

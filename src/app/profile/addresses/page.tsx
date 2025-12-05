@@ -2,7 +2,8 @@ import AddNewAddressButton from "@/components/profile/addresses/AddNewAddressBut
 import AddressCard from "@/components/profile/addresses/AddressCard"
 import NoSavedAddresses from "@/components/profile/addresses/NoSavedAddresses"
 import Heading from "@/components/ui/Heading"
-import { getProfile, getUserAddresses } from "@/server/db/profile"
+import { getUserAddresses } from "@/server/db/address"
+import { getProfile } from "@/server/db/profile"
 
 const ProfileAddressesPage = async () => {
 

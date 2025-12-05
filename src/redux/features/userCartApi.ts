@@ -1,10 +1,10 @@
-import { CartItemWithProduct, CartWithItems } from "@/types/cart";
+import { CartItemWithProduct } from "@/types/cart";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export type QuantityModifiedItem = { oldQuantity: number, newQuantity: number }
 
 interface CartResponse {
-    cart: CartWithItems
+    cart: { items: CartItemWithProduct[] }
     quantityModifiedItems: { [id: string]: QuantityModifiedItem }
 }
 
@@ -63,26 +63,21 @@ export const userCartApi = createApi({
                 const patchResult = dispatch(
                     userCartApi.util.updateQueryData('getUserCart', userId, (draft: CartResponse) => {
 
-                        const existingItem = draft.cart.items.find(item => item.productId === product.id)
+                        const existingItem = draft.cart.items.find(item => item.product.id === product.id)
 
                         if (existingItem) {
                             existingItem.quantity = quantity
                         } else {
 
-                            const tempItem: CartWithItems["items"][number] = {
+                            const tempItem: CartItemWithProduct = {
                                 id: crypto.randomUUID(),
                                 cartId: "temp",
-                                productId: product.id,
                                 product,
                                 quantity,
-                                createdAt: new Date(),
-                                updatedAt: new Date()
+                                createdAt: JSON.parse(JSON.stringify(new Date()))
                             }
 
-                            // to stringify non-serializable data types like Date
-                            const serializableTempItem = JSON.parse(JSON.stringify(tempItem))
-
-                            draft.cart.items.push(serializableTempItem)
+                            draft.cart.items.push(tempItem)
                         }
                     })
                 )
@@ -121,7 +116,7 @@ export const userCartApi = createApi({
             async onQueryStarted({ productId, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
                     userCartApi.util.updateQueryData('getUserCart', userId, (draft: CartResponse) => {
-                        draft.cart.items = draft.cart.items.filter(item => item.productId !== productId)
+                        draft.cart.items = draft.cart.items.filter(item => item.product.id !== productId)
                     })
                 )
                 try {

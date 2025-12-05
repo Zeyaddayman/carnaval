@@ -75,7 +75,7 @@ export function mergeCartItems(
         for (let i = 0; i < userCartItems.length; i++) {
             const currentItem = userCartItems[i]
 
-            mergedCartItems.push({ productId: currentItem.productId, quantity: currentItem.quantity, createdAt: currentItem.createdAt })
+            mergedCartItems.push({ productId: currentItem.product.id, quantity: currentItem.quantity, createdAt: currentItem.createdAt })
         }
     }
 
@@ -83,12 +83,12 @@ export function mergeCartItems(
     for (let i = 0; i < localCartItems.length; i++) {
         const currentItem = localCartItems[i]
 
-        const productInCart = mergedCartItems.find(item => item.productId === currentItem.productId)
+        const productInCart = mergedCartItems.find(item => item.productId === currentItem.product.id)
 
         if (productInCart) {
             productInCart.quantity = currentItem.quantity
         } else {
-            mergedCartItems.push({ productId: currentItem.productId, quantity: currentItem.quantity, createdAt: currentItem.createdAt })
+            mergedCartItems.push({ productId: currentItem.product.id, quantity: currentItem.quantity, createdAt: currentItem.createdAt })
         }
     }
 

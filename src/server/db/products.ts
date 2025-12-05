@@ -2,6 +2,8 @@ import { PRODUCTS_MAX_RATING, PROUDCTS_PAGE_LIMIT } from "@/constants/products"
 import { Brand, Category, Prisma } from "@/generated/prisma"
 import { db } from "@/lib/prisma"
 import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
+import { subcategorySelector } from "../query-selectors/category"
+import { cardProductSelector } from "../query-selectors/product"
 
 export const getProductsByCategory = async (slug: Category["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
 
@@ -49,37 +51,13 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
         where: { slug },
         select: {
             name: true,
-            children: {
-                select: {
-                    name: true,
-                    slug: true,
-                    _count: {
-                        select: {
-                            products: true
-                        }
-                    }
-                }
-            },
+            children: { select: subcategorySelector },
             products: {
                 where: whereOptions,
+                select: cardProductSelector,
                 orderBy: orderByOptions,
                 take: PROUDCTS_PAGE_LIMIT,
-                skip,
-                select: {
-                    id: true,
-                    title: true,
-                    thumbnail: true,
-                    price: true,
-                    discountPercentage: true,
-                    rating: true,
-                    stock: true,
-                    limit: true,
-                    brand: {
-                        select: {
-                            name: true
-                        }
-                    }
-                }
+                skip
             },
             _count: {
                 select: {
@@ -152,24 +130,10 @@ export const getProductsByBrand = async (slug: Brand["slug"], sortBy: ProductsSo
             name: true,
             products: {
                 where: whereOptions,
+                select: cardProductSelector,
                 orderBy: orderByOptions,
                 take: PROUDCTS_PAGE_LIMIT,
-                skip,
-                select: {
-                    id: true,
-                    title: true,
-                    thumbnail: true,
-                    price: true,
-                    discountPercentage: true,
-                    rating: true,
-                    stock: true,
-                    limit: true,
-                    brand: {
-                        select: {
-                            name: true
-                        }
-                    }
-                }
+                skip
             },
             _count: {
                 select: {

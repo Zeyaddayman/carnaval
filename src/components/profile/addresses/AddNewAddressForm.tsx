@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
-import { addNewAddressAction, AddNewAddressState } from "@/server/actions/profile"
+import { addNewAddressAction, AddNewAddressState } from "@/server/actions/address"
 import { useActionState, useEffect } from "react"
 import toast from "react-hot-toast"
 

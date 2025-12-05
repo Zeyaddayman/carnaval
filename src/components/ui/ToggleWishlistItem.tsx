@@ -9,11 +9,11 @@ import toast from "react-hot-toast"
 import { FaHeart } from "react-icons/fa"
 import { buttonVariants } from "./Button"
 import { usePathname } from "next/navigation"
-import { WishlistItem } from "@/types/wishlist"
+import { wishlistItemWithProduct } from "@/types/wishlist"
 
 interface Props {
     session: UserSession | null,
-    product: WishlistItem["product"]
+    product: wishlistItemWithProduct["product"]
 }
 
 const ToggleWishlistItem = ({ session, product }: Props) => {
@@ -50,7 +50,7 @@ const LoggedIn = ({ product, userId }: { userId: string, product: CardProduct })
 
     const [ removeItemFromUserWishlist, { isError: isRemovingItemFailed, error: removeItemError } ] = useRemoveItemFromUserWishlistMutation()
 
-    const productInWishlist = wishlist?.items.find(item => item.productId === product.id)
+    const productInWishlist = wishlist?.items.find(item => item.product.id === product.id)
 
     useEffect(() => {
 

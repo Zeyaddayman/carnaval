@@ -76,8 +76,6 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
     } = data
 
 
-    if (!products || products.length === 0) return <NoProductsFound clearFiltersLink={`/categories/${slug}`} /> 
-
     return (
         <main>
             <div className="container">
@@ -103,6 +101,7 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                                 <ProductsSort sort={sort} />
                             </div>
                         <ProductsList
+                            slug={slug}
                             products={products}
                             total={total}
                             page={page}

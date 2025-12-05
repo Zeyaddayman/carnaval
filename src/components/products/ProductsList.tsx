@@ -1,8 +1,10 @@
 import { CardProduct } from "@/types/products"
 import ProductCard from "./ProductCard"
 import { PiShootingStarLight } from "react-icons/pi"
+import NoProductsFound from "./NoProductsFound"
 
 interface Props {
+    slug: string
     products: CardProduct[]
     total: number
     page: number
@@ -10,10 +12,12 @@ interface Props {
     pageSize: number
 }
 
-const ProductsList = ({ products, total, page, limit, pageSize }: Props) => {
+const ProductsList = ({ slug, products, total, page, limit, pageSize }: Props) => {
 
     const firstProductIndex = (page - 1) * limit
     const lastProductIndex = firstProductIndex + pageSize
+
+    if (!products || products.length === 0) return <NoProductsFound clearFiltersLink={`/categories/${slug}`} /> 
 
     return (
         <section>

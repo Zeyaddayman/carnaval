@@ -1,16 +1,6 @@
 import { Prisma } from "@/generated/prisma";
+import { checkoutItemSelector } from "@/server/query-selectors/checkout";
 
 export type CheckoutItem = Prisma.CartItemGetPayload<{
-    select: {
-        id: true,
-        quantity: true,
-        product: {
-            select: {
-                title: true,
-                thumbnail: true,
-                price: true,
-                discountPercentage: true
-            }
-        }
-    }
+    select: typeof checkoutItemSelector
 }>

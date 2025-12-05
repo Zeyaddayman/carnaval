@@ -1,4 +1,5 @@
 import { db } from '@/lib/prisma'
+import { wishlistItemSelector } from '@/server/query-selectors/wishlist'
 import { isAuthenticated } from '@/server/utils/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -18,25 +19,7 @@ export async function GET() {
             orderBy: {
                 createdAt: 'desc'
             },
-            include: {
-                product: {
-                    select: {
-                        id: true,
-                        title: true,
-                        thumbnail: true,
-                        price: true,
-                        discountPercentage: true,
-                        rating: true,
-                        stock: true,
-                        limit: true,
-                        brand: {
-                            select: {
-                                name: true
-                            }
-                        }
-                    }
-                }
-            }
+            select: wishlistItemSelector
         })
 
         return NextResponse.json({ items: wishlist }, { status: 200 })

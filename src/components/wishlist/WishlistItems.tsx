@@ -5,7 +5,7 @@ import WishlistItemCard from "./WishlistItemCard"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
 import { CartErrorResponse, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
-import { WishlistItem } from "@/types/wishlist"
+import { wishlistItemWithProduct } from "@/types/wishlist"
 import WishlistItemsSkeleton from "../skeletons/WishlistItemsSkeleton"
 import EmptyWishlist from "./EmptyWishlist"
 
@@ -55,7 +55,7 @@ const WishlistItems = ({ userId }: Props) => {
         removeItemFromUserWishlist({ userId, productId })
     }
 
-    const addItemToCart = (product: WishlistItem["product"]) => {
+    const addItemToCart = (product: wishlistItemWithProduct["product"]) => {
         addItemToUserCart({
             product,
             quantity: 1,
@@ -69,7 +69,7 @@ const WishlistItems = ({ userId }: Props) => {
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
             {wishlist.items.map(item => (
                 <WishlistItemCard
-                    key={item.id}
+                    key={item.product.id}
                     product={item.product}
                     removeItem={removeItem}
                     addItemToCart={addItemToCart}

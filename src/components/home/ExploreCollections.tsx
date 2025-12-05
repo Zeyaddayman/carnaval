@@ -16,7 +16,7 @@ const ExploreCollections = async () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {topLevelCategories.map((category) => (
                     <Link
-                        key={category.id}
+                        key={category.slug}
                         href={`/categories/${category.slug}`}
                         className="flex flex-col border-border shadow-sm hover:shadow-lg hover:-translate-y-1 rounded-b-xl transition-all"
                     >

@@ -1,9 +1,9 @@
-import { ProductWithRelations } from "@/types/products"
+import { ProductDetails } from "@/types/products"
 import RatingStars from "../ui/RatingStars"
 import { formatPrice, formatRating } from "@/lib/formatters"
 
 interface Props {
-    product: ProductWithRelations
+    product: ProductDetails
 }
 
 const ProductInfo = ({ product }: Props) => {

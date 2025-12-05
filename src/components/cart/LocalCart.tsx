@@ -39,7 +39,7 @@ const LocalCart = () => {
             try {
                 const freshCartProducts = await Promise.all(localCart.items.map(async item => {
     
-                    const res = await fetch(`/api/product/${item.productId}`, { signal })
+                    const res = await fetch(`/api/product/${item.product.id}`, { signal })
     
                     if (res.ok) return (await res.json()) as CartItemWithProduct["product"]
                 }))
@@ -48,7 +48,7 @@ const LocalCart = () => {
     
                 const updatedLocalCartItems = localCart.items.map<CartItemWithProduct>(item => {
     
-                    const freshProduct = freshCartProducts.find(product => product?.id === item.productId)
+                    const freshProduct = freshCartProducts.find(product => product?.id === item.product.id)
     
                     if (!freshProduct) return item
     

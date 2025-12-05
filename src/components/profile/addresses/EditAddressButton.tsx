@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/Button"
 import Dialog from "@/components/ui/Dialog"
 import Input from "@/components/ui/Input"
 import { Address } from "@/generated/prisma"
-import { editAddressAction, EditAddressState } from "@/server/actions/profile"
+import { editAddressAction, EditAddressState } from "@/server/actions/address"
 import { useActionState, useEffect, useState } from "react"
 import toast from "react-hot-toast"
 

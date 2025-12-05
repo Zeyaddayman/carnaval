@@ -3,7 +3,6 @@ import Image from "next/image"
 import CartItemInfo from "./CartItemInfo"
 import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
-import OutOfStock from "../product/OutOfStock"
 
 interface Props {
     item: CartItemWithProduct
@@ -14,7 +13,7 @@ interface Props {
 const UnavailableCartItem = ({ item, removeItem, moveItemToWishlist }: Props) => {
 
     const handleRemoveItem = () => {
-        removeItem(item.productId)
+        removeItem(item.product.id)
     }
 
     const handleMoveToWishlist = () => {

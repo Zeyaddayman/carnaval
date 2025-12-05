@@ -1,26 +1,14 @@
 import { db } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { cardProductSelector } from "@/server/query-selectors/product"
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+
     const productId = (await params).id
 
     const product = await db.product.findUnique({
         where: { id: productId },
-        select: {
-            id: true,
-            title: true,
-            thumbnail: true,
-            price: true,
-            discountPercentage: true,
-            rating: true,
-            stock: true,
-            limit: true,
-            brand: {
-                select: {
-                    name: true
-                }
-            }
-        }
+        select: cardProductSelector
     })
 
     if (!product) {

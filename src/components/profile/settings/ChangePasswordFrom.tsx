@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
-import { changePasswordAction, ChangePasswordState, EditProfileState } from "@/server/actions/profile"
+import { changePasswordAction, ChangePasswordState } from "@/server/actions/settings"
 import { useActionState, useEffect } from "react"
 import toast from "react-hot-toast"
 

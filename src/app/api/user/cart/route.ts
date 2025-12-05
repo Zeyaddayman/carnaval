@@ -1,4 +1,5 @@
 import { db } from '@/lib/prisma'
+import { cartItemSelector } from '@/server/query-selectors/cart'
 import { isAuthenticated } from '@/server/utils/auth'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -18,30 +19,10 @@ export async function GET() {
             where: { userId },
             create: { userId },
             update: {},
-            include: {
+            select: {
                 items: {
-                    orderBy: {
-                        createdAt: 'desc'
-                    },
-                    include: {
-                        product: {
-                            select: {
-                                id: true,
-                                title: true,
-                                thumbnail: true,
-                                price: true,
-                                discountPercentage: true,
-                                rating: true,
-                                stock: true,
-                                limit: true,
-                                brand: {
-                                    select: {
-                                        name: true
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    select: cartItemSelector,
+                    orderBy: { createdAt: 'desc' }
                 }
             }
         })
@@ -67,7 +48,7 @@ export async function GET() {
                     where: {
                         cartId_productId: {
                             cartId: item.cartId,
-                            productId: item.productId
+                            productId: item.product.id
                         }
                     },
                     data: { quantity: newQuantity }

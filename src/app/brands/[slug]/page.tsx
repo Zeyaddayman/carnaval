@@ -1,5 +1,4 @@
 import BrandProductsHeading from "@/components/brands/BrandProductsHeading"
-import NoProductsFound from "@/components/products/NoProductsFound"
 import Pagination from "@/components/products/Pagination"
 import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
@@ -70,8 +69,6 @@ const BrandProductsPage = async ({ params, searchParams }: Props) => {
     } = data
 
 
-    if (!products || products.length === 0) return <NoProductsFound clearFiltersLink={`/brands/${slug}`} />
-
     return (
         <main>
             <div className="container">
@@ -95,6 +92,7 @@ const BrandProductsPage = async ({ params, searchParams }: Props) => {
                         <ProductsSort sort={sort} />
                     </div>
                     <ProductsList
+                        slug={slug}
                         products={products}
                         total={total}
                         page={page}

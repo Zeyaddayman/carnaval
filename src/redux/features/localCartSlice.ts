@@ -21,7 +21,7 @@ export const LocalCartSlice = createSlice({
     initialState,
     reducers: {
         addItemToLocalCart: (state, action: PayloadAction<CartItemWithProduct>) => {
-            const existingItem = state.items.find(item => item.productId === action.payload.productId)
+            const existingItem = state.items.find(item => item.product.id === action.payload.product.id)
 
             if (existingItem) {
                 existingItem.quantity = action.payload.quantity
@@ -32,7 +32,7 @@ export const LocalCartSlice = createSlice({
             localStorage.setItem("localCart", JSON.stringify(state.items))
         },
         removeItemFromLocalCart: (state, action: PayloadAction<string>) => {
-            state.items = state.items.filter(item => item.productId !== action.payload)
+            state.items = state.items.filter(item => item.product.id !== action.payload)
 
             localStorage.setItem("localCart", JSON.stringify(state.items))
         },

@@ -1,8 +1,9 @@
-import { Category } from "@/generated/prisma"
+import { Category, Prisma } from "@/generated/prisma"
 import { CategoryHierarchy } from "@/types/categories"
 import { db } from "@/lib/prisma"
 import { unstable_cache as nextCache } from "next/cache"
 import { cache as reactCache } from "react"
+import { menuCategorySelector } from "../query-selectors/category"
 
 export const getTopLevelCategories = reactCache(nextCache(
     async () => {
@@ -13,12 +14,8 @@ export const getTopLevelCategories = reactCache(nextCache(
                     { children: { some: {} } }
                 ]
             },
-            orderBy: {
-                createdAt: "asc"
-            },
-            include: {
-                children: true
-            }
+            select: menuCategorySelector,
+            orderBy: { createdAt: "asc" }
         })
     },
     ["top-categories"],

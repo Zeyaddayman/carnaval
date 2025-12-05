@@ -1,7 +1,8 @@
 import { buttonVariants } from "@/components/ui/Button"
 import Heading from "@/components/ui/Heading"
+import { getUserDefaultAddress } from "@/server/db/address"
 import { getUserOrdersSummary } from "@/server/db/orders"
-import { getProfile, getUserDefaultAddress } from "@/server/db/profile"
+import { getProfile } from "@/server/db/profile"
 import Link from "next/link"
 
 const ProfileAccountOverviewPage = () => {

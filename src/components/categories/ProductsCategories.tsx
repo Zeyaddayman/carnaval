@@ -4,6 +4,7 @@ import { Category } from "@/generated/prisma"
 import Image from "next/image"
 import { getTopLevelCategories } from "@/server/db/categories"
 import Heading from "../ui/Heading"
+import { MenuCategory } from "@/types/categories"
 
 const ProductsCategories = async () => {
 
@@ -18,7 +19,7 @@ const ProductsCategories = async () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {topLevelCategories.map(category => (
                     <div
-                        key={category.id}
+                        key={category.slug}
                         className="p-5 pt-10 bg-card flex flex-col gap-3 border border-border rounded-xl"
                     >
                         <h4 className="font-semibold">{category.name}</h4>
@@ -36,11 +37,11 @@ const ProductsCategories = async () => {
     )
 }
 
-const SubCategories = ({ subCategories }: { subCategories: Category[] }) => (
+const SubCategories = ({ subCategories }: { subCategories: MenuCategory["children"] }) => (
     <div className="grid grid-cols-2 gap-3">
         {subCategories.map(subCategory => (
             <Link
-                key={subCategory.id}
+                key={subCategory.slug}
                 href={`/categories/${subCategory.slug}`}
                 className=" p-3 hover:bg-muted rounded-lg transition-colors"
             >
@@ -49,7 +50,7 @@ const SubCategories = ({ subCategories }: { subCategories: Category[] }) => (
                 >
                     <Image
                         src={subCategory.thumbnail}
-                        alt={subCategory.name}
+                        alt={subCategory.slug}
                         className="rounded-md"
                         fill
                         sizes="(max-width: 500px) 120px, (max-width: 768px) 255px, 120px"

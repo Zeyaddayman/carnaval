@@ -1,29 +1,13 @@
 import { PRODUCTS_SORT_OPTIONS } from "@/constants/products"
 import { Prisma } from "@/generated/prisma"
+import { cardProductSelector, productDetailsSelector } from "@/server/query-selectors/product"
 
-export type ProductWithRelations = Prisma.ProductGetPayload<{
-    include: {
-        categories: true,
-        brand: true
-    }
+export type ProductDetails = Prisma.ProductGetPayload<{
+    select: typeof productDetailsSelector
 }>
 
 export type CardProduct = Prisma.ProductGetPayload<{
-    select: {
-        id: true,
-        title: true,
-        thumbnail: true,
-        price: true,
-        discountPercentage: true,
-        rating: true,
-        stock: true,
-        limit: true,
-        brand: {
-            select: {
-                name: true
-            }
-        }
-    }
+    select: typeof cardProductSelector
 }>
 
 export type ProductsSortOptionValue = typeof PRODUCTS_SORT_OPTIONS[number]["value"]

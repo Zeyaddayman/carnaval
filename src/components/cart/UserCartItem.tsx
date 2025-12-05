@@ -63,7 +63,7 @@ const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist, quantityMo
     }
 
     const handleRemoveItem = () => {
-        removeItem(item.productId)
+        removeItem(item.product.id)
     }
 
     const handleMoveToWishlist = () => {

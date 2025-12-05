@@ -5,13 +5,13 @@ import ToggleWishlistItem from "../ui/ToggleWishlistItem"
 import ProductLocalCart from "./cart/LocalCart"
 import ProductUserCart from "./cart/UserCart"
 import OutOfStock from "./OutOfStock"
-import { ProductWithRelations } from "@/types/products"
+import { ProductDetails } from "@/types/products"
 import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
 import ProductCartSkeleton from "../skeletons/ProductCartSkeleton"
 import ProductToggleWishlistItemSkeleton from "../skeletons/ProductToggleWishlistItemSkeleton"
 
 interface Props {
-    product: ProductWithRelations
+    product: ProductDetails
     initialLimit: number
 }
 

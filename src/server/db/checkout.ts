@@ -1,6 +1,7 @@
 import { db } from "@/lib/prisma"
 import { isAuthenticated } from "../utils/auth"
 import { redirect } from "next/navigation"
+import { checkoutItemSelector } from "../query-selectors/checkout"
 
 export const getCheckoutItems = async () => {
 
@@ -17,20 +18,7 @@ export const getCheckoutItems = async () => {
             userId
         },
         select: {
-            items: {
-                select: {
-                    id: true,
-                    quantity: true,
-                    product: {
-                        select: {
-                            title: true,
-                            thumbnail: true,
-                            price: true,
-                            discountPercentage: true
-                        }
-                    }
-                }
-            }
+            items: { select: checkoutItemSelector }
         }
     })
 

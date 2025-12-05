@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/Button"
-import { deleteAddressAction } from "@/server/actions/profile"
+import { deleteAddressAction } from "@/server/actions/address"
 import { useState } from "react"
 import toast from "react-hot-toast"
 
