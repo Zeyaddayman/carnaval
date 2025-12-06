@@ -3,11 +3,12 @@ import CheckoutForm from "@/components/checkout/CheckoutForm"
 import CheckoutItemCard from "@/components/checkout/CheckoutItemCard"
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary"
 import Heading from "@/components/ui/Heading"
-import { SHIPPING_COST, SHIPPING_THRESHOLD } from "@/constants/cart"
-import { formatPrice } from "@/lib/formatters"
 import { getUserAddresses } from "@/server/db/address"
 import { getCheckoutItems } from "@/server/db/checkout"
 import { getProfile } from "@/server/db/profile"
+import { getShipping, getTotal } from "@/utils"
+import { getCartItemsCount, getCartSubtotal } from "@/utils/cart"
+import { formatPrice } from "@/utils/formatters"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 
@@ -28,22 +29,14 @@ const CheckoutPage = async () => {
 
     const defaultAddress = addresses.find(address => address.default) || addresses[0]
 
-    const itemsCount = items.reduce((acc, item) => acc + item.quantity, 0)
+    const itemsCount = getCartItemsCount(items)
+    const subtotal = getCartSubtotal(items)
+    const shipping = getShipping(subtotal)
+    const total = getTotal(subtotal, shipping)
 
-    const subtotal = formatPrice(items.reduce((acc, item) => {
-
-        const hasDiscount = item.product.discountPercentage && item.product.discountPercentage > 0
-    
-        const finalPrice = hasDiscount
-            ? (item.product.price - item.product.price * item.product.discountPercentage! / 100)
-            : item.product.price
-
-        return acc + item.quantity * finalPrice
-
-    }, 0))
-
-    const shipping = subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST
-    const total = formatPrice(subtotal + shipping)
+    const formattedSubtotal = formatPrice(subtotal)
+    const formattedShipping = formatPrice(shipping)
+    const formattedTotal = formatPrice(total)
 
     return (
         <main>
@@ -71,9 +64,10 @@ const CheckoutPage = async () => {
                         </div>
                         <CheckoutOrderSummary
                             itemsCount={itemsCount}
-                            subtotal={subtotal}
                             shipping={shipping}
-                            total={total}
+                            formattedSubtotal={formattedSubtotal}
+                            formattedShipping={formattedShipping}
+                            formattedTotal={formattedTotal}
                         />
                     </div>
                     <div className="flex-6/10 sticky top-5 rounded-md border border-border bg-card p-3 shadow-sm">

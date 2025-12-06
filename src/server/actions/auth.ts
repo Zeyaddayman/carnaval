@@ -1,11 +1,12 @@
 "use server"
 
-import { db } from "@/lib/prisma"
+import { db } from "@/utils/prisma"
 import { loginSchema, registerSchema } from "@/validations/auth"
 import bcrypt from "bcrypt"
 import { ACCESS_TOKEN_EXPIRY, clearToken, generateAccessToken, setToken } from "../utils/tokens"
 import { CartItemWithProduct } from "@/types/cart"
-import { mergeCartItems } from "@/lib/utils"
+import { mergeCartItems } from "@/utils/cart"
+import { formatErrors } from "@/utils/formatters"
 
 export interface RegisterState {
     message?: string
@@ -27,13 +28,7 @@ export const registerAction = async (
 
     if (!result.success) {
 
-        const errors = result.error.issues.reduce<{ [error: string]: string }>((acc, current) => {
-            const error = String(current.path)
-
-            if (!acc[error]) acc[error] = current.message
-
-            return acc
-        }, {})
+        const errors = formatErrors(result.error.issues)
 
         return {
             errors,
@@ -114,13 +109,7 @@ export const loginAction = async (
 
     if (!result.success) {
 
-        const errors = result.error.issues.reduce<{ [error: string]: string }>((acc, current) => {
-            const error = String(current.path)
-
-            if (!acc[error]) acc[error] = current.message
-
-            return acc
-        }, {})
+        const errors = formatErrors(result.error.issues)
 
         return {
             errors,

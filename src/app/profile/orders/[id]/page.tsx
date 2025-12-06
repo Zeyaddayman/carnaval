@@ -1,6 +1,7 @@
 import OrderStatus from "@/components/profile/orders/OrderStatus"
 import Heading from "@/components/ui/Heading"
 import { getOrderDetails } from "@/server/db/orders"
+import { formatDate, formatPrice } from "@/utils/formatters"
 import Image from "next/image"
 import { notFound } from "next/navigation"
 
@@ -15,6 +16,10 @@ const OrderDetailsPage = async ({ params }: Props) => {
     const order = await getOrderDetails(id)
 
     if (!order) return notFound()
+
+    const formattedSubtotal = formatPrice(order.subtotal)
+    const formattedShippingFee = formatPrice(order.shippingFee)
+    const formattedTotalPrice = formatPrice(order.totalPrice)
 
     return (
         <>
@@ -33,18 +38,18 @@ const OrderDetailsPage = async ({ params }: Props) => {
                     </div>
                     <div>
                         <p className="text-muted-foreground text-sm font-semibold">ORDER DATE</p>
-                        <p>{new Date(order.createdAt).toLocaleDateString()}</p>
+                        <p>{formatDate(order.createdAt)}</p>
                     </div>
                     <OrderStatus status={order.status} />
                 </div>
                 <div className="space-y-2 py-3">
                     <p className="flex justify-between items-center flex-wrap gap-2">items <span>{order.itemsCount}</span></p>
-                    <p className="flex justify-between items-center flex-wrap gap-2">Subtotal <span>${order.subtotal}</span></p>
+                    <p className="flex justify-between items-center flex-wrap gap-2">Subtotal <span>{formattedSubtotal}</span></p>
                     <p className="flex justify-between items-center flex-wrap gap-2">shipping 
-                        <span className={`${order.shippingFee <= 0 ? "text-success" : ""}`}>{order.shippingFee <= 0 ? "Free" : `$${order.shippingFee}`}</span>
+                        <span className={`${order.shippingFee <= 0 ? "text-success" : ""}`}>{order.shippingFee <= 0 ? "Free" : `${formattedShippingFee}`}</span>
                     </p>
                 </div>
-                <p className="flex justify-between items-center text-2xl font-semibold flex-wrap py-3">Total <span>${order.totalPrice}</span></p>
+                <p className="flex justify-between items-center text-2xl font-semibold flex-wrap py-3">Total <span>{formattedTotalPrice}</span></p>
             </section>
             <section className="px-3 py-6 flex flex-col bg-card border border-border rounded-md">
                 <h5 className="text-xl font-semibold mb-5">

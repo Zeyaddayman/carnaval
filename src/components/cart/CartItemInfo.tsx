@@ -1,7 +1,8 @@
 import { CartItemWithProduct } from "@/types/cart"
 import RatingStars from "../ui/RatingStars"
 import Link from "next/link"
-import { formatPrice, formatRating } from "@/lib/formatters"
+import { formatPrice, formatRating } from "@/utils/formatters"
+import { getProductFinalPrice, productHasDiscount } from "@/utils/product"
 
 interface Props {
     product: CartItemWithProduct["product"]
@@ -10,15 +11,13 @@ interface Props {
 
 const CartItemInfo = ({ product, quantity }: Props) => {
 
-    const hasDiscount = product.discountPercentage && product.discountPercentage > 0
-    
-    const productPrice = formatPrice(Number(product.price))
+    const hasDiscount = productHasDiscount(product.discountPercentage)
 
-    const finalPrice = hasDiscount
-        ? formatPrice(Number(product.price) - (Number(product.price) * product.discountPercentage! / 100))
-        : productPrice
+    const finalPrice = getProductFinalPrice(product.price, product.discountPercentage)
 
-    const totalPrice = formatPrice(finalPrice * quantity)
+    const formattedProductPrice = formatPrice(product.price)
+    const formattedFinalPrice = formatPrice(finalPrice)
+    const formattedTotalPrice = formatPrice(finalPrice * quantity)
 
     const productRating = formatRating(product.rating)
 
@@ -39,11 +38,11 @@ const CartItemInfo = ({ product, quantity }: Props) => {
                 </Link>
             </div>
             <div className="flex flex-col justify-center">
-                <p className="text-2xl font-semibold text-foreground mb-2">${totalPrice}</p>
-                <p>{quantity} x ${finalPrice}</p>
+                <p className="text-2xl font-semibold text-foreground mb-2">{formattedTotalPrice}</p>
+                <p>{quantity} x {formattedFinalPrice}</p>
                 {hasDiscount && (
                     <div className="flex gap-2 items-center">
-                        <p className="text-muted-foreground line-through text-sm">${productPrice}</p>
+                        <p className="text-muted-foreground line-through text-sm">{formattedProductPrice}</p>
                         <p className="bg-success/10 text-success text-sm p-1 rounded-full">-{product.discountPercentage}%</p>
                     </div>
                 )}

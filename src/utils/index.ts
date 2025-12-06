@@ -1,4 +1,4 @@
-import { CartItemWithProduct } from "@/types/cart"
+import { SHIPPING_COST, SHIPPING_THRESHOLD } from "@/constants/cart"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -63,34 +63,10 @@ export function generatePagination(
     return paginationPages
 }
 
-export function mergeCartItems(
-    localCartItems: CartItemWithProduct[],
-    userCartItems: CartItemWithProduct[]
-){
+export function getShipping(subtotal: number) {
+    return subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST
+}
 
-    const mergedCartItems = []
-
-    // add user cart items if exists
-    if (userCartItems) {
-        for (let i = 0; i < userCartItems.length; i++) {
-            const currentItem = userCartItems[i]
-
-            mergedCartItems.push({ productId: currentItem.product.id, quantity: currentItem.quantity, createdAt: currentItem.createdAt })
-        }
-    }
-
-    // add local cart items
-    for (let i = 0; i < localCartItems.length; i++) {
-        const currentItem = localCartItems[i]
-
-        const productInCart = mergedCartItems.find(item => item.productId === currentItem.product.id)
-
-        if (productInCart) {
-            productInCart.quantity = currentItem.quantity
-        } else {
-            mergedCartItems.push({ productId: currentItem.product.id, quantity: currentItem.quantity, createdAt: currentItem.createdAt })
-        }
-    }
-
-    return mergedCartItems
+export function getTotal(subtotal: number, shipping: number) {
+    return subtotal + shipping
 }

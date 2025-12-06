@@ -1,6 +1,6 @@
 import { Category, Prisma } from "@/generated/prisma"
 import { CategoryHierarchy } from "@/types/categories"
-import { db } from "@/lib/prisma"
+import { db } from "@/utils/prisma"
 import { unstable_cache as nextCache } from "next/cache"
 import { cache as reactCache } from "react"
 import { menuCategorySelector } from "../query-selectors/category"

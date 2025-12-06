@@ -1,5 +1,6 @@
-import { formatPrice } from "@/lib/formatters"
 import { CheckoutItem } from "@/types/checkout"
+import { formatPrice } from "@/utils/formatters"
+import { getProductFinalPrice } from "@/utils/product"
 import Image from "next/image"
 
 interface Props {
@@ -8,15 +9,10 @@ interface Props {
 
 const CheckoutItemCard = ({ item }: Props) => {
 
-    const hasDiscount = item.product.discountPercentage && item.product.discountPercentage > 0
-    
-    const productPrice = formatPrice(Number(item.product.price))
+    const finalPrice = getProductFinalPrice(item.product.price, item.product.discountPercentage)
 
-    const finalPrice = hasDiscount
-        ? formatPrice(Number(item.product.price) - (Number(item.product.price) * item.product.discountPercentage! / 100))
-        : productPrice
-
-    const totalPrice = formatPrice(finalPrice * item.quantity)
+    const formattedFinalPrice = formatPrice(finalPrice)
+    const formattedTotalPrice = formatPrice(finalPrice * item.quantity)
 
     return (
         <div className="bg-white border border-border p-2 flex justify-between items-center gap-2 rounded-lg overflow-x-auto">
@@ -28,9 +24,9 @@ const CheckoutItemCard = ({ item }: Props) => {
             />
             <div className="flex-1">
                 <h5 className="sm:font-semibold mb-2">{item.product.title}</h5>
-                <p className="text-muted-foreground">{item.quantity} x ${finalPrice}</p>
+                <p className="text-muted-foreground">{item.quantity} x {formattedFinalPrice}</p>
             </div>
-            <p className="sm:text-xl text-foreground">${totalPrice}</p>
+            <p className="sm:text-xl text-foreground">{formattedTotalPrice}</p>
         </div>
     )
 }

@@ -1,6 +1,6 @@
 "use client"
 
-import { generatePagination } from "@/lib/utils"
+import { generatePagination } from "@/utils"
 import { useRouter, useSearchParams } from "next/navigation"
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri"
 import { Button } from "../ui/Button"

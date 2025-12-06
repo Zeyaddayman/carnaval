@@ -4,7 +4,7 @@ import { useActionState, useEffect } from "react"
 import { Button } from "../ui/Button"
 import Input from "../ui/Input"
 import { registerAction, RegisterState } from "@/server/actions/auth"
-import toast, { LoaderIcon } from "react-hot-toast"
+import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
 import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
@@ -119,7 +119,7 @@ const RegisterFrom = () => {
                 className="w-full mt-5"
                 disabled={isPending}
             >
-                {isPending ? (<><LoaderIcon /> Registering...</>) : "Register"}
+                {isPending ? "Registering..." : "Register"}
             </Button>
         </form>
     )

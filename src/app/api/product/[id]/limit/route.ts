@@ -1,4 +1,5 @@
-import { db } from "@/lib/prisma";
+import { db } from "@/utils/prisma";
+import { getProductLimit } from "@/utils/product";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -13,7 +14,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
         return NextResponse.json({ message: 'Product not found' }, { status: 404 })
     }
 
-    const productLimit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
+    const productLimit = getProductLimit(product.stock, product.limit)
 
-    return NextResponse.json(productLimit, { status: 200 })
+    return NextResponse.json({ productLimit }, { status: 200 })
 }

@@ -1,7 +1,9 @@
-import { db } from '@/lib/prisma'
+import { db } from '@/utils/prisma'
 import { cartItemSelector } from '@/server/query-selectors/cart'
 import { isAuthenticated } from '@/server/utils/auth'
 import { NextRequest, NextResponse } from 'next/server'
+import { getProductLimit } from '@/utils/product'
+import { modifyCartItemsQuantities } from '@/server/utils/cart'
 
 export async function GET() {
 
@@ -27,36 +29,9 @@ export async function GET() {
             }
         })
 
-        const quantityModifiedItems: { [id: string]: { oldQuantity: number, newQuantity: number } } = {}
+        const { newCartItems, quantityModifiedItems } = await modifyCartItemsQuantities(cart.items)
 
-        cart.items = await Promise.all(cart.items.map(async (item) => {
-
-            const limit = (item.product.limit && item.product.limit <= item.product.stock) ? item.product.limit : item.product.stock
-
-            if (item.quantity > limit && limit !== 0) {
-
-                const newQuantity = limit
-
-                quantityModifiedItems[item.id] = {
-                    oldQuantity: item.quantity,
-                    newQuantity
-                }
-
-                item.quantity = newQuantity
-
-                await db.cartItem.update({
-                    where: {
-                        cartId_productId: {
-                            cartId: item.cartId,
-                            productId: item.product.id
-                        }
-                    },
-                    data: { quantity: newQuantity }
-                })
-            }
-
-            return item
-        }))
+        cart.items = newCartItems
 
         return NextResponse.json({ cart, quantityModifiedItems }, { status: 200 })
     } catch {
@@ -91,7 +66,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ message: 'Product is out of stock' }, { status: 400 })
         }
 
-        const limit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
+        const limit = getProductLimit(product.stock, product.limit)
 
         // check if the requested quantity available or not
         const modifiedQuantity = quantity > limit ? limit : quantity
@@ -121,7 +96,8 @@ export async function POST(req: NextRequest) {
             }
         })
 
-        return NextResponse.json({
+        return NextResponse.json(
+            {
                 message: 'Item added to cart',
                 limit,
                 modifiedQuantity: modifiedQuantity !== quantity ? modifiedQuantity : undefined

@@ -1,4 +1,4 @@
-import { db } from '@/lib/prisma'
+import { db } from '@/utils/prisma'
 import { wishlistItemSelector } from '@/server/query-selectors/wishlist'
 import { isAuthenticated } from '@/server/utils/auth'
 import { NextRequest, NextResponse } from 'next/server'

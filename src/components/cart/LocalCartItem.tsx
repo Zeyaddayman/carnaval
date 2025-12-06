@@ -40,7 +40,8 @@ const LocalCartItem = ({ item, removeItem, moveItemToWishlist, quantityModified,
 
         fetch(`/api/product/${item.product.id}/limit`)
             .then(res => res.json())
-            .then((productLimit: number | undefined) => {
+            .then(({ productLimit }: { productLimit: number | undefined }) => {
+
                 if (productLimit && productLimit !== limit) {
 
                     setLimit(productLimit)

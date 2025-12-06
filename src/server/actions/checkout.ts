@@ -1,10 +1,11 @@
 "use server"
 
-import { db } from "@/lib/prisma"
+import { db } from "@/utils/prisma"
 import { isAuthenticated } from "../utils/auth"
-import { formatPrice } from "@/lib/formatters"
-import { SHIPPING_COST, SHIPPING_THRESHOLD } from "@/constants/cart"
 import { revalidatePath } from "next/cache"
+import { getCartItemsCount, getCartSubtotal } from "@/utils/cart"
+import { getShipping, getTotal } from "@/utils"
+import { createOrderItems } from "@/utils/checkout"
 
 export const checkoutAction = async (addressLabel: string) => {
     try {
@@ -71,54 +72,19 @@ export const checkoutAction = async (addressLabel: string) => {
             }
         }
 
-        let validItemsQuantities = true
+        const { orderItems, isValidQuantities } = createOrderItems(user.cart.items, userId)
 
-        const orderItems = user.cart.items.map(item => {
-
-            const productLimit = (item.product.limit && item.product.limit <= item.product.stock) ? item.product.limit : item.product.stock
-
-            if (productLimit < item.quantity || item.product.stock <= 0) {
-                validItemsQuantities = false
-            }
-
-            const hasDiscount = item.product.discountPercentage && item.product.discountPercentage > 0
-        
-            const finalPrice = hasDiscount
-                ? (item.product.price - item.product.price * item.product.discountPercentage! / 100)
-                : item.product.price
-
-            return {
-                productId: item.product.id,
-                quantity: item.quantity,
-                price: finalPrice,
-                userId
-            }
-
-        })
-
-        if (!validItemsQuantities) {
+        if (!isValidQuantities) {
             return {
                 message: "Unavailable items quantity",
                 status: 400
             }
         }
 
-        const itemsCount = user.cart.items.reduce((acc, item) => acc + item.quantity, 0)
-    
-        const subtotal = formatPrice(user.cart.items.reduce((acc, item) => {
-    
-            const hasDiscount = item.product.discountPercentage && item.product.discountPercentage > 0
-        
-            const finalPrice = hasDiscount
-                ? (item.product.price - item.product.price * item.product.discountPercentage! / 100)
-                : item.product.price
-    
-            return acc + item.quantity * finalPrice
-    
-        }, 0))
-    
-        const shipping = subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST
-        const total = formatPrice(subtotal + shipping)
+        const itemsCount = getCartItemsCount(user.cart.items)
+        const subtotal = getCartSubtotal(user.cart.items)
+        const shipping = getShipping(subtotal)
+        const total = getTotal(subtotal, shipping)
 
         const order = await db.order.create({
             data: {
@@ -144,12 +110,12 @@ export const checkoutAction = async (addressLabel: string) => {
                 where: { cartId: user.cart.id }
             })
 
-            for (const item of orderItems) {
+            await Promise.all(orderItems.map(async (item) => {
                 await db.product.update({
                     where: { id: item.productId },
                     data: { stock: { decrement: item.quantity } }
                 })
-            }
+            }))
         }
 
         return {

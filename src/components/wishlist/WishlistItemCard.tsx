@@ -6,9 +6,10 @@ import RatingStars from "../ui/RatingStars"
 import { Button } from "../ui/Button"
 import { BsCartPlusFill } from "react-icons/bs"
 import { FiTrash2 } from "react-icons/fi"
-import { formatPrice, formatRating } from "@/lib/formatters"
+import { formatPrice, formatRating } from "@/utils/formatters"
 import { useState } from "react"
 import { wishlistItemWithProduct } from "@/types/wishlist"
+import { getProductFinalPrice, productHasDiscount } from "@/utils/product"
 
 interface Props {
     product: wishlistItemWithProduct["product"]
@@ -20,13 +21,10 @@ const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {
 
     const [isAddedToCart, setIsAddedToCart] = useState(false)
 
-    const hasDiscount = product.discountPercentage && product.discountPercentage > 0
+    const hasDiscount = productHasDiscount(product.discountPercentage)
 
-    const productPrice = formatPrice(Number(product.price))
-
-    const finalPrice = hasDiscount
-        ? formatPrice(Number(product.price) - (Number(product.price) * product.discountPercentage! / 100))
-        : productPrice
+    const formattedProductPrice = formatPrice(product.price)
+    const formattedFinalPrice = formatPrice(getProductFinalPrice(product.price, product.discountPercentage))
 
     const productRating = formatRating(product.rating)
 
@@ -69,10 +67,10 @@ const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {
                     <span className="text-muted-foreground text-sm">{productRating}</span>
                 </div>
                 <div className="flex items-center flex-wrap gap-3 mt-auto">
-                    <p className="text-lg font-semibold text-card-foreground">${finalPrice}</p>
+                    <p className="text-lg font-semibold text-card-foreground">{formattedFinalPrice}</p>
                     {hasDiscount && (
                         <>
-                        <p className="text-lg text-muted-foreground line-through">${productPrice}</p>
+                        <p className="text-lg text-muted-foreground line-through">{formattedProductPrice}</p>
                         <p className="bg-success/10 text-success text-sm p-1 rounded-lg">-{product.discountPercentage}%</p>
                         </>
                     )}

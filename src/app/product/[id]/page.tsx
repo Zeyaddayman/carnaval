@@ -3,9 +3,10 @@ import GoBack from "@/components/product/GoBack"
 import ProductImagesPreview from "@/components/product/ProductImagesPreview"
 import ProductInfo from "@/components/product/ProductInfo"
 import WishlistAndCart from "@/components/product/WishlistAndCart"
-import { db } from "@/lib/prisma"
+import { db } from "@/utils/prisma"
 import { getProduct } from "@/server/db/product"
 import { notFound } from "next/navigation"
+import { getProductLimit } from "@/utils/product"
 
 interface Props {
     params: Promise<{ id: string }>
@@ -31,7 +32,7 @@ const productPage = async ({ params }: Props) => {
 
     const { product, categoryHierarchy } = data
 
-    const limit = (product.limit && product.limit <= product.stock) ? product.limit : product.stock
+    const limit = getProductLimit(product.stock, product.limit)
 
     return (
         <main>

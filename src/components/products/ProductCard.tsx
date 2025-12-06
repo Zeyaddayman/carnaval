@@ -2,22 +2,19 @@ import { CardProduct } from "@/types/products"
 import Image from "next/image"
 import Link from "next/link"
 import RatingStars from "../ui/RatingStars"
-import { formatPrice, formatRating } from "@/lib/formatters"
+import { formatPrice, formatRating } from "@/utils/formatters"
 import { isAuthenticated } from "@/server/utils/auth"
 import ToggleWishlistItem from "../ui/ToggleWishlistItem"
+import { getProductFinalPrice, productHasDiscount } from "@/utils/product"
 
 const ProductCard = async ({ product }: { product: CardProduct }) => {
 
     const session = await isAuthenticated()
 
-    const hasDiscount = product.discountPercentage && product.discountPercentage > 0
+    const hasDiscount = productHasDiscount(product.discountPercentage)
 
-    const productPrice = formatPrice(product.price)
-
-    const finalPrice = hasDiscount
-
-        ? formatPrice(product.price - (product.price * product.discountPercentage! / 100))
-        : productPrice
+    const formattedProductPrice = formatPrice(product.price)
+    const formattedFinalPrice = formatPrice(getProductFinalPrice(product.price, product.discountPercentage))
 
     const productRating = formatRating(product.rating)
 
@@ -50,10 +47,10 @@ const ProductCard = async ({ product }: { product: CardProduct }) => {
                 </div>
 
                 <div className="flex-1 flex items-end flex-wrap gap-3">
-                    <p className="text-lg font-semibold text-card-foreground">${finalPrice}</p>
+                    <p className="text-lg font-semibold text-card-foreground">{formattedFinalPrice}</p>
                     {hasDiscount && (
                         <>
-                        <p className="text-lg text-muted-foreground line-through">${productPrice}</p>
+                        <p className="text-lg text-muted-foreground line-through">{formattedProductPrice}</p>
                         <p className="bg-success/10 text-success text-sm p-1 rounded-lg">-{product.discountPercentage}%</p>
                         </>
                     )}

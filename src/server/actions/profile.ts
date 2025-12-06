@@ -2,9 +2,10 @@
 
 import { editProfileSchema } from "@/validations/profile"
 import { isAuthenticated } from "../utils/auth"
-import { db } from "@/lib/prisma"
+import { db } from "@/utils/prisma"
 import { revalidatePath } from "next/cache"
 import { ACCESS_TOKEN_EXPIRY, clearToken, generateAccessToken, setToken } from "../utils/tokens"
+import { formatErrors } from "@/utils/formatters"
 
 export interface EditProfileState {
     message?: string
@@ -25,13 +26,7 @@ export const editProfileAction = async (
 
     if (!result.success) {
 
-        const errors = result.error.issues.reduce<{ [error: string]: string }>((acc, current) => {
-            const error = String(current.path)
-
-            if (!acc[error]) acc[error] = current.message
-
-            return acc
-        }, {})
+        const errors = formatErrors(result.error.issues)
 
         return {
             errors,

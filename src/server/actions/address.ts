@@ -1,9 +1,10 @@
 "use server"
 
-import { addNewAddressSchema, editAddressSchema } from "@/validations/profile"
 import { isAuthenticated } from "../utils/auth"
-import { db } from "@/lib/prisma"
+import { db } from "@/utils/prisma"
 import { revalidatePath } from "next/cache"
+import { formatErrors } from "@/utils/formatters"
+import { addNewAddressSchema, editAddressSchema } from "@/validations/address"
 
 export interface AddNewAddressState {
     message?: string
@@ -26,13 +27,7 @@ export const addNewAddressAction = async (
 
     if (!result.success) {
 
-        const errors = result.error.issues.reduce<{ [error: string]: string }>((acc, current) => {
-            const error = String(current.path)
-
-            if (!acc[error]) acc[error] = current.message
-
-            return acc
-        }, {})
+        const errors = formatErrors(result.error.issues)
 
         return {
             errors,
@@ -154,13 +149,7 @@ export const editAddressAction = async (
 
     if (!result.success) {
 
-        const errors = result.error.issues.reduce<{ [error: string]: string }>((acc, current) => {
-            const error = String(current.path)
-
-            if (!acc[error]) acc[error] = current.message
-
-            return acc
-        }, {})
+        const errors = formatErrors(result.error.issues)
 
         return {
             errors,

@@ -1,29 +1,44 @@
 import { buttonVariants } from "@/components/ui/Button"
 import Heading from "@/components/ui/Heading"
+import { Address } from "@/generated/prisma"
 import { getUserDefaultAddress } from "@/server/db/address"
 import { getUserOrdersSummary } from "@/server/db/orders"
 import { getProfile } from "@/server/db/profile"
+import { formatDate } from "@/utils/formatters"
 import Link from "next/link"
 
-const ProfileAccountOverviewPage = () => {
+const ProfileAccountOverviewPage = async () => {
+
+    const [
+        profile,
+        { totalOrders, pendingOrders, lastOrderDate },
+        defaultAddress
+
+    ] = await Promise.all([
+        getProfile(),
+        getUserOrdersSummary(),
+        getUserDefaultAddress()
+    ])
+
     return (
         <>
         <Heading
             title="Account Overview"
         />
         <div className="grid md:grid-cols-2 gap-5">
-            <PersonalInformationSection />
-            <OrdersSummary />
-            <ShippingAddressSection />
+            <PersonalInformationSection profile={profile} />
+            <OrdersSummary
+                totalOrders={totalOrders}
+                pendingOrders={pendingOrders}
+                lastOrderDate={lastOrderDate}
+            />
+            <ShippingAddressSection defaultAddress={defaultAddress} />
         </div>
         </>
     )
 }
 
-const PersonalInformationSection = async () => {
-
-    const profile = await getProfile()
-
+const PersonalInformationSection = ({ profile }: { profile: { name: string, email: string, phone: string } }) => {
     return (
         <section className="px-3 py-6 flex flex-col bg-card border border-border rounded-md">
             <h5 className="text-xl font-semibold mb-5">Personal Inforamtion</h5>
@@ -42,9 +57,7 @@ const PersonalInformationSection = async () => {
     )
 }
 
-const OrdersSummary = async () => {
-
-    const { totalOrders, pendingOrders, lastOrderDate } = await getUserOrdersSummary()
+const OrdersSummary = ({ totalOrders, pendingOrders, lastOrderDate }: { totalOrders: number, pendingOrders: number, lastOrderDate: Date }) => {
 
     if (totalOrders === 0) return
 
@@ -53,7 +66,7 @@ const OrdersSummary = async () => {
             <h5 className="text-xl font-semibold mb-5">Orders Summary</h5>
                 <div className="flex flex-col gap-3 text-muted-foreground mb-6">
                     <p>Total Orders: {totalOrders}</p>
-                    <p>Last Order Date: {new Date(lastOrderDate).toLocaleDateString()}</p>
+                    <p>Last Order Date: {formatDate(lastOrderDate)}</p>
                     <p>Pending Orders: {pendingOrders}</p>
                 </div>
                 <Link
@@ -66,9 +79,7 @@ const OrdersSummary = async () => {
     )
 }
 
-const ShippingAddressSection = async () => {
-
-    const defaultAddress = await getUserDefaultAddress()
+const ShippingAddressSection = ({ defaultAddress }: { defaultAddress: Address | null }) => {
 
     if (!defaultAddress) return
 

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { isAuthenticated } from "../utils/auth"
-import { db } from "@/lib/prisma"
+import { db } from "@/utils/prisma"
 import { Prisma } from "@/generated/prisma"
 import { orderDetailsSelector, tableOrderSelector } from "../query-selectors/order"
 
@@ -18,16 +18,14 @@ export const getUserOrders = async (filter: string ) => {
 
     switch (filter) {
         case "pending":
-            whereOptions = { ...whereOptions, status: "PENDING" }
+            whereOptions.status = "PENDING"
             break
         case "completed":
-            whereOptions = { ...whereOptions, status: "COMPLETED" }
+            whereOptions.status = "COMPLETED"
             break
         case "cancelled":
-            whereOptions = { ...whereOptions, status: "CANCELLED" }
+            whereOptions.status = "CANCELLED"
             break
-        default:
-            whereOptions = whereOptions
     }
 
     const orders = await db.order.findMany({

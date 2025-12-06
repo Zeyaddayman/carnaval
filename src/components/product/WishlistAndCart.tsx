@@ -27,7 +27,8 @@ const WishlistAndCart = ({ product, initialLimit }: Props) => {
                 const res = await fetch(`/api/product/${product.id}/limit`)
 
                 if (res.status === 200) {
-                    const productLimit = await res.json()
+                    const { productLimit } = await res.json()
+
                     return productLimit
                 } else {
                     return initialLimit

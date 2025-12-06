@@ -1,9 +1,10 @@
 "use server"
 
-import { changePasswordSchema } from "@/validations/profile"
 import { isAuthenticated } from "../utils/auth"
-import { db } from "@/lib/prisma"
+import { db } from "@/utils/prisma"
 import bcrypt from "bcrypt"
+import { formatErrors } from "@/utils/formatters"
+import { changePasswordSchema } from "@/validations/settings"
 
 export interface ChangePasswordState {
     message?: string
@@ -28,13 +29,7 @@ export const changePasswordAction = async (
 
     if (!result.success) {
 
-        const errors = result.error.issues.reduce<{ [error: string]: string }>((acc, current) => {
-            const error = String(current.path)
-
-            if (!acc[error]) acc[error] = current.message
-
-            return acc
-        }, {})
+        const errors = formatErrors(result.error.issues)
 
         return {
             errors,

@@ -1,49 +1,16 @@
 import { PRODUCTS_MAX_RATING, PROUDCTS_PAGE_LIMIT } from "@/constants/products"
 import { Brand, Category, Prisma } from "@/generated/prisma"
-import { db } from "@/lib/prisma"
+import { db } from "@/utils/prisma"
 import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
 import { subcategorySelector } from "../query-selectors/category"
 import { cardProductSelector } from "../query-selectors/product"
+import { buildProductsFilters, buildProductsSort } from "../utils/products"
 
 export const getProductsByCategory = async (slug: Category["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
 
-    let whereOptions: Prisma.ProductWhereInput = { 
-        stock: { gt: 0 },
-        price: {
-            gte: filters.minPrice,
-            lte: filters.maxPrice
-        },
-        rating: {
-            gte: filters.minRating,
-            lte: PRODUCTS_MAX_RATING
-        }
-    }
+    const whereOptions = buildProductsFilters(filters)
 
-    if (filters.onlyOnSale) {
-        whereOptions.discountPercentage = { not: null, gt: 0 }
-    }
-
-    let orderByOptions: Prisma.ProductOrderByWithRelationInput
-
-    switch (sortBy) {
-        case "alphabetical":
-            orderByOptions = { title: "asc" }
-            break
-        case "price-asc":
-            orderByOptions = { price: "asc" }
-            break
-        case "price-desc":
-            orderByOptions = { price: "desc" }
-            break
-        case "top-rated":
-            orderByOptions = { rating: "desc" }
-            break
-        case "top-discount":
-            orderByOptions = { discountPercentage: { sort: "desc", nulls: "last" } }
-            break
-        default:
-            orderByOptions = { title: "asc" }
-    }
+    const orderByOptions = buildProductsSort(sortBy)
 
     const skip = (page - 1) * PROUDCTS_PAGE_LIMIT
 
@@ -84,43 +51,9 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
 
 export const getProductsByBrand = async (slug: Brand["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
 
-    let whereOptions: Prisma.ProductWhereInput = { 
-        stock: { gt: 0 },
-        price: {
-            gte: filters.minPrice,
-            lte: filters.maxPrice
-        },
-        rating: {
-            gte: filters.minRating,
-            lte: PRODUCTS_MAX_RATING
-        }
-    }
+    const whereOptions = buildProductsFilters(filters)
 
-    if (filters.onlyOnSale) {
-        whereOptions.discountPercentage = { not: null, gt: 0 }
-    }
-
-    let orderByOptions: Prisma.ProductOrderByWithRelationInput
-
-    switch (sortBy) {
-        case "alphabetical":
-            orderByOptions = { title: "asc" }
-            break
-        case "price-asc":
-            orderByOptions = { price: "asc" }
-            break
-        case "price-desc":
-            orderByOptions = { price: "desc" }
-            break
-        case "top-rated":
-            orderByOptions = { rating: "desc" }
-            break
-        case "top-discount":
-            orderByOptions = { discountPercentage: { sort: "desc", nulls: "last" } }
-            break
-        default:
-            orderByOptions = { title: "asc" }
-    }
+    const orderByOptions = buildProductsSort(sortBy)
 
     const skip = (page - 1) * PROUDCTS_PAGE_LIMIT
 

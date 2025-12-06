@@ -1,6 +1,6 @@
 "use client"
 
-import toast, { LoaderIcon } from "react-hot-toast"
+import toast from "react-hot-toast"
 import { Button } from "../ui/Button"
 import Input from "../ui/Input"
 import { useActionState, useEffect } from "react"
@@ -101,7 +101,7 @@ const LoginForm = () => {
                 className="w-full mt-5"
                 disabled={isPending}
             >
-                {isPending ? (<><LoaderIcon /> logging...</>) : "Login"}
+                {isPending ? "Logging..." : "Login"}
             </Button>
         </form>
     )

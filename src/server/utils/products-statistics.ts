@@ -1,7 +1,7 @@
 import { PRODUCTS_FILTERS, PRODUCTS_MAX_RATING, PRODUCTS_MIN_RATING } from "@/constants/products"
 import { Brand, Category, Prisma } from "@/generated/prisma"
-import { formatRating } from "@/lib/formatters"
-import { db } from "@/lib/prisma"
+import { formatRating } from "@/utils/formatters"
+import { db } from "@/utils/prisma"
 import { ProductsFiltersOptions } from "@/types/products"
 
 // Category

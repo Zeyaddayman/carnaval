@@ -1,4 +1,4 @@
-import { db } from "@/lib/prisma";
+import { db } from "@/utils/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { cardProductSelector } from "@/server/query-selectors/product"
 

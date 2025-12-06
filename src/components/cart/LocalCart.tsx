@@ -14,6 +14,7 @@ import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
 import CartSkeleton from "../skeletons/CartSkeleton"
 import EmptyCart from "./EmptyCart"
+import { getProductLimit } from "@/utils/product"
 
 const LocalCart = () => {
 
@@ -52,7 +53,7 @@ const LocalCart = () => {
     
                     if (!freshProduct) return item
     
-                    const limit = (freshProduct.limit && freshProduct.limit <= freshProduct.stock) ? freshProduct.limit : freshProduct.stock
+                    const limit = getProductLimit(freshProduct.stock, freshProduct.limit)
     
                     let newQuantity = item.quantity
     

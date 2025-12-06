@@ -2,6 +2,7 @@ import { getUserOrders } from "@/server/db/orders"
 import Link from "next/link"
 import { FaEye } from "react-icons/fa"
 import OrderStatus from "./OrderStatus"
+import { formatDate } from "@/utils/formatters"
 
 const OrdersTable = async ({ filter }: { filter: string }) => {
 
@@ -23,7 +24,7 @@ const OrdersTable = async ({ filter }: { filter: string }) => {
                     {orders.map(order => (
                         <tr key={order.id} className="even:bg-white odd:bg-transparent">
                             <td className="py-2 px-4">#{order.count}</td>
-                            <td className="py-2 px-4">{new Date(order.createdAt).toLocaleDateString()}</td>
+                            <td className="py-2 px-4">{formatDate(order.createdAt)}</td>
                             <td className="py-2 px-4">{order.itemsCount}</td>
                             <td className="py-2 px-4">
                                 <div className="flex justify-center items-center">

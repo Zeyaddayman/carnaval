@@ -1,4 +1,4 @@
-import { db } from "@/lib/prisma";
+import { db } from "@/utils/prisma";
 import { Product } from "@/generated/prisma";
 import { CategoryHierarchy } from "@/types/categories";
 import { productDetailsSelector } from "../query-selectors/product";

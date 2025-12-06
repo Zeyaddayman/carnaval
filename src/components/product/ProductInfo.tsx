@@ -1,6 +1,7 @@
 import { ProductDetails } from "@/types/products"
 import RatingStars from "../ui/RatingStars"
-import { formatPrice, formatRating } from "@/lib/formatters"
+import { formatPrice, formatRating } from "@/utils/formatters"
+import { getProductFinalPrice, productHasDiscount } from "@/utils/product"
 
 interface Props {
     product: ProductDetails
@@ -8,13 +9,10 @@ interface Props {
 
 const ProductInfo = ({ product }: Props) => {
 
-    const hasDiscount = product.discountPercentage && product.discountPercentage > 0
+    const hasDiscount = productHasDiscount(product.discountPercentage)
 
-    const productPrice = formatPrice(Number(product.price))
-
-    const finalPrice = hasDiscount
-        ? formatPrice(Number(product.price) - (Number(product.price) * product.discountPercentage! / 100))
-        : productPrice
+    const formattedProductPrice = formatPrice(product.price)
+    const formattedFinalPrice = formatPrice(getProductFinalPrice(product.price, product.discountPercentage))
 
     const productRating = formatRating(product.rating)
 
@@ -34,10 +32,10 @@ const ProductInfo = ({ product }: Props) => {
                 <span className="text-foreground">{productRating}</span>
             </div>
             <div className="flex gap-3 items-center">
-                <p className="text-2xl lg:text-3xl font-bold text-foreground">${finalPrice}</p>
+                <p className="text-2xl lg:text-3xl font-bold text-foreground">{formattedFinalPrice}</p>
                 {hasDiscount && (
                     <>
-                    <p className="text-lg text-muted-foreground line-through">${productPrice}</p>
+                    <p className="text-lg text-muted-foreground line-through">{formattedProductPrice}</p>
                     <p className="bg-success/10 text-success text-sm p-2 rounded-full">-{product.discountPercentage}%</p>
                     </>
                 )}

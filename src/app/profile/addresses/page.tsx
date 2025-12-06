@@ -7,9 +7,7 @@ import { getProfile } from "@/server/db/profile"
 
 const ProfileAddressesPage = async () => {
 
-    const addresses = await getUserAddresses()
-
-    const profile = await getProfile()
+    const [addresses, profile] = await Promise.all([getUserAddresses(), getProfile()])
 
     const userHasNoAddresses = addresses.length === 0
     const userHasMoreThanOneAddress = addresses.length > 1
