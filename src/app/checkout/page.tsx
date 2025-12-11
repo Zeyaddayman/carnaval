@@ -84,7 +84,7 @@ const CheckoutPage = async () => {
                             <CheckoutForm
                                 addresses={addresses}
                                 defaultAddress={defaultAddress}
-                                total={total}
+                                formattedTotal={formattedTotal}
                                 userName={profile.name}
                                 userPhone={profile.phone}
                             />

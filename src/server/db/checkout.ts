@@ -18,7 +18,10 @@ export const getCheckoutItems = async () => {
             userId
         },
         select: {
-            items: { select: checkoutItemSelector }
+            items: {
+                select: checkoutItemSelector,
+                orderBy: { createdAt: "desc" }
+            }
         }
     })
 

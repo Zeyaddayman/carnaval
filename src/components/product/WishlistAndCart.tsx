@@ -9,6 +9,7 @@ import { ProductDetails } from "@/types/products"
 import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
 import ProductCartSkeleton from "../skeletons/ProductCartSkeleton"
 import ProductToggleWishlistItemSkeleton from "../skeletons/ProductToggleWishlistItemSkeleton"
+import { fetchProductLimit } from "@/server/utils/product"
 
 interface Props {
     product: ProductDetails
@@ -22,24 +23,13 @@ const WishlistAndCart = ({ product, initialLimit }: Props) => {
 
     useEffect(() => {
 
-        const getProductLimit = async (): Promise<number> => {
-            try {
-                const res = await fetch(`/api/product/${product.id}/limit`)
+        fetchProductLimit(product.id)
+            .then(productLimit => {
+                if (productLimit) setLimit(productLimit)
 
-                if (res.status === 200) {
-                    const { productLimit } = await res.json()
-
-                    return productLimit
-                } else {
-                    return initialLimit
-                }
-            }
-            catch {
-                return initialLimit
-            }
-        }
-
-        getProductLimit().then(productLimit => setLimit(productLimit))
+                else setLimit(initialLimit)
+            })
+            .catch(() => setLimit(initialLimit))
 
     }, [])
 

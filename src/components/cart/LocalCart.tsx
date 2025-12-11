@@ -5,8 +5,6 @@ import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { removeItemFromLocalCart, selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
 import LocalCartItem from "./LocalCartItem"
-import { CartItemWithProduct } from "@/types/cart"
-import { QuantityModifiedItem } from "@/redux/features/userCartApi"
 import { CiWarning } from "react-icons/ci"
 import UnavailableCartItem from "./UnavailableCartItem"
 import toast from "react-hot-toast"
@@ -14,17 +12,17 @@ import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
 import CartSkeleton from "../skeletons/CartSkeleton"
 import EmptyCart from "./EmptyCart"
+import useGetFreshLocalCartItems from "@/hooks/cart/local-cart/useGetFreshLocalCartItems"
 import { getProductLimit } from "@/utils/product"
 
 const LocalCart = () => {
 
     const [isMounted, setIsMounted] = useState(false)
 
-    const [quantityModifiedItems, setQuantityModifiedItems] = useState<{ [id: string]: QuantityModifiedItem }>({})
-
-    const [refreshKey, setRefreshKey] = useState(0)
-
     const localCart = useAppSelector(selectLocalCart)
+
+    const { freshLocalCartItems, quantityModifiedItems } = useGetFreshLocalCartItems(localCart.items)
+
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -32,67 +30,10 @@ const LocalCart = () => {
     }, [])
 
     useEffect(() => {
-
-        const abortController = new AbortController()
-        const signal = abortController.signal
-
-        const updateProductsData = async () => {
-            try {
-                const freshCartProducts = await Promise.all(localCart.items.map(async item => {
-    
-                    const res = await fetch(`/api/product/${item.product.id}`, { signal })
-    
-                    if (res.ok) return (await res.json()) as CartItemWithProduct["product"]
-                }))
-    
-                const newQuantityModifiedItems: { [id: string]: QuantityModifiedItem } = {}
-    
-                const updatedLocalCartItems = localCart.items.map<CartItemWithProduct>(item => {
-    
-                    const freshProduct = freshCartProducts.find(product => product?.id === item.product.id)
-    
-                    if (!freshProduct) return item
-    
-                    const limit = getProductLimit(freshProduct.stock, freshProduct.limit)
-    
-                    let newQuantity = item.quantity
-    
-                    if (item.quantity > limit && limit !== 0) {
-    
-                        newQuantity = limit
-    
-                        newQuantityModifiedItems[item.id] = {
-                            oldQuantity: item.quantity,
-                            newQuantity
-                        }
-                    }
-    
-                    return {
-                        ...item,
-                        product: freshProduct ? freshProduct : item.product,
-                        quantity: newQuantity
-                    }
-                })
-    
-                if (signal.aborted) return
-    
-                dispatch(setLocalCartItems(updatedLocalCartItems))
-                setQuantityModifiedItems(newQuantityModifiedItems)
-            }
-            catch (error: any) {
-                if (error.name === 'AbortError') {
-                    console.log("Fetch aborted intentionally")
-                }
-            }
+        if (freshLocalCartItems) {
+            dispatch(setLocalCartItems(freshLocalCartItems))
         }
-
-        updateProductsData()
-
-        return () => {
-            abortController.abort()
-        }
-
-    }, [refreshKey])
+    }, [freshLocalCartItems])
 
     if (!isMounted) return <CartSkeleton />
 
@@ -100,7 +41,6 @@ const LocalCart = () => {
 
     const removeItem = (productId: string) => {
         dispatch(removeItemFromLocalCart(productId))
-        triggerRefresh()
     }
 
     const moveItemToWishlist = () => {
@@ -115,10 +55,6 @@ const LocalCart = () => {
                 </Link>
             </div>
         )
-    }
-
-    const triggerRefresh = () => {
-        setRefreshKey(Math.random())
     }
 
     const availableItems = localCart.items.filter(item => item.product.stock > 0)
@@ -149,10 +85,10 @@ const LocalCart = () => {
                         <LocalCartItem
                             key={item.id}
                             item={item}
+                            initialLimit={getProductLimit(item.product.stock, item.product.limit)}
                             removeItem={removeItem}
                             moveItemToWishlist={moveItemToWishlist}
                             quantityModified={quantityModifiedItems[item.id]}
-                            triggerRefresh={triggerRefresh}
                         />
                     ))}
                 </div>

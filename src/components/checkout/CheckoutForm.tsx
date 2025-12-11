@@ -14,12 +14,12 @@ import { checkoutAction } from "@/server/actions/checkout"
 interface Props {
     addresses: Address[]
     defaultAddress: Address
-    total: number
+    formattedTotal: string
     userName: string
     userPhone: string
 }
 
-const CheckoutForm = ({ addresses, defaultAddress, total, userName, userPhone }: Props) => {
+const CheckoutForm = ({ addresses, defaultAddress, formattedTotal, userName, userPhone }: Props) => {
 
     const [selectedAddress, setSelectedAddress] = useState(defaultAddress)
     const [isPlacingOrder, setIsPlacingOrder] = useState(false)
@@ -98,7 +98,7 @@ const CheckoutForm = ({ addresses, defaultAddress, total, userName, userPhone }:
                 {isPlacingOrder ? (
                     <>Placing Order...</>
                 ): (
-                    <><FaCheck /> Place Order (${total})</>
+                    <><FaCheck /> Place Order ({formattedTotal})</>
                 )}
             </Button>
         </div>

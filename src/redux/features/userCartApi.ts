@@ -46,16 +46,9 @@ export const userCartApi = createApi({
             }),
 
             transformErrorResponse: (error: any): CartErrorResponse => {
-                if (error.data) {
-                    return {
-                        status: error.status,
-                        message: error.data.errorMessage
-                    }
-                } else {
-                    return {
-                        status: 500,
-                        message: 'Something went wrong'
-                    }
+                return {
+                    message: error.data ? error.data.message : 'Something went wrong',
+                    status: error.data ? error.data.status : 500
                 }
             },
 
@@ -100,16 +93,9 @@ export const userCartApi = createApi({
             }),
 
             transformErrorResponse: (error: any): CartErrorResponse => {
-                if (error.data) {
-                    return {
-                        status: error.status,
-                        message: error.data.errorMessage
-                    }
-                } else {
-                    return {
-                        status: 500,
-                        message: 'Something went wrong'
-                    }
+                return {
+                    message: error.data ? error.data.message : 'Something went wrong',
+                    status: error.data ? error.data.status : 500
                 }
             },
 

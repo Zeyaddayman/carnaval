@@ -1,16 +1,16 @@
 "use client"
 
-import { CartErrorResponse, useGetUserCartQuery, useRemoveItemFromUserCartMutation } from "@/redux/features/userCartApi"
+import { useGetUserCartQuery } from "@/redux/features/userCartApi"
 import UserCartItem from "./UserCartItem"
 import CartOrderSummary from "./CartOrderSummary"
-import toast from "react-hot-toast"
-import { useEffect } from "react"
-import { useAddItemToUserWishlistMutation, WishlistErrorResponse } from "@/redux/features/userWishlistApi"
 import { CartItemWithProduct } from "@/types/cart"
 import { CiWarning } from "react-icons/ci"
 import UnavailableCartItem from "./UnavailableCartItem"
 import CartSkeleton from "../skeletons/CartSkeleton"
 import EmptyCart from "./EmptyCart"
+import useRemoveItemFromUserCart from "@/hooks/cart/user-cart/useRemoveItemFromUserCart"
+import useAddItemToUserWishlist from "@/hooks/wishlist/useAddItemToUserWishlist"
+import { getProductLimit } from "@/utils/product"
 
 interface Props {
     userId: string
@@ -20,29 +20,9 @@ const UserCart = ({ userId }: Props) => {
 
     const { data, isLoading } = useGetUserCartQuery(userId)
 
-    const [ removeItemFromUserCart, { isError: isRemovingItemFailed, error: removeItemError } ] = useRemoveItemFromUserCartMutation()
+    const { removeItemFromUserCart } = useRemoveItemFromUserCart()
 
-    const [ addItemToUserWishlist, { isError: isAddingItemToWishlistFailed, error: addItemToWishlistError } ] = useAddItemToUserWishlistMutation()
-
-    useEffect(() => {
-
-        const typedRemoveItemError = removeItemError as CartErrorResponse
-
-        if (isRemovingItemFailed && typedRemoveItemError.message) {
-            toast.error(typedRemoveItemError.message)
-        }
-
-    }, [isRemovingItemFailed])
-
-    useEffect(() => {
-
-        const typedAddItemToWishlistError = addItemToWishlistError as WishlistErrorResponse
-
-        if (isAddingItemToWishlistFailed && typedAddItemToWishlistError.message) {
-            toast.error(typedAddItemToWishlistError.message)
-        }
-
-    }, [isAddingItemToWishlistFailed])
+    const { addItemToUserWishlist } = useAddItemToUserWishlist()
 
 
     if (isLoading) return <CartSkeleton />
@@ -97,6 +77,7 @@ const UserCart = ({ userId }: Props) => {
                         <UserCartItem
                             key={item.id}
                             item={item}
+                            initialLimit={getProductLimit(item.product.stock, item.product.limit)}
                             userId={userId}
                             removeItem={removeItem}
                             moveItemToWishlist={moveItemToWishlist}

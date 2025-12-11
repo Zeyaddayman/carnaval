@@ -1,13 +1,14 @@
 "use client"
 
-import { CartErrorResponse, useAddItemToUserCartMutation, useGetUserCartQuery, useRemoveItemFromUserCartMutation } from "@/redux/features/userCartApi"
+import { useGetUserCartQuery } from "@/redux/features/userCartApi"
 import { ProductDetails } from "@/types/products"
 import { InYourCart } from "./InYourCart"
 import UpdateCartItem from "./UpdateCartItem"
 import AddToCart from "./AddToCart"
 import { useEffect, useState } from "react"
-import toast from "react-hot-toast"
 import ProductCartSkeleton from "@/components/skeletons/ProductCartSkeleton"
+import useAddItemToUserCart from "@/hooks/cart/user-cart/useAddItemToUserCart"
+import useRemoveItemFromUserCart from "@/hooks/cart/user-cart/useRemoveItemFromUserCart"
 
 interface Props {
     userId: string
@@ -21,47 +22,14 @@ const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
 
     const [limit, setLimit] = useState<number>(initialLimit)
 
-    const [ addItemToUserCart, {
-        isSuccess: isItemAdded,
-        data: addItemResponse,
-        isError: isAddingItemFailed,
-        error: addItemError
+    const { addItemToUserCart, freshLimit } = useAddItemToUserCart()
 
-    } ] = useAddItemToUserCartMutation()
-
-    const [ removeItemFromUserCart, { isError: isRemovingItemFailed, error: removeItemError } ] = useRemoveItemFromUserCartMutation()
-
+    // Sync limit with latest database value
     useEffect(() => {
+        if (freshLimit) setLimit(freshLimit)
+    }, [freshLimit])
 
-        // make sure to update the limit when the server responds with a new limit
-        if (isItemAdded && addItemResponse.limit) {
-            setLimit(Number(addItemResponse.limit))
-        }
-
-        if (isItemAdded && addItemResponse.modifiedQuantity) {
-            toast.success(`Only ${addItemResponse.modifiedQuantity} items are available`)
-        }
-
-    }, [isItemAdded])
-    
-    useEffect(() => {
-
-        const typedAddItemError = addItemError as CartErrorResponse
-
-        if (isAddingItemFailed && typedAddItemError.message) {
-
-            toast.error(typedAddItemError.message)
-        }
-    }, [isAddingItemFailed])
-
-    useEffect(() => {
-
-        const typedRemoveItemError = removeItemError as CartErrorResponse
-
-        if (isRemovingItemFailed && typedRemoveItemError.message) {
-            toast.error(typedRemoveItemError.message)
-        }
-    }, [isRemovingItemFailed])
+    const { removeItemFromUserCart } = useRemoveItemFromUserCart()
 
 
     if (isLoading) return <ProductCartSkeleton />

@@ -1,15 +1,16 @@
 "use client"
 
-import { useAddItemToUserWishlistMutation, useGetUserWishlistQuery, useRemoveItemFromUserWishlistMutation, WishlistErrorResponse } from "@/redux/features/userWishlistApi"
+import { useGetUserWishlistQuery } from "@/redux/features/userWishlistApi"
 import { CardProduct } from "@/types/products"
 import { UserSession } from "@/types/user"
 import Link from "next/link"
-import { useEffect } from "react"
 import toast from "react-hot-toast"
 import { FaHeart } from "react-icons/fa"
 import { buttonVariants } from "./Button"
 import { usePathname } from "next/navigation"
 import { wishlistItemWithProduct } from "@/types/wishlist"
+import useAddItemToUserWishlist from "@/hooks/wishlist/useAddItemToUserWishlist"
+import useRemoveItemFromUserWishlist from "@/hooks/wishlist/useRemoveItemFromUserWishlist"
 
 interface Props {
     session: UserSession | null,
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const ToggleWishlistItem = ({ session, product }: Props) => {
+
     const pathname = usePathname()
 
     if (session) return <LoggedIn userId={session.userId} product={product} />
@@ -46,32 +48,12 @@ const LoggedIn = ({ product, userId }: { userId: string, product: CardProduct })
 
     const { data: wishlist } = useGetUserWishlistQuery(userId)
 
-    const [ addItemToUserWishlist, { isError: isAddingItemFailed, error: addItemError } ] = useAddItemToUserWishlistMutation()
+    const { addItemToUserWishlist } = useAddItemToUserWishlist()
 
-    const [ removeItemFromUserWishlist, { isError: isRemovingItemFailed, error: removeItemError } ] = useRemoveItemFromUserWishlistMutation()
+    const { removeItemFromUserWishlist } = useRemoveItemFromUserWishlist()
+
 
     const productInWishlist = wishlist?.items.find(item => item.product.id === product.id)
-
-    useEffect(() => {
-
-        const typedAddItemError = addItemError as WishlistErrorResponse
-
-        if (isAddingItemFailed && typedAddItemError.message) {
-            toast.error(typedAddItemError.message)
-        }
-
-    }, [isAddingItemFailed])
-
-
-    useEffect(() => {
-
-        const typedRemoveItemError = removeItemError as WishlistErrorResponse
-
-        if (isRemovingItemFailed && typedRemoveItemError.message) {
-            toast.error(typedRemoveItemError.message)
-        }
-
-    }, [isRemovingItemFailed])
 
     const handleToggle = () => {
         if (productInWishlist) {

@@ -2,61 +2,40 @@
 
 import { CartItemWithProduct } from "@/types/cart"
 import Image from "next/image"
-import { useState } from "react"
-import toast from "react-hot-toast"
+import { useEffect, useState } from "react"
 import CartItemInfo from "./CartItemInfo"
 import CartItemQuantityCounter from "./CartItemQuantityCounter"
 import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
-import { useAppDispatch } from "@/redux/hooks"
-import { addItemToLocalCart } from "@/redux/features/localCartSlice"
 import { QuantityModifiedItem } from "@/redux/features/userCartApi"
+import useAddItemToLocalCart from "@/hooks/cart/local-cart/useAddItemToLocalCart"
 
 
 interface Props {
     item: CartItemWithProduct
+    initialLimit: number
     removeItem: (productId: string) => void
     moveItemToWishlist: () => void
     quantityModified: QuantityModifiedItem | undefined
-    triggerRefresh: () => void
 }
 
-const LocalCartItem = ({ item, removeItem, moveItemToWishlist, quantityModified, triggerRefresh }: Props) => {
+const LocalCartItem = ({ item, initialLimit, removeItem, moveItemToWishlist, quantityModified }: Props) => {
 
-    const [limit, setLimit] = useState((item.product.limit && item.product.limit <= item.product.stock) ? item.product.limit : item.product.stock)
-    const dispatch = useAppDispatch()
+    const [limit, setLimit] = useState(initialLimit)
+
+    const { addItemWithLimitCheck: updateItemQtyWithLimitCheck, freshLimit } = useAddItemToLocalCart()
+
+    useEffect(() => {
+        setLimit(initialLimit)
+    }, [initialLimit])
+
+    // Sync limit with latest database value
+    useEffect(() => {
+        if (freshLimit) setLimit(freshLimit)
+    }, [freshLimit])
 
     const updateQuantity = (quantity: number) => {
-
-        const newCartItem: CartItemWithProduct = {
-            id: crypto.randomUUID(),
-            cartId: "local",
-            product: item.product,
-            quantity,
-            createdAt: JSON.parse(JSON.stringify(new Date()))
-        }
-
-        dispatch(addItemToLocalCart(newCartItem))
-
-        fetch(`/api/product/${item.product.id}/limit`)
-            .then(res => res.json())
-            .then(({ productLimit }: { productLimit: number | undefined }) => {
-
-                if (productLimit && productLimit !== limit) {
-
-                    setLimit(productLimit)
-
-                    if (quantity > productLimit) {
-
-                        toast.error(`Only ${productLimit} items are available`)
-
-                        newCartItem.quantity = quantity > productLimit ? productLimit : quantity
-
-                        dispatch(addItemToLocalCart(newCartItem))
-                    }
-                }
-            })
-            .finally(() => triggerRefresh())
+        updateItemQtyWithLimitCheck(item.product, quantity, limit)
     }
 
     const handleRemoveItem = () => {

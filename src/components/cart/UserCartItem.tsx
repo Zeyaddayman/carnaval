@@ -1,58 +1,36 @@
 "use client"
 
-import { CartErrorResponse, QuantityModifiedItem, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
+import { QuantityModifiedItem } from "@/redux/features/userCartApi"
 import { CartItemWithProduct } from "@/types/cart"
 import Image from "next/image"
 import { useEffect, useState } from "react"
-import toast from "react-hot-toast"
 import CartItemInfo from "./CartItemInfo"
 import CartItemQuantityCounter from "./CartItemQuantityCounter"
 import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
+import { getProductLimit } from "@/utils/product"
+import useAddItemToUserCart from "@/hooks/cart/user-cart/useAddItemToUserCart"
 
 
 interface Props {
     item: CartItemWithProduct
+    initialLimit: number
     userId: string
     removeItem: (productId: string) => void
     moveItemToWishlist: (product: CartItemWithProduct["product"]) => void
     quantityModified: QuantityModifiedItem | undefined
 }
 
-const UserCartItem = ({ item, userId, removeItem, moveItemToWishlist, quantityModified }: Props) => {
+const UserCartItem = ({ item, initialLimit, userId, removeItem, moveItemToWishlist, quantityModified }: Props) => {
 
-    const [limit, setLimit] = useState((item.product.limit && item.product.limit <= item.product.stock) ? item.product.limit : item.product.stock)
+    const [limit, setLimit] = useState(initialLimit)
 
-    const [ updateItemQuantityInUserCart, {
-        isSuccess: isItemQuantityUpdated,
-        data: updateItemResponse,
-        isError: isUpdatingItemFailed,
-        error: updateItemError
+    const { addItemToUserCart: updateItemQuantityInUserCart, freshLimit } = useAddItemToUserCart()
 
-    } ] = useAddItemToUserCartMutation()
-
+    // Sync limit with latest database value
     useEffect(() => {
-
-        // make sure to update the limit when the server responds with a new limit
-        if (isItemQuantityUpdated && updateItemResponse.limit) {
-            setLimit(Number(updateItemResponse.limit))
-        }
-
-        if (isItemQuantityUpdated && updateItemResponse.modifiedQuantity) {
-            toast.success(`Only ${updateItemResponse.modifiedQuantity} items are available`)
-        }
-
-    }, [isItemQuantityUpdated])
-
-    useEffect(() => {
-
-        const typedUpdateItemError = updateItemError as CartErrorResponse
-
-        if (isUpdatingItemFailed && typedUpdateItemError.message) {
-
-            toast.error(typedUpdateItemError.message)
-        }
-    }, [isUpdatingItemFailed])
+        if (freshLimit) setLimit(freshLimit)
+    }, [freshLimit])
 
     const updateQuantity = (quantity: number) => {
         updateItemQuantityInUserCart({
