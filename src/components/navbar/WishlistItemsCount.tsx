@@ -5,7 +5,7 @@ import { useGetUserWishlistQuery } from "@/redux/features/userWishlistApi"
 
 const WishlistItemsCount = () => {
 
-    const { data: session, isLoading } = useGetUserSessionQuery({})
+    const { data: session, isLoading } = useGetUserSessionQuery()
 
     if (isLoading) return null
 

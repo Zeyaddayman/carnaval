@@ -34,6 +34,9 @@ export default function RootLayout({
             toastOptions={{
               duration: 5000,
               removeDelay: 1000,
+              style: {
+                padding: "20px"
+              }
             }}
           />
         </StoreProvider>

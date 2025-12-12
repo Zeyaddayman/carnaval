@@ -30,6 +30,7 @@ const ToggleWishlistItem = ({ session, product }: Props) => {
                 <Link
                     href={`/auth/login?redirect=${pathname}`}
                     className={buttonVariants({ variant: "secondary", size: "sm" })}
+                    onClick={() => toast.dismissAll()}
                 >
                     Login
                 </Link>

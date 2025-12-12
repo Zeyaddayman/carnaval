@@ -9,7 +9,8 @@ import { useGetUserSessionQuery } from "@/redux/features/userSessionApi";
 
 const AuthLinks = () => {
 
-    const { data: session, isLoading } = useGetUserSessionQuery({})
+    const { data: session, isLoading } = useGetUserSessionQuery()
+
     const pathname = usePathname()
 
     if (isLoading) return <LoadingSkeleton />

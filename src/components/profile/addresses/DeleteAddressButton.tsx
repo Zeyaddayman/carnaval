@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/Button"
 import { deleteAddressAction } from "@/server/actions/address"
-import { useState } from "react"
+import { useTransition } from "react"
 import toast from "react-hot-toast"
 
 interface Props {
@@ -11,23 +11,21 @@ interface Props {
 
 const DeleteAddressButton = ({ addressId }: Props) => {
 
-    const [isDeleting, setIsDeleting] = useState(false)
+    const [isDeleting, startDeleting] = useTransition()
 
     const deleteAddress = () => {
-        setIsDeleting(true)
+        startDeleting(async () => {
+            try {
+                const { status, message } = await deleteAddressAction(addressId)
 
-        deleteAddressAction(addressId)
-            .then(({ message, status }) => {
-                if (message && status === 200) {
-                    toast.success(message)
-                } else {
-                    toast.error(message)
-                }
-            })
-            .catch(() => {
-                toast.error("An unexpected error occurred")
-            })
-            .finally(() => setIsDeleting(false))
+                if (status === 200) toast.success(message)
+
+                else toast.error(message)
+            }
+            catch {
+                toast.error("Failed to delete the address")
+            }
+        })
     }
 
     return (

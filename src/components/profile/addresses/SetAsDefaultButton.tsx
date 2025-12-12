@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/Button"
 import { setAddressAsDefaultAction } from "@/server/actions/address"
-import { useState } from "react"
+import { useTransition } from "react"
 import toast from "react-hot-toast"
 
 interface Props {
@@ -11,33 +11,31 @@ interface Props {
 
 const SetAsDefaultButton = ({ addressId }: Props) => {
 
-    const [isSettingDefault, setIsSettingDefault] = useState(false)
+    const [isSettingAsDefault, startSettingAsDefault] = useTransition()
 
-    const setDefault = () => {
-        setIsSettingDefault(true)
+    const setAsDefault = () => {
+        startSettingAsDefault(async () => {
+            try {
+                const { status, message } = await setAddressAsDefaultAction(addressId)
 
-        setAddressAsDefaultAction(addressId)
-            .then(({ message, status }) => {
-                if (message && status === 200) {
-                    toast.success(message)
-                } else {
-                    toast.error(message)
-                }
-            })
-            .catch(() => {
-                toast.error("An unexpected error occurred")
-            })
-            .finally(() => setIsSettingDefault(false))
+                if (status === 200) toast.success(message)
+
+                else toast.error(message)
+            }
+            catch {
+                toast.error("Failed to set as default")
+            }
+        })
     }
 
     return (
         <Button
             variant={"primary"}
-            onClick={setDefault}
-            disabled={isSettingDefault}
+            onClick={setAsDefault}
+            disabled={isSettingAsDefault}
             className="min-w-[125px]"
         >
-            {isSettingDefault ? "Setting..." : "Set as Default"}
+            {isSettingAsDefault ? "Setting..." : "Set as Default"}
         </Button>
     )
 }

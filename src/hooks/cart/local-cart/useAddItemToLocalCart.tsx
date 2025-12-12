@@ -34,7 +34,7 @@ const useAddItemToLocalCart = () => {
 
                     if (quantity > productLimit) {
 
-                        toast.error(`Only ${productLimit} items are available`)
+                        toast.success(`Only ${productLimit} items are available`)
 
                         newCartItem.quantity = quantity > productLimit ? productLimit : quantity
     

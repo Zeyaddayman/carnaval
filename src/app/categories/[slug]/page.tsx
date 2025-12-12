@@ -1,10 +1,10 @@
 import CategoryProductsHeading from "@/components/categories/CategoryProductsHeading"
 import Subcategories from "@/components/categories/Subcategories"
-import NoProductsFound from "@/components/products/NoProductsFound"
 import Pagination from "@/components/products/Pagination"
 import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
+import ProductsDataSkeleton from "@/components/skeletons/ProductsDataSkeleton"
 import { Button } from "@/components/ui/Button"
 import { PRODUCTS_FILTERS, PRODUCTS_SORT_OPTIONS } from "@/constants/products"
 import { getCategoryHierarchy } from "@/server/db/categories"
@@ -100,14 +100,19 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                             </Suspense>
                                 <ProductsSort sort={sort} />
                             </div>
-                        <ProductsList
-                            slug={slug}
-                            products={products}
-                            total={total}
-                            page={page}
-                            limit={limit}
-                            pageSize={pageSize}
-                        />
+                        <Suspense
+                            fallback={<ProductsDataSkeleton />}
+                            key={JSON.stringify(resolvedSearchParams)}
+                        >
+                            <ProductsList
+                                slug={slug}
+                                products={products}
+                                total={total}
+                                page={page}
+                                limit={limit}
+                                pageSize={pageSize}
+                            />
+                        </Suspense>
                         <Pagination
                             total={total}
                             page={page}

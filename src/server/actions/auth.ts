@@ -193,11 +193,13 @@ export const logoutAction = async () => {
     try {
         await clearToken("accessToken")
         return {
-            message: "Logged out successfully",
+            status: 200,
+            message: "Logged out successfully"
         }
     }
     catch {
         return {
+            status: 500,
             message: "An unexpected error occurred",
         }
     }

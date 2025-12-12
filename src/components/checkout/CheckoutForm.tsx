@@ -1,7 +1,7 @@
 "use client"
 
 import { Address } from "@/generated/prisma"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useTransition } from "react"
 import { Button } from "../ui/Button"
 import { FaCheck } from "react-icons/fa"
 import CheckoutAddAddressButton from "./CheckoutAddAddressButton"
@@ -22,7 +22,8 @@ interface Props {
 const CheckoutForm = ({ addresses, defaultAddress, formattedTotal, userName, userPhone }: Props) => {
 
     const [selectedAddress, setSelectedAddress] = useState(defaultAddress)
-    const [isPlacingOrder, setIsPlacingOrder] = useState(false)
+
+    const [isPlacingOrder, startPlacingOrder] = useTransition()
 
     const router = useRouter()
     const dispatch = useAppDispatch()
@@ -36,27 +37,27 @@ const CheckoutForm = ({ addresses, defaultAddress, formattedTotal, userName, use
     }
 
     const placeOrder = () => {
+        startPlacingOrder(async () => {
+            try {
+                const { status, message } = await checkoutAction(selectedAddress.label)
 
-        setIsPlacingOrder(true)
-
-        checkoutAction(selectedAddress.label)
-            .then(({ message, status }) => {
                 if (message && status === 201) {
                     toast.success(message)
                     router.push("/profile/orders")
-                } else {
+                }
+                else {
                     toast.error(message)
                     router.push("/cart")
                 }
-            })
-            .catch(() => {
-                toast.error("An unexpected error occurred")
+            }
+            catch {
+                toast.error("Failed to place the order")
                 router.push("/cart")
-            })
-            .finally(() => {
-                setIsPlacingOrder(false)
+            }
+            finally {
                 dispatch(userCartApi.util.invalidateTags(['user-cart']))
-            })
+            }
+        })
     }
 
     return (

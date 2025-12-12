@@ -117,6 +117,12 @@ export const userCartApi = createApi({
     })
 })
 
+export const selectCartItem = (userId: string, productId: string) => (state: any) => {
+    const cartItems = userCartApi.endpoints.getUserCart.select(userId)(state).data?.cart.items
+
+    return cartItems?.find(item => item.product.id === productId)
+}
+
 export const {
     useGetUserCartQuery,
     useAddItemToUserCartMutation,

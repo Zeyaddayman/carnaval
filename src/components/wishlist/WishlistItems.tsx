@@ -45,6 +45,7 @@ const WishlistItems = ({ userId }: Props) => {
                 <WishlistItemCard
                     key={item.product.id}
                     product={item.product}
+                    userId={userId}
                     removeItem={removeItem}
                     addItemToCart={addItemToCart}
                 />

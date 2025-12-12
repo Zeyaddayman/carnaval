@@ -8,7 +8,7 @@ import { useEffect, useState } from "react"
 
 const CartItemsCount = () => {
 
-    const { data: session, isLoading } = useGetUserSessionQuery({})
+    const { data: session, isLoading } = useGetUserSessionQuery()
 
     if (isLoading) return null
 

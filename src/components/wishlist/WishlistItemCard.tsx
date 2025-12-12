@@ -7,19 +7,24 @@ import { Button } from "../ui/Button"
 import { BsCartPlusFill } from "react-icons/bs"
 import { FiTrash2 } from "react-icons/fi"
 import { formatPrice, formatRating } from "@/utils/formatters"
-import { useState } from "react"
 import { wishlistItemWithProduct } from "@/types/wishlist"
 import { getProductFinalPrice, productHasDiscount } from "@/utils/product"
+import { selectCartItem, useGetUserCartQuery, userCartApi } from "@/redux/features/userCartApi"
+import { FaCheck } from "react-icons/fa"
+import { StringDecoder } from "string_decoder"
+import { CartItemWithProduct } from "@/types/cart"
+import { useAppSelector } from "@/redux/hooks"
 
 interface Props {
     product: wishlistItemWithProduct["product"]
+    userId: string
     removeItem: (productId: string) => void
     addItemToCart: (product: wishlistItemWithProduct["product"]) => void
 }
 
-const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {
+const WishlistItemCard = ({ product, userId, removeItem, addItemToCart }: Props) => {
 
-    const [isAddedToCart, setIsAddedToCart] = useState(false)
+    const cartItem = useAppSelector(selectCartItem(userId, product.id))
 
     const hasDiscount = productHasDiscount(product.discountPercentage)
 
@@ -31,7 +36,6 @@ const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {
     const inStock = product.stock > 0
 
     const handleAddItemToCart = () => {
-        setIsAddedToCart(true)
         addItemToCart(product)
     }
 
@@ -78,9 +82,9 @@ const WishlistItemCard = ({ product, removeItem, addItemToCart }: Props) => {
             </Link>
             <div className="flex flex-col gap-2">
                 {inStock ? (
-                    isAddedToCart ? (
-                        <div className="bg-success text-success-foreground h-9 px-4 py-2 text-sm flex justify-center items-center rounded-md">
-                            Added to cart
+                    cartItem ? (
+                        <div className="bg-success text-success-foreground h-9 px-4 py-2 text-sm flex gap-2 justify-center items-center rounded-md">
+                            <FaCheck /> In your cart
                         </div>
                     ) : (
                         <Button

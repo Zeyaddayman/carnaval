@@ -9,6 +9,9 @@ import { FiMapPin, FiShoppingBag } from "react-icons/fi"
 import { IoExitOutline, IoSettingsOutline } from "react-icons/io5"
 import { logoutAction } from "@/server/actions/auth"
 import toast from "react-hot-toast"
+import { useTransition } from "react"
+import { useAppDispatch } from "@/redux/hooks"
+import { userSessionApi } from "@/redux/features/userSessionApi"
 
 const links = [
     { name: "Account Overview", href: "/profile", icon: <MdGridView size={20} /> },
@@ -27,6 +30,10 @@ const ProfileSidebar = ({ session }: Props) => {
 
     const router = useRouter()
 
+    const [isLoggingOut, startLoggingOut] = useTransition()
+
+    const dispatch = useAppDispatch()
+
     const isActiveLink = (href: string) => {
         return href.split("/").length > 2
             ? pathname.startsWith(href)
@@ -34,16 +41,23 @@ const ProfileSidebar = ({ session }: Props) => {
     }
 
     const logout = () => {
-        logoutAction()
-            .then(({ message }) => {
-                toast.success(message)
-            })
-            .catch(() => {
+
+        startLoggingOut(async () => {
+            try {
+                const { status, message } = await logoutAction()
+
+                if (status === 200) toast.success(message)
+
+                else toast.error(message)
+            }
+            catch {
                 toast.error("Failed to logout")
-            })
-            .finally(() => {
+            }
+            finally {
+                dispatch(userSessionApi.util.invalidateTags(['user-session']))
                 router.refresh()
-            })
+            }
+        })
     }
 
     return (
@@ -71,8 +85,14 @@ const ProfileSidebar = ({ session }: Props) => {
                 variant={"destructive"}
                 className="!w-full !justify-start"
                 onClick={logout}
+                disabled={isLoggingOut}
             >
-                <IoExitOutline size={20} /> <div className="hidden lg:block">Logout</div>
+                <IoExitOutline size={20} /> {isLoggingOut ? (
+                    <div className="hidden lg:block">Logging out...</div>
+                ) : (
+                    <div className="hidden lg:block">Logout</div>
+                )
+            }
             </Button>
         </aside>
     )

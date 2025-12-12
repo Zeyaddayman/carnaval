@@ -6,7 +6,7 @@ import Input from "../ui/Input"
 import { registerAction, RegisterState } from "@/server/actions/auth"
 import toast from "react-hot-toast"
 import { useRouter } from "next/navigation"
-import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
+import { userSessionApi } from "@/redux/features/userSessionApi"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
 
@@ -63,7 +63,6 @@ const RegisterFrom = () => {
     const dispatch = useAppDispatch()
 
     const router = useRouter()
-    const { refetch } = useGetUserSessionQuery({})
 
     useEffect(() => {
         if (state.status && state.message) {
@@ -74,7 +73,7 @@ const RegisterFrom = () => {
                 const searchParams = new URLSearchParams(window.location.search)
                 const redirectPath = searchParams.get("redirect") || "/"
 
-                refetch()
+                dispatch(userSessionApi.util.invalidateTags(['user-session']))
 
                 dispatch(setLocalCartItems([]))
 

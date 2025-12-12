@@ -18,8 +18,9 @@ interface Props {
 
 const WishlistAndCart = ({ product, initialLimit }: Props) => {
 
+    const { data: session, isFetching } = useGetUserSessionQuery()
+
     const [limit, setLimit] = useState<number | null>(null)
-    const { data: session, isFetching } = useGetUserSessionQuery({})
 
     useEffect(() => {
 
@@ -43,7 +44,7 @@ const WishlistAndCart = ({ product, initialLimit }: Props) => {
     return (
         <>
         <div className="bg-muted p-2 w-fit h-fit rounded-full ml-auto">
-            <ToggleWishlistItem session={session} product={product} />
+            <ToggleWishlistItem session={session || null} product={product} />
         </div>
         {limit > 0 ?
             session ? (

@@ -4,13 +4,14 @@ import { useGetUserCartQuery } from "@/redux/features/userCartApi"
 import UserCartItem from "./UserCartItem"
 import CartOrderSummary from "./CartOrderSummary"
 import { CartItemWithProduct } from "@/types/cart"
-import { CiWarning } from "react-icons/ci"
 import UnavailableCartItem from "./UnavailableCartItem"
 import CartSkeleton from "../skeletons/CartSkeleton"
 import EmptyCart from "./EmptyCart"
 import useRemoveItemFromUserCart from "@/hooks/cart/user-cart/useRemoveItemFromUserCart"
 import useAddItemToUserWishlist from "@/hooks/wishlist/useAddItemToUserWishlist"
 import { getProductLimit } from "@/utils/product"
+import CartHasUnavailableItemsMsg from "./CartHasUnavailableItemsMsg"
+import CartHasModifiedQuantityItemsMsg from "./CartHasModifiedQuantityItemsMsg"
 
 interface Props {
     userId: string
@@ -58,20 +59,10 @@ const UserCart = ({ userId }: Props) => {
     return (
         <div className="flex flex-col lg:flex-row gap-5">
             <div className="flex-1">
-                {hasUnavailableItems && (
-                    <div className="flex items-center gap-2 flex-wrap p-3 bg-warning/10 text-warning rounded-md mb-2">
-                        <CiWarning size={20} />
-                        <strong>Unavailable items</strong>
-                        <p>Some items are out of stock and must be resolved before checkout.</p>
-                    </div>
-                )}
-                {hasModifiedQuantityItems && (
-                    <div className="flex items-center gap-2 flex-wrap p-3 bg-warning/10 text-warning rounded-md mb-2">
-                        <CiWarning size={20} />
-                        <strong>We've updated your cart</strong>
-                        <p>Some item quantities were adjusted due to low stock levels.</p>
-                    </div>
-                )}
+                {hasUnavailableItems && <CartHasUnavailableItemsMsg />}
+
+                {hasModifiedQuantityItems && <CartHasModifiedQuantityItemsMsg />}
+
                 <div className="space-y-3">
                     {availableItems.map(item => (
                         <UserCartItem

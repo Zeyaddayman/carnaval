@@ -5,7 +5,6 @@ import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { removeItemFromLocalCart, selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
 import LocalCartItem from "./LocalCartItem"
-import { CiWarning } from "react-icons/ci"
 import UnavailableCartItem from "./UnavailableCartItem"
 import toast from "react-hot-toast"
 import Link from "next/link"
@@ -14,6 +13,8 @@ import CartSkeleton from "../skeletons/CartSkeleton"
 import EmptyCart from "./EmptyCart"
 import useGetFreshLocalCartItems from "@/hooks/cart/local-cart/useGetFreshLocalCartItems"
 import { getProductLimit } from "@/utils/product"
+import CartHasUnavailableItemsMsg from "./CartHasUnavailableItemsMsg"
+import CartHasModifiedQuantityItemsMsg from "./CartHasModifiedQuantityItemsMsg"
 
 const LocalCart = () => {
 
@@ -50,6 +51,7 @@ const LocalCart = () => {
                 <Link
                     href={`/auth/login?redirect=/cart`}
                     className={buttonVariants({ variant: "secondary", size: "sm" })}
+                    onClick={() => toast.dismissAll()}
                 >
                     Login
                 </Link>
@@ -66,20 +68,10 @@ const LocalCart = () => {
     return (
         <div className="flex flex-col lg:flex-row gap-5">
             <div className="flex-1">
-                {hasUnavailableItems && (
-                    <div className="flex items-center gap-2 flex-wrap p-3 bg-warning/10 text-warning rounded-md mb-2">
-                        <CiWarning size={20} />
-                        <strong>Unavailable items</strong>
-                        <p>Some items are out of stock and must be resolved before checkout.</p>
-                    </div>
-                )}
-                {hasModifiedQuantityItems && (
-                    <div className="flex items-center gap-2 flex-wrap p-3 bg-warning/10 text-warning rounded-md mb-2">
-                        <CiWarning size={20} />
-                        <strong>We've updated your cart</strong>
-                        <p>Some item quantities were adjusted due to low stock levels.</p>
-                    </div>
-                )}
+                {hasUnavailableItems && <CartHasUnavailableItemsMsg />}
+
+                {hasModifiedQuantityItems && <CartHasModifiedQuantityItemsMsg />}
+
                 <div className="space-y-3">
                     {availableItems.toReversed().map(item => (
                         <LocalCartItem

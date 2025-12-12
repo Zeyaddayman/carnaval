@@ -177,7 +177,7 @@ const RatingRange = ({
                 {minRating === PRODUCTS_MAX_RATING ? `Only ${minRating} stars` : `${minRating} Stars or more`}
             </p>
             <input
-                className="appearance-none w-full h-3 rounded-md cursor-pointer outline-none focus:ring-3 focus:ring-primary/50"
+                className="appearance-none w-full h-3 rounded-md cursor-pointer outline-none focus-visible:ring-3 focus-visible:ring-primary/50"
                 id="range-input"
                 type="range"
                 min={productsMinRating}
@@ -218,7 +218,7 @@ const OnlyOnSaleToggle = ({
                     />
                     <label
                         htmlFor="all-products"
-                        className={`${!onlyOnSale ? "border-primary" : "border-border"} peer-focus:ring-3 peer-focus:ring-primary/50 border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
+                        className={`${!onlyOnSale ? "border-primary" : "border-border"} peer-focus-visible:ring-3 peer-focus-visible:ring-primary/50 border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
                     >
                         <TbRosetteDiscountCheck /> All products
                     </label>
@@ -233,7 +233,7 @@ const OnlyOnSaleToggle = ({
                     />
                     <label
                         htmlFor="only-on-sale"
-                        className={`${onlyOnSale ? "border-primary" : "border-border"} peer-focus:ring-3 peer-focus:ring-primary/50 border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
+                        className={`${onlyOnSale ? "border-primary" : "border-border"} peer-focus-visible:ring-3 peer-focus-visible:ring-primary/50 border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
                     >
                         <CiDiscount1 /> On sale only
                     </label>
