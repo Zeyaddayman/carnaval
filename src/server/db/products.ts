@@ -1,5 +1,5 @@
-import { PRODUCTS_MAX_RATING, PROUDCTS_PAGE_LIMIT } from "@/constants/products"
-import { Brand, Category, Prisma } from "@/generated/prisma"
+import { PROUDCTS_PAGE_LIMIT } from "@/constants/products"
+import { Brand, Category } from "@/generated/prisma"
 import { db } from "@/utils/prisma"
 import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
 import { subcategorySelector } from "../query-selectors/category"

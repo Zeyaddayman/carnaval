@@ -1,5 +1,4 @@
 import { CartItemWithProduct } from "@/types/cart"
-import { getProductFinalPrice } from "./product"
 
 export function getCartItemsCount(cartItems: { quantity: number }[]) {
     return cartItems.reduce((acc, item) => acc + item.quantity, 0)
@@ -7,17 +6,11 @@ export function getCartItemsCount(cartItems: { quantity: number }[]) {
 
 export function getCartSubtotal(
     cartItems: {
-        product: { discountPercentage: number | null, price: number },
+        product: { finalPrice: number },
         quantity: number
     }[]
 ) {
-    return cartItems.reduce((acc, item) => {
-
-        const finalPrice = getProductFinalPrice(item.product.price, item.product.discountPercentage)
-
-        return acc + item.quantity * finalPrice
-
-    }, 0)
+    return cartItems.reduce((acc, item) => acc + item.quantity * item.product.finalPrice, 0)
 }
 
 export function mergeCartItems(

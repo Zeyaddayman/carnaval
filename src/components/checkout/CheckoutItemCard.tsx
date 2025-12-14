@@ -1,6 +1,5 @@
 import { CheckoutItem } from "@/types/checkout"
 import { formatPrice } from "@/utils/formatters"
-import { getProductFinalPrice } from "@/utils/product"
 import Image from "next/image"
 
 interface Props {
@@ -9,10 +8,8 @@ interface Props {
 
 const CheckoutItemCard = ({ item }: Props) => {
 
-    const finalPrice = getProductFinalPrice(item.product.price, item.product.discountPercentage)
-
-    const formattedFinalPrice = formatPrice(finalPrice)
-    const formattedTotalPrice = formatPrice(finalPrice * item.quantity)
+    const formattedFinalPrice = formatPrice(item.product.finalPrice)
+    const formattedTotalPrice = formatPrice(item.product.finalPrice * item.quantity)
 
     return (
         <div className="bg-white border border-border p-2 flex justify-between items-center gap-2 rounded-lg overflow-x-auto">

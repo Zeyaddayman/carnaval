@@ -101,6 +101,7 @@ model Product {
   images              String[]
   price               Float
   discountPercentage  Float?
+  finalPrice          Float
   rating              Float
   stock               Int
   limit               Int?

@@ -2,7 +2,7 @@ import { CartItemWithProduct } from "@/types/cart"
 import RatingStars from "../ui/RatingStars"
 import Link from "next/link"
 import { formatPrice, formatRating } from "@/utils/formatters"
-import { getProductFinalPrice, productHasDiscount } from "@/utils/product"
+import { productHasDiscount } from "@/utils/product"
 
 interface Props {
     product: CartItemWithProduct["product"]
@@ -13,11 +13,9 @@ const CartItemInfo = ({ product, quantity }: Props) => {
 
     const hasDiscount = productHasDiscount(product.discountPercentage)
 
-    const finalPrice = getProductFinalPrice(product.price, product.discountPercentage)
-
     const formattedProductPrice = formatPrice(product.price)
-    const formattedFinalPrice = formatPrice(finalPrice)
-    const formattedTotalPrice = formatPrice(finalPrice * quantity)
+    const formattedFinalPrice = formatPrice(product.finalPrice)
+    const formattedTotalPrice = formatPrice(product.finalPrice * quantity)
 
     const productRating = formatRating(product.rating)
 

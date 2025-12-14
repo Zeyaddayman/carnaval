@@ -1,7 +1,7 @@
 import { ProductDetails } from "@/types/products"
 import RatingStars from "../ui/RatingStars"
 import { formatPrice, formatRating } from "@/utils/formatters"
-import { getProductFinalPrice, productHasDiscount } from "@/utils/product"
+import { productHasDiscount } from "@/utils/product"
 
 interface Props {
     product: ProductDetails
@@ -12,7 +12,7 @@ const ProductInfo = ({ product }: Props) => {
     const hasDiscount = productHasDiscount(product.discountPercentage)
 
     const formattedProductPrice = formatPrice(product.price)
-    const formattedFinalPrice = formatPrice(getProductFinalPrice(product.price, product.discountPercentage))
+    const formattedFinalPrice = formatPrice(product.finalPrice)
 
     const productRating = formatRating(product.rating)
 

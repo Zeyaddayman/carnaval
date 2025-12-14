@@ -3,6 +3,7 @@ import Pagination from "@/components/products/Pagination"
 import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
+import ProductsListSkeleton from "@/components/skeletons/ProductsListSkeleton"
 import { Button } from "@/components/ui/Button"
 import { PRODUCTS_FILTERS, PRODUCTS_SORT_OPTIONS } from "@/constants/products"
 import { getProductsByBrand } from "@/server/db/products"
@@ -91,14 +92,19 @@ const BrandProductsPage = async ({ params, searchParams }: Props) => {
                         </Suspense>
                         <ProductsSort sort={sort} />
                     </div>
-                    <ProductsList
-                        slug={slug}
-                        products={products}
-                        total={total}
-                        page={page}
-                        limit={limit}
-                        pageSize={pageSize}
-                    />
+                    <Suspense
+                        fallback={<ProductsListSkeleton />}
+                        key={JSON.stringify(resolvedSearchParams)}
+                    >
+                        <ProductsList
+                            slug={slug}
+                            products={products}
+                            total={total}
+                            page={page}
+                            limit={limit}
+                            pageSize={pageSize}
+                        />
+                    </Suspense>
                     <Pagination
                         total={total}
                         page={page}

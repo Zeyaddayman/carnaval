@@ -4,7 +4,7 @@ import Pagination from "@/components/products/Pagination"
 import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
-import ProductsDataSkeleton from "@/components/skeletons/ProductsDataSkeleton"
+import ProductsListSkeleton from "@/components/skeletons/ProductsListSkeleton"
 import { Button } from "@/components/ui/Button"
 import { PRODUCTS_FILTERS, PRODUCTS_SORT_OPTIONS } from "@/constants/products"
 import { getCategoryHierarchy } from "@/server/db/categories"
@@ -98,10 +98,10 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                             >
                                 <Filters slug={slug} searchParams={resolvedSearchParams} />
                             </Suspense>
-                                <ProductsSort sort={sort} />
-                            </div>
+                            <ProductsSort sort={sort} />
+                        </div>
                         <Suspense
-                            fallback={<ProductsDataSkeleton />}
+                            fallback={<ProductsListSkeleton />}
                             key={JSON.stringify(resolvedSearchParams)}
                         >
                             <ProductsList

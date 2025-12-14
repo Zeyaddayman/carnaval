@@ -7,8 +7,7 @@ export const checkoutItemSelector = {
         select: {
             title: true,
             thumbnail: true,
-            price: true,
-            discountPercentage: true
+            finalPrice: true
         }
     }
 } satisfies Prisma.CartItemSelect

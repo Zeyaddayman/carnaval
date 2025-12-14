@@ -8,11 +8,9 @@ import { BsCartPlusFill } from "react-icons/bs"
 import { FiTrash2 } from "react-icons/fi"
 import { formatPrice, formatRating } from "@/utils/formatters"
 import { wishlistItemWithProduct } from "@/types/wishlist"
-import { getProductFinalPrice, productHasDiscount } from "@/utils/product"
-import { selectCartItem, useGetUserCartQuery, userCartApi } from "@/redux/features/userCartApi"
+import { productHasDiscount } from "@/utils/product"
+import { selectCartItem } from "@/redux/features/userCartApi"
 import { FaCheck } from "react-icons/fa"
-import { StringDecoder } from "string_decoder"
-import { CartItemWithProduct } from "@/types/cart"
 import { useAppSelector } from "@/redux/hooks"
 
 interface Props {
@@ -29,7 +27,7 @@ const WishlistItemCard = ({ product, userId, removeItem, addItemToCart }: Props)
     const hasDiscount = productHasDiscount(product.discountPercentage)
 
     const formattedProductPrice = formatPrice(product.price)
-    const formattedFinalPrice = formatPrice(getProductFinalPrice(product.price, product.discountPercentage))
+    const formattedFinalPrice = formatPrice(product.finalPrice)
 
     const productRating = formatRating(product.rating)
 

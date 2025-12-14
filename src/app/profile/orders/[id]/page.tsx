@@ -3,6 +3,7 @@ import Heading from "@/components/ui/Heading"
 import { getOrderDetails } from "@/server/db/orders"
 import { formatDate, formatPrice } from "@/utils/formatters"
 import Image from "next/image"
+import Link from "next/link"
 import { notFound } from "next/navigation"
 
 interface Props {
@@ -74,17 +75,21 @@ const OrderDetailsPage = async ({ params }: Props) => {
                             key={item.product.id}
                             className="flex justify-between items-center py-1 gap-2 not-last:border-b not-last:border-border"
                         >
-                            <Image
-                                src={item.product.thumbnail}
-                                alt={item.product.title}
-                                width={100}
-                                height={100}
-                            />
+                            <Link
+                                href={`/product/${item.product.id}`}
+                            >
+                                <Image
+                                    src={item.product.thumbnail}
+                                    alt={item.product.title}
+                                    width={100}
+                                    height={100}
+                                />
+                            </Link>
                             <div className="flex-1 min-w-20">
                                 <h5 className="sm:font-semibold mb-2">{item.product.title}</h5>
-                                <p className="text-muted-foreground">{item.quantity} x ${item.price}</p>
+                                <p className="text-muted-foreground">{item.quantity} x {formatPrice(item.price)}</p>
                             </div>
-                            <p className="sm:text-xl text-foreground">${item.price * item.quantity}</p>
+                            <p className="sm:text-xl text-foreground">{formatPrice(item.price * item.quantity)}</p>
                         </div>
                     ))}
                 </div>

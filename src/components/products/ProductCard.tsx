@@ -5,7 +5,7 @@ import RatingStars from "../ui/RatingStars"
 import { formatPrice, formatRating } from "@/utils/formatters"
 import { isAuthenticated } from "@/server/utils/auth"
 import ToggleWishlistItem from "../ui/ToggleWishlistItem"
-import { getProductFinalPrice, productHasDiscount } from "@/utils/product"
+import { productHasDiscount } from "@/utils/product"
 
 const ProductCard = async ({ product }: { product: CardProduct }) => {
 
@@ -14,7 +14,7 @@ const ProductCard = async ({ product }: { product: CardProduct }) => {
     const hasDiscount = productHasDiscount(product.discountPercentage)
 
     const formattedProductPrice = formatPrice(product.price)
-    const formattedFinalPrice = formatPrice(getProductFinalPrice(product.price, product.discountPercentage))
+    const formattedFinalPrice = formatPrice(product.finalPrice)
 
     const productRating = formatRating(product.rating)
 

@@ -23,11 +23,11 @@ export const getCategoryProductsMinPrice = async (slug: Category["slug"], filter
     const result = await db.product.aggregate({
         where: whereOptions,
         _min: {
-            price: true
+            finalPrice: true
         }
     })
 
-    return Number(result._min.price ?? PRODUCTS_FILTERS.minPrice)
+    return result._min.finalPrice ?? PRODUCTS_FILTERS.minPrice
 }
 
 export const getCategoryProductsMaxPrice = async (slug: Category["slug"], filters: ProductsFiltersOptions): Promise<number> => {
@@ -48,11 +48,11 @@ export const getCategoryProductsMaxPrice = async (slug: Category["slug"], filter
     const result = await db.product.aggregate({
         where: whereOptions,
         _max: {
-            price: true
+            finalPrice: true
         }
     })
 
-    return Number(result._max.price ?? PRODUCTS_FILTERS.maxPrice)
+    return result._max.finalPrice ?? PRODUCTS_FILTERS.maxPrice
 }
 
 export const getCategoryProductsMinRating = async (slug: Category["slug"]): Promise<number> => {
@@ -88,11 +88,11 @@ export const getBrandProductsMinPrice = async (slug: Brand["slug"], filters: Pro
     const result = await db.product.aggregate({
         where: whereOptions,
         _min: {
-            price: true
+            finalPrice: true
         }
     })
 
-    return Number(result._min.price ?? PRODUCTS_FILTERS.minPrice)
+    return result._min.finalPrice ?? PRODUCTS_FILTERS.minPrice
 }
 
 export const getBrandProductsMaxPrice = async (slug: Brand["slug"], filters: ProductsFiltersOptions): Promise<number> => {
@@ -113,11 +113,11 @@ export const getBrandProductsMaxPrice = async (slug: Brand["slug"], filters: Pro
     const result = await db.product.aggregate({
         where: whereOptions,
         _max: {
-            price: true
+            finalPrice: true
         }
     })
 
-    return Number(result._max.price ?? PRODUCTS_FILTERS.maxPrice)
+    return result._max.finalPrice ?? PRODUCTS_FILTERS.maxPrice
 }
 
 export const getBrandProductsMinRating = async (slug: Brand["slug"]): Promise<number> => {

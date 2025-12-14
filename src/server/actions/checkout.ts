@@ -34,8 +34,7 @@ export const checkoutAction = async (addressLabel: string) => {
                                         id: true,
                                         stock: true,
                                         limit: true,
-                                        price: true,
-                                        discountPercentage: true
+                                        finalPrice: true
                                     }
                                 }
                             }

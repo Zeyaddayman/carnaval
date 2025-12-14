@@ -1,8 +1,8 @@
-import { getProductFinalPrice, getProductLimit } from "./product"
+import { getProductLimit } from "./product"
 
 export function createOrderItems(
     items: {
-        product: { id: string, price: number, discountPercentage: number | null, stock: number, limit: number | null},
+        product: { id: string, finalPrice: number, stock: number, limit: number | null},
         quantity: number
     }[],
     userId: string
@@ -17,13 +17,11 @@ export function createOrderItems(
         if (productLimit < item.quantity || productLimit <= 0) {
             isValidQuantities = false
         }
-    
-        const finalPrice = getProductFinalPrice(item.product.price, item.product.discountPercentage)
 
         return {
             productId: item.product.id,
             quantity: item.quantity,
-            price: finalPrice,
+            price: item.product.finalPrice,
             userId
         }
     })

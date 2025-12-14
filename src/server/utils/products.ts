@@ -6,7 +6,7 @@ export function buildProductsFilters(filters: ProductsFiltersOptions) {
 
     let whereOptions: Prisma.ProductWhereInput = { 
         stock: { gt: 0 },
-        price: {
+        finalPrice: {
             gte: filters.minPrice,
             lte: filters.maxPrice
         },
@@ -32,10 +32,10 @@ export function buildProductsSort(sortBy: ProductsSortOptionValue) {
             orderByOptions = { title: "asc" }
             break
         case "price-asc":
-            orderByOptions = { price: "asc" }
+            orderByOptions = { finalPrice: "asc" }
             break
         case "price-desc":
-            orderByOptions = { price: "desc" }
+            orderByOptions = { finalPrice: "desc" }
             break
         case "top-rated":
             orderByOptions = { rating: "desc" }
