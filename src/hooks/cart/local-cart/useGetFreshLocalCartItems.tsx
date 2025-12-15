@@ -1,7 +1,6 @@
 "use client"
 
-import { QuantityModifiedItem } from "@/redux/features/userCartApi"
-import { CartItemWithProduct } from "@/types/cart"
+import { CartItemWithProduct, QuantityModifiedItem } from "@/types/cart"
 import { getProductLimit } from "@/utils/product"
 import { useEffect, useState } from "react"
 

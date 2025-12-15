@@ -41,11 +41,13 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
     return {
         categoryName: category.name,
         products: category.products,
-        total: category._count.products,
-        page,
-        pageSize: category.products.length,
-        limit: PROUDCTS_PAGE_LIMIT,
-        subcategories: category.subcategories
+        subcategories: category.subcategories,
+        pagination: {
+            total: category._count.products,
+            page,
+            pageSize: category.products.length,
+            limit: PROUDCTS_PAGE_LIMIT,
+        }
     }
 }
 
@@ -83,9 +85,11 @@ export const getProductsByBrand = async (slug: Brand["slug"], sortBy: ProductsSo
     return {
         brandName: brand.name,
         products: brand.products,
-        total: brand._count.products,
-        page,
-        pageSize: brand.products.length,
-        limit: PROUDCTS_PAGE_LIMIT
+        pagination: {
+            total: brand._count.products,
+            page,
+            pageSize: brand.products.length,
+            limit: PROUDCTS_PAGE_LIMIT
+        }
     }
 }

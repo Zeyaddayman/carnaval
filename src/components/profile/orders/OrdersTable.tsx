@@ -1,13 +1,10 @@
-import { getUserOrders } from "@/server/db/orders"
 import Link from "next/link"
 import { FaEye } from "react-icons/fa"
 import OrderStatus from "./OrderStatus"
 import { formatDate } from "@/utils/formatters"
+import { TableOrder } from "@/types/order"
 
-const OrdersTable = async ({ filter }: { filter: string }) => {
-
-    const orders = await getUserOrders(filter)
-
+const OrdersTable = ({ orders }: { orders: TableOrder[] }) => {
     return (
         <div className="relative overflow-x-auto bg-card border border-border rounded-md">
             <table className="w-full text-center">

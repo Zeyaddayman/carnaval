@@ -7,6 +7,7 @@ import { ACCESS_TOKEN_EXPIRY, clearToken, generateAccessToken, setToken } from "
 import { CartItemWithProduct } from "@/types/cart"
 import { mergeCartItems } from "@/utils/cart"
 import { formatErrors } from "@/utils/formatters"
+import { cartItemSelector } from "../query-selectors/cart"
 
 export interface RegisterState {
     message?: string
@@ -125,14 +126,8 @@ export const loginAction = async (
             where: { email },
             include: {
                 cart: {
-                    include: {
-                        items: {
-                            include: {
-                                product: {
-                                    include: { brand: true }
-                                }
-                            }
-                        }
+                    select: {
+                        items: { select: cartItemSelector }
                     }
                 }
             }

@@ -1,12 +1,12 @@
-import { CartItemWithProduct } from "@/types/cart";
+import { CartItemWithProduct, QuantityModifiedItem } from "@/types/cart";
 import { db } from "@/utils/prisma";
 import { getProductLimit } from "@/utils/product";
 
-type QuantityModifiedItem = { [id: string]: { oldQuantity: number, newQuantity: number } }
+type QuantityModifiedItems = { [id: string]: QuantityModifiedItem }
 
 export async function modifyCartItemsQuantities(cartItems: CartItemWithProduct[]) {
 
-    const quantityModifiedItems: QuantityModifiedItem = {}
+    const quantityModifiedItems: QuantityModifiedItems = {}
 
     const newCartItems = await Promise.all(cartItems.map(async (item) => {
     

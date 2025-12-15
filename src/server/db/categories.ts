@@ -1,4 +1,4 @@
-import { Category, Prisma } from "@/generated/prisma"
+import { Category } from "@/generated/prisma"
 import { CategoryHierarchy } from "@/types/categories"
 import { db } from "@/utils/prisma"
 import { unstable_cache as nextCache } from "next/cache"
@@ -39,9 +39,7 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
             }
         })
 
-        if (!category) {
-            throw new Error(`Category with slug "${slug}" not found`)
-        }
+        if (!category) return []
 
         categoryHierarchy.push({
             name: category.name,

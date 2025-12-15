@@ -62,10 +62,7 @@ const BrandProductsPage = async ({ params, searchParams }: Props) => {
     const {
         brandName,
         products,
-        total,
-        page,
-        pageSize,
-        limit
+        pagination
 
     } = data
 
@@ -99,16 +96,16 @@ const BrandProductsPage = async ({ params, searchParams }: Props) => {
                         <ProductsList
                             slug={slug}
                             products={products}
-                            total={total}
-                            page={page}
-                            limit={limit}
-                            pageSize={pageSize}
+                            total={pagination.total}
+                            page={pagination.page}
+                            limit={pagination.limit}
+                            pageSize={pagination.pageSize}
                         />
                     </Suspense>
                     <Pagination
-                        total={total}
-                        page={page}
-                        limit={limit}
+                        total={pagination.total}
+                        page={pagination.page}
+                        limit={pagination.limit}
                     />
                 </div>
             </div>

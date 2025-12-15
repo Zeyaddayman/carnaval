@@ -1,7 +1,5 @@
-import { CartItemWithProduct } from "@/types/cart";
+import { CartItemWithProduct, QuantityModifiedItem } from "@/types/cart";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-export type QuantityModifiedItem = { oldQuantity: number, newQuantity: number }
 
 interface CartResponse {
     cart: { items: CartItemWithProduct[] }
