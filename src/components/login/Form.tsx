@@ -76,10 +76,12 @@ const LoginForm = () => {
                 <div key={field.name}>
                     <label
                         className="text-xs text-muted-foreground mb-2"
+                        htmlFor={field.name}
                     >
                         {field.label}
                     </label>
                     <Input
+                        id={field.name}
                         type={field.type}
                         name={field.name}
                         placeholder={field.placeholder}

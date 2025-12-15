@@ -2,6 +2,7 @@ import Loading from "@/app/loading"
 import NoOrdersYet from "@/components/profile/orders/NoOrdersYet"
 import OrdersFilter from "@/components/profile/orders/OrdersFilter"
 import OrdersTable from "@/components/profile/orders/OrdersTable"
+import OrdersTableSkeleton from "@/components/skeletons/OrdersTableSkeleton"
 import Heading from "@/components/ui/Heading"
 import { getUserOrders } from "@/server/db/orders"
 import { Suspense } from "react"
@@ -37,12 +38,7 @@ const Orders = async ({ filter }: { filter: string }) => {
         <div className="flex justify-end mb-5">
             <OrdersFilter filter={filter} />
         </div>
-        <Suspense
-            fallback={<Loading />}
-            key={filter}
-        >
-            <OrdersTable orders={orders} />
-        </Suspense>
+        <OrdersTable orders={orders} />
         </>
     )
 }

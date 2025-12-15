@@ -1,6 +1,10 @@
 import { cn } from "@/utils"
+import PasswordInput from "./PasswordInput"
 
 function Input({ className, ...props }: React.ComponentProps<"input">) {
+
+    if (props.type === "password") return <PasswordInput {...props} />
+
     return (
         <input
             data-slot="input"

@@ -94,11 +94,13 @@ const RegisterFrom = () => {
                 <div key={field.name}>
                     <label
                         className="text-xs text-muted-foreground mb-2"
+                        htmlFor={field.name}
                     >
                         {field.label}
                     </label>
                     <Input
                         type={field.type}
+                        id={field.name}
                         name={field.name}
                         placeholder={field.placeholder}
                         defaultValue={state.formData?.get(field.name) as string}
