@@ -148,7 +148,7 @@ const EditAddressButton = ({ address, userHasMoreThanOneAddress }: Props) => {
                                 type={"checkbox"}
                                 id={"default"}
                                 name={"default"}
-                                defaultChecked={address.default}
+                                defaultChecked={address.isDefault}
                                 className="scale-125"
                             />
                             <label

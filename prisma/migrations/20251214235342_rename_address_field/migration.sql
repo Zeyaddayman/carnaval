@@ -1,0 +1,1 @@
+ALTER TABLE "Address" RENAME COLUMN "default" TO "isDefault";

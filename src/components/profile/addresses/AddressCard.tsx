@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/Button"
 import { Address } from "@/generated/prisma"
 import DeleteAddressButton from "./DeleteAddressButton"
 import SetAsDefaultButton from "./SetAsDefaultButton"
@@ -16,7 +15,7 @@ const AddressCard = ({ address, userHasMoreThanOneAddress }: Props) => {
         >
             <div className="flex justify-between items-center gap-2 flex-wrap mb-5">
                 <h5 className="text-lg font-semibold">{address.label}</h5>
-                {address.default && <span className="text-xs bg-primary font-medium text-primary-foreground p-2 rounded-full">Default</span>}
+                {address.isDefault && <span className="text-xs bg-primary font-medium text-primary-foreground p-2 rounded-full">Default</span>}
             </div>
             <div className="flex flex-col gap-1 text-muted-foreground">
                 <p>Name: {address.name}</p>
@@ -28,7 +27,7 @@ const AddressCard = ({ address, userHasMoreThanOneAddress }: Props) => {
             </div>
             <div className="flex justify-between gap-2 flex-wrap mt-5">
                 <div className="flex justify-between gap-2 flex-wrap">
-                    {!(address.default) && (
+                    {!(address.isDefault) && (
                         <SetAsDefaultButton addressId={address.id} />
                     )}
                     <EditAddressButton address={address} userHasMoreThanOneAddress={userHasMoreThanOneAddress} />

@@ -27,7 +27,7 @@ const CheckoutPage = async () => {
 
     if (!items || items.length === 0) redirect('/cart')
 
-    const defaultAddress = addresses.find(address => address.default) || addresses[0]
+    const defaultAddress = addresses.find(address => address.isDefault) || addresses[0]
 
     const itemsCount = getCartItemsCount(items)
     const subtotal = getCartSubtotal(items)

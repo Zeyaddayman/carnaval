@@ -19,7 +19,7 @@ const CategoriesChain = ({ categoryHierarchy }: Props) => {
                         href={category.link}
                         className={isLastCategory ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"}
                     >
-                        {isFirstCategory ? category.name : category.subCategoryName}
+                        {isFirstCategory ? category.name : category.nameAsSubcategory}
                     </Link>
                     {!isLastCategory && <span>&gt;</span>}
                 </Fragment>

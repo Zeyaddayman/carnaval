@@ -13,13 +13,13 @@ export const getProduct = async (id: Product["id"]) => {
 
     const categoryHierarchy: CategoryHierarchy = product.categories.map(category => ({
         name: category.name,
-        subCategoryName: category.subCategoryName,
+        nameAsSubcategory: category.nameAsSubcategory,
         link: `/categories/${category.slug}`,
     }))
 
     categoryHierarchy.push({
         name: "Categories",
-        subCategoryName: "Categories",
+        nameAsSubcategory: "Categories",
         link: "/categories",
     })
 

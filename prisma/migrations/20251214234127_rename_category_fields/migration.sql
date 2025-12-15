@@ -1,0 +1,1 @@
+ALTER TABLE "Category" RENAME COLUMN "parentId" TO "parentCategoryId";

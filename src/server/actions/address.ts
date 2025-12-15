@@ -88,7 +88,7 @@ export const addNewAddressAction = async (
                     userId
                 },
                 data: {
-                    default: false
+                    isDefault: false
                 }
             })
         }
@@ -105,7 +105,7 @@ export const addNewAddressAction = async (
                 governorate,
                 city,
                 streetAddress,
-                default: isDefault
+                isDefault
             }
         })
 
@@ -214,7 +214,7 @@ export const editAddressAction = async (
                     userId
                 },
                 data: {
-                    default: false
+                    isDefault: false
                 }
             })
         } else {
@@ -222,7 +222,7 @@ export const editAddressAction = async (
                 where: {
                     AND: [
                         { userId },
-                        { default: true },
+                        { isDefault: true },
                         { id: { not: addressId } }
                     ]
                 }
@@ -244,7 +244,7 @@ export const editAddressAction = async (
                 if (lastAddedAddress) {
                     await db.address.update({
                         where: { id: lastAddedAddress.id },
-                        data: { default: true }
+                        data: { isDefault: true }
                     })
                 }
             }
@@ -263,7 +263,7 @@ export const editAddressAction = async (
                 governorate,
                 city,
                 streetAddress,
-                default: isDefault
+                isDefault
             }
         })
 
@@ -319,7 +319,7 @@ export const deleteAddressAction = async (addressId: string) => {
         const defaultAddress = await db.address.findFirst({
             where: {
                 userId,
-                default: true
+                isDefault: true
             }
         })
 
@@ -333,7 +333,7 @@ export const deleteAddressAction = async (addressId: string) => {
             if (lastAddedAddress) {
                 await db.address.update({
                     where: { id: lastAddedAddress.id },
-                    data: { default: true }
+                    data: { isDefault: true }
                 })
             }
         }
@@ -382,7 +382,7 @@ export const setAddressAsDefaultAction = async (addressId: string) => {
 
         await db.address.updateMany({
             where: { userId },
-            data: { default: false }
+            data: { isDefault: false }
         })
 
         await db.address.update({
@@ -390,7 +390,7 @@ export const setAddressAsDefaultAction = async (addressId: string) => {
                 userId,
                 id: addressId
             },
-            data: { default: true }
+            data: { isDefault: true }
         })
 
         return {

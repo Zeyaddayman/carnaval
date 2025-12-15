@@ -35,7 +35,7 @@ const Links = async () => {
                         >
                             {category.name}
                         </Link>
-                        <SubCategories subCategories={category.children} />
+                        <Subcategories subcategories={category.subcategories} />
                     </li>
                 ))}
             </ul>
@@ -83,16 +83,16 @@ const Links = async () => {
     )
 }
 
-const SubCategories = ({ subCategories }: { subCategories: MenuCategory["children"] }) => {
+const Subcategories = ({ subcategories }: { subcategories: MenuCategory["subcategories"] }) => {
     return (
         <div className="flex flex-col gap-2">
-            {subCategories.map(subCategory => (
+            {subcategories.map(subcategory => (
                 <Link
-                    key={subCategory.slug}
-                    href={`/categories/${subCategory.slug}`}
+                    key={subcategory.slug}
+                    href={`/categories/${subcategory.slug}`}
                     className="text-xs text-muted-foreground hover:text-primary transition-colors"
                 >
-                    {subCategory.subCategoryName}
+                    {subcategory.nameAsSubcategory}
                 </Link>
             ))}
         </div>

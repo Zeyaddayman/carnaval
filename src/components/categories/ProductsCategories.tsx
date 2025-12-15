@@ -23,7 +23,7 @@ const ProductsCategories = async () => {
                         className="p-5 pt-10 bg-card flex flex-col gap-3 border border-border rounded-xl"
                     >
                         <h4 className="font-semibold">{category.name}</h4>
-                        <SubCategories subCategories={category.children} />
+                        <Subcategories subcategories={category.subcategories} />
                         <Link
                             href={`/categories/${category.slug}`}
                             className={`${buttonVariants({ variant: "secondary", size: "lg" })} hover:!bg-primary hover:!text-primary-foreground w-full mt-auto`}
@@ -37,27 +37,27 @@ const ProductsCategories = async () => {
     )
 }
 
-const SubCategories = ({ subCategories }: { subCategories: MenuCategory["children"] }) => (
+const Subcategories = ({ subcategories }: { subcategories: MenuCategory["subcategories"] }) => (
     <div className="grid grid-cols-2 gap-3">
-        {subCategories.map(subCategory => (
+        {subcategories.map(subcategory => (
             <Link
-                key={subCategory.slug}
-                href={`/categories/${subCategory.slug}`}
+                key={subcategory.slug}
+                href={`/categories/${subcategory.slug}`}
                 className=" p-3 hover:bg-muted rounded-lg transition-colors"
             >
                 <div
                     className="relative w-full aspect-[3/2] "
                 >
                     <Image
-                        src={subCategory.thumbnail}
-                        alt={subCategory.slug}
+                        src={subcategory.thumbnail}
+                        alt={subcategory.slug}
                         className="rounded-md"
                         fill
                         sizes="(max-width: 500px) 120px, (max-width: 768px) 255px, 120px"
                         quality={100}
                     />
                 </div>
-                <p className="text-center text-sm mt-3">{subCategory.subCategoryName}</p>
+                <p className="text-center text-sm mt-3">{subcategory.nameAsSubcategory}</p>
             </Link>
         ))}
     </div>

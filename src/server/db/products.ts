@@ -18,7 +18,7 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
         where: { slug },
         select: {
             name: true,
-            children: { select: subcategorySelector },
+            subcategories: { select: subcategorySelector },
             products: {
                 where: whereOptions,
                 select: cardProductSelector,
@@ -45,7 +45,7 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
         page,
         pageSize: category.products.length,
         limit: PROUDCTS_PAGE_LIMIT,
-        subcategories: category.children
+        subcategories: category.subcategories
     }
 }
 

@@ -33,7 +33,7 @@ export const productDetailsSelector = {
         select: {
             name: true,
             slug: true,
-            subCategoryName: true
+            nameAsSubcategory: true
         }
     },
     brand: {

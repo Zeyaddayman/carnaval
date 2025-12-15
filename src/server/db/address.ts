@@ -15,7 +15,7 @@ export const getUserAddresses = async () => {
     const addresses = await db.address.findMany({
         where: { userId },
         orderBy: [
-            { default: "desc" },
+            { isDefault: "desc" },
             { createdAt: "desc" }
         ]
     })
@@ -36,7 +36,7 @@ export const getUserDefaultAddress = async () => {
     const defaultAddress = await db.address.findFirst({
         where: {
             userId,
-            default: true
+            isDefault: true
         }
     })
 

@@ -10,8 +10,8 @@ export const getTopLevelCategories = reactCache(nextCache(
         return await db.category.findMany({
             where: {
                 AND: [
-                    { parentId: null },
-                    { children: { some: {} } }
+                    { parentCategoryId: null },
+                    { subcategories: { some: {} } }
                 ]
             },
             select: menuCategorySelector,
@@ -34,8 +34,8 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
             select: {
                 name: true,
                 slug: true,
-                subCategoryName: true,
-                parentId: true
+                nameAsSubcategory: true,
+                parentCategoryId: true
             }
         })
 
@@ -45,11 +45,11 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
 
         categoryHierarchy.push({
             name: category.name,
-            subCategoryName: category.subCategoryName,
+            nameAsSubcategory: category.nameAsSubcategory,
             link: `/categories/${category.slug}`,
         })
         
-        let currentCategoryId = category.parentId
+        let currentCategoryId = category.parentCategoryId
 
         while (currentCategoryId) {
             const category = await db.category.findUnique({
@@ -57,8 +57,8 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
                 select: {
                     name: true,
                     slug: true,
-                    subCategoryName: true,
-                    parentId: true
+                    nameAsSubcategory: true,
+                    parentCategoryId: true
                 }
             })
 
@@ -66,16 +66,16 @@ export const getCategoryHierarchy = reactCache(async (slug: Category["slug"]) =>
 
             categoryHierarchy.push({
                 name: category.name,
-                subCategoryName: category.subCategoryName,
+                nameAsSubcategory: category.nameAsSubcategory,
                 link: `/categories/${category.slug}`,
             })
 
-            currentCategoryId = category.parentId
+            currentCategoryId = category.parentCategoryId
         }
 
         categoryHierarchy.push({
             name: "Categories",
-            subCategoryName: "Categories",
+            nameAsSubcategory: "Categories",
             link: "/categories",
         })
 

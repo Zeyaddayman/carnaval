@@ -4,11 +4,11 @@ export const menuCategorySelector = {
     name: true,
     slug: true,
     thumbnail: true,
-    children: {
+    subcategories: {
         select: {
             slug: true,
             thumbnail: true,
-            subCategoryName: true
+            nameAsSubcategory: true
         }
     }
 } satisfies Prisma.CategorySelect
