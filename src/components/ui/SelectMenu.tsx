@@ -1,6 +1,6 @@
 "use client"
 
-import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react'
 import { MouseEventHandler, useRef, useState } from 'react'
 import { BiCheck } from 'react-icons/bi'
 import { HiMiniChevronUpDown } from 'react-icons/hi2'
