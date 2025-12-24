@@ -16,7 +16,7 @@ if (typeof window !== "undefined") {
     if (localCart) initialState.items = JSON.parse(localCart)
 }
 
-export const LocalCartSlice = createSlice({
+export const localCartSlice = createSlice({
     name: 'localCart',
     initialState,
     reducers: {
@@ -49,8 +49,8 @@ export const {
     removeItemFromLocalCart,
     setLocalCartItems
 
-} = LocalCartSlice.actions
+} = localCartSlice.actions
 
 export const selectLocalCart = (state: RootState) => state.localCart
 
-export default LocalCartSlice.reducer
+export default localCartSlice.reducer

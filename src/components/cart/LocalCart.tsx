@@ -30,6 +30,7 @@ const LocalCart = () => {
         if (!isMounted) setIsMounted(true)
     }, [])
 
+    // Update local cart items with fresh data from server
     useEffect(() => {
         if (freshLocalCartItems) {
             dispatch(setLocalCartItems(freshLocalCartItems))

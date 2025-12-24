@@ -1,6 +1,7 @@
 import { User } from "@/generated/prisma";
 import { UserSession } from "@/types/user";
 import jwt from "jsonwebtoken"
+import { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
 const SECRET_KEY = process.env.JWT_SECRET!
@@ -14,17 +15,11 @@ export function generateAccessToken(user: User) {
     )
 }
 
-export async function setToken(name: string, token: string, maxAge: number) {
+export async function setToken(name: string, token: string, options?: Partial<ResponseCookie>) {
 
     const cookiesStore = await cookies()
 
-    cookiesStore.set(name, token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge, // milliseconds
-        path: '/'
-    })
+    cookiesStore.set(name, token, options)
 }
 
 export function verifyToken(token: string) {

@@ -63,7 +63,7 @@ const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity }: Pro
                     Update
                 </Button>
             ): (
-                // placeholder to prevent layout shift
+                // Placeholder to prevent layout shift
                 <div className="min-w-20 h-9"></div>
             )}
         </div>

@@ -20,7 +20,6 @@ export function mergeCartItems(
 
     const mergedCartItems = []
 
-    // add user cart items if exists
     if (userCartItems) {
         for (let i = 0; i < userCartItems.length; i++) {
             const currentItem = userCartItems[i]
@@ -29,7 +28,6 @@ export function mergeCartItems(
         }
     }
 
-    // add local cart items
     for (let i = 0; i < localCartItems.length; i++) {
         const currentItem = localCartItems[i]
 

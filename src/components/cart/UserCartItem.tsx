@@ -1,14 +1,12 @@
 "use client"
 
-import { QuantityModifiedItem } from "@/redux/features/userCartApi"
-import { CartItemWithProduct } from "@/types/cart"
+import { CartItemWithProduct, QuantityModifiedItem } from "@/types/cart"
 import Image from "next/image"
 import { useEffect, useState } from "react"
 import CartItemInfo from "./CartItemInfo"
 import CartItemQuantityCounter from "./CartItemQuantityCounter"
 import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
-import { getProductLimit } from "@/utils/product"
 import useAddItemToUserCart from "@/hooks/cart/user-cart/useAddItemToUserCart"
 
 

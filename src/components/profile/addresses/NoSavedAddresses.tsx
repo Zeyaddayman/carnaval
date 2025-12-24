@@ -6,7 +6,7 @@ const NoSavedAddresses = () => {
             <div className="text-center">
                 <Image
                     src={"/images/map.svg"}
-                    alt="no-saved-addresses"
+                    alt="Map"
                     className="mx-auto"
                     width={250}
                     height={202}

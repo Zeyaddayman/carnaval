@@ -1,17 +1,15 @@
-import Loading from "@/app/loading"
 import NoOrdersYet from "@/components/profile/orders/NoOrdersYet"
 import OrdersFilter from "@/components/profile/orders/OrdersFilter"
 import OrdersTable from "@/components/profile/orders/OrdersTable"
-import OrdersTableSkeleton from "@/components/skeletons/OrdersTableSkeleton"
 import Heading from "@/components/ui/Heading"
+import { ordersMetadata } from "@/metadata/orders"
 import { getUserOrders } from "@/server/db/orders"
-import { Suspense } from "react"
 
 interface Props {
     searchParams: Promise<{[key: string]: string | undefined}>
 }
 
-const orderStatusOptions = ["pending", "completed", "cancelled"]
+export const metadata = ordersMetadata
 
 const ProfileOrdersPage = async ({ searchParams }: Props) => {
 
@@ -26,6 +24,8 @@ const ProfileOrdersPage = async ({ searchParams }: Props) => {
         </>
     )
 }
+
+const orderStatusOptions = ["pending", "completed", "cancelled"]
 
 const Orders = async ({ filter }: { filter: string }) => {
 

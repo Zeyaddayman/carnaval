@@ -47,7 +47,7 @@ export const registerAction = async (
 
         if (userExist) {
             return {
-                message: "user already exists",
+                message: "User already exists",
                 status: 409,
                 formData
             }
@@ -75,7 +75,7 @@ export const registerAction = async (
 
         const accessToken = generateAccessToken(user)
 
-        await setToken("accessToken", accessToken, ACCESS_TOKEN_EXPIRY)
+        await setToken("accessToken", accessToken, { maxAge: ACCESS_TOKEN_EXPIRY })
 
         return {
             status: 201,
@@ -83,7 +83,7 @@ export const registerAction = async (
         }
     } catch {
         return {
-            message: "An unexpected error occurred",
+            message: "Failed to create account",
             status: 500,
             formData
         }
@@ -169,15 +169,15 @@ export const loginAction = async (
 
         const accessToken = generateAccessToken(user)
 
-        await setToken("accessToken", accessToken, ACCESS_TOKEN_EXPIRY)
+        await setToken("accessToken", accessToken, { maxAge: ACCESS_TOKEN_EXPIRY })
 
         return {
             status: 200,
-            message: "logged in successfully"
+            message: "Logged in successfully"
         }
     } catch {
         return {
-            message: "An unexpected error occurred",
+            message: "Failed to login",
             status: 500,
             formData
         }
@@ -195,7 +195,7 @@ export const logoutAction = async () => {
     catch {
         return {
             status: 500,
-            message: "An unexpected error occurred",
+            message: "Failed to logout"
         }
     }
 }

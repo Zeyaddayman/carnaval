@@ -8,7 +8,7 @@ const NoProductsFound = ({ clearFiltersLink }: { clearFiltersLink: string }) => 
             <div className="text-center">
                 <Image
                     src={"/images/no-data.svg"}
-                    alt="no-products"
+                    alt="No data"
                     className="mx-auto"
                     width={300}
                     height={293}

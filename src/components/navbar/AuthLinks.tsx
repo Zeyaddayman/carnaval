@@ -38,13 +38,13 @@ const AuthLinks = () => {
             <>
             <Link
                 href={`/auth/login?redirect=${pathname}`}
-                className={`${buttonVariants({ variant: "secondary" })}`}
+                className={`${buttonVariants({ variant: "primary" })}`}
             >
                 Login
             </Link>
             <Link
                 href={`/auth/register?redirect=${pathname}`}
-                className={`${buttonVariants({ variant: "primary" })}`}
+                className={`${buttonVariants({ variant: "secondary" })}`}
             >
                 Register
             </Link>

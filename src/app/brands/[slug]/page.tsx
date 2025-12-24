@@ -6,6 +6,7 @@ import ProductsSort from "@/components/products/ProductsSort"
 import ProductsListSkeleton from "@/components/skeletons/ProductsListSkeleton"
 import { Button } from "@/components/ui/Button"
 import { PRODUCTS_FILTERS, PRODUCTS_SORT_OPTIONS } from "@/constants/products"
+import { generateBrandProductsMetadata } from "@/metadata/products"
 import { getProductsByBrand } from "@/server/db/products"
 import { getBrandProductsMaxPrice, getBrandProductsMinPrice, getBrandProductsMinRating } from "@/server/utils/products-statistics"
 import { ProductsSortOptionValue } from "@/types/products"
@@ -20,6 +21,15 @@ interface SearchParams {
 interface Props {
     params: Promise<{ slug: string }>
     searchParams: Promise<SearchParams>
+}
+
+export async function generateMetadata({ params }: Props) {
+
+    const { slug } = await params
+
+    const data = await getProductsByBrand(slug, "alphabetical", PRODUCTS_FILTERS, 1)
+
+    return generateBrandProductsMetadata(data?.brandName || slug)
 }
 
 const BrandProductsPage = async ({ params, searchParams }: Props) => {

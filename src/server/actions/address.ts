@@ -75,7 +75,6 @@ export const addNewAddressAction = async (
 
         if (addressExist) {
             return {
-                message: "Address already exists",
                 status: 400,
                 formData,
                 errors: { label: "Address with this label already exists" }
@@ -83,6 +82,7 @@ export const addNewAddressAction = async (
         }
 
         if (isDefault) {
+            // Set all other addresses to non-default
             await db.address.updateMany({
                 where: {
                     userId
@@ -93,6 +93,7 @@ export const addNewAddressAction = async (
             })
         }
 
+        // Force this address to be default if it's the first one
         isDefault = userExist.addresses.length === 0 ? true : isDefault
 
         await db.address.create({
@@ -116,7 +117,7 @@ export const addNewAddressAction = async (
     }
     catch {
         return {
-            message: "An unexpected error occurred",
+            message: "Failed to add address",
             status: 500,
             formData
         }
@@ -171,16 +172,17 @@ export const editAddressAction = async (
 
         const { userId } = session
 
-        const userExist = await db.user.findUnique({
+        const user = await db.user.findUnique({
             where: { id: userId },
             select: {
                 addresses: {
+                    where: { id: { not: addressId } },
                     orderBy: { createdAt: "desc" }
                 }
             }
         })
 
-        if (!userExist) {
+        if (!user) {
             return {
                 message: "User not found",
                 status: 404,
@@ -195,29 +197,27 @@ export const editAddressAction = async (
                 userId_label: {
                     userId,
                     label
-                }
+                },
+                NOT: { id: addressId }
             }
         })
 
-        if (addressExist && addressExist.id !== addressId) {
+        if (addressExist) {
             return {
-                message: "Address with this label already exists",
                 status: 400,
                 formData,
-                errors: { label: "Address already exists" }
+                errors: { label: "Address with this label already exists" }
             }
         }
 
         if (isDefault) {
+            // Set all other addresses to non-default
             await db.address.updateMany({
-                where: {
-                    userId
-                },
-                data: {
-                    isDefault: false
-                }
+                where: { userId },
+                data: { isDefault: false }
             })
-        } else {
+        }
+        else {
             const defaultAddress = await db.address.findFirst({
                 where: {
                     AND: [
@@ -229,23 +229,20 @@ export const editAddressAction = async (
             })
 
             if (!defaultAddress) {
+                // Set the last added one as default if no other default address exists
+                const userAddresses = user.addresses
 
-                const userAddresses = userExist.addresses
-
-                let lastAddedAddress
-
-                if (userAddresses.length > 1) {
-                    lastAddedAddress = userAddresses.find(address => address.id !== addressId)
-                } else {
-                    lastAddedAddress = userAddresses[0]
-                    isDefault = true
-                }
+                const lastAddedAddress = userAddresses[0]
 
                 if (lastAddedAddress) {
                     await db.address.update({
                         where: { id: lastAddedAddress.id },
                         data: { isDefault: true }
                     })
+                }
+                else {
+                    // If this is the only address, force it to be default
+                    isDefault = true
                 }
             }
         }
@@ -274,7 +271,7 @@ export const editAddressAction = async (
     }
     catch {
         return {
-            message: "An unexpected error occurred",
+            message: "Failed to update address",
             status: 500
         }
     }
@@ -345,7 +342,7 @@ export const deleteAddressAction = async (addressId: string) => {
     }
     catch {
         return {
-            message: "An unexpected error occurred",
+            message: "Failed to delete address",
             status: 500
         }
     }
@@ -400,7 +397,7 @@ export const setAddressAsDefaultAction = async (addressId: string) => {
     }
     catch {
         return {
-            message: "An unexpected error occurred",
+            message: "Failed to update address",
             status: 500
         }
     }

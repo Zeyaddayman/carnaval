@@ -8,7 +8,7 @@ const NoOrdersYet = () => {
             <div className="text-center">
                 <Image
                     src={"/images/empty-order.svg"}
-                    alt="no-orders"
+                    alt="Empty order"
                     className="mx-auto"
                     width={200}
                     height={150}
@@ -20,7 +20,7 @@ const NoOrdersYet = () => {
                         href={"/cart"}
                         className={`${buttonVariants({ variant: "primary", size: "lg" })}`}
                     >
-                        Cart
+                        VIEW CART
                     </Link>
                 </div>
             </div>

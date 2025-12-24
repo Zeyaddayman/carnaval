@@ -7,10 +7,12 @@ import ProductsSort from "@/components/products/ProductsSort"
 import ProductsListSkeleton from "@/components/skeletons/ProductsListSkeleton"
 import { Button } from "@/components/ui/Button"
 import { PRODUCTS_FILTERS, PRODUCTS_SORT_OPTIONS } from "@/constants/products"
+import { generateCategoryProductsMetadata } from "@/metadata/products"
 import { getCategoryHierarchy } from "@/server/db/categories"
 import { getProductsByCategory } from "@/server/db/products"
 import { getCategoryProductsMaxPrice, getCategoryProductsMinPrice, getCategoryProductsMinRating } from "@/server/utils/products-statistics"
 import { ProductsSortOptionValue } from "@/types/products"
+import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2"
@@ -22,6 +24,15 @@ interface SearchParams {
 interface Props {
     params: Promise<{ slug: string }>
     searchParams: Promise<SearchParams>
+}
+
+export async function generateMetadata({ params }: Props) {
+
+    const { slug } = await params
+
+    const data = await getProductsByCategory(slug, "alphabetical", PRODUCTS_FILTERS, 1)
+
+    return generateCategoryProductsMetadata(data?.categoryName || slug)
 }
 
 const CategoryProductsPage = async ({ params, searchParams }: Props) => {

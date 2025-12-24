@@ -1,5 +1,6 @@
 import OrderStatus from "@/components/profile/orders/OrderStatus"
 import Heading from "@/components/ui/Heading"
+import { orderMetadata } from "@/metadata/orders"
 import { getOrderDetails } from "@/server/db/orders"
 import { formatDate, formatPrice } from "@/utils/formatters"
 import Image from "next/image"
@@ -9,6 +10,8 @@ import { notFound } from "next/navigation"
 interface Props {
     params: Promise<{ id: string }>
 }
+
+export const metadata = orderMetadata
 
 const OrderDetailsPage = async ({ params }: Props) => {
 
@@ -80,7 +83,7 @@ const OrderDetailsPage = async ({ params }: Props) => {
                             >
                                 <Image
                                     src={item.product.thumbnail}
-                                    alt={item.product.title}
+                                    alt={`View ${item.product.title}`}
                                     width={100}
                                     height={100}
                                 />

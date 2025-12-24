@@ -1,11 +1,14 @@
 import { buttonVariants } from "@/components/ui/Button"
 import Heading from "@/components/ui/Heading"
 import { Address } from "@/generated/prisma"
+import { profileMetadata } from "@/metadata/profile"
 import { getUserDefaultAddress } from "@/server/db/address"
 import { getUserOrdersSummary } from "@/server/db/orders"
 import { getProfile } from "@/server/db/profile"
 import { formatDate } from "@/utils/formatters"
 import Link from "next/link"
+
+export const metadata = profileMetadata
 
 const ProfileAccountOverviewPage = async () => {
 
@@ -25,7 +28,7 @@ const ProfileAccountOverviewPage = async () => {
         <Heading
             title="Account Overview"
         />
-        <div className="grid md:grid-cols-2 gap-5">
+        <div className="grid md:grid-cols-2 gap-5 break-all">
             <PersonalInformationSection profile={profile} />
             <OrdersSummary
                 totalOrders={totalOrders}

@@ -32,9 +32,9 @@ const ProductCard = async ({ product }: { product: CardProduct }) => {
                 >
                     <Image
                         src={product.thumbnail}
-                        alt={product.title}
+                        alt={`View ${product.title} product`}
                         fill
-                        sizes="(max-width: 768px) 45vw, (max-width: 1536px) 22vw, 18vw"
+                        sizes="(max-width: 768px) 50vw, (max-width: 1536px) 25vw, 20vw"
                         className="rounded-md border border-border"
                     />
                 </div>

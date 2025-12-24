@@ -1,6 +1,7 @@
 "use client"
 
-import { CartErrorResponse, useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
+import { useAddItemToUserCartMutation } from "@/redux/features/userCartApi"
+import { CartError } from "@/redux/types/cart-response"
 import { useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
@@ -31,7 +32,7 @@ const useAddItemToUserCart = () => {
     
     useEffect(() => {
 
-        const typedAddItemError = addItemError as CartErrorResponse
+        const typedAddItemError = addItemError as CartError
 
         if (isAddingItemFailed && typedAddItemError.message) {
 

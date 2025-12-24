@@ -74,7 +74,7 @@ export const editProfileAction = async (
 
         const accessToken = generateAccessToken(user)
 
-        await setToken("accessToken", accessToken, ACCESS_TOKEN_EXPIRY)
+        await setToken("accessToken", accessToken, { maxAge: ACCESS_TOKEN_EXPIRY })
 
         return {
             message: "Profile updated successfully",
@@ -83,7 +83,7 @@ export const editProfileAction = async (
     }
     catch {
         return {
-            message: "An unexpected error occurred",
+            message: "Failed to update profile",
             status: 500,
             formData
         }

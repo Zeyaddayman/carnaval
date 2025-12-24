@@ -25,21 +25,21 @@ const ProductImagesPreview = ({ images }: Props) => {
                     <Image
                         key={imageUrl}
                         src={imageUrl}
-                        alt={`main_image`}
+                        alt={`${imageUrl}`}
                         fill
-                        sizes="(max-width: 1024px) 90vw, 40vw"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
                         className={`object-contain ${images[selectedImageIndex] === imageUrl ? "visible": "invisible"}`}
                         priority={images[selectedImageIndex] === imageUrl}
                     />
                 ))}
                 <button
-                    className={`${selectedImageIndex === 0 ? "hidden": ""} absolute lg:hidden top-1/2 left-0 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
+                    className={`${selectedImageIndex === 0 ? "hidden": ""} absolute top-1/2 left-0 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
                     onClick={() => handleChangeImage(selectedImageIndex - 1)}
                 >
                     <MdKeyboardArrowLeft size={20} />
                 </button>
                 <button
-                    className={`${selectedImageIndex === images.length - 1 ? "hidden": ""} absolute lg:hidden top-1/2 right-0 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
+                    className={`${selectedImageIndex === images.length - 1 ? "hidden": ""} absolute top-1/2 right-0 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
                     onClick={() => handleChangeImage(selectedImageIndex + 1)}
                 >
                     <MdKeyboardArrowRight size={20} />
@@ -55,7 +55,7 @@ const ProductImagesPreview = ({ images }: Props) => {
                         >
                             <Image
                                 src={image}
-                                alt={`sub_image`}
+                                alt={`${image}`}
                                 width={100}
                                 height={100}
                                 className="object-contain aspect-square"

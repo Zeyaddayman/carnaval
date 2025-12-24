@@ -7,9 +7,26 @@ import { db } from "@/utils/prisma"
 import { getProduct } from "@/server/db/product"
 import { notFound } from "next/navigation"
 import { getProductLimit } from "@/utils/product"
+import { generateProductMetadata } from "@/metadata/product"
 
 interface Props {
     params: Promise<{ id: string }>
+}
+
+export const generateMetadata = async ({ params }: Props) => {
+
+    const { id } = await params
+
+    const data = await getProduct(id)
+
+    if (!data) return {
+        title: 'Product Not Found | Carnaval',
+        description: 'The product you are looking for does not exist or has been removed.'
+    }
+
+    const { product } = data
+
+    return generateProductMetadata(product)
 }
 
 export const revalidate = 3600

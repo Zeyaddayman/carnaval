@@ -10,20 +10,20 @@ import toast from "react-hot-toast"
 
 const editAddressFields = [
     {
-        label: "Address Label",
+        label: "Address label",
         name: "label",
         type: "text",
         placeholder: "e.g. Home, Work, etc.",
         autoFocus: true
     },
     {
-        label: "Full Name",
+        label: "Full name",
         name: "name",
         type: "text",
         placeholder: "Enter your full name",
     },
     {
-        label: "Phone Number",
+        label: "Phone number",
         name: "phone",
         type: "text",
         placeholder: "Enter your phone number",
@@ -50,7 +50,7 @@ const editAddressFields = [
         width: "half"
     },
     {
-        label: "Street Address",
+        label: "Street address",
         name: "streetAddress",
         type: "text",
         placeholder: "Enter your street address",
@@ -136,7 +136,7 @@ const EditAddressButton = ({ address, userHasMoreThanOneAddress }: Props) => {
                                 autoFocus={field.autoFocus}
                             />
                             <span
-                                className="block text-destructive text-xs h-1 mt-1"
+                                className="text-destructive text-xs mt-1"
                             >
                                 {state.errors?.[field.name]}
                             </span>

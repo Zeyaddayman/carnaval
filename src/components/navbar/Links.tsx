@@ -2,7 +2,6 @@ import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
 import { FiHeart, FiShoppingCart } from "react-icons/fi"
 import { MdOutlineKeyboardArrowDown } from "react-icons/md"
-import { Category } from "@/generated/prisma"
 import { getTopLevelCategories } from "@/server/db/categories"
 import { getBrands } from "@/server/db/brands"
 import AuthLinks from "./AuthLinks"
@@ -23,7 +22,6 @@ const Links = async () => {
             >
                 Products Categories <MdOutlineKeyboardArrowDown className="hidden lg:inline" />
             </Link>
-            {/* mega menu */}
             <ul
                 className="absolute left-1/2 -translate-x-1/3 top-12 group-hover:top-9 hidden lg:grid grid-cols-4 gap-8 invisible group-hover:lg:visible opacity-0 group-hover:opacity-100 w-[800px] py-10 px-5 bg-card border border-border uppercase text-muted-foreground rounded-md shadow-md z-20 transition-all"
             >

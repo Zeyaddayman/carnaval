@@ -58,7 +58,7 @@ const CartOrderSummary = ({ cartItems, hasUnavailableItems }: Props) => {
                 disabled={hasUnavailableItems}
                 onClick={goToCheckout}
             >
-                Checkout
+                CHECKOUT
             </Button>
         </div>
     )

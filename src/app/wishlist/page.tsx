@@ -1,7 +1,10 @@
 import Heading from "@/components/ui/Heading"
 import WishlistItems from "@/components/wishlist/WishlistItems"
+import { wishlistMetadata } from "@/metadata/wishlist"
 import { isAuthenticated } from "@/server/utils/auth"
 import { redirect } from "next/navigation"
+
+export const metadata = wishlistMetadata
 
 const WishlistPage = async () => {
 

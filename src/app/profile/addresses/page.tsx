@@ -2,8 +2,11 @@ import AddNewAddressButton from "@/components/profile/addresses/AddNewAddressBut
 import AddressCard from "@/components/profile/addresses/AddressCard"
 import NoSavedAddresses from "@/components/profile/addresses/NoSavedAddresses"
 import Heading from "@/components/ui/Heading"
+import { addressesMetadata } from "@/metadata/addresses"
 import { getUserAddresses } from "@/server/db/address"
 import { getProfile } from "@/server/db/profile"
+
+export const metadata = addressesMetadata
 
 const ProfileAddressesPage = async () => {
 

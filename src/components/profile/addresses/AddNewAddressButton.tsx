@@ -23,15 +23,15 @@ const AddNewAddressButton = ({ userName, userPhone, isFirstAddress }: Props) => 
         <div className="mt-10 flex justify-center">
             <Button
                 variant={"primary"}
-                size={"lg"}
+                size={isFirstAddress ? "lg" : "default"}
                 onClick={open}
             >
-                <FaPlus /> Add New Address
+                <FaPlus /> {isFirstAddress ? "ADD YOUR ADDRESS" : "Add New Address"}
             </Button>
             <Dialog
                 isOpen={isOpen}
                 close={close}
-                title="Add New Address"
+                title={isFirstAddress ? "Add Your Address" : "Add New Address"}
             >
                 <AddNewAddressForm
                     userName={userName}

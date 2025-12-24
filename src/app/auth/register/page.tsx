@@ -1,6 +1,9 @@
 import Heading from "@/components/ui/Heading"
 import Link from "next/link"
 import RegisterFrom from "@/components/register/Form"
+import { registerMetadata } from "@/metadata/auth"
+
+export const metadata = registerMetadata
 
 const RegisterPage = () => {
     return (

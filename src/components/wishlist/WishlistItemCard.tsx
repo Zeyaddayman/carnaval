@@ -59,6 +59,7 @@ const WishlistItemCard = ({ product, userId, removeItem, addItemToCart }: Props)
                         src={product.thumbnail}
                         alt={product.title}
                         fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 20vw"
                         className="rounded-md border border-border"
                     />
                 </div>
@@ -82,18 +83,18 @@ const WishlistItemCard = ({ product, userId, removeItem, addItemToCart }: Props)
                 {inStock ? (
                     cartItem ? (
                         <div className="bg-success text-success-foreground h-9 px-4 py-2 text-sm flex gap-2 justify-center items-center rounded-md">
-                            <FaCheck /> In your cart
+                            <FaCheck /> IN YOUR CART
                         </div>
                     ) : (
                         <Button
                             variant={"primary"}
                             onClick={handleAddItemToCart}
                         >
-                            <BsCartPlusFill /> Add to cart
+                            <BsCartPlusFill /> ADD TO CART
                         </Button>
                     )
                 ) : (
-                    // placeholder to maintain button height alignment
+                    // Placeholder to maintain button height alignment
                     <div className="h-9"></div>
                 )}
                 <Button

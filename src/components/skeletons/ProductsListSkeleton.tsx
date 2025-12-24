@@ -1,6 +1,6 @@
 import { PROUDCTS_PAGE_LIMIT } from "@/constants/products"
 
-const ProductsDataSkeleton = () => {
+const ProductsListSkeleton = () => {
     return (
         <div role={"status"} className="animate-pulse">
             <div className="w-59 h-6 my-3 bg-gray-200 rounded-full"></div>
@@ -23,4 +23,4 @@ const ProductsDataSkeleton = () => {
     )
 }
 
-export default ProductsDataSkeleton
+export default ProductsListSkeleton

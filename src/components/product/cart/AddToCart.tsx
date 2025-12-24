@@ -58,7 +58,7 @@ const AddToCart = ({ limit, addItem }: Props) => {
                 className="flex-1"
                 onClick={handleAddItem}
             >
-                <BsCartPlusFill size={20} /> Add to Cart
+                <BsCartPlusFill size={20} /> ADD TO CART
             </Button>
         </div>
     )

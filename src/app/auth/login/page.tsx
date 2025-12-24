@@ -1,6 +1,9 @@
 import LoginForm from "@/components/login/Form"
 import Heading from "@/components/ui/Heading"
+import { loginMetadata } from "@/metadata/auth"
 import Link from "next/link"
+
+export const metadata = loginMetadata
 
 const LoginPage = () => {
     return (

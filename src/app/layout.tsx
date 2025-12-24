@@ -5,15 +5,14 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { Toaster } from "react-hot-toast";
 import StoreProvider from "@/providers/StoreProvider";
+import { mainMetadata } from "@/metadata";
 
 const inter = Inter({
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"]
 })
 
-export const metadata: Metadata = {
-  title: "Carnaval"
-};
+export const metadata = mainMetadata
 
 export default function RootLayout({
   children,
@@ -42,5 +41,5 @@ export default function RootLayout({
         </StoreProvider>
       </body>
     </html>
-  );
+  )
 }

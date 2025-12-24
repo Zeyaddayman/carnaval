@@ -22,7 +22,7 @@ export function generatePagination(
 
     let maxPerSide = 2
 
-    // left side
+    // Left side
     for (let i = page - 1; (i >= 1 && maxPerSide !== 0); i--) {
         paginationPages.unshift(i)
         maxPerSide--
@@ -30,7 +30,7 @@ export function generatePagination(
 
     const firstIndex = paginationPages[0] as number
 
-    // show the first page if not visible
+    // Show the first page if not visible
     if (firstIndex > 1 && firstIndex - 1 > 1) {
 
         paginationPages.unshift("..")
@@ -42,7 +42,7 @@ export function generatePagination(
 
     maxPerSide = 2
 
-    // right side
+    // Right side
     for (let i = page + 1; (i <= totalPages && maxPerSide !== 0); i++) {
         paginationPages.push(i)
         maxPerSide--
@@ -50,7 +50,7 @@ export function generatePagination(
 
     const lastIndex = paginationPages[paginationPages.length - 1] as number
 
-    // show the last page if not visible
+    // Show the last page if not visible
     if (lastIndex < totalPages && lastIndex + 1 < totalPages) {
 
         paginationPages.push("..")

@@ -9,19 +9,19 @@ import toast from "react-hot-toast"
 
 const changePasswordFields = [
     {
-        label: "Current Password",
+        label: "Current password",
         name: "currentPassword",
         type: "password",
         placeholder: "Enter your current password"
     },
     {
-        label: "New Password",
+        label: "New password",
         name: "newPassword",
         type: "password",
         placeholder: "Enter your new password"
     },
     {
-        label: "Confirm New Password",
+        label: "Confirm new password",
         name: "confirmNewPassword",
         type: "password",
         placeholder: "Re-enter your new password"

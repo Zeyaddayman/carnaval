@@ -19,7 +19,7 @@ const RatingStars = ({ rating, color = "#e6b800", size = "sm" }: IProps) => {
         [ int, float ] = ratingString.split(".")
     } else {
         int = ratingString
-        float = undefined
+        float = null
     }
 
     const sizes = {

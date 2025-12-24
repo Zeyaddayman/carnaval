@@ -8,7 +8,7 @@ const EmptyCart = () => {
             <div className="flex flex-col justify-center items-center text-center">
                 <Image
                     src={"/images/empty-cart.svg"}
-                    alt="empty-cart"
+                    alt="Empty cart"
                     width={300}
                     height={250}
                 />
@@ -18,7 +18,7 @@ const EmptyCart = () => {
                     href={"/categories"}
                     className={`${buttonVariants({ variant: "primary", size: "lg" })}`}
                 >
-                    Add Items
+                    ADD ITEMS
                 </Link>
             </div>
         </div>

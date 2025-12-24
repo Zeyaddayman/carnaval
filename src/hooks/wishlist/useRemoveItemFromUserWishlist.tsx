@@ -1,6 +1,7 @@
 "use client"
 
-import { useRemoveItemFromUserWishlistMutation, WishlistErrorResponse } from "@/redux/features/userWishlistApi"
+import { useRemoveItemFromUserWishlistMutation } from "@/redux/features/userWishlistApi"
+import { WishlistError } from "@/redux/types/wishlist-response"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
 
@@ -13,7 +14,7 @@ const useRemoveItemFromUserWishlist = () => {
 
     useEffect(() => {
     
-        const typedRemoveItemError = removeItemError as WishlistErrorResponse
+        const typedRemoveItemError = removeItemError as WishlistError
 
         if (isRemovingItemFailed && typedRemoveItemError.message) {
             toast.error(typedRemoveItemError.message)

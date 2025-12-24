@@ -3,6 +3,7 @@ import CheckoutForm from "@/components/checkout/CheckoutForm"
 import CheckoutItemCard from "@/components/checkout/CheckoutItemCard"
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary"
 import Heading from "@/components/ui/Heading"
+import { checkoutMetadata } from "@/metadata/checkout"
 import { getUserAddresses } from "@/server/db/address"
 import { getCheckoutItems } from "@/server/db/checkout"
 import { getProfile } from "@/server/db/profile"
@@ -11,6 +12,8 @@ import { getCartItemsCount, getCartSubtotal } from "@/utils/cart"
 import { formatPrice } from "@/utils/formatters"
 import Link from "next/link"
 import { redirect } from "next/navigation"
+
+export const metadata = checkoutMetadata
 
 const CheckoutPage = async () => {
 
@@ -44,7 +47,7 @@ const CheckoutPage = async () => {
                 <Heading
                     title="Checkout"
                 />
-                <div className="flex flex-col items-start lg:flex-row gap-5">
+                <div className="flex flex-col lg:flex-row gap-5">
                     <div className="flex-4/10 space-y-5">
                         <div className="rounded-md border border-border bg-card p-3 shadow-sm">
                             <h4 className="font-semibold text-xl flex gap-2 justify-between items-center py-3 border-b border-border">
@@ -70,7 +73,7 @@ const CheckoutPage = async () => {
                             formattedTotal={formattedTotal}
                         />
                     </div>
-                    <div className="flex-6/10 sticky top-5 rounded-md border border-border bg-card p-3 shadow-sm">
+                    <div className="flex-6/10 sticky lg:self-start top-5 rounded-md border border-border bg-card p-3 shadow-sm">
                         <h4 className="font-semibold text-xl flex gap-2 justify-between items-center flex-wrap py-3 border-b border-border">
                             Shipping Address
                             <Link

@@ -24,7 +24,7 @@ export async function GET() {
 
         return NextResponse.json({ items: wishlist }, { status: 200 })
     } catch {
-        return NextResponse.json({ message: 'Failed to fetch wishlist' }, { status: 500 })
+        return NextResponse.json({ message: 'Failed to get wishlist items' }, { status: 500 })
     }
 }
 

@@ -16,7 +16,6 @@ export async function GET() {
     const { userId } = session
 
     try {
-        // get user cart by the sesion userId or create one if not exists
         const cart = await db.cart.upsert({
             where: { userId },
             create: { userId },
@@ -29,13 +28,14 @@ export async function GET() {
             }
         })
 
+        // Check if any cart item quantities need to be modified based on stock/limit
         const { newCartItems, quantityModifiedItems } = await modifyCartItemsQuantities(cart.items)
 
         cart.items = newCartItems
 
         return NextResponse.json({ cart, quantityModifiedItems }, { status: 200 })
     } catch {
-        return NextResponse.json({ message: 'Failed to fetch user cart' }, { status: 500 })
+        return NextResponse.json({ message: 'Failed to get user cart' }, { status: 500 })
     }
 }
 
@@ -59,26 +59,24 @@ export async function POST(req: NextRequest) {
         })
 
         if (!product) {
-            return NextResponse.json({ message: 'Failed to add item to cart' }, { status: 500 })
+            return NextResponse.json({ message: 'Product not found' }, { status: 404 })
         }
 
         if (product.stock <= 0) {
-            return NextResponse.json({ message: 'Product is out of stock' }, { status: 400 })
+            return NextResponse.json({ message: 'Product is out of stock' }, { status: 422 })
         }
 
         const limit = getProductLimit(product.stock, product.limit)
 
-        // check if the requested quantity available or not
+        // Adjust quantity if it exceeds the limit
         const modifiedQuantity = quantity > limit ? limit : quantity
 
-        // get user cart by the sesion userId or create one if not exists
         const cart = await db.cart.upsert({
             where: { userId },
             create: { userId },
             update: {}
         })
 
-        // add item to cart or update its quantity if already exists
         await db.cartItem.upsert({
             where: {
                 cartId_productId: {
@@ -100,7 +98,7 @@ export async function POST(req: NextRequest) {
             {
                 message: 'Item added to cart',
                 limit,
-                modifiedQuantity: modifiedQuantity !== quantity ? modifiedQuantity : undefined
+                modifiedQuantity: modifiedQuantity !== quantity ? modifiedQuantity : null
             },
             { status: 200 }
         )
@@ -123,14 +121,12 @@ export async function DELETE(req: NextRequest) {
     const { productId } = await req.json()
 
     try {
-        // get user cart by the sesion userId or create one if not exists
         const cart = await db.cart.upsert({
             where: { userId },
             create: { userId },
             update: {}
         })
 
-        // delete item from cart
         await db.cartItem.delete({
             where: {
                 cartId_productId: {

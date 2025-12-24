@@ -1,4 +1,7 @@
 import ProductsCategories from "@/components/categories/ProductsCategories"
+import { categoriesMetadata } from "@/metadata/categories"
+
+export const metadata = categoriesMetadata
 
 const CategoriesPage = () => {
     return (

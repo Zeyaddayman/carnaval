@@ -1,7 +1,10 @@
 import ChangePasswordFrom from "@/components/profile/settings/ChangePasswordFrom"
 import EditProfileForm from "@/components/profile/settings/EditProfileForm"
 import Heading from "@/components/ui/Heading"
+import { settingsMetadata } from "@/metadata/settings"
 import { getProfile } from "@/server/db/profile"
+
+export const metadata = settingsMetadata
 
 const ProfileSettingsPage = () => {
     return (

@@ -55,7 +55,7 @@ const ProductsFilters = ({ initialFilters, productsMinRating }: Props) => {
         Object.keys(PRODUCTS_FILTERS).forEach(key => {
             const filterKey = key as keyof ProductsFiltersOptions
 
-            // only update filters that have changed
+            // Only update filters that have changed
             if (filters[filterKey] !== initialFilters[filterKey]) {
                 params.set(filterKey, String(filters[filterKey]))
             }

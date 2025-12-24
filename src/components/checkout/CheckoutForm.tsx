@@ -97,9 +97,9 @@ const CheckoutForm = ({ addresses, defaultAddress, formattedTotal, userName, use
                 className="!w-full mt-10"
             >
                 {isPlacingOrder ? (
-                    <>Placing Order...</>
+                    <>PLACING ORDER...</>
                 ): (
-                    <><FaCheck /> Place Order ({formattedTotal})</>
+                    <><FaCheck /> PLACE ORDER ({formattedTotal})</>
                 )}
             </Button>
         </div>

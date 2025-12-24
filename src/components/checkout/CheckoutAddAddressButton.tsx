@@ -28,7 +28,7 @@ const CheckoutAddAddressButton = ({ userName, userPhone, isFirstAddress }: Props
                 className="w-full"
                 onClick={open}
             >
-                <FaPlus /> Add Your Address
+                <FaPlus /> ADD YOUR ADDRESS
             </Button>
         ): (
             <Button

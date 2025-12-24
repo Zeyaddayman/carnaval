@@ -1,6 +1,7 @@
 "use client"
 
-import { useAddItemToUserWishlistMutation, WishlistErrorResponse } from "@/redux/features/userWishlistApi"
+import { useAddItemToUserWishlistMutation } from "@/redux/features/userWishlistApi"
+import { WishlistError } from "@/redux/types/wishlist-response"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
 
@@ -14,7 +15,7 @@ const useAddItemToUserWishlist = () => {
     
     useEffect(() => {
 
-        const typedAddItemToWishlistError = addItemToWishlistError as WishlistErrorResponse
+        const typedAddItemToWishlistError = addItemToWishlistError as WishlistError
 
         if (isAddingItemToWishlistFailed && typedAddItemToWishlistError.message) {
             toast.error(typedAddItemToWishlistError.message)

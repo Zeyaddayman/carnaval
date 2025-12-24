@@ -16,6 +16,7 @@ const useAddItemToLocalCart = () => {
 
     const addItemWithLimitCheck = (product: CartItemWithProduct["product"], quantity: number, limit: number) => {
 
+        // Add item to local cart optimistically
         const newCartItem: CartItemWithProduct = {
             id: crypto.randomUUID(),
             cartId: "local",
@@ -32,9 +33,10 @@ const useAddItemToLocalCart = () => {
 
                     setFreshLimit(productLimit)
 
+                    // Adjust quantity if it exceeds the product limit
                     if (quantity > productLimit) {
 
-                        toast.success(`Only ${productLimit} items are available`)
+                        toast.success(`Only ${productLimit} item(s) are available`)
 
                         newCartItem.quantity = quantity > productLimit ? productLimit : quantity
     

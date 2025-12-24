@@ -25,10 +25,10 @@ const ExploreCollections = async () => {
                         >
                             <Image
                                 src={category.thumbnail}
-                                alt={`${category.name} image`}
+                                alt={`View ${category.name} products`}
                                 className="rounded-t-xl"
                                 fill
-                                sizes="(max-width: 768px) 90vw, (max-width: 1024px) 45vw, 30vw"
+                                sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                 quality={100}
                                 loading="lazy"
                             />

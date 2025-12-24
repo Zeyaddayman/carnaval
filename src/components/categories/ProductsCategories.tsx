@@ -1,10 +1,9 @@
 import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
-import { Category } from "@/generated/prisma"
-import Image from "next/image"
 import { getTopLevelCategories } from "@/server/db/categories"
 import Heading from "../ui/Heading"
 import { MenuCategory } from "@/types/categories"
+import Image from "next/image"
 
 const ProductsCategories = async () => {
 
@@ -28,7 +27,7 @@ const ProductsCategories = async () => {
                             href={`/categories/${category.slug}`}
                             className={`${buttonVariants({ variant: "secondary", size: "lg" })} hover:!bg-primary hover:!text-primary-foreground w-full mt-auto`}
                         >
-                            Explore all products
+                            Explore All Products
                         </Link>
                     </div>
                 ))}
@@ -53,7 +52,7 @@ const Subcategories = ({ subcategories }: { subcategories: MenuCategory["subcate
                         alt={subcategory.slug}
                         className="rounded-md"
                         fill
-                        sizes="(max-width: 500px) 120px, (max-width: 768px) 255px, 120px"
+                        sizes="255px"
                         quality={100}
                     />
                 </div>

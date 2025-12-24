@@ -23,7 +23,7 @@ const ProductsBrands = async () => {
                         {brand.thumbnail && (
                             <Image
                                 src={brand.thumbnail}
-                                alt={`${brand.name} image`}
+                                alt={`${brand.name} logo`}
                                 width={118}
                                 height={118}
                                 className="rounded-md mix-blend-multiply"

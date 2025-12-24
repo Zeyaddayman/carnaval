@@ -1,15 +1,7 @@
 import { wishlistItemWithProduct } from "@/types/wishlist";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { AddWishlistItemResponse, RemoveWishlistItemResponse, WishlistError, WishlistResponse } from "../types/wishlist-response";
 
-interface Response {
-    message: string
-    status: number
-}
-
-export interface WishlistErrorResponse {
-    message: string
-    status: number
-}
 
 export const userWishlistApi = createApi({
     reducerPath: 'userWishlistApi',
@@ -19,23 +11,23 @@ export const userWishlistApi = createApi({
     refetchOnMountOrArgChange: true,
 
     endpoints: (builder) => ({
-        getUserWishlist: builder.query<{ items: wishlistItemWithProduct[] }, string>({
+        getUserWishlist: builder.query<WishlistResponse, string>({
             query: () => "user/wishlist",
 
             providesTags: ['user-wishlist']
         }),
 
-        addItemToUserWishlist: builder.mutation<Response, { product: wishlistItemWithProduct["product"], userId: string } >({
+        addItemToUserWishlist: builder.mutation<AddWishlistItemResponse, { product: wishlistItemWithProduct["product"], userId: string } >({
             query: ({ product }) => ({
                 url: "user/wishlist",
                 method: 'POST',
                 body: { productId: product.id }
             }),
 
-            transformErrorResponse: (error: any): WishlistErrorResponse => {
+            transformErrorResponse: (error: any): WishlistError => {
                 return {
                     message: error.data ? error.data.message : 'Something went wrong',
-                    status: error.data ? error.data.status : 500
+                    status: error.data ? error.status : 500
                 }
             },
 
@@ -65,23 +57,23 @@ export const userWishlistApi = createApi({
 
         }),
 
-        removeItemFromUserWishlist: builder.mutation<Response, { productId: string, userId: string } >({
+        removeItemFromUserWishlist: builder.mutation<RemoveWishlistItemResponse, { productId: string, userId: string } >({
             query: ({ productId }) => ({
                 url: "user/wishlist",
                 method: 'DELETE',
                 body: { productId }
             }),
 
-            transformErrorResponse: (error: any): WishlistErrorResponse => {
+            transformErrorResponse: (error: any): WishlistError => {
                 return {
                     message: error.data ? error.data.message : 'Something went wrong',
-                    status: error.data ? error.data.status : 500
+                    status: error.data ? error.status : 500
                 }
             },
 
             async onQueryStarted({ productId, userId }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    userWishlistApi.util.updateQueryData('getUserWishlist', userId, (draft: { items: wishlistItemWithProduct[] }) => {
+                    userWishlistApi.util.updateQueryData('getUserWishlist', userId, (draft: WishlistResponse) => {
 
                         draft.items = draft.items.filter(item => item.product.id !== productId)
                     })

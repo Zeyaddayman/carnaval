@@ -10,7 +10,7 @@ const Hero = () => {
                 href={"/categories"}
                 className={`${buttonVariants({ variant: "primary", size: "lg" })} w-fit mx-auto`}
             >
-                Shop Now
+                SHOP NOW
             </Link>
         </section>
     )

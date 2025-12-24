@@ -8,7 +8,7 @@ const EmptyWishlist = () => {
             <div className="flex flex-col justify-center items-center text-center">
                 <Image
                     src={"/images/wishlist-item.svg"}
-                    alt="empty-wishlist"
+                    alt="Wishlist item"
                     width={300}
                     height={233}
                 />
@@ -18,7 +18,7 @@ const EmptyWishlist = () => {
                     href={"/categories"}
                     className={`${buttonVariants({ variant: "primary", size: "lg" })}`}
                 >
-                    Add Items
+                    ADD ITEMS
                 </Link>
             </div>
         </div>

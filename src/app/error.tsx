@@ -12,7 +12,7 @@ const Error = ({ reset }: { reset: () => void }) => {
                     <div className="flex flex-col justify-center items-center text-center">
                         <Image
                             src={"/images/error.svg"}
-                            alt="not-found"
+                            alt="Error"
                             width={300}
                             height={162}
                         />

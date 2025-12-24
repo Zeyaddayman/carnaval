@@ -1,6 +1,7 @@
 "use client"
 
-import { CartErrorResponse, useRemoveItemFromUserCartMutation } from "@/redux/features/userCartApi"
+import { useRemoveItemFromUserCartMutation } from "@/redux/features/userCartApi"
+import { CartError } from "@/redux/types/cart-response"
 import { useEffect } from "react"
 import toast from "react-hot-toast"
 
@@ -14,7 +15,7 @@ const useRemoveItemFromUserCart = () => {
 
     useEffect(() => {
 
-        const typedRemoveItemError = removeItemError as CartErrorResponse
+        const typedRemoveItemError = removeItemError as CartError
 
         if (isRemovingItemFailed && typedRemoveItemError.message) {
             toast.error(typedRemoveItemError.message)

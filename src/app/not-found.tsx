@@ -10,7 +10,7 @@ const NotFound = () => {
                     <div className="text-center">
                         <Image
                             src={"/images/not-found.svg"}
-                            alt="not-found"
+                            alt="Not found"
                             width={300}
                             height={199}
                         />

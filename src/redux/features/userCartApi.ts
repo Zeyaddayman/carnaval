@@ -1,30 +1,11 @@
 import { CartItemWithProduct, QuantityModifiedItem } from "@/types/cart";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { AddCartItemResponse, CartError, CartResponse, RemoveCartItemResponse } from "../types/cart-response";
 
-interface CartResponse {
-    cart: { items: CartItemWithProduct[] }
-    quantityModifiedItems: { [id: string]: QuantityModifiedItem }
-}
-
-interface AddItemResponse {
-    message: string
-    limit: number
-    modifiedQuantity?: number
-}
-
-interface RemoveItemResponse {
-    message: string
-    status: number
-}
-
-export interface CartErrorResponse {
-    status: number
-    message: string
-}
 
 export const userCartApi = createApi({
     reducerPath: 'userCartApi',
-    baseQuery: fetchBaseQuery({baseUrl: '/api/'}),
+    baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
     tagTypes: ['user-cart'],
 
     refetchOnMountOrArgChange: true,
@@ -36,17 +17,17 @@ export const userCartApi = createApi({
             providesTags: ['user-cart']
         }),
 
-        addItemToUserCart: builder.mutation<AddItemResponse, { product: CartItemWithProduct["product"], quantity: number, userId: string } >({
+        addItemToUserCart: builder.mutation<AddCartItemResponse, { product: CartItemWithProduct["product"], quantity: number, userId: string } >({
             query: ({ product, quantity }) => ({
                 url: "user/cart",
                 method: 'POST',
                 body: { productId: product.id, quantity }
             }),
 
-            transformErrorResponse: (error: any): CartErrorResponse => {
+            transformErrorResponse: (error: any): CartError => {
                 return {
                     message: error.data ? error.data.message : 'Something went wrong',
-                    status: error.data ? error.data.status : 500
+                    status: error.data ? error.status : 500
                 }
             },
 
@@ -83,17 +64,17 @@ export const userCartApi = createApi({
 
         }),
 
-        removeItemFromUserCart: builder.mutation<RemoveItemResponse, { productId: string, userId: string } >({
+        removeItemFromUserCart: builder.mutation<RemoveCartItemResponse, { productId: string, userId: string } >({
             query: ({ productId }) => ({
                 url: "user/cart",
                 method: 'DELETE',
                 body: { productId }
             }),
 
-            transformErrorResponse: (error: any): CartErrorResponse => {
+            transformErrorResponse: (error: any): CartError => {
                 return {
                     message: error.data ? error.data.message : 'Something went wrong',
-                    status: error.data ? error.data.status : 500
+                    status: error.data ? error.status : 500
                 }
             },
 

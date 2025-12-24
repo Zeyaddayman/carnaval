@@ -69,7 +69,7 @@ export const changePasswordAction = async (
             return {
                 status: 400,
                 formData,
-                errors: { currentPassword: "Current password is incorrect" }
+                errors: { currentPassword: "Incorrect current password" }
             }
         }
 
@@ -89,7 +89,7 @@ export const changePasswordAction = async (
     }
     catch {
         return {
-            message: "An unexpected error occurred",
+            message: "Failed to update password",
             status: 500,
             formData
         }

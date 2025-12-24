@@ -22,7 +22,7 @@ const LinksMenu = ({ links }: { links: ReactNode }) => {
             className={`fixed lg:static ${isOpen ? "left-0" : "-left-full"} flex gap-3 flex-col 
                 lg:flex-row top-0 h-screen lg:h-auto 
                 bg-bar text-bar-foreground py-12 px-6 lg:p-0 
-                shadow-sm lg:shadow-none z-30 transition-all`}
+                shadow-sm lg:shadow-none z-30 transition-all ease-in-out`}
             >
             <Button
                 variant={"ghost"}
