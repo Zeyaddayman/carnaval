@@ -39,7 +39,11 @@ const ToggleWishlistItem = ({ session, product }: Props) => {
     }
 
     return (
-        <button onClick={handleToggle} className="group w-12 h-12 bg-white element-center rounded-full cursor-pointer">
+        <button
+            onClick={handleToggle}
+            className="group w-12 h-12 bg-white element-center rounded-full cursor-pointer"
+            aria-label="Add to wishlist"
+        >
             <FaHeart fill="transparent" strokeWidth={40} size={20} className="group-hover:fill-red-500 group-hover:stroke-red-500 transition-colors" />
         </button>
     )
@@ -71,7 +75,11 @@ const LoggedIn = ({ product, userId }: { userId: string, product: CardProduct })
     }
 
     return (
-        <button onClick={handleToggle} className="group w-12 h-12 bg-white element-center rounded-full cursor-pointer">
+        <button
+            onClick={handleToggle}
+            className="group w-12 h-12 bg-white element-center rounded-full cursor-pointer"
+            aria-label={productInWishlist ? "Remove from wishlist" : "Add to wishlist"}
+        >
             <FaHeart fill="transparent" strokeWidth={40} size={20} className={`${productInWishlist ? "fill-red-500 stroke-red-500" : ""} group-hover:fill-red-500 group-hover:stroke-red-500 transition-colors`} />
         </button>
     )

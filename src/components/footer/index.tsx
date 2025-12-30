@@ -11,6 +11,7 @@ const Footer = () => {
                         href={"https://www.facebook.com/carnaval"}
                         target="_blank"
                         className="hover:text-primary p-2 transition"
+                        aria-label="Facebook"
                     >
                         <SlSocialFacebook />
                     </Link>
@@ -18,6 +19,7 @@ const Footer = () => {
                         href={"https://www.instagram.com/carnaval"}
                         target="_blank"
                         className="hover:text-primary p-2 transition"
+                        aria-label="Instagram"
                     >
                         <SlSocialInstagram />
                     </Link>
@@ -25,6 +27,7 @@ const Footer = () => {
                         href={"https://x.com/carnaval"}
                         target="_blank"
                         className="hover:text-primary p-2 transition"
+                        aria-label="Twitter"
                     >
                         <SlSocialTwitter />
                     </Link>
@@ -32,6 +35,7 @@ const Footer = () => {
                         href={"https://www.linkedin.com/in/carnaval"}
                         target="_blank"
                         className="hover:text-primary p-2 transition"
+                        aria-label="LinkedIn"
                     >
                         <SlSocialLinkedin />
                     </Link>

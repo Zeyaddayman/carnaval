@@ -74,6 +74,7 @@ const UpdateCartItem = ({ limit, initialQuantity, updateItem, removeItem }: Prop
                     variant={"destructiveOutline"}
                     className="flex-1"
                     onClick={handleRemoveItem}
+                    aria-label="Remove item from cart"
                 >
                     <FiTrash2 />
                 </Button>

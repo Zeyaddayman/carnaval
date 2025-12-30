@@ -14,6 +14,7 @@ const LinksMenu = ({ links }: { links: ReactNode }) => {
             variant={"ghost"}
             className="block lg:hidden"
             onClick={() => setIsOpen(prev => !prev)}
+            aria-label={"Toggle Menu"}
         >
             <FiMenu size={20} />
         </Button>
@@ -28,6 +29,7 @@ const LinksMenu = ({ links }: { links: ReactNode }) => {
                 variant={"ghost"}
                 onClick={() => setIsOpen(false)}
                 className="self-end mb-10 block lg:hidden"
+                aria-label={"Close Menu"}
             >
                 <FiX size={20} />
             </Button>

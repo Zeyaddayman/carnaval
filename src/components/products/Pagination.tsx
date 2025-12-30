@@ -36,6 +36,7 @@ const Pagination = ({ total, page, limit }: Props) => {
                 className="!px-2 !h-10"
                 onClick={() => changePage(page - 1)}
                 disabled={page === 1}
+                aria-label="Previous Page"
             >
                 <RiArrowLeftSLine size={20} />
             </Button>
@@ -47,6 +48,7 @@ const Pagination = ({ total, page, limit }: Props) => {
                         onClick={() => changePage(paginationPage as number)}
                         className={`${page === paginationPage ? "!bg-primary !text-primary-foreground" : null} !w-8 !h-10`}
                         disabled={paginationPage === ".."}
+                        aria-label={paginationPage === ".." ? "Ellipsis" : `Page ${paginationPage}`}
                     >
                         {paginationPage}
                     </Button>
@@ -57,6 +59,7 @@ const Pagination = ({ total, page, limit }: Props) => {
                 className="!px-2 !h-10"
                 onClick={() => changePage(page + 1)}
                 disabled={page === totalPages}
+                aria-label="Next Page"
             >
                 <RiArrowRightSLine size={20} />
             </Button>

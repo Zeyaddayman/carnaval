@@ -26,7 +26,7 @@ export default function Dialog({ isOpen, close, title, children }: Props) {
                             <DialogTitle as="h3" className="text-xl font-semibold text-foreground">
                                 { title }
                             </DialogTitle>
-                            <Button variant="ghost" onClick={close}>
+                            <Button variant="ghost" onClick={close} aria-label="Close Dialog">
                                 <FiX size={20} />
                             </Button>
                         </div>
