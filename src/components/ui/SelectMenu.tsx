@@ -22,7 +22,7 @@ const SelectMenu = ({ title, options, selected, setSelected }: Props) => {
     const [placement, setPlacement] = useState<'top' | 'bottom'>('bottom')
     const selectRef = useRef<HTMLDivElement>(null)
 
-    const handlePlacement: MouseEventHandler<HTMLDivElement> = (e) => {
+    const handlePlacement: MouseEventHandler<HTMLDivElement> = () => {
         const el = selectRef.current
         if (!el) return
 

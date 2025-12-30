@@ -26,7 +26,7 @@ export const userCartApi = createApi({
 
             transformErrorResponse: (error: any): CartError => {
                 return {
-                    message: error.data ? error.data.message : 'Something went wrong',
+                    message: error.data ? error.data.message : 'Failed to add item to cart',
                     status: error.data ? error.status : 500
                 }
             },
@@ -73,7 +73,7 @@ export const userCartApi = createApi({
 
             transformErrorResponse: (error: any): CartError => {
                 return {
-                    message: error.data ? error.data.message : 'Something went wrong',
+                    message: error.data ? error.data.message : 'Failed to remove item from cart',
                     status: error.data ? error.status : 500
                 }
             },

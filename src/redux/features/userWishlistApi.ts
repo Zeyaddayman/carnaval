@@ -26,7 +26,7 @@ export const userWishlistApi = createApi({
 
             transformErrorResponse: (error: any): WishlistError => {
                 return {
-                    message: error.data ? error.data.message : 'Something went wrong',
+                    message: error.data ? error.data.message : 'Failed to add item to wishlist',
                     status: error.data ? error.status : 500
                 }
             },
@@ -66,7 +66,7 @@ export const userWishlistApi = createApi({
 
             transformErrorResponse: (error: any): WishlistError => {
                 return {
-                    message: error.data ? error.data.message : 'Something went wrong',
+                    message: error.data ? error.data.message : 'Failed to delete item from wishlist',
                     status: error.data ? error.status : 500
                 }
             },

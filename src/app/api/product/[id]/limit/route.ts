@@ -11,7 +11,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     })
 
     if (!product) {
-        return NextResponse.json({ message: 'Product not found' }, { status: 404 })
+        return NextResponse.json({ message: 'Product not found', productLimit: null }, { status: 404 })
     }
 
     const productLimit = getProductLimit(product.stock, product.limit)

@@ -26,7 +26,7 @@ const WishlistAndCart = ({ product, initialLimit }: Props) => {
 
         fetchProductLimit(product.id)
             .then(productLimit => {
-                if (productLimit) setLimit(productLimit)
+                if (productLimit !== null) setLimit(productLimit)
 
                 else setLimit(initialLimit)
             })

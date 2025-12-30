@@ -1,11 +1,18 @@
 export async function fetchProductLimit(productId: string) {
 
-    const res = await fetch(`/api/product/${productId}/limit`)
+    try {
+        const res = await fetch(`/api/product/${productId}/limit`)
 
-    if (res.status === 200) {
+        if (res.status === 200) {
 
-        const { productLimit } = await res.json()
+            const data = await res.json()
 
-        return productLimit as number
+            return data.productLimit as number | null
+        }
     }
+    catch {
+        return null
+    }
+
+    return null
 }

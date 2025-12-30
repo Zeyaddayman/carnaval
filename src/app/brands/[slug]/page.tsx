@@ -104,12 +104,12 @@ const BrandProductsPage = async ({ params, searchParams }: Props) => {
                         key={JSON.stringify(resolvedSearchParams)}
                     >
                         <ProductsList
-                            slug={slug}
                             products={products}
                             total={pagination.total}
                             page={pagination.page}
                             limit={pagination.limit}
                             pageSize={pagination.pageSize}
+                            clearFiltersLink={`/brands/${slug}`}
                         />
                     </Suspense>
                     <Pagination

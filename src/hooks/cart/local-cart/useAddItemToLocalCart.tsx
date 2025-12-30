@@ -29,7 +29,7 @@ const useAddItemToLocalCart = () => {
 
         fetchProductLimit(product.id)
             .then(productLimit => {
-                if (productLimit && productLimit !== limit) {
+                if (productLimit !== null && productLimit !== limit) {
 
                     setFreshLimit(productLimit)
 

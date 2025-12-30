@@ -53,7 +53,6 @@ const Subcategories = ({ subcategories }: { subcategories: MenuCategory["subcate
                         className="rounded-md"
                         fill
                         sizes="255px"
-                        quality={100}
                     />
                 </div>
                 <p className="text-center text-sm mt-3">{subcategory.nameAsSubcategory}</p>

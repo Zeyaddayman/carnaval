@@ -12,7 +12,6 @@ import { getCategoryHierarchy } from "@/server/db/categories"
 import { getProductsByCategory } from "@/server/db/products"
 import { getCategoryProductsMaxPrice, getCategoryProductsMinPrice, getCategoryProductsMinRating } from "@/server/utils/products-statistics"
 import { ProductsSortOptionValue } from "@/types/products"
-import { Metadata } from "next"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2"
@@ -91,7 +90,7 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                 <div className="flex flex-col lg:flex-row mt-3 gap-3">
                     <Subcategories categories={subcategories} />
                     <div className="flex-1">
-                        <div className="flex justify-between items-center flex-wrap mb-3 gap-3">
+                        <div className="flex justify-between flex-col sm:flex-row items-center flex-wrap mb-3 gap-3">
                             <Suspense
                                 fallback={
                                     <Button
@@ -113,12 +112,12 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                             key={JSON.stringify(resolvedSearchParams)}
                         >
                             <ProductsList
-                                slug={slug}
                                 products={products}
                                 total={pagination.total}
                                 page={pagination.page}
                                 limit={pagination.limit}
                                 pageSize={pagination.pageSize}
+                                clearFiltersLink={`/categories/${slug}`}
                             />
                         </Suspense>
                         <Pagination
