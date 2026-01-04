@@ -82,8 +82,8 @@ const WishlistItemCard = ({ product, userId, removeItem, addItemToCart }: Props)
             <div className="flex flex-col gap-2">
                 {inStock ? (
                     cartItem ? (
-                        <div className="bg-success text-success-foreground h-9 px-4 py-2 text-sm flex gap-2 justify-center items-center rounded-md">
-                            <FaCheck /> IN YOUR CART
+                        <div className="bg-success text-success-foreground h-9 px-4 py-2 text-sm flex gap-2 justify-center items-center rounded-md whitespace-nowrap">
+                            <FaCheck className="shrink-0" /> IN YOUR CART
                         </div>
                     ) : (
                         <Button

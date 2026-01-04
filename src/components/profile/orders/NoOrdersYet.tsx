@@ -12,6 +12,7 @@ const NoOrdersYet = () => {
                     className="mx-auto"
                     width={200}
                     height={150}
+                    priority
                 />
                 <h1 className="text-2xl font-bold mt-5">No Orders Placed Yet!</h1>
                 <p className="text-muted-foreground my-3">Let's make your first order.</p>

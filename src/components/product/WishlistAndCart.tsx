@@ -13,10 +13,9 @@ import { fetchProductLimit } from "@/server/utils/product"
 
 interface Props {
     product: ProductDetails
-    initialLimit: number
 }
 
-const WishlistAndCart = ({ product, initialLimit }: Props) => {
+const WishlistAndCart = ({ product }: Props) => {
 
     const { data: session, isFetching } = useGetUserSessionQuery()
 
@@ -26,15 +25,16 @@ const WishlistAndCart = ({ product, initialLimit }: Props) => {
 
         fetchProductLimit(product.id)
             .then(productLimit => {
+
                 if (productLimit !== null) setLimit(productLimit)
 
-                else setLimit(initialLimit)
+                else setLimit(0)
             })
-            .catch(() => setLimit(initialLimit))
+            .catch(() => setLimit(0))
 
     }, [])
 
-    if (isFetching || !limit) return (
+    if (isFetching || limit === null) return (
         <>
         <ProductToggleWishlistItemSkeleton />
         <ProductCartSkeleton />

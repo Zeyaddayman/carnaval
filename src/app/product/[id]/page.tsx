@@ -55,14 +55,14 @@ const productPage = async ({ params }: Props) => {
         <main>
             <div className="container">
                 <CategoriesChain categoryHierarchy={categoryHierarchy} />
-                <div className="w-fit mt-3">
+                <div className="w-fit mt-2">
                     <GoBack />
                 </div>
                 <div className="flex flex-col lg:flex-row gap-5 mt-5">
                     <ProductImagesPreview images={product.images} />
                     <div className="flex-1 space-y-6">
                         <ProductInfo product={product} />
-                        <WishlistAndCart product={product} initialLimit={limit} />
+                        <WishlistAndCart product={product} />
                     </div>
                 </div>
             </div>

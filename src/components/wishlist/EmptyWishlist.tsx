@@ -11,6 +11,7 @@ const EmptyWishlist = () => {
                     alt="Wishlist item"
                     width={300}
                     height={233}
+                    priority
                 />
                 <h1 className="text-3xl font-bold mt-5">Your Wishlist is Empty!</h1>
                 <p className="text-muted-foreground my-3">Start adding items you love by tapping on the heart icon .</p>

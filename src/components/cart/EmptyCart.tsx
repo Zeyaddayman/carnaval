@@ -11,6 +11,7 @@ const EmptyCart = () => {
                     alt="Empty cart"
                     width={300}
                     height={250}
+                    priority
                 />
                 <h1 className="text-3xl font-bold mt-5">Your Cart is Empty!</h1>
                 <p className="text-muted-foreground my-3">Looks like you haven't added anything to your cart yet.</p>

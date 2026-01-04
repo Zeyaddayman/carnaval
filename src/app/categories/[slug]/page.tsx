@@ -90,7 +90,7 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                 <div className="flex flex-col lg:flex-row mt-3 gap-3">
                     <Subcategories categories={subcategories} />
                     <div className="flex-1">
-                        <div className="flex justify-between flex-col sm:flex-row items-center flex-wrap mb-3 gap-3">
+                        <div className="flex justify-between flex-col sm:flex-row sm:items-center flex-wrap mb-3 gap-3">
                             <Suspense
                                 fallback={
                                     <Button

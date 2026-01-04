@@ -82,7 +82,7 @@ const BrandProductsPage = async ({ params, searchParams }: Props) => {
             <div className="container">
                 <BrandProductsHeading name={brandName} slug={slug} />
                 <div className="mt-3">
-                    <div className="flex justify-between items-center flex-wrap mb-3 gap-3">
+                    <div className="flex justify-between flex-col sm:flex-row sm:items-center flex-wrap mb-3 gap-3">
                         <Suspense
                             fallback={
                                 <Button

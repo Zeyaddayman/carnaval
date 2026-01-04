@@ -71,7 +71,9 @@ const RegisterFrom = () => {
                 toast.success(state.message)
 
                 const searchParams = new URLSearchParams(window.location.search)
-                const redirectPath = searchParams.get("redirect") || "/"
+                let redirectPath = searchParams.get("redirect") || "/"
+
+                if (redirectPath.startsWith("/auth")) redirectPath = "/"
 
                 dispatch(userSessionApi.util.invalidateTags(['user-session']))
 

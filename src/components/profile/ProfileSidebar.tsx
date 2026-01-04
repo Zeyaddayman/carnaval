@@ -55,7 +55,7 @@ const ProfileSidebar = ({ session }: Props) => {
             }
             finally {
                 dispatch(userSessionApi.util.invalidateTags(['user-session']))
-                router.refresh()
+                router.replace("/")
             }
         })
     }

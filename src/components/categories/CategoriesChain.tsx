@@ -8,7 +8,7 @@ interface Props {
 
 const CategoriesChain = ({ categoryHierarchy }: Props) => {
     return (
-        <div className="space-x-3 overflow-x-auto whitespace-nowrap">
+        <div className="space-x-3 overflow-x-auto whitespace-nowrap pb-2">
             {categoryHierarchy.map((category, i) => {
 
                 const isFirstCategory = i <= 1

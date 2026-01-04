@@ -12,6 +12,7 @@ const NoProductsFound = ({ clearFiltersLink }: { clearFiltersLink: string }) => 
                     className="mx-auto"
                     width={300}
                     height={293}
+                    priority
                 />
                 <h1 className="text-3xl font-bold mt-5">We Couldn't Find a Match</h1>
                 <p className="text-muted-foreground my-3">Let's clear your filters and start over.</p>

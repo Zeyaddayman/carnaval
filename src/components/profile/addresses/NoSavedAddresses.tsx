@@ -10,6 +10,7 @@ const NoSavedAddresses = () => {
                     className="mx-auto"
                     width={250}
                     height={202}
+                    priority
                 />
                 <h3 className="text-2xl font-bold mt-5">No Saved Addresses Yet!</h3>
                 <p className="text-muted-foreground my-3">Let's add your first address</p>
