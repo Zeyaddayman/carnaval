@@ -47,7 +47,7 @@ Manage delivery addresses, update profile information, change password, and trac
 ### 🌐🛰️ Hybrid Rendering (ISR + Client-Side Fetching)
 **The Challenge:** E-commerce sites need the speed of static pages for better performance and SEO, but "Stock Levels" change every second.
 
-**The Solution:** I implemented a hybrid approach. While product descriptions and images are served via **ISR** for speed, the **Cart component** is dynamic client-side. "which fetches the latest inventory data directly from the database on mount, ensuring users never interact with stale stock information.
+**The Solution:** Implemented a hybrid approach. While product descriptions and images are served via **ISR** for speed, the **Cart component** is dynamic client-side. which fetches the latest inventory data directly from the database on mount, ensuring users never interact with stale stock information.
 
 
 ### 🔗 Seamless Guest-to-User Cart Sync
