@@ -1,60 +1,96 @@
 # 🎭 Carnaval
 
-**Carnaval** is a full-stack, high-performance e-commerce platform built for a seamless shopping experience. It features dynamic product filtering, sophisticated cart management with optimistic updates, and a robust inventory validation system.
+**Carnaval** is a full-stack, high-performance, SEO optimized, fully responsive e-commerce platform built for a seamless shopping experience.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://carnaval-alpha.vercel.app)
 
 ---
 
-## 🚀 Key Features
+## 🚀 Project Features
 
-- **Comprehensive Catalog:** Browse by multiple categories, subcategories, and specific brands.
-- **Advanced Filtering & Sorting:** Filter products by price range, rating, and "On Sale" status. Sort by price, rating, and discount percentage.
-- **Smart Cart System:**
-  - **Hybrid Data Strategy:** Product details are served via ISR for speed, while cart/stock validation remains dynamic (client-side) to ensure 100% stock accuracy.
-  - **Local & User Sync:** Seamlessly merges Local Storage items into the user’s database profile upon login or registration.
-  - **Optimistic Updates:** Immediate UI feedback using RTK Query for a "zero-latency" feel.
-  - **Inventory Guard:** Real-time stock validation that adjusts quantities automatically and provides instant UX feedback.
-- **SEO & Performance:**
-  - **Dynamic Metadata:** Automated SEO optimization for category products, brand products, and product pages.
-  - **ISR (Incremental Static Regeneration):** Product pages are pre-rendered for speed and updated in the background without a full rebuild while utilizing Client-side Hydration to fetch real-time stock levels. This ensures a high-performance experience without sacrificing data accuracy for business-critical inventory.
-- **User Dashboard:** Manage delivery addresses, update profile information, change password, and track order history.
-- **Secure Checkout:** Streamlined leading to order placement.
+### 🔍 Product Discovery & Navigation
+* **📂 Multi-Level Browsing:** Explore products via organized **Categories**, **Sub-categories**, and **Brands**.
+* **⚡ Dynamic Filtering:** Narrow down choices by **Price Range**, **Ratings**, and **On-Sale Status**.
+* **🔃 Smart Sorting:** Arrange products by **Price** (Low ↔ High), **Top Rated**, and **Discount Depth**.
+* **📖 Pagination:** Smooth and efficient browsing through large product catalogs.
+
+### 🛒 Smart Cart System
+* **💾 Hybrid Cart Logic:** Features a **Local Cart** for guests and a **Persistent Database Cart** for logged-in users.
+* **🔗 Seamless Merging:** Automatically transfers items from the local cart to the user's account upon **Login/Register**.
+* **🛡️ Real-time Stock Validation:** Inventory checks that automatically adjust quantities to prevent over-ordering.
+
+### 💖 Wishlist
+Save favorite items to a personal list for future shopping.
+
+### 💳 Checkout
+Clear breakdown of your **Items**, **Subtotal**, **Shipping**, and **Grand Total**, plus easy selection from saved addresses for faster checkout.
+
+### 👤 User Dashboard
+Manage delivery addresses, update profile information, change password, and track order history.
+
+---
 
 ## 🛠️ Tech Stack
 
-- **Framework:** Next.js 15 (App Router)
-- **Language:** TypeScript
-- **State Management:** Redux Toolkit & RTK Query
-- **Styling:** Tailwind CSS & Headless UI
-- **Backend/Database:** Prisma ORM (PostgreSQL)
-- **Validation:** Zod (Schema validation for Forms)
+* **Framework:** Next.js 15
+* **Language:** TypeScript
+* **State Management:** Redux Toolkit & RTK Query
+* **Styling:** Tailwind CSS & Headless UI
+* **Backend/Database:** Prisma ORM (PostgreSQL)
+* **Authentication:** JWT & Bcrypt
+* **Validation:** Zod
 
 ---
 
 ## 🧠 Technical Challenges & Solutions
 
-### 1. Hybrid Rendering (ISR + Client-Side Fetching)
-**The Challenge:** E-commerce sites need the speed of static pages for SEO, but "Stock Levels" change every second. Serving a static "Out of Stock" button results in a poor user experience.
+### 🌐🛰️ Hybrid Rendering (ISR + Client-Side Fetching)
+**The Challenge:** E-commerce sites need the speed of static pages for better performance and SEO, but "Stock Levels" change every second.
 
-**The Solution:** I implemented a hybrid approach. While product descriptions and images are served via **ISR** for speed, the **Cart and Stock components** are dynamic client-side elements. They fetch the latest inventory data directly from the database on mount, ensuring users never interact with stale stock information.
+**The Solution:** I implemented a hybrid approach. While product descriptions and images are served via **ISR** for speed, the **Cart component** is dynamic client-side. "which fetches the latest inventory data directly from the database on mount, ensuring users never interact with stale stock information.
 
 
+### 🔗 Seamless Guest-to-User Cart Sync
+**The Challenge:** Guest users were previously restricted or "blocked" from adding items to their cart without being logged in. This created friction in the user experience.
 
-### 2. The "Zero-Latency" Cart
-**The Challenge:** Eliminating loading spinners during cart interactions while maintaining data integrity between `localStorage` (guests) and `PostgreSQL` (users).
+**The Solution:** Implemented a **Local Cart system** for guest users. This allows users to:
+* **add, delete, and review items** directly in the cart without an account.
+* **Seamless Data Synchronization:** Upon login or registration, the system automatically merges the local guest cart with the user's permanent database cart, ensuring no items are lost.
 
-**The Solution:** I implemented **Optimistic Updates** using RTK Query. The UI reflects changes instantly, while background processes handle database synchronization. I built a custom merge logic to ensure guest items are intelligently combined with user profiles during the auth transition without creating duplicates.
+### ⚡ "Zero-Latency" Cart & Wishlist
+**The Challenge:** Eliminating disruptive loading spinners during high-frequency user actions. The goal was to provide an "instant-feel" UI while ensuring data consistency between the client and the database.
 
-### 3. Intelligent Inventory Management
-**The Challenge:** Preventing "over-selling" while keeping the user informed of stock limitations in real-time.
+**The Solution:** Leveraged **RTK Query Optimistic Updates** to achieve immediate UI feedback.
+* **Instant Interaction:** UI reflects cart and wishlist changes (add/remove/update) immediately before the server response is received.
+* **Background Sync:** Seamlessly handles database synchronization in the background to maintain data integrity.
+* **Graceful Error Handling:** Implemented an automated rollback mechanism with toast notifications if a server action fails.
+* **Smart Reconciliation:** Integrated real-time notifications to inform users if item quantities are automatically adjusted based on live stock changes.
 
-**The Solution:** I integrated real-time inventory checks that validate the cart against the database. If a user requests more than what is available, the system automatically adjusts the cart to the maximum available stock and triggers a **UX notification** to inform the user. I also implemented a checkout guard that disables the purchase flow if an item becomes unavailable.
+### 📦 Intelligent Inventory Management
+**The Challenge:** Preventing "over-selling" by ensuring cart quantities never exceed actual warehouse stock.
+
+**The Solution:** Implemented stock validation system that runs during the cart retrieval process to ensure order fulfillment reliability.
+* **Auto-Adjust:** If stock is low, the cart automatically lowers the item quantity and notifies the user
+via UI message.
+* **Separation:** Out-of-stock items are moved to an "Unavailable" section.
+* **Secure Checkout:** Disables the checkout button until the user removes unavailable items.
 
 ---
 
 ## 🚧 Roadmap (Upcoming Features)
 
-- [ ] **Stripe Integration:** Implementing Stripe Web Elements for secure, real-time payment processing.
-- [ ] **Global Search:** Adding a dedicated search page with predictive text and brand suggestions.
-- [ ] **Admin Dashboard:** A private interface for managing stock levels and viewing sales analytics.
+- [ ] **🔐 Authentication Modal:** Transitioning to a unified Login/Register modal for a smoother user flow.
+- [ ] **🔍 Global Search Bar:** A centralized search system to find products instantly from any page.
+- [ ] **🏷️ Brand Filtering:** Expanding the discovery engine to allow filtering by specific brands.
+- [ ] **💳 Stripe Web Elements:** Implementing Stripe Web Elements for secure, real-time payment processing.
+
+---
+
+## 🧰 Installation & Setup
+
+1. **Clone the repo:** `git clone https://github.com/Zeyaddayman/carnaval.git`
+2. **Install dependencies:** `npm install`
+3. **Env Variables:** Create a `.env` file.
+4. **Generate the Prisma Client:** `npx prisma generate`
+5. **Database Sync:** `npx prisma db push`
+6. **Run Dev Server:** `npm run dev`

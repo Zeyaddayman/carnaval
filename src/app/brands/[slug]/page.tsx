@@ -89,6 +89,7 @@ const BrandProductsPage = async ({ params, searchParams }: Props) => {
                                     variant={"primary"}
                                     size={"lg"}
                                     disabled={true}
+                                    className="w-fit"
                                 >
                                     <HiOutlineAdjustmentsHorizontal size={20} /> Filters
                                 </Button>
