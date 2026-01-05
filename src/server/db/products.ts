@@ -5,8 +5,9 @@ import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/product
 import { subcategorySelector } from "../query-selectors/category"
 import { cardProductSelector } from "../query-selectors/product"
 import { buildProductsFilters, buildProductsSort } from "../utils/products"
+import { cache as reactCache } from "react"
 
-export const getProductsByCategory = async (slug: Category["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
+export const getProductsByCategory = reactCache(async (slug: Category["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
 
     const whereOptions = buildProductsFilters(filters)
 
@@ -49,9 +50,9 @@ export const getProductsByCategory = async (slug: Category["slug"], sortBy: Prod
             limit: PROUDCTS_PAGE_LIMIT,
         }
     }
-}
+})
 
-export const getProductsByBrand = async (slug: Brand["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
+export const getProductsByBrand = reactCache(async (slug: Brand["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
 
     const whereOptions = buildProductsFilters(filters)
 
@@ -92,4 +93,4 @@ export const getProductsByBrand = async (slug: Brand["slug"], sortBy: ProductsSo
             limit: PROUDCTS_PAGE_LIMIT
         }
     }
-}
+})
