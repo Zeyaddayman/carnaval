@@ -127,6 +127,7 @@ model Brand {
 model Order {
   id            String         @id @default(uuid())
   status        OrderStatus    @default(PENDING)
+  paid          Boolean        @default(false)
   itemsCount    Int
   shippingFee   Float
   totalPrice    Float

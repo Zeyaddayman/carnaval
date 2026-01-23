@@ -1,5 +1,5 @@
 import { cache as reactCache } from "react"
-import { db } from "@/utils/prisma"
+import { db } from "@/lib/prisma"
 import { isAuthenticated } from "../utils/auth"
 import { redirect } from "next/navigation"
 

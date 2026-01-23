@@ -1,5 +1,5 @@
 import { CartItemWithProduct, QuantityModifiedItem } from "@/types/cart";
-import { db } from "@/utils/prisma";
+import { db } from "@/lib/prisma";
 import { getProductLimit } from "@/utils/product";
 
 type QuantityModifiedItems = { [id: string]: QuantityModifiedItem }

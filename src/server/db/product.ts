@@ -1,4 +1,4 @@
-import { db } from "@/utils/prisma";
+import { db } from "@/lib/prisma";
 import { Product } from "@/generated/prisma";
 import { unstable_cache as nextCache } from "next/cache"
 import { cache as reactCache } from "react"

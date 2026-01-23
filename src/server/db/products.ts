@@ -1,6 +1,6 @@
 import { PROUDCTS_PAGE_LIMIT } from "@/constants/products"
 import { Brand, Category } from "@/generated/prisma"
-import { db } from "@/utils/prisma"
+import { db } from "@/lib/prisma"
 import { ProductsFiltersOptions, ProductsSortOptionValue } from "@/types/products"
 import { subcategorySelector } from "../query-selectors/category"
 import { cardProductSelector } from "../query-selectors/product"

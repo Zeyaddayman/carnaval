@@ -1,4 +1,4 @@
-import { db } from "@/utils/prisma"
+import { db } from "@/lib/prisma"
 import { isAuthenticated } from "../utils/auth"
 import { redirect } from "next/navigation"
 import { checkoutItemSelector } from "../query-selectors/checkout"

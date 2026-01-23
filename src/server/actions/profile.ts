@@ -2,7 +2,7 @@
 
 import { editProfileSchema } from "@/validations/profile"
 import { isAuthenticated } from "../utils/auth"
-import { db } from "@/utils/prisma"
+import { db } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { ACCESS_TOKEN_EXPIRY, clearToken, generateAccessToken, setToken } from "../utils/tokens"
 import { formatErrors } from "@/utils/formatters"

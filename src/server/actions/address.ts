@@ -1,7 +1,7 @@
 "use server"
 
 import { isAuthenticated } from "../utils/auth"
-import { db } from "@/utils/prisma"
+import { db } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { formatErrors } from "@/utils/formatters"
 import { addNewAddressSchema, editAddressSchema } from "@/validations/address"

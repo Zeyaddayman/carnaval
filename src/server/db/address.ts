@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation"
 import { isAuthenticated } from "../utils/auth"
-import { db } from "@/utils/prisma"
+import { db } from "@/lib/prisma"
 
 export const getUserAddresses = async () => {
 

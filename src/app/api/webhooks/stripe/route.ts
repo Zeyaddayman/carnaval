@@ -1,24 +1,33 @@
-"use server"
+import Stripe from "stripe";
+import { headers } from "next/headers";
+import { NextRequest, NextResponse } from "next/server";
+import { stripe } from "@/lib/stripe";
+import { db } from "@/lib/prisma";
+import { createOrderItems } from "@/utils/checkout";
+import { getCartItemsCount, getCartSubtotal } from "@/utils/cart";
+import { getShipping, getTotal } from "@/utils";
 
-import { db } from "@/lib/prisma"
-import { isAuthenticated } from "../utils/auth"
-import { revalidatePath } from "next/cache"
-import { getCartItemsCount, getCartSubtotal } from "@/utils/cart"
-import { getShipping, getTotal } from "@/utils"
-import { createOrderItems } from "@/utils/checkout"
+export async function POST(req: NextRequest) {
 
-export const checkoutAction = async (addressLabel: string) => {
+    const body = await req.text()
+
+    const sig = (await headers()).get("Stripe-Signature") as string
+
+    let event: Stripe.Event
+
     try {
-        const session = await isAuthenticated()
+        event = stripe.webhooks.constructEvent(
+            body,
+            sig,
+            process.env.STRIPE_SECRET_WEBHOOK_KEY as string
+        )
+    } catch (error) {
+        return new NextResponse('Invalid signature', { status: 400 })
+    }
 
-        if (!session) {
-            return {
-                message: "Unauthorized",
-                status: 401
-            }
-        }
+    if (event.type === "payment_intent.succeeded") {
 
-        const { userId } = session
+        const { userId, addressLabel } = (event.data.object as Stripe.PaymentIntent).metadata
 
         const user = await db.user.findUnique({
             where: { id: userId },
@@ -49,36 +58,20 @@ export const checkoutAction = async (addressLabel: string) => {
         })
 
         if (!user) {
-            return {
-                message: "User not found",
-                status: 404
-            }
+            return new NextResponse('User not found', { status: 404 })
         }
 
         if (!user.cart || user.cart.items.length === 0) {
-            return {
-                message: "No items in cart",
-                status: 400
-            }
+            return new NextResponse('No items in cart', { status: 400 })
         }
 
         const orderAddress = user.addresses[0]
 
         if (!orderAddress) {
-            return {
-                message: "Order address is required",
-                status: 400
-            }
+            return new NextResponse('Address not found', { status: 404 })
         }
 
-        const { orderItems, isValidQuantities } = createOrderItems(user.cart.items, userId)
-
-        if (!isValidQuantities) {
-            return {
-                message: "Unavailable items quantity",
-                status: 400
-            }
-        }
+        const { orderItems } = createOrderItems(user.cart.items, userId)
 
         const itemsCount = getCartItemsCount(user.cart.items)
         const subtotal = getCartSubtotal(user.cart.items)
@@ -100,7 +93,8 @@ export const checkoutAction = async (addressLabel: string) => {
                 itemsCount,
                 subtotal,
                 shippingFee: shipping,
-                totalPrice: total
+                totalPrice: total,
+                paid: true
             }
         })
 
@@ -116,19 +110,7 @@ export const checkoutAction = async (addressLabel: string) => {
                 })
             }))
         }
+    }
 
-        return {
-            message: "Order placed successfully",
-            status: 201
-        }
-    }
-    catch {
-        return {
-            message: "An unexpected error occurred",
-            status: 500
-        }
-    }
-    finally {
-        revalidatePath("/profile")
-    }
+    return new NextResponse(null, { status: 200 })
 }

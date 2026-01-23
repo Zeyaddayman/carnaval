@@ -1,7 +1,7 @@
 "use server"
 
 import { isAuthenticated } from "../utils/auth"
-import { db } from "@/utils/prisma"
+import { db } from "@/lib/prisma"
 import bcrypt from "bcrypt"
 import { formatErrors } from "@/utils/formatters"
 import { changePasswordSchema } from "@/validations/settings"

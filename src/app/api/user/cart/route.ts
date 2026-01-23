@@ -1,4 +1,4 @@
-import { db } from '@/utils/prisma'
+import { db } from '@/lib/prisma'
 import { cartItemSelector } from '@/server/query-selectors/cart'
 import { isAuthenticated } from '@/server/utils/auth'
 import { NextRequest, NextResponse } from 'next/server'

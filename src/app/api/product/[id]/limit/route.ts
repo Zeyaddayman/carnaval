@@ -1,4 +1,4 @@
-import { db } from "@/utils/prisma";
+import { db } from "@/lib/prisma";
 import { getProductLimit } from "@/utils/product";
 import { NextRequest, NextResponse } from "next/server";
 

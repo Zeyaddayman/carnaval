@@ -1,6 +1,6 @@
 "use server"
 
-import { db } from "@/utils/prisma"
+import { db } from "@/lib/prisma"
 import { loginSchema, registerSchema } from "@/validations/auth"
 import bcrypt from "bcrypt"
 import { ACCESS_TOKEN_EXPIRY, clearToken, generateAccessToken, setToken } from "../utils/tokens"

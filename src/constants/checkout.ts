@@ -1,0 +1,1 @@
+export const PAYMENT_METHODS = ['cash', 'card'] as const
