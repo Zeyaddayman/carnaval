@@ -4,6 +4,7 @@ import { generatePagination } from "@/utils"
 import { useRouter, useSearchParams } from "next/navigation"
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri"
 import { Button } from "../ui/Button"
+import { useState } from "react"
 
 interface Props {
     total: number,
@@ -13,6 +14,8 @@ interface Props {
 
 const Pagination = ({ total, page, limit }: Props) => {
 
+    const [pageState, setPageState] = useState(page)
+
     const paginationPages = generatePagination(total, page, limit)
     const totalPages = Math.ceil(total / limit)
 
@@ -21,10 +24,14 @@ const Pagination = ({ total, page, limit }: Props) => {
 
     if (!paginationPages) return
 
-    const changePage = (page: number) => {
+    const changePage = (newPage: number) => {
+
+        // For instant visual update
+        setPageState(newPage)
+
         const params = new URLSearchParams(searchParams.toString())
 
-        params.set("page", String(page))
+        params.set("page", String(newPage))
 
         router.push(`?${params.toString()}`)
     }
@@ -33,7 +40,7 @@ const Pagination = ({ total, page, limit }: Props) => {
         <div className="mt-8 flex gap-2 items-center justify-center rounded-md">
             <Button
                 variant={"basic"}
-                className="!px-2 !h-10"
+                className="px-2 h-10"
                 onClick={() => changePage(page - 1)}
                 disabled={page === 1}
                 aria-label="Previous Page"
@@ -46,7 +53,7 @@ const Pagination = ({ total, page, limit }: Props) => {
                         key={i}
                         variant={"basic"}
                         onClick={() => changePage(paginationPage as number)}
-                        className={`${page === paginationPage ? "!bg-primary !text-primary-foreground" : null} !w-8 !h-10`}
+                        className={`${pageState === paginationPage ? "bg-primary text-primary-foreground" : null} w-8 h-10`}
                         disabled={paginationPage === ".."}
                         aria-label={paginationPage === ".." ? "Ellipsis" : `Page ${paginationPage}`}
                     >
@@ -56,7 +63,7 @@ const Pagination = ({ total, page, limit }: Props) => {
             </div>
             <Button
                 variant={"basic"}
-                className="!px-2 !h-10"
+                className="px-2 h-10"
                 onClick={() => changePage(page + 1)}
                 disabled={page === totalPages}
                 aria-label="Next Page"
