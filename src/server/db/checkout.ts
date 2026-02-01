@@ -14,9 +14,7 @@ export const getCheckoutItems = async () => {
     const { userId } = session
 
     const cart = await db.cart.findUnique({
-        where: {
-            userId
-        },
+        where: { userId },
         select: {
             items: {
                 select: checkoutItemSelector,

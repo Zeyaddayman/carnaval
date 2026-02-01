@@ -6,8 +6,7 @@ interface Props {
     slug: Brand["slug"]
 }
 
-const BrandProductsHeading = async ({ name, slug }: Props) => {
-
+const BrandProductsHeading = ({ name, slug }: Props) => {
     return (
         <section className="border-2 border-border px-3 py-5 space-y-3 rounded-lg">
             <div className="flex flex-wrap items-center gap-2 md:gap-3">

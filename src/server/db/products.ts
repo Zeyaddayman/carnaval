@@ -15,39 +15,43 @@ export const getProductsByCategory = reactCache(async (slug: Category["slug"], s
 
     const skip = (page - 1) * PROUDCTS_PAGE_LIMIT
 
-    const category = await db.category.findUnique({
-        where: { slug },
-        select: {
-            name: true,
-            subcategories: { select: subcategorySelector },
-            products: {
-                where: whereOptions,
-                select: cardProductSelector,
-                orderBy: orderByOptions,
-                take: PROUDCTS_PAGE_LIMIT,
-                skip
-            },
-            _count: {
-                select: {
-                    products: {
-                        where: whereOptions
-                    }
-                }
+    const [category, products, count] = await Promise.all([
+
+        db.category.findUnique({
+            where: { slug },
+            select: { 
+                name: true, 
+                subcategories: { select: subcategorySelector }
             }
-        },
-    })
+        }),
+
+        await db.product.findMany({
+            where: {
+                ...whereOptions,
+                categories: { some: { slug } }
+            },
+            select: cardProductSelector,
+            orderBy: orderByOptions,
+            take: PROUDCTS_PAGE_LIMIT,
+            skip
+        }),
+
+        db.product.count({
+            where: { ...whereOptions, categories: { some: { slug } } }
+        })
+    ])
 
     if (!category) return null
 
     return {
         categoryName: category.name,
-        products: category.products,
+        products,
         subcategories: category.subcategories,
         pagination: {
-            total: category._count.products,
+            total: count,
             page,
-            pageSize: category.products.length,
-            limit: PROUDCTS_PAGE_LIMIT,
+            pageSize: products.length,
+            limit: PROUDCTS_PAGE_LIMIT
         }
     }
 })
@@ -60,36 +64,97 @@ export const getProductsByBrand = reactCache(async (slug: Brand["slug"], sortBy:
 
     const skip = (page - 1) * PROUDCTS_PAGE_LIMIT
 
-    const brand = await db.brand.findUnique({
-        where: { slug },
-        select: {
-            name: true,
-            products: {
-                where: whereOptions,
-                select: cardProductSelector,
-                orderBy: orderByOptions,
-                take: PROUDCTS_PAGE_LIMIT,
-                skip
+    const [brand, products, count] = await Promise.all([
+
+        db.brand.findUnique({
+            where: { slug },
+            select: {  name: true }
+        }),
+
+        await db.product.findMany({
+            where: {
+                ...whereOptions,
+                brand: { slug }
             },
-            _count: {
-                select: {
-                    products: {
-                        where: whereOptions
-                    }
-                }
-            }
-        },
-    })
+            select: cardProductSelector,
+            orderBy: orderByOptions,
+            take: PROUDCTS_PAGE_LIMIT,
+            skip
+        }),
+
+        db.product.count({
+            where: { ...whereOptions, brand: { slug } }
+        })
+    ])
 
     if (!brand) return null
 
     return {
         brandName: brand.name,
-        products: brand.products,
+        products,
         pagination: {
-            total: brand._count.products,
+            total: count,
             page,
-            pageSize: brand.products.length,
+            pageSize: products.length,
+            limit: PROUDCTS_PAGE_LIMIT
+        }
+    }
+})
+
+export const getSearchProducts = reactCache(async (query: string, categorySlug: string, sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
+
+    const searchTearm = query.trim()
+
+    if (!searchTearm) return null
+
+    const whereOptions = buildProductsFilters(filters)
+
+    const orderByOptions = buildProductsSort(sortBy)
+
+    const categoryFilter = categorySlug && categorySlug !== "all" ? { some: { slug: categorySlug } } : undefined
+
+    const skip = (page - 1) * PROUDCTS_PAGE_LIMIT
+
+    const [products, count, category] = await Promise.all([
+
+        await db.product.findMany({
+            where: {
+                OR: [
+                    { title: { contains: searchTearm, mode: "insensitive" } },
+                    { description: { contains: searchTearm, mode: "insensitive" } }
+                ],
+                ...whereOptions,
+                categories: categoryFilter
+            },
+            select: cardProductSelector,
+            orderBy: orderByOptions,
+            take: PROUDCTS_PAGE_LIMIT,
+            skip
+        }),
+
+        db.product.count({
+            where: {
+                OR: [
+                    { title: { contains: searchTearm, mode: "insensitive" } },
+                    { description: { contains: searchTearm, mode: "insensitive" } }
+                ],
+                ...whereOptions,
+                categories: categoryFilter
+            }
+        }),
+
+        categoryFilter ? db.category.findUnique({ where: { slug: categorySlug } }) : null
+    ])
+
+    return {
+        searchTearm,
+        products,
+        categoryName: category?.name,
+        categorySlug: category?.slug,
+        pagination: {
+            total: count,
+            page,
+            pageSize: products.length,
             limit: PROUDCTS_PAGE_LIMIT
         }
     }

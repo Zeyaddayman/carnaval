@@ -23,11 +23,11 @@ const useGetFreshLocalCartItems = (localCartItems: CartItemWithProduct[] ) => {
 
             const quantityModifiedItems: { [id: string]: QuantityModifiedItem } = {}
 
-            let freshCartItems = localCartItems.map<CartItemWithProduct | null>(item => {
+            let freshCartItems = localCartItems.map<CartItemWithProduct>(item => {
 
                 const freshProduct = freshCartProducts.find(product => product?.id === item.product.id)
 
-                if (!freshProduct) return null
+                if (!freshProduct) return item
 
                 const limit = getProductLimit(freshProduct.stock, freshProduct.limit)
 
@@ -49,7 +49,7 @@ const useGetFreshLocalCartItems = (localCartItems: CartItemWithProduct[] ) => {
                     quantity: itemQuantity
                 }
 
-            }).filter(item => item !== null)
+            })
 
             setFreshLocalCartItems(freshCartItems)
 

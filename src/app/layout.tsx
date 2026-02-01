@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/navbar";
@@ -22,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth">
       <body
-        className={`${inter.className} antialiased`}
+        className={`${inter.className} antialiased relative`}
       >
         <StoreProvider>
           <Navbar />

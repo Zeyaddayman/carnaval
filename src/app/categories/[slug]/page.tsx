@@ -4,7 +4,6 @@ import Pagination from "@/components/products/Pagination"
 import ProductsFilters from "@/components/products/ProductsFilters"
 import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
-import ProductsListSkeleton from "@/components/skeletons/ProductsListSkeleton"
 import { Button } from "@/components/ui/Button"
 import { PRODUCTS_FILTERS, PRODUCTS_SORT_OPTIONS } from "@/constants/products"
 import { generateCategoryProductsMetadata } from "@/metadata/products"
@@ -12,6 +11,7 @@ import { getCategoryHierarchy } from "@/server/db/categories"
 import { getProductsByCategory } from "@/server/db/products"
 import { getCategoryProductsMaxPrice, getCategoryProductsMinPrice, getCategoryProductsMinRating } from "@/server/utils/products-statistics"
 import { ProductsSortOptionValue } from "@/types/products"
+import { getValidatedFilters } from "@/utils/filters"
 import { notFound } from "next/navigation"
 import { Suspense } from "react"
 import { HiOutlineAdjustmentsHorizontal } from "react-icons/hi2"
@@ -25,15 +25,6 @@ interface Props {
     searchParams: Promise<SearchParams>
 }
 
-export async function generateMetadata({ params }: Props) {
-
-    const { slug } = await params
-
-    const data = await getProductsByCategory(slug, "alphabetical", PRODUCTS_FILTERS, 1)
-
-    return generateCategoryProductsMetadata(data?.categoryName || slug)
-}
-
 const CategoryProductsPage = async ({ params, searchParams }: Props) => {
 
     const [
@@ -44,11 +35,7 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
 
     const {
         page: pageParam = "1",
-        sort: sortParam,
-        minPrice,
-        maxPrice,
-        minRating,
-        onlyOnSale
+        sort: sortParam
 
     } = resolvedSearchParams
 
@@ -56,15 +43,7 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
 
     const paginationPage = !isNaN(Number(pageParam)) ? Number(pageParam) : 1
 
-    const filters = { ...PRODUCTS_FILTERS }
-
-    if (minRating) filters.minRating = Math.max(1, Number(minRating))
-
-    if (String(onlyOnSale) === "true") filters.onlyOnSale = true
-
-    if (minPrice && !isNaN(Number(minPrice))) filters.minPrice = Math.max(0, Number(minPrice))
-
-    if (maxPrice && !isNaN(Number(maxPrice))) filters.maxPrice = Math.max(0, Number(maxPrice))
+    const filters = getValidatedFilters(resolvedSearchParams)
 
 
     const [data, categoryHierarchy] = await Promise.all([
@@ -108,19 +87,14 @@ const CategoryProductsPage = async ({ params, searchParams }: Props) => {
                             </Suspense>
                             <ProductsSort sort={sort} />
                         </div>
-                        <Suspense
-                            fallback={<ProductsListSkeleton />}
-                            key={JSON.stringify(resolvedSearchParams)}
-                        >
-                            <ProductsList
-                                products={products}
-                                total={pagination.total}
-                                page={pagination.page}
-                                limit={pagination.limit}
-                                pageSize={pagination.pageSize}
-                                clearFiltersLink={`/categories/${slug}`}
-                            />
-                        </Suspense>
+                        <ProductsList
+                            products={products}
+                            total={pagination.total}
+                            page={pagination.page}
+                            limit={pagination.limit}
+                            pageSize={pagination.pageSize}
+                            clearFiltersLink={`/categories/${slug}`}
+                        />
                         <Pagination
                             total={pagination.total}
                             page={pagination.page}
@@ -164,6 +138,36 @@ const Filters = async ({ slug, searchParams }: { slug: string, searchParams: Sea
             productsMinRating={productsMinRating}
         />
     )
+}
+
+export async function generateMetadata({ params, searchParams }: Props) {
+
+    const [
+        { slug },
+        resolvedSearchParams
+
+    ] = await Promise.all([params, searchParams])
+
+    const {
+        page: pageParam = "1",
+        sort: sortParam,
+
+    } = resolvedSearchParams
+
+    const sort: ProductsSortOptionValue = PRODUCTS_SORT_OPTIONS.find(option => option.value === sortParam)?.value || "alphabetical"
+
+    const paginationPage = !isNaN(Number(pageParam)) ? Number(pageParam) : 1
+
+    const filters = getValidatedFilters(resolvedSearchParams)
+
+    const data = await getProductsByCategory(slug, sort, filters, paginationPage)
+
+    if (!data) return {
+        title: 'Not Found',
+        description: 'The page you are looking for does not exist.'
+    }
+
+    return generateCategoryProductsMetadata(data.categoryName)
 }
 
 export default CategoryProductsPage

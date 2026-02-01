@@ -2,17 +2,18 @@ import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
 import { FiHeart, FiShoppingCart } from "react-icons/fi"
 import { MdOutlineKeyboardArrowDown } from "react-icons/md"
-import { getTopLevelCategories } from "@/server/db/categories"
-import { getBrands } from "@/server/db/brands"
 import AuthLinks from "./AuthLinks"
 import CartItemsCount from "./CartItemsCount"
 import WishlistItemsCount from "./WishlistItemsCount"
 import { MenuCategory } from "@/types/categories"
+import { BrandWithProductsCount } from "@/types/brands"
 
-const Links = async () => {
+interface Props {
+    topLevelCategories: MenuCategory[]
+    brands: BrandWithProductsCount[]
+}
 
-    const [topLevelCategories, brands] = await Promise.all([getTopLevelCategories(), getBrands()])
-
+const Links = ({ topLevelCategories, brands }: Props) => {
     return (
         <>
         <div className="relative group">
@@ -20,10 +21,10 @@ const Links = async () => {
                 href={"/categories"}
                 className={`${buttonVariants({ variant: "ghost" })}`}
             >
-                Products Categories <MdOutlineKeyboardArrowDown className="hidden lg:inline" />
+                Categories <MdOutlineKeyboardArrowDown className="hidden lg:inline" />
             </Link>
             <ul
-                className="absolute left-1/2 -translate-x-1/3 top-12 group-hover:top-9 hidden lg:grid grid-cols-4 gap-8 invisible group-hover:lg:visible opacity-0 group-hover:opacity-100 w-[800px] py-10 px-5 bg-card border border-border uppercase text-muted-foreground rounded-md shadow-md z-20 transition-all"
+                className="absolute left-1/2 -translate-x-1/2 top-12 group-hover:top-9 hidden lg:grid grid-cols-4 gap-8 invisible group-hover:lg:visible opacity-0 group-hover:opacity-100 w-200 py-10 px-5 bg-card border border-border uppercase text-muted-foreground rounded-md shadow-md z-20 transition-all"
             >
                 {topLevelCategories.map(category => (
                     <li key={category.slug}>
@@ -43,10 +44,10 @@ const Links = async () => {
                 href={"/brands"}
                 className={`${buttonVariants({ variant: "ghost" })}`}
             >
-                Products Brands <MdOutlineKeyboardArrowDown className="hidden lg:inline" />
+                Brands <MdOutlineKeyboardArrowDown className="hidden lg:inline" />
             </Link>
             <ul
-                className="absolute left-1/2 -translate-x-1/2 top-12 group-hover:top-9 hidden lg:block invisible group-hover:lg:visible max-h-[400px] overflow-y-scroll space-y-3 [&>:not(:last-child)]:border-b [&>:not(:last-child)]:border-border opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto py-5 px-3 bg-card border border-border text-muted-foreground rounded-md shadow-md z-20 transition-all"
+                className="absolute left-1/2 -translate-x-1/2 top-12 group-hover:top-9 hidden lg:block invisible group-hover:lg:visible max-h-100 overflow-y-scroll space-y-3 [&>:not(:last-child)]:border-b [&>:not(:last-child)]:border-border opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto py-5 px-3 bg-card border border-border text-muted-foreground rounded-md shadow-md z-20 transition-all"
             >
                 {brands.map(brand => (
                     <li
@@ -66,14 +67,14 @@ const Links = async () => {
             href={"/cart"}
             className={`${buttonVariants({ variant: "ghost" })} relative`}
         >
-            <span><FiShoppingCart size={20} /></span> Cart
+            <span><FiShoppingCart size={20} /></span>
             <CartItemsCount />
         </Link>
         <Link
             href={"/wishlist"}
             className={`${buttonVariants({ variant: "ghost" })} relative`}
         >
-            <span><FiHeart size={20} /></span> Wishlist
+            <span><FiHeart size={20} /></span>
             <WishlistItemsCount />
         </Link>
         <AuthLinks />

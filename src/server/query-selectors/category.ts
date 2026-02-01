@@ -6,6 +6,7 @@ export const menuCategorySelector = {
     thumbnail: true,
     subcategories: {
         select: {
+            name: true,
             slug: true,
             thumbnail: true,
             nameAsSubcategory: true

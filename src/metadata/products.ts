@@ -21,3 +21,14 @@ export const generateBrandProductsMetadata = (brandName: string): Metadata => {
         }
     }
 }
+
+export const generateSearchProductsMetadata = (searchTearm: string, categoryName?: string): Metadata => {
+    return {
+        title: `${searchTearm} Products`,
+        description: `Discover top-quality products from ${searchTearm} ${categoryName && `in ${categoryName}`} at Carnaval. Shop the latest collections and exclusive deals on ${searchTearm} items.`,
+        openGraph: {
+            title: `${searchTearm} Products | Carnaval`,
+            description: `Discover top-quality products from ${searchTearm} ${categoryName && `in ${categoryName}`} at Carnaval.`
+        }
+    }
+}

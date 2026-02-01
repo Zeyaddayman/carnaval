@@ -13,31 +13,7 @@ interface Props {
     params: Promise<{ id: string }>
 }
 
-export const generateMetadata = async ({ params }: Props) => {
-
-    const { id } = await params
-
-    const data = await getProduct(id)
-
-    if (!data) return {
-        title: 'Product Not Found | Carnaval',
-        description: 'The product you are looking for does not exist or has been removed.'
-    }
-
-    const { product } = data
-
-    return generateProductMetadata(product)
-}
-
 export const revalidate = 3600
-
-export async function generateStaticParams() {
-    const allProducts = await db.product.findMany({
-        select: { id: true }
-    })
-
-    return allProducts.map(({ id }) => ({ id }))
-}
 
 const productPage = async ({ params }: Props) => {
 
@@ -68,6 +44,30 @@ const productPage = async ({ params }: Props) => {
             </div>
         </main>
     )
+}
+
+export const generateMetadata = async ({ params }: Props) => {
+
+    const { id } = await params
+
+    const data = await getProduct(id)
+
+    if (!data) return {
+        title: 'Product Not Found',
+        description: 'The product you are looking for does not exist or has been removed.'
+    }
+
+    const { product } = data
+
+    return generateProductMetadata(product)
+}
+
+export async function generateStaticParams() {
+    const allProducts = await db.product.findMany({
+        select: { id: true }
+    })
+
+    return allProducts.map(({ id }) => ({ id }))
 }
 
 export default productPage

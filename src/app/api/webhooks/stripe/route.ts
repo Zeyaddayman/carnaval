@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
             process.env.STRIPE_SECRET_WEBHOOK_KEY as string
         )
     } catch (error) {
-        return new NextResponse('Invalid signature', { status: 400 })
+        return NextResponse.json('Invalid signature', { status: 400 })
     }
 
     if (event.type === "payment_intent.succeeded") {
@@ -58,17 +58,17 @@ export async function POST(req: NextRequest) {
         })
 
         if (!user) {
-            return new NextResponse('User not found', { status: 404 })
+            return NextResponse.json('User not found', { status: 404 })
         }
 
         if (!user.cart || user.cart.items.length === 0) {
-            return new NextResponse('No items in cart', { status: 400 })
+            return NextResponse.json('No items in cart', { status: 400 })
         }
 
         const orderAddress = user.addresses[0]
 
         if (!orderAddress) {
-            return new NextResponse('Address not found', { status: 404 })
+            return NextResponse.json('Address not found', { status: 404 })
         }
 
         const { orderItems } = createOrderItems(user.cart.items, userId)
@@ -112,5 +112,5 @@ export async function POST(req: NextRequest) {
         }
     }
 
-    return new NextResponse(null, { status: 200 })
+    return NextResponse.json(null, { status: 200 })
 }

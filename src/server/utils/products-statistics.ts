@@ -133,3 +133,97 @@ export const getBrandProductsMinRating = async (slug: Brand["slug"]): Promise<nu
 
     return formatRating(result._min.rating ?? PRODUCTS_MIN_RATING)
 }
+
+// Search
+export const getSearchProductsMinPrice = async (query: string, categorySlug: string, filters: ProductsFiltersOptions): Promise<number> => {
+
+    const searchTearm = query.trim()
+
+    const categoryFilter = categorySlug && categorySlug !== "all" ? { some: { slug: categorySlug } } : undefined
+
+    const whereOptions: Prisma.ProductWhereInput = {
+        categories: categoryFilter,
+        stock: { gt: 0 },
+        rating: {
+            gte: filters.minRating,
+            lte: PRODUCTS_MAX_RATING
+        }
+    }
+
+    if (filters.onlyOnSale) {
+        whereOptions.discountPercentage = { not: null, gt: 0 }
+    }
+
+    const result = await db.product.aggregate({
+        where: {
+            OR: [
+                { title: { contains: searchTearm, mode: "insensitive" } },
+                { description: { contains: searchTearm, mode: "insensitive" } }
+            ],
+            ...whereOptions
+        },
+        _min: {
+            finalPrice: true
+        }
+    })
+
+    return result._min.finalPrice ?? PRODUCTS_FILTERS.minPrice
+}
+
+export const getSearchProductsMaxPrice = async (query: string, categorySlug: string, filters: ProductsFiltersOptions): Promise<number> => {
+
+    const searchTearm = query.trim()
+
+    const categoryFilter = categorySlug && categorySlug !== "all" ? { some: { slug: categorySlug } } : undefined
+
+    const whereOptions: Prisma.ProductWhereInput = {
+        categories: categoryFilter,
+        stock: { gt: 0 },
+        rating: {
+            gte: filters.minRating,
+            lte: PRODUCTS_MAX_RATING
+        }
+    }
+
+    if (filters.onlyOnSale) {
+        whereOptions.discountPercentage = { not: null, gt: 0 }
+    }
+
+    const result = await db.product.aggregate({
+        where: {
+            OR: [
+                { title: { contains: searchTearm, mode: "insensitive" } },
+                { description: { contains: searchTearm, mode: "insensitive" } }
+            ],
+            ...whereOptions
+        },
+        _max: {
+            finalPrice: true
+        }
+    })
+
+    return result._max.finalPrice ?? PRODUCTS_FILTERS.maxPrice
+}
+
+export const getSearchProductsMinRating = async (query: string, categorySlug: string): Promise<number> => {
+
+    const searchTearm = query.trim()
+
+    const categoryFilter = categorySlug && categorySlug !== "all" ? { some: { slug: categorySlug } } : undefined
+
+    const result = await db.product.aggregate({
+        where: { 
+            OR: [
+                { title: { contains: searchTearm, mode: "insensitive" } },
+                { description: { contains: searchTearm, mode: "insensitive" } }
+            ],
+            categories: categoryFilter,
+            stock: { gt: 0 }
+        },
+        _min: {
+            rating: true
+        }
+    })
+
+    return formatRating(result._min.rating ?? PRODUCTS_MIN_RATING)
+}
