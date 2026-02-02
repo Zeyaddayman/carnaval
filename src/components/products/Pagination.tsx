@@ -7,8 +7,8 @@ import { Button } from "../ui/Button"
 import { useState } from "react"
 
 interface Props {
-    total: number,
-    page: number,
+    total: number
+    page: number
     limit: number
 }
 

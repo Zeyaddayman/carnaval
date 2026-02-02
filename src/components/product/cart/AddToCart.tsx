@@ -35,7 +35,7 @@ const AddToCart = ({ limit, addItem }: Props) => {
             <p className='text-muted-foreground'>Quantity</p>
             <Button
                 variant={"basic"}
-                className="!w-10"
+                className="w-10"
                 onClick={handleMinus}
                 disabled={quantity <= 1}
             >
@@ -48,7 +48,7 @@ const AddToCart = ({ limit, addItem }: Props) => {
             />
             <Button
                 variant={"basic"}
-                className="!w-10"
+                className="w-10"
                 onClick={handlePlus}
                 disabled={quantity >= limit}
             >

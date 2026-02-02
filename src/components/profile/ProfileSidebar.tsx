@@ -74,7 +74,7 @@ const ProfileSidebar = ({ session }: Props) => {
                         className={`
                             ${buttonVariants({ variant: "ghost" })}
                             ${isActiveLink(link.href) ? "bg-secondary text-secondary-foreground" : ""}
-                            !justify-start
+                            justify-start!
                         `}
                     >
                         {link.icon} <div className="hidden lg:block">{link.name}</div>
@@ -83,7 +83,7 @@ const ProfileSidebar = ({ session }: Props) => {
             </nav>
             <Button
                 variant={"destructive"}
-                className="!w-full !justify-start"
+                className="w-full justify-start"
                 onClick={logout}
                 disabled={isLoggingOut}
             >

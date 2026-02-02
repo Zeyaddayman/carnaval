@@ -43,7 +43,7 @@ const UpdateCartItem = ({ limit, initialQuantity, updateItem, removeItem }: Prop
             <p className='text-muted-foreground'>Quantity</p>
             <Button
                 variant={"basic"}
-                className="!w-10"
+                className="w-10"
                 onClick={handleMinus}
                 disabled={quantity <= 1}
             >
@@ -56,7 +56,7 @@ const UpdateCartItem = ({ limit, initialQuantity, updateItem, removeItem }: Prop
             />
             <Button
                 variant={"basic"}
-                className="!w-10"
+                className="w-10"
                 onClick={handlePlus}
                 disabled={quantity >= limit}
             >

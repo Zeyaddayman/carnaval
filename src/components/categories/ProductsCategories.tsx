@@ -25,7 +25,7 @@ const ProductsCategories = async () => {
                         <Subcategories subcategories={category.subcategories} />
                         <Link
                             href={`/categories/${category.slug}`}
-                            className={`${buttonVariants({ variant: "secondary", size: "lg" })} hover:!bg-primary hover:!text-primary-foreground w-full mt-auto`}
+                            className={`${buttonVariants({ variant: "secondary", size: "lg" })} hover:bg-primary! hover:text-primary-foreground! w-full mt-auto`}
                         >
                             Explore All Products
                         </Link>
@@ -45,7 +45,7 @@ const Subcategories = ({ subcategories }: { subcategories: MenuCategory["subcate
                 className=" p-3 hover:bg-muted rounded-lg transition-colors"
             >
                 <div
-                    className="relative w-full aspect-[3/2] "
+                    className="relative w-full aspect-3/2"
                 >
                     <Image
                         src={subcategory.thumbnail}

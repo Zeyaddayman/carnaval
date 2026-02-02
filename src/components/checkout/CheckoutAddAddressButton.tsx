@@ -33,7 +33,7 @@ const CheckoutAddAddressButton = ({ userName, userPhone, isFirstAddress }: Props
         ): (
             <Button
                 variant={"outline"}
-                className="!w-full !bg-white !border-border"
+                className="w-full bg-white border-border"
                 onClick={open}
             >
                 <FaPlus /> Add New Address
