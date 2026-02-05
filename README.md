@@ -1,6 +1,6 @@
 # 🎭 Carnaval
 
-**Carnaval** is a full-stack, high-performance, SEO optimized, fully responsive e-commerce platform built for a seamless shopping experience.
+**Carnaval** is a full-stack e-commerce platform built with Next.js, TypeScript, Prisma, and PostgreSQL. It delivers high performance, SEO optimization, and full responsiveness for a seamless shopping experience across all devices.
 
 [![Live Demo](https://img.shields.io/badge/demo-live-brightgreen)](https://carnaval-alpha.vercel.app)
 
@@ -9,6 +9,7 @@
 ## 🚀 Project Features
 
 ### 🔍 Product Discovery & Navigation
+* **🌐 Global Search with Categories:** Search across all products with dropdown category filtering for targeted results.
 * **📂 Multi-Level Browsing:** Explore products via organized **Categories**, **Sub-categories**, and **Brands**.
 * **⚡ Dynamic Filtering:** Narrow down choices by **Price Range**, **Ratings**, and **On-Sale Status**.
 * **🔃 Smart Sorting:** Arrange products by **Price** (Low ↔ High), **Top Rated**, and **Discount Depth**.
@@ -22,8 +23,8 @@
 ### 💖 Wishlist
 Save favorite items to a personal list for future shopping.
 
-### 💳 Checkout
-Clear breakdown of your **Items**, **Subtotal**, **Shipping**, and **Grand Total**, plus easy selection from saved addresses for faster checkout.
+### 💳 Secure Checkout
+Clear breakdown of **Items**, **Subtotal**, **Shipping**, and **Grand Total**, with easy selection from saved addresses for faster checkout. Integrated Stripe Web Elements for secure, real-time payment processing.
 
 ### 👤 User Dashboard
 Manage delivery addresses, update profile information, change password, and track order history.
@@ -74,15 +75,6 @@ Manage delivery addresses, update profile information, change password, and trac
 via UI message.
 * **Separation:** Out-of-stock items are moved to an "Unavailable" section.
 * **Secure Checkout:** Disables the checkout button until the user removes unavailable items.
-
----
-
-## 🚧 Roadmap (Upcoming Features)
-
-- [ ] **🔐 Authentication Modal:** Transitioning to a unified Login/Register modal for a smoother user flow.
-- [ ] **🔍 Global Search Bar:** A centralized search system to find products instantly from any page.
-- [ ] **🏷️ Brand Filtering:** Expanding the discovery engine to allow filtering by specific brands.
-- [ ] **💳 Stripe Web Elements:** Implementing Stripe Web Elements for secure, real-time payment processing.
 
 ---
 
