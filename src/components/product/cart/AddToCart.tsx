@@ -4,13 +4,15 @@ import { useState } from 'react';;
 import { BsCartPlusFill } from 'react-icons/bs';
 import { Button } from '@/components/ui/Button';
 import QuantitySelector from '@/components/ui/QuantitySelector';
+import { Translation } from '@/types/translation';
 
 interface Props {
     limit: number
     addItem: (quantity: number) => void
+    translation: Translation["product"]
 }
 
-const AddToCart = ({ limit, addItem }: Props) => {
+const AddToCart = ({ limit, addItem, translation }: Props) => {
 
     const [quantity, setQuantity] = useState<number>(1)
 
@@ -32,7 +34,7 @@ const AddToCart = ({ limit, addItem }: Props) => {
 
     return (
         <div className='flex flex-wrap gap-2 items-center'>
-            <p className='text-muted-foreground'>Quantity</p>
+            <p className='text-muted-foreground'>{translation.quantity}</p>
             <Button
                 variant={"basic"}
                 className="w-10"
@@ -58,7 +60,7 @@ const AddToCart = ({ limit, addItem }: Props) => {
                 className="flex-1"
                 onClick={handleAddItem}
             >
-                <BsCartPlusFill size={20} /> ADD TO CART
+                <BsCartPlusFill className='rtl-flip' size={20} /> {translation.addToCart}
             </Button>
         </div>
     )

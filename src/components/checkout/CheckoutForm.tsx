@@ -6,10 +6,12 @@ import CheckoutAddAddressButton from "./CheckoutAddAddressButton"
 import { Elements } from "@stripe/react-stripe-js"
 import { stripePromise } from "@/lib/stripeClient"
 import PaymentForm from "./PaymentForm"
-import { PaymentMethod } from "@/types/checkout"
-import { PAYMENT_METHODS } from "@/constants/checkout"
+import { PaymentMethod, PaymentMethodValue } from "@/types/checkout"
+import { getPaymentMethods } from "@/constants/checkout"
 import { BsCash } from "react-icons/bs"
 import { CiCreditCard1 } from "react-icons/ci"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     clientSecret: string
@@ -19,12 +21,16 @@ interface Props {
     formattedTotal: string
     userName: string
     userPhone: string
+    lang: Language
+    translation: Translation
 }
 
-const CheckoutForm = ({ clientSecret, paymentIntentId, addresses, defaultAddress, formattedTotal, userName, userPhone }: Props) => {
+const CheckoutForm = ({ clientSecret, paymentIntentId, addresses, defaultAddress, formattedTotal, userName, userPhone, lang, translation }: Props) => {
+
+    const paymentMethods = getPaymentMethods(translation.checkout.addressAndPayment)
 
     const [selectedAddress, setSelectedAddress] = useState(defaultAddress)
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>('cash')
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethod>(paymentMethods[0])
 
     useEffect(() => {
         setSelectedAddress(defaultAddress)
@@ -34,13 +40,13 @@ const CheckoutForm = ({ clientSecret, paymentIntentId, addresses, defaultAddress
         setSelectedAddress(addresses.find(address => address.label === label)!)
     }
     
-    const selectPaymentMethod = (paymentMethod: PaymentMethod) => {
-        setSelectedPaymentMethod(paymentMethod)
+    const selectPaymentMethod = (paymentMethodValue: PaymentMethodValue) => {
+        setSelectedPaymentMethod(paymentMethods.find(method => method.value === paymentMethodValue)!)
     }
 
     return (
         <div className="my-3">
-            <h5 className="font-semibold text-l mb-2">Delivery Address</h5>
+            <h5 className="font-semibold text-l mb-2">{translation.checkout.addressAndPayment.deliveryAddress}</h5>
             <div className="flex flex-wrap gap-2">
                 {addresses.map(address => (
                     <AddressRadioBox
@@ -56,23 +62,24 @@ const CheckoutForm = ({ clientSecret, paymentIntentId, addresses, defaultAddress
                     isFirstAddress={false}
                     userName={userName}
                     userPhone={userPhone}
+                    translation={translation.profile.addresses}
                 />
             </div>
             <div className="bg-white border-2 border-border rounded-md p-2 mb-5">
                 <div className="flex flex-col gap-1">
-                    <p>Name: {selectedAddress.name}</p>
-                    <p>Phone: {selectedAddress.phone}</p>
+                    <p>{translation.checkout.addressAndPayment.name}: {selectedAddress.name}</p>
+                    <p>{translation.checkout.addressAndPayment.phone}: {selectedAddress.phone}</p>
                     <p>{selectedAddress.country}</p>
                     <p>{selectedAddress.governorate}</p>
                     <p>{selectedAddress.city}</p>
                     <p>{selectedAddress.streetAddress}</p>
                 </div>
             </div>
-            <h5 className="font-semibold text-l mb-2">Payment Method</h5>
+            <h5 className="font-semibold text-l mb-2">{translation.checkout.addressAndPayment.paymentMethod}</h5>
             <div className="flex flex-wrap gap-2 mb-3">
-                {PAYMENT_METHODS.map(paymentMethod => (
+                {paymentMethods.map(paymentMethod => (
                     <PaymentMethodRadioBox
-                        key={paymentMethod}
+                        key={paymentMethod.value}
                         paymentMethod={paymentMethod}
                         selectedPaymentMethod={selectedPaymentMethod}
                         selectPaymentMethod={selectPaymentMethod}
@@ -95,7 +102,9 @@ const CheckoutForm = ({ clientSecret, paymentIntentId, addresses, defaultAddress
                     paymentIntentId={paymentIntentId}
                     selectedAddress={selectedAddress}
                     formattedTotal={formattedTotal}
-                    paymentMethod={selectedPaymentMethod}
+                    paymentMethodValue={selectedPaymentMethod.value}
+                    lang={lang}
+                    translation={translation.checkout.addressAndPayment}
                 />
             </Elements>
         </div>
@@ -124,7 +133,7 @@ const AddressRadioBox = ({
                 onChange={() => selectAddress(label)}
             />
             <label
-                className={`${checked ? "border-primary" : "border-border"} border-2 bg-white p-2 pr-8 peer-focus-visible:ring-3 peer-focus-visible:ring-primary/50 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
+                className={`${checked ? "border-primary" : "border-border"} border-2 bg-white p-2 pe-8 peer-focus-visible:ring-3 peer-focus-visible:ring-primary/50 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
                 htmlFor={label}
             >
                 <span className={`${checked ? "bg-primary" : "bg-muted"} w-4 h-4 rounded`}></span> {label}
@@ -140,30 +149,30 @@ const PaymentMethodRadioBox = ({
 }: {
     paymentMethod: PaymentMethod,
     selectedPaymentMethod: PaymentMethod,
-    selectPaymentMethod: (label: PaymentMethod) => void
+    selectPaymentMethod: (value: PaymentMethodValue) => void
 }) => {
 
-    const checked = selectedPaymentMethod === paymentMethod
+    const checked = selectedPaymentMethod.value === paymentMethod.value
 
     return (
         <div className="flex-1">
             <input
                 type="radio"
                 className="peer sr-only"
-                id={paymentMethod}
+                id={paymentMethod.value}
                 checked={checked}
-                onChange={() => selectPaymentMethod(paymentMethod)}
+                onChange={() => selectPaymentMethod(paymentMethod.value)}
             />
             <label
-                className={`${checked ? "border-primary" : "border-border"} capitalize border-2 bg-white p-2 pr-4 peer-focus-visible:ring-3 peer-focus-visible:ring-primary/50 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
-                htmlFor={paymentMethod}
+                className={`${checked ? "border-primary" : "border-border"} border-2 bg-white p-2 pe-4 peer-focus-visible:ring-3 peer-focus-visible:ring-primary/50 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
+                htmlFor={paymentMethod.value}
             >
-                {paymentMethod === "cash" ? <BsCash size={20} /> : paymentMethod === "card" ? <CiCreditCard1 size={20} /> : null}
+                {paymentMethod.value === "cash" ? <BsCash size={20} /> : paymentMethod.value === "card" ? <CiCreditCard1 size={20} /> : null}
 
-                {paymentMethod}
+                {paymentMethod.label}
 
                 <div className="flex-1">
-                    <div className={`${checked ? "bg-primary" : "bg-muted"} w-4 h-4 rounded-full ml-auto`}></div>
+                    <div className={`${checked ? "bg-primary" : "bg-muted"} w-4 h-4 rounded-full ms-auto`}></div>
                 </div>
             </label>
         </div>

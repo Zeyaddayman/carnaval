@@ -137,7 +137,7 @@ export const getBrandProductsMinRating = async (slug: Brand["slug"]): Promise<nu
 // Search
 export const getSearchProductsMinPrice = async (query: string, categorySlug: string, filters: ProductsFiltersOptions): Promise<number> => {
 
-    const searchTearm = query.trim()
+    const searchTerm = query.trim()
 
     const categoryFilter = categorySlug && categorySlug !== "all" ? { some: { slug: categorySlug } } : undefined
 
@@ -157,8 +157,8 @@ export const getSearchProductsMinPrice = async (query: string, categorySlug: str
     const result = await db.product.aggregate({
         where: {
             OR: [
-                { title: { contains: searchTearm, mode: "insensitive" } },
-                { description: { contains: searchTearm, mode: "insensitive" } }
+                { title: { contains: searchTerm, mode: "insensitive" } },
+                { description: { contains: searchTerm, mode: "insensitive" } }
             ],
             ...whereOptions
         },
@@ -172,7 +172,7 @@ export const getSearchProductsMinPrice = async (query: string, categorySlug: str
 
 export const getSearchProductsMaxPrice = async (query: string, categorySlug: string, filters: ProductsFiltersOptions): Promise<number> => {
 
-    const searchTearm = query.trim()
+    const searchTerm = query.trim()
 
     const categoryFilter = categorySlug && categorySlug !== "all" ? { some: { slug: categorySlug } } : undefined
 
@@ -192,8 +192,8 @@ export const getSearchProductsMaxPrice = async (query: string, categorySlug: str
     const result = await db.product.aggregate({
         where: {
             OR: [
-                { title: { contains: searchTearm, mode: "insensitive" } },
-                { description: { contains: searchTearm, mode: "insensitive" } }
+                { title: { contains: searchTerm, mode: "insensitive" } },
+                { description: { contains: searchTerm, mode: "insensitive" } }
             ],
             ...whereOptions
         },
@@ -207,15 +207,15 @@ export const getSearchProductsMaxPrice = async (query: string, categorySlug: str
 
 export const getSearchProductsMinRating = async (query: string, categorySlug: string): Promise<number> => {
 
-    const searchTearm = query.trim()
+    const searchTerm = query.trim()
 
     const categoryFilter = categorySlug && categorySlug !== "all" ? { some: { slug: categorySlug } } : undefined
 
     const result = await db.product.aggregate({
         where: { 
             OR: [
-                { title: { contains: searchTearm, mode: "insensitive" } },
-                { description: { contains: searchTearm, mode: "insensitive" } }
+                { title: { contains: searchTerm, mode: "insensitive" } },
+                { description: { contains: searchTerm, mode: "insensitive" } }
             ],
             categories: categoryFilter,
             stock: { gt: 0 }

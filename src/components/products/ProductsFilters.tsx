@@ -11,13 +11,18 @@ import { PRODUCTS_FILTERS, PRODUCTS_MAX_RATING } from "@/constants/products"
 import { BiStar } from "react-icons/bi"
 import { CiDiscount1 } from "react-icons/ci"
 import { TbRosetteDiscountCheck } from "react-icons/tb"
+import { Translation } from "@/types/translation"
+import { inject } from "@/utils/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     initialFilters: ProductsFiltersOptions
     productsMinRating: number
+    lang: Language
+    translation: Translation["products"]["filters"]
 }
 
-const ProductsFilters = ({ initialFilters, productsMinRating }: Props) => {
+const ProductsFilters = ({ initialFilters, productsMinRating, lang, translation }: Props) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -85,12 +90,12 @@ const ProductsFilters = ({ initialFilters, productsMinRating }: Props) => {
                 size={"lg"}
                 onClick={open}
             >
-                <HiOutlineAdjustmentsHorizontal size={20} /> Filters
+                <HiOutlineAdjustmentsHorizontal size={20} /> {translation.buttonText}
             </Button>
             <Dialog
                 isOpen={isOpen}
                 close={close}
-                title="Filter Products"
+                title={translation.title}
             >
                 <div className="space-y-4">
                     <PriceRange
@@ -98,15 +103,19 @@ const ProductsFilters = ({ initialFilters, productsMinRating }: Props) => {
                         maxPrice={filters.maxPrice}
                         setMinPrice={setMinPrice}
                         setMaxPrice={setMaxPrice}
+                        translation={translation}
                     />
                     <RatingRange
                         productsMinRating={productsMinRating}
                         minRating={filters.minRating}
                         setMinRating={setMinRating}
+                        lang={lang}
+                        translation={translation}
                     />
                     <OnlyOnSaleToggle
                         onlyOnSale={filters.onlyOnSale}
                         setOnlyOnSale={setOnlyOnSale}
+                        translation={translation}
                     />
                 </div>
                 <div className="flex justify-between items-center mt-5">
@@ -114,10 +123,10 @@ const ProductsFilters = ({ initialFilters, productsMinRating }: Props) => {
                         variant={"cancel"}
                         onClick={clearFilters}
                     >
-                        Clear Filters
+                        {translation.clearFilters}
                     </Button>
                     <Button onClick={applyFilters}>
-                        Apply Filters
+                        {translation.applyFilters}
                     </Button>
                 </div>
             </Dialog>
@@ -129,16 +138,18 @@ const PriceRange = ({
     minPrice,
     maxPrice,
     setMinPrice,
-    setMaxPrice
+    setMaxPrice,
+    translation
 }: {
     minPrice: number,
     maxPrice: number,
     setMinPrice: (minPrice: number) => void,
-    setMaxPrice: (maxPrice: number) => void
+    setMaxPrice: (maxPrice: number) => void,
+    translation: Translation["products"]["filters"]
 }) => {
     return (
         <div>
-            <h4 className="font-semibold mb-2">Price range</h4>
+            <h4 className="font-semibold mb-2">{translation.priceRange}</h4>
             <div className="flex gap-2 justify-between items-center">
                 <Input 
                     name="min-price"
@@ -146,7 +157,7 @@ const PriceRange = ({
                     value={minPrice}
                     onChange={(e) => setMinPrice(Number(e.target.value))}
                 />
-                TO
+                {translation.to}
                 <Input
                     name="max-price"
                     type="number"
@@ -161,20 +172,27 @@ const PriceRange = ({
 const RatingRange = ({
     productsMinRating,
     minRating,
-    setMinRating
+    setMinRating,
+    lang,
+    translation
 }: {
     productsMinRating: number,
     minRating: number,
-    setMinRating: (minRating: number) => void
+    setMinRating: (minRating: number) => void,
+    lang: Language,
+    translation: Translation["products"]["filters"]
 }) => {
 
     const fillPercentage = (minRating - productsMinRating) / (PRODUCTS_MAX_RATING - productsMinRating) * 100
 
     return (
         <div>
-            <h4 className="font-semibold mb-2">Rating range</h4>
+            <h4 className="font-semibold mb-2">{translation.ratingRange}</h4>
             <p className="text-primary mb-2">
-                {minRating === PRODUCTS_MAX_RATING ? `Only ${minRating} stars` : `${minRating} Stars or more`}
+                {minRating === PRODUCTS_MAX_RATING
+                    ? inject(translation.onlyStars, { rating: minRating })
+                    : inject(translation.starsOrMore, { rating: minRating })
+                }
             </p>
             <input
                 className="appearance-none w-full h-3 rounded-md cursor-pointer outline-none focus-visible:ring-3 focus-visible:ring-primary/50"
@@ -186,11 +204,11 @@ const RatingRange = ({
                 value={minRating}
                 onChange={(e) => setMinRating(Number(e.target.value))}
                 style={{
-                    background: `linear-gradient(to right, var(--input) 0%, var(--input) ${fillPercentage}%, var(--primary) ${fillPercentage}%, var(--primary) 100%)`,
+                    background: `linear-gradient(to ${lang === "ar" ? "left" : "right"}, var(--input) 0%, var(--input) ${fillPercentage}%, var(--primary) ${fillPercentage}%, var(--primary) 100%)`,
                 }}
             />
             <div className="flex justify-between items-center">
-                <span className="flex gap-1 items-center">{minRating} <BiStar /></span>
+                <span className="flex gap-1 items-center">{productsMinRating} <BiStar /></span>
                 <span className="flex gap-1 items-center">{PRODUCTS_MAX_RATING} <BiStar /></span>
             </div>
         </div>
@@ -199,14 +217,16 @@ const RatingRange = ({
 
 const OnlyOnSaleToggle = ({ 
     onlyOnSale,
-    setOnlyOnSale
+    setOnlyOnSale,
+    translation
 }: {
     onlyOnSale: boolean,
-    setOnlyOnSale: (onlyOnSale: boolean) => void
+    setOnlyOnSale: (onlyOnSale: boolean) => void,
+    translation: Translation["products"]["filters"]
 }) => {
     return (
         <div>
-            <h4 className="font-semibold mb-2">Show</h4>
+            <h4 className="font-semibold mb-2">{translation.show}</h4>
             <div className="flex gap-2 justify-between items-center">
                 <div className="flex-1">
                     <input
@@ -220,7 +240,7 @@ const OnlyOnSaleToggle = ({
                         htmlFor="all-products"
                         className={`${!onlyOnSale ? "border-primary" : "border-border"} peer-focus-visible:ring-3 peer-focus-visible:ring-primary/50 border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
                     >
-                        <TbRosetteDiscountCheck /> All products
+                        <TbRosetteDiscountCheck /> {translation.allProducts}
                     </label>
                 </div>
                 <div className="flex-1">
@@ -235,7 +255,7 @@ const OnlyOnSaleToggle = ({
                         htmlFor="only-on-sale"
                         className={`${onlyOnSale ? "border-primary" : "border-border"} peer-focus-visible:ring-3 peer-focus-visible:ring-primary/50 border-2 bg-input p-2 cursor-pointer w-full rounded-md flex items-center gap-2 transition`}
                     >
-                        <CiDiscount1 /> On sale only
+                        <CiDiscount1 /> {translation.onSaleOnly}
                     </label>
                 </div>
             </div>

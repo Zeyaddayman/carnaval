@@ -15,8 +15,15 @@ import useGetFreshLocalCartItems from "@/hooks/cart/local-cart/useGetFreshLocalC
 import { getProductLimit } from "@/utils/product"
 import CartHasUnavailableItemsMsg from "./CartHasUnavailableItemsMsg"
 import CartHasModifiedQuantityItemsMsg from "./CartHasModifiedQuantityItemsMsg"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
-const LocalCart = () => {
+interface Props {
+    lang: Language
+    translation: Translation
+}
+
+const LocalCart = ({ lang, translation }: Props) => {
 
     const [isMounted, setIsMounted] = useState(false)
 
@@ -39,7 +46,7 @@ const LocalCart = () => {
 
     if (!isMounted) return <CartSkeleton />
 
-    if (localCart.items.length === 0) return <EmptyCart />
+    if (localCart.items.length === 0) return <EmptyCart lang={lang} translation={translation.cart.emptyCart} />
 
     const removeItem = (productId: string) => {
         dispatch(removeItemFromLocalCart(productId))
@@ -50,7 +57,7 @@ const LocalCart = () => {
             <div className="space-y-2">
                 <p>You must be logged in</p>
                 <Link
-                    href={`/auth/login?redirect=/cart`}
+                    href={`/${lang}/auth/login?redirect=/${lang}/cart`}
                     className={buttonVariants({ variant: "secondary", size: "sm" })}
                     onClick={() => toast.dismissAll()}
                 >
@@ -69,9 +76,9 @@ const LocalCart = () => {
     return (
         <div className="flex flex-col lg:flex-row gap-5">
             <div className="flex-1">
-                {hasUnavailableItems && <CartHasUnavailableItemsMsg />}
+                {hasUnavailableItems && <CartHasUnavailableItemsMsg translation={translation.cart.warnings.unAvailableItems} />}
 
-                {hasModifiedQuantityItems && <CartHasModifiedQuantityItemsMsg />}
+                {hasModifiedQuantityItems && <CartHasModifiedQuantityItemsMsg translation={translation.cart.warnings.modifiedQuantityItems} />}
 
                 <div className="space-y-3">
                     {availableItems.toReversed().map(item => (
@@ -82,13 +89,14 @@ const LocalCart = () => {
                             removeItem={removeItem}
                             moveItemToWishlist={moveItemToWishlist}
                             quantityModified={quantityModifiedItems[item.id]}
+                            translation={translation}
                         />
                     ))}
                 </div>
                 {hasUnavailableItems && (
                     <div className="mt-10">
                         <h5 className="flex items-center gap-2 text-destructive font-semibold text-xl mb-4">
-                            Unavailable Items <div className="flex-1 h-[2px] bg-destructive"></div>
+                            {translation.global.outOfStock} <div className="flex-1 h-0.5 bg-destructive"></div>
                         </h5>
                         <div className="space-y-3">
                             {unAvailableItems.map(item => (
@@ -97,6 +105,7 @@ const LocalCart = () => {
                                     item={item}
                                     removeItem={removeItem}
                                     moveItemToWishlist={moveItemToWishlist}
+                                    translation={translation}
                                 />
                             ))}
                         </div>
@@ -106,6 +115,8 @@ const LocalCart = () => {
             <CartOrderSummary
                 cartItems={availableItems}
                 hasUnavailableItems={hasUnavailableItems}
+                lang={lang}
+                translation={translation.cart}
             />
         </div>
     )

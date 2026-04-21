@@ -3,13 +3,17 @@ import RatingStars from "../ui/RatingStars"
 import Link from "next/link"
 import { formatPrice, formatRating } from "@/utils/formatters"
 import { productHasDiscount } from "@/utils/product"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     product: CartItemWithProduct["product"]
     quantity: number
+    lang: Language
+    translation: Translation["cart"]["items"]
 }
 
-const CartItemInfo = ({ product, quantity }: Props) => {
+const CartItemInfo = ({ product, quantity, lang, translation }: Props) => {
 
     const hasDiscount = productHasDiscount(product.discountPercentage)
 
@@ -30,14 +34,14 @@ const CartItemInfo = ({ product, quantity }: Props) => {
                 </div>
                 <Link
                     className="underline text-sm"
-                    href={`/product/${product.id}`}
+                    href={`/${lang}/product/${product.id}`}
                 >
-                    View product
+                    {translation.viewProduct}
                 </Link>
             </div>
             <div className="flex flex-col justify-center">
                 <p className="text-2xl font-semibold text-foreground mb-2">{formattedTotalPrice}</p>
-                <p>{quantity} x {formattedFinalPrice}</p>
+                <p>{quantity} &times; {formattedFinalPrice}</p>
                 {hasDiscount && (
                     <div className="flex gap-2 items-center">
                         <p className="text-muted-foreground line-through text-sm">{formattedProductPrice}</p>

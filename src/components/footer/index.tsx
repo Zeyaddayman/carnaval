@@ -1,11 +1,12 @@
+import { Translation } from "@/types/translation"
 import Link from "next/link"
 import { SlSocialFacebook, SlSocialInstagram, SlSocialLinkedin, SlSocialTwitter } from "react-icons/sl"
 
-const Footer = () => {
+const Footer = ({ translation }: { translation: Translation["footer"] }) => {
     return (
         <footer className="bg-bar">
             <div className="element-center py-16 flex-col gap-3 border-y border-border">
-                <p className="font-semibold">Connect With Us</p>
+                <p className="font-semibold">{translation.connectWithUs}</p>
                 <div className="flex gap-1">
                     <Link
                         href={"https://www.facebook.com/carnaval"}
@@ -42,13 +43,13 @@ const Footer = () => {
                 </div>
             </div>
             <p className="text-center p-4">
-                © 2025 Carnaval. All rights reserved. Made by {" "}
+                {translation.copyRight} {" "}
                 <Link
                     href={"https://github.com/Zeyaddayman"}
                     target="_blank"
                     className="text-primary font-semibold"
                 >
-                    Zeyad Ayman
+                    {translation.developer}
                 </Link>
             </p>
         </footer>

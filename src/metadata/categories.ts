@@ -1,15 +1,21 @@
 import { getTopLevelCategories } from "@/server/db/categories";
+import { Language } from "@/types/i18n";
+import getTranslation, { inject } from "@/utils/translation";
 import { Metadata } from "next";
 
-const topLevelCategories = await getTopLevelCategories()
-const topLevelCategoriesNames = topLevelCategories.map(category => category.name).join(", ")
+export const getCategoriesMetadata = async (lang: Language): Promise<Metadata> => {
 
-export const categoriesMetadata: Metadata = {
-    title: 'Shop by Category',
-    description: `Explore all categories and subcategories at Carnaval. Browse ${topLevelCategoriesNames}, and more. Find what you love!`,
-    keywords: ['categories', 'subcategories', 'shop by category', 'product categories', 'online shopping'].concat(topLevelCategoriesNames.split(", ")),
-    openGraph: {
-        title: 'Shop by Category | Carnaval',
-        description: `Explore all categories and subcategories at Carnaval. Browse ${topLevelCategoriesNames}, and more. Find what you love!`
+    const [{ metadata }, topLevelCategories] = await Promise.all([getTranslation(lang), getTopLevelCategories()])
+    
+    const topLevelCategoriesNames = topLevelCategories.map(category => category.name).join(", ")
+
+    return {
+        ...metadata.categories,
+        description: inject(metadata.categories.description, { topLevelCategoriesNames }),
+        keywords: metadata.categories.keywords.concat(topLevelCategoriesNames.split(", ")),
+        openGraph: {
+            ...metadata.categories.openGraph,
+            description: inject(metadata.categories.description, { topLevelCategoriesNames })
+        }
     }
 }

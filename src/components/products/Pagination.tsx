@@ -40,7 +40,7 @@ const Pagination = ({ total, page, limit }: Props) => {
         <div className="mt-8 flex gap-2 items-center justify-center rounded-md">
             <Button
                 variant={"basic"}
-                className="px-2 h-10"
+                className="px-2 h-10 rtl-flip"
                 onClick={() => changePage(page - 1)}
                 disabled={page === 1}
                 aria-label="Previous Page"
@@ -63,7 +63,7 @@ const Pagination = ({ total, page, limit }: Props) => {
             </div>
             <Button
                 variant={"basic"}
-                className="px-2 h-10"
+                className="px-2 h-10 rtl-flip"
                 onClick={() => changePage(page + 1)}
                 disabled={page === totalPages}
                 aria-label="Next Page"

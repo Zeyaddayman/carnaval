@@ -5,14 +5,16 @@ import Dialog from "@/components/ui/Dialog"
 import { useState } from "react"
 import { FaPlus } from "react-icons/fa"
 import AddNewAddressForm from "./AddNewAddressForm"
+import { Translation } from "@/types/translation"
 
 interface Props {
-    userName: string,
-    userPhone: string,
+    userName: string
+    userPhone: string
     isFirstAddress: boolean
+    translation: Translation["profile"]["addresses"]
 }
 
-const AddNewAddressButton = ({ userName, userPhone, isFirstAddress }: Props) => {
+const AddNewAddressButton = ({ userName, userPhone, isFirstAddress, translation }: Props) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -26,18 +28,19 @@ const AddNewAddressButton = ({ userName, userPhone, isFirstAddress }: Props) => 
                 size={isFirstAddress ? "lg" : "default"}
                 onClick={open}
             >
-                <FaPlus /> {isFirstAddress ? "ADD YOUR ADDRESS" : "Add New Address"}
+                <FaPlus /> {isFirstAddress ? translation.addYourAddressCaps : translation.addNewAddress}
             </Button>
             <Dialog
                 isOpen={isOpen}
                 close={close}
-                title={isFirstAddress ? "Add Your Address" : "Add New Address"}
+                title={isFirstAddress ? translation.addYourAddress : translation.addNewAddress}
             >
                 <AddNewAddressForm
                     userName={userName}
                     userPhone={userPhone}
                     isFirstAddress={isFirstAddress}
                     close={close}
+                    translation={translation}
                 />
             </Dialog>
         </div>

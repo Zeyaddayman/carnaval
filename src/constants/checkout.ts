@@ -1,1 +1,8 @@
-export const PAYMENT_METHODS = ['cash', 'card'] as const
+import { Translation } from "@/types/translation"
+
+export const getPaymentMethods = (translation: Translation["checkout"]["addressAndPayment"]) => {
+    return [
+        { label: translation.cash, value: "cash" },
+        { label: translation.card, value: "card" }
+    ] as const
+}

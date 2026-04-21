@@ -2,14 +2,16 @@
 
 import { Button } from "@/components/ui/Button"
 import { deleteAddressAction } from "@/server/actions/address"
+import { Translation } from "@/types/translation"
 import { useTransition } from "react"
 import toast from "react-hot-toast"
 
 interface Props {
     addressId: string
+    translation: Translation["profile"]["addresses"]["addressCard"]
 }
 
-const DeleteAddressButton = ({ addressId }: Props) => {
+const DeleteAddressButton = ({ addressId, translation }: Props) => {
 
     const [isDeleting, startDeleting] = useTransition()
 
@@ -33,9 +35,9 @@ const DeleteAddressButton = ({ addressId }: Props) => {
             variant={"destructiveOutline"}
             onClick={deleteAddress}
             disabled={isDeleting}
-            className="max-w-[77px]"
+            className="max-w-20"
         >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting ? translation.deleting : translation.delete}
         </Button>
     )
 }

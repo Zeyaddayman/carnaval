@@ -8,13 +8,17 @@ import UpdateCartItem from "./UpdateCartItem"
 import { InYourCart } from "./InYourCart"
 import { useEffect, useState } from "react"
 import useAddItemToLocalCart from "@/hooks/cart/local-cart/useAddItemToLocalCart"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     product: ProductDetails
     initialLimit: number
+    lang: Language
+    translation: Translation["product"]
 }
 
-const ProductLocalCart = ({ product, initialLimit }: Props) => {
+const ProductLocalCart = ({ product, initialLimit, lang, translation }: Props) => {
 
     const [isMounted, setIsMounted] = useState(false)
 
@@ -53,18 +57,22 @@ const ProductLocalCart = ({ product, initialLimit }: Props) => {
             <div className="space-y-6">
                 <InYourCart
                     quantity={existingProduct.quantity}
+                    lang={lang}
+                    translation={translation}
                 />
                 <UpdateCartItem
                     limit={limit}
                     initialQuantity={existingProduct.quantity}
                     updateItem={addItem}
                     removeItem={removeItem}
+                    translation={translation}
                 />
             </div>
         ): (
             <AddToCart
                 limit={limit}
                 addItem={addItem}
+                translation={translation}
             />
         )}
         </>

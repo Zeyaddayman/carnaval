@@ -6,8 +6,14 @@ import { formatPrice, formatRating } from "@/utils/formatters"
 import { isAuthenticated } from "@/server/utils/auth"
 import ToggleWishlistItem from "../ui/ToggleWishlistItem"
 import { productHasDiscount } from "@/utils/product"
+import { Language } from "@/types/i18n"
 
-const ProductCard = async ({ product }: { product: CardProduct }) => {
+interface Props {
+    product: CardProduct
+    lang: Language
+}
+
+const ProductCard = async ({ product, lang }: Props) => {
 
     const session = await isAuthenticated()
 
@@ -20,11 +26,11 @@ const ProductCard = async ({ product }: { product: CardProduct }) => {
 
     return (
         <div className="relative bg-card border border-border rounded-lg">
-            <span className="absolute top-2 right-2 z-10">
-                <ToggleWishlistItem session={session} product={product} />
+            <span className="absolute top-2 start-2 z-10">
+                <ToggleWishlistItem session={session} product={product} lang={lang} />
             </span>
             <Link
-                href={`/product/${product.id}`}
+                href={`/${lang}/product/${product.id}`}
                 className="p-3 h-full flex flex-col"
             >
                 <div

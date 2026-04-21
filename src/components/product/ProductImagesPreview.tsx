@@ -33,18 +33,18 @@ const ProductImagesPreview = ({ images }: Props) => {
                     />
                 ))}
                 <button
-                    className={`${selectedImageIndex === 0 ? "hidden": ""} absolute top-1/2 left-0 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
+                    className={`${selectedImageIndex === 0 ? "hidden": ""} absolute top-1/2 start-0 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
                     onClick={() => handleChangeImage(selectedImageIndex - 1)}
                     aria-label="Previous Image"
                 >
-                    <MdKeyboardArrowLeft size={20} />
+                    <MdKeyboardArrowLeft className="rtl-flip" size={20} />
                 </button>
                 <button
-                    className={`${selectedImageIndex === images.length - 1 ? "hidden": ""} absolute top-1/2 right-0 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
+                    className={`${selectedImageIndex === images.length - 1 ? "hidden": ""} absolute top-1/2 end-0 -translate-y-1/2 p-3 rounded-full bg-white cursor-pointer`}
                     onClick={() => handleChangeImage(selectedImageIndex + 1)}
                     aria-label="Next Image"
                 >
-                    <MdKeyboardArrowRight size={20} />
+                    <MdKeyboardArrowRight className="rtl-flip" size={20} />
                 </button>
             </div>
             {images.length > 1 && (

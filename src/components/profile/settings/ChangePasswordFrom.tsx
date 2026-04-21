@@ -3,30 +3,10 @@
 import { Button } from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
 import { changePasswordAction, ChangePasswordState } from "@/server/actions/settings"
+import { Translation } from "@/types/translation"
 import { useActionState, useEffect } from "react"
 import toast from "react-hot-toast"
 
-
-const changePasswordFields = [
-    {
-        label: "Current password",
-        name: "currentPassword",
-        type: "password",
-        placeholder: "Enter your current password"
-    },
-    {
-        label: "New password",
-        name: "newPassword",
-        type: "password",
-        placeholder: "Enter your new password"
-    },
-    {
-        label: "Confirm new password",
-        name: "confirmNewPassword",
-        type: "password",
-        placeholder: "Re-enter your new password"
-    }
-]
 
 const initialState: ChangePasswordState = {
     message: "",
@@ -35,9 +15,30 @@ const initialState: ChangePasswordState = {
     formData: undefined
 }
 
-const ChangePasswordFrom =  () => {
+const ChangePasswordFrom =  ({ translation }: { translation: Translation["profile"]["settings"]["passwordAndSecurity"]["form"] }) => {
 
     const [state, action, isPending] = useActionState(changePasswordAction, initialState)
+
+    const changePasswordFields = [
+        {
+            label: translation.currentPassword.label,
+            name: "currentPassword",
+            type: "password",
+            placeholder: translation.currentPassword.placeholder
+        },
+        {
+            label: translation.newPassword.label,
+            name: "newPassword",
+            type: "password",
+            placeholder: translation.newPassword.placeholder
+        },
+        {
+            label: translation.confirmNewPassword.label,
+            name: "confirmNewPassword",
+            type: "password",
+            placeholder: translation.confirmNewPassword.placeholder
+        }
+    ]
 
     useEffect(() => {
         if (state.status && state.message) {
@@ -78,7 +79,7 @@ const ChangePasswordFrom =  () => {
                 disabled={isPending}
                 className="mt-6 w-fit"
             >
-                Update Password
+                {isPending ? translation.updating : translation.updatePassword}
             </Button>
         </form>
     )

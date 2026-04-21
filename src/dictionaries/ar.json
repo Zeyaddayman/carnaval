@@ -1,0 +1,446 @@
+{
+    "logo": "كرنفال",
+    "navbar": {
+        "links": {
+            "categories": "الفئات",
+            "brands": "العلامات التجارية",
+            "login": "تسجيل الدخول",
+            "register": "تسجيل"
+        },
+        "searchBar": {
+            "searchInput": {
+                "label": "البحث عن المنتجات",
+                "placeholder": "ابحث عن المنتجات..."
+            },
+            "searchButton": {
+                "label": "بحث"
+            }
+        }
+    },
+    "home": {
+        "hero": {
+            "heading": "اكتشف أسلوبك في كرنفال",
+            "description": "استكشف عالماً من الأزياء، الإلكترونيات، المستلزمات المنزلية، والمزيد. اعثر على كل ما تحتاجه بكل سهولة وثقة",
+            "shopNow": "تسوق الآن"
+        },
+        "exploreCollections": {
+            "title": "استكشف مجموعاتنا",
+            "subTitle": "اكتشف شيئاً جديداً كل يوم"
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "تسجيل الدخول",
+            "subTitle": "مرحباً بعودتك. سجل دخولك لإتمام عملية الشراء وتتبع طلباتك",
+            "email": {
+                "label": "البريد الإلكتروني",
+                "placeholder": "أدخل بريدك الإلكتروني" 
+            },
+            "password": {
+                "label": "كلمة المرور",
+                "placeholder": "أدخل كلمة المرور"
+            },
+            "submit": "تسجيل الدخول",
+            "submiting": "جاري التسجيل ...",
+            "authPrompt": {
+                "message": "جديد في كرنفال؟ ",
+                "signUpLinkText": "سجل الآن"
+            }
+        },
+        "register": {
+            "title": "إنشاء حساب",
+            "subTitle": "أنشئ حسابك في كرنفال لتتبع طلباتك والحصول على عروض حصريّة",
+            "name": {
+                "label": "الاسم الكامل",
+                "placeholder": "أدخل اسمك الكامل"
+            },
+            "phone": {
+                "label": "رقم الهاتف",
+                "placeholder": "أدخل رقم هاتفك"
+            },
+            "email": {
+                "label": "البريد الإلكتروني",
+                "placeholder": "أدخل بريدك الإلكتروني"
+            },
+            "password": {
+                "label": "كلمة المرور",
+                "placeholder": "أدخل كلمة المرور"
+            },
+            "confirmPassword": {
+                "label": "تأكيد كلمة المرور",
+                "placeholder": "أعد إدخال كلمة المرور"
+            },
+            "submit": "إنشاء حساب",
+            "submiting": "جاري الإنشاء...",
+            "authPrompt": {
+                "message": "لديك حساب بالفعل؟ ",
+                "signUpLinkText": "تسجيل الدخول"
+            }
+        }
+    },
+    "categories": {
+        "title": "جميع فئات المنتجات",
+        "subTitle": "تصفح مجموعتنا الواسعة من المنتجات حسب الفئة.",
+        "exploreAll": "استكشف جميع المنتجات"
+    },
+    "brands": {
+        "title": "استكشف علاماتنا التجارية",
+        "subTitle": "اكتشف المنتجات من علاماتك التجارية المفضلة.",
+        "products": "منتج"
+    },
+    "cart": {
+        "title": "سلة التسوق",
+        "items": {
+            "moveToWishlist": "نقل إلى المفضلة",
+            "viewProduct": "عرض المنتج"
+        },
+        "summary": {
+            "title": "ملخص الطلب",
+            "freeShippingOver": "شحن مجاني للطلبات أكثر من ",
+            "items": "المنتجات",
+            "subtotal": "المجموع",
+            "shipping": "الشحن",
+            "freeText": "مجاني",
+            "total": "الإجمالي",
+            "checkout": "إتمام الطلب"
+        },
+        "emptyCart": {
+            "title": "سلتك فارغة!",
+            "subTitle": "يبدو أنك لم تضف أي منتجات إلى سلتك حتى الآن.",
+            "addItems": "تسوق الآن"
+        },
+        "warnings": {
+            "unAvailableItems": {
+                "title": "منتجات غير متوفرة",
+                "description": "بعض المنتجات نفدت من المخزون، يرجى تعديل السلة للمتابعة إلى إتمام الطلب."
+            },
+            "modifiedQuantityItems": {
+                "title": "لقد قمنا بتحديث سلتك",
+                "description": "تم تعديل كميات بعض المنتجات نظراً لمحدودية المخزون المتوفر."
+            },
+            "resloveBeforeCheckout": "يرجى معالجة حالة المنتجات غير المتوفرة قبل إتمام الطلب.",
+            "unAvailableItemsText": "منتجات غير متوفرة",
+            "quantityAdjustedFromTo": "تم تعديل الكمية من {{oldQuantity}} ← {{newQuantity}} نظراً لمحدودية المخزون"
+        }
+    },
+    "wishlist": {
+        "title": "المفضلة",
+        "itemsSaved": "{{count}} منتجات محفوظة",
+        "emptyWishlist": {
+            "title": "قائمة المفضلة فارغة!",
+            "subTitle": "ابدأ بإضافة المنتجات التي تحبها من خلال النقر على أيقونة القلب.",
+            "addItems": "تسوق الآن"
+        }
+    },
+    "profile": {
+        "greeting": "مرحباً، {{name}}",
+        "links": {
+            "accountOverview": "نظرة عامة على الحساب",
+            "orders": "طلباتي",
+            "addresses": "العناوين",
+            "settings": "الإعدادات"
+        },
+        "logout": "تسجيل الخروج",
+        "loggingOut": "جاري تسجيل الخروج...",
+        "accountOverview": {
+            "title": "نظرة عامة على الحساب",
+            "personalInformation": {
+                "title": "المعلومات الشخصية",
+                "name": "الاسم",
+                "email": "البريد الإلكتروني",
+                "phone": "رقم الهاتف",
+                "editProfile": "تعديل الملف الشخصي"
+            },
+            "ordersSummary": {
+                "title": "ملخص الطلبات",
+                "totalOrders": "إجمالي الطلبات",
+                "lastOrderDate": "تاريخ آخر طلب",
+                "pendingOrders": "طلبات قيد التنفيذ",
+                "viewOrders": "عرض الطلبات"
+            },
+            "shippingAddress": {
+                "title": "عنوان الشحن",
+                "name": "الاسم",
+                "phone": "رقم الهاتف",
+                "manageAddresses": "إدارة العناوين"
+            }
+        },
+        "orders": {
+            "title": "سجل الطلبات",
+            "show": "عرض",
+            "table": {
+                "id": "رقم",
+                "date": "التاريخ",
+                "items": "المنتجات",
+                "status": "الحالة",
+                "details": "التفاصيل",
+                "view": "عرض"
+            },
+            "statusFilter": {
+                "all": "الكل",
+                "pending": "قيد التنفيذ",
+                "completed": "مكتمل",
+                "cancelled": "ملغي"
+            },
+            "noOrdersYet": {
+                "title": "لم تقم بإجراء أي طلبات حتى الآن!",
+                "subTitle": "لنقم بإتمام طلبك الأول الآن.",
+                "viewCart": "عرض العربة"
+            }
+        },
+        "orderDetails": {
+            "title": "تفاصيل الطلب",
+            "summary": {
+                "title": "ملخص الطلب",
+                "id": "رقم الطلب",
+                "date": "تاريخ الطلب",
+                "orderStatus": {
+                    "pending": "قيد التنفيذ",
+                    "completed": "مكتمل",
+                    "cancelled": "ملغي"
+                },
+                "items": "المنتجات",
+                "subtotal": "المجموع",
+                "shipping": "الشحن",
+                "freeText": "مجاني",
+                "total": "الإجمالي"
+            },
+            "address": {
+                "title": "عنوان الشحن",
+                "name": "الاسم",
+                "phone": "رقم الهاتف"
+            },
+            "items": {
+                "title": "المنتجات في هذا الطلب"
+            }
+        },
+        "settings": {
+            "title": "إعدادات الحساب",
+            "personalInformation": {
+                "title": "المعلومات الشخصية",
+                "form": {
+                    "email": {
+                        "label": "البريد الإلكتروني"
+                    },
+                    "name": {
+                        "label": "الاسم الكامل",
+                        "placeholder": "أدخل اسمك الكامل"
+                    },
+                    "phone": {
+                        "label": "رقم الهاتف",
+                        "placeholder": "أدخل رقم هاتفك"
+                    },
+                    "saveChanges": "حفظ التغييرات",
+                    "saving": "جاري الحفظ..."
+                }
+            },
+            "passwordAndSecurity": {
+                "title": "كلمة المرور والأمان",
+                "form": {
+                    "currentPassword": {
+                        "label": "كلمة المرور الحالية",
+                        "placeholder": "أدخل كلمة المرور الحالية"
+                    },
+                    "newPassword": {
+                        "label": "كلمة المرور الجديدة",
+                        "placeholder": "أدخل كلمة المرور الجديدة"
+                    },
+                    "confirmNewPassword": {
+                        "label": "تأكيد كلمة المرور الجديدة",
+                        "placeholder": "أعد إدخال كلمة المرور الجديدة"
+                    },
+                    "updatePassword": "تحديث كلمة المرور",
+                    "updating": "جاري التحديث..."
+                }
+            }
+        },
+        "addresses": {
+            "title": "إدارة العناوين",
+            "addNewAddress": "إضافة عنوان جديد",
+            "addYourAddressCaps": "أضف عنوانك",
+            "addYourAddress": "إضافة عنوانك",
+            "addressCard": {
+                "name": "الاسم",
+                "phone": "الهاتف",
+                "default": "افتراضي",
+                "edit": "تعديل",
+                "delete": "حذف",
+                "deleting": "جاري الحذف...",
+                "setAsDefault": "تعيين كافتراضي",
+                "setting": "جاري التعيين..."
+            },
+            "editAddress": "تعديل العنوان",
+            "addressForm": {
+                "addressLabel": {
+                    "label": "مسمى العنوان",
+                    "placeholder": "مثال: المنزل، العمل، إلخ."
+                },
+                "name": {
+                    "label": "الاسم الكامل",
+                    "placeholder": "أدخل اسمك الكامل"
+                },
+                "phone": {
+                    "label": "رقم الهاتف",
+                    "placeholder": "أدخل رقم هاتفك"
+                },
+                "country": {
+                    "label": "الدولة",
+                    "placeholder": "أدخل الدولة"
+                },
+                "governorate": {
+                    "label": "المحافظة",
+                    "placeholder": "أدخل المحافظة"
+                },
+                "city": {
+                    "label": "المدينة",
+                    "placeholder": "أدخل المدينة"
+                },
+                "streetAddress": {
+                    "label": "عنوان الشارع",
+                    "placeholder": "أدخل عنوان الشارع"
+                },
+                "setAsDefaultAddress": "تعيين كعنوان افتراضي",
+                "addAddress": "إضافة العنوان",
+                "adding": "جاري الإضافة...",
+                "saveChanges": "حفظ التغييرات",
+                "saving": "جاري الحفظ...",
+                "cancel": "إلغاء"
+            },
+            "noSavedAddresses": {
+                "title": "لا توجد عناوين محفوظة حتى الآن!",
+                "subTitle": "لنقم بإضافة عنوانك الأول"
+            }
+        }
+    },
+    "products": {
+        "showingProducts": "عرض {{first}}-{{last}} من أصل {{total}} منتج",
+        "sortOptions": {
+            "title": "ترتيب حسب",
+            "alphabetical": "أبجدياً",
+            "priceAsc": "السعر: من الأقل إلى الأعلى",
+            "priceDesc": "السعر: من الأعلى إلى الأقل",
+            "topRated": "الأعلى تقييماً",
+            "topDiscount": "أكبر خصم"
+        },
+        "filters": {
+            "buttonText": "تصفية",
+            "title": "تصفية المنتجات",
+            "priceRange": "نطاق السعر",
+            "to": "إلى",
+            "ratingRange": "نطاق التقييم",
+            "onlyStars": "{{rating}} نجوم فقط",
+            "starsOrMore": "{{rating}} نجوم أو أكثر",
+            "show": "عرض",
+            "allProducts": "جميع المنتجات",
+            "onSaleOnly": "العروض فقط",
+            "clearFilters": "مسح الفلاتر",
+            "applyFilters": "تطبيق الفلاتر"
+        },
+        "noProductsFound": {
+            "title": "عذراً، لم نجد أي نتائج!",
+            "subTitle": "جرب مسح الفلاتر والبدء من جديد.",
+            "clearFilters": "مسح الفلاتر",
+            "returnToCategories": "العودة للفئات"
+        },
+        "categories": {
+            "subcategories": "الفئات الفرعية"
+        },
+        "search": {
+            "resultsFor": "نتائج البحث عن ",
+            "in": "في "
+        }
+    },
+    "product": {
+        "back": "رجوع",
+        "quantity": "الكمية",
+        "addToCart": "أضف إلى العربة",
+        "viewCart": "عرض العربة",
+        "inYourCart": "في عربتك ({{count}})",
+        "update": "تحديث"
+    },
+    "checkout": {
+        "title": "إتمام الشراء",
+        "summary": {
+            "title": "ملخص الطلب",
+            "items": "المنتجات",
+            "subtotal": "المجموع",
+            "shipping": "الشحن",
+            "total": "الإجمالي",
+            "freeText": "مجاني"
+        },
+        "cart": {
+            "title": "عربتك",
+            "editCart": "تعديل العربة"
+        },
+        "addressAndPayment": {
+            "title": "العنوان والدفع",
+            "manageAddresses": "إدارة العناوين",
+            "deliveryAddress": "عنوان التوصيل",
+            "name": "الاسم",
+            "phone": "الهاتف",
+            "paymentMethod": "طريقة الدفع",
+            "cash": "نقداً",
+            "card": "بطاقة",
+            "placeOrder": "تأكيد الطلب ({{total}})",
+            "placingOrder": "جاري إتمام الطلب..."
+        },
+        "success": {
+            "title": "تم تقديم طلبك بنجاح!",
+            "subTitle": "شكراً لتسوقك معنا. طلبك في طريقه إليك الآن.",
+            "viewOrders": "عرض الطلبات"
+        }
+    },
+    "footer": {
+        "connectWithUs": "تواصل معنا",
+        "copyRight": "© 2025 كرنفال. جميع الحقوق محفوظة. تم التطوير بواسطة",
+        "developer": "زياد أيمن"
+    },
+    "orderStatus": {
+        "pending": "قيد التنفيذ",
+        "completed": "مكتمل",
+        "cancelled": "ملغي"
+    },
+    "global": {
+        "addToCart": "أضف إلى السلة",
+        "remove": "حذف",
+        "update": "تحديث",
+        "inStock": "متوفر",
+        "outOfStock": "نفدت الكمية",
+        "inYourCart": "في السلة"
+    },
+    "metadata": {
+        "main": {
+            "title": {
+                "default": "كرنفال | وجهتك الأولى للتسوق عبر الإنترنت",
+                "template": "%s | كرنفال"
+            },
+            "description": "اكتشف آلاف المنتجات في فئات متنوعة لدى كرنفال - وجهتك المتكاملة لكل ما تحتاجه في عالم التسوق الإلكتروني بأفضل الأسعار!",
+            "category": "تجارة إلكترونية",
+            "keywords": ["تجارة إلكترونية", "متجر", "شراء", "متجر إلكتروني", "منتجات", "تسوق", "عروض", "خصومات", "أزياء", "إلكترونيات", "أدوات منزلية", "كرنفال"],
+            "openGraph": {
+                "title": "كرنفال | وجهتك الأولى للتسوق عبر الإنترنت",
+                "description": "اكتشف آلاف المنتجات في فئات متنوعة لدى كرنفال - وجهتك المتكاملة لكل ما تحتاجه في عالم التسوق الإلكتروني!",
+                "siteName": "كرنفال",
+                "type": "website"
+            }
+        },
+        "categories": {
+            "title": "تسوق حسب الفئة",
+            "description": "استكشف جميع الفئات والأقسام الفرعية في كرنفال. تصفح {{topLevelCategoriesNames}} والمزيد. اعثر على كل ما تحب في مكان واحد!",
+            "keywords": ["أقسام", "فئات فرعية", "تسوق حسب الفئة", "تصنيفات المنتجات", "تسوق أونلاين"],
+            "openGraph": {
+                "title": "تسوق حسب الفئة | كرنفال",
+                "description": "استكشف جميع الفئات والأقسام الفرعية في كرنفال. تصفح {{topLevelCategoriesNames}} والمزيد. اعثر على كل ما تحب!"
+            }
+        },
+        "brands": {
+            "title": "تسوق حسب الماركة",
+            "description": "اكتشف منتجات من أشهر العلامات التجارية العالمية لدى كرنفال. تصفح {{topBrandsNames}} والمزيد. اعثر على منتجات ماركاتك المفضلة!",
+            "keywords": ["ماركات", "تسوق حسب الماركة", "أفضل الماركات", "علامات تجارية مشهورة", "تسوق ماركات"],
+            "openGraph": {
+                "title": "تسوق حسب الماركة | كرنفال",
+                "description": "اكتشف منتجات من أشهر العلامات التجارية العالمية لدى كرنفال. تصفح {{topBrandsNames}} والمزيد. اعثر على منتجات ماركاتك المفضلة!"
+            }
+        }
+    }
+}

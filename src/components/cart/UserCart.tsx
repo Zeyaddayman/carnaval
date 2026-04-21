@@ -12,12 +12,16 @@ import useAddItemToUserWishlist from "@/hooks/wishlist/useAddItemToUserWishlist"
 import { getProductLimit } from "@/utils/product"
 import CartHasUnavailableItemsMsg from "./CartHasUnavailableItemsMsg"
 import CartHasModifiedQuantityItemsMsg from "./CartHasModifiedQuantityItemsMsg"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     userId: string
+    lang: Language
+    translation: Translation
 }
 
-const UserCart = ({ userId }: Props) => {
+const UserCart = ({ userId, lang, translation }: Props) => {
 
     const { data, isLoading } = useGetUserCartQuery(userId)
 
@@ -28,7 +32,7 @@ const UserCart = ({ userId }: Props) => {
 
     if (isLoading) return <CartSkeleton />
 
-    if (!data || data.cart.items.length === 0) return <EmptyCart />
+    if (!data || data.cart.items.length === 0) return <EmptyCart translation={translation.cart.emptyCart} />
 
 
     const removeItem = (productId: string) => {
@@ -59,9 +63,9 @@ const UserCart = ({ userId }: Props) => {
     return (
         <div className="flex flex-col lg:flex-row gap-5">
             <div className="flex-1">
-                {hasUnavailableItems && <CartHasUnavailableItemsMsg />}
+                {hasUnavailableItems && <CartHasUnavailableItemsMsg translation={translation.cart.warnings.unAvailableItems} />}
 
-                {hasModifiedQuantityItems && <CartHasModifiedQuantityItemsMsg />}
+                {hasModifiedQuantityItems && <CartHasModifiedQuantityItemsMsg translation={translation.cart.warnings.modifiedQuantityItems} />}
 
                 <div className="space-y-3">
                     {availableItems.map(item => (
@@ -73,13 +77,14 @@ const UserCart = ({ userId }: Props) => {
                             removeItem={removeItem}
                             moveItemToWishlist={moveItemToWishlist}
                             quantityModified={data.quantityModifiedItems[item.id]}
+                            translation={translation}
                         />
                     ))}
                 </div>
                 {hasUnavailableItems && (
                     <div className="mt-10">
                         <h5 className="flex items-center gap-2 text-destructive font-semibold text-xl mb-4">
-                            Unavailable Items <div className="flex-1 h-[2px] bg-destructive"></div>
+                            {translation.cart.warnings.unAvailableItemsText} <div className="flex-1 h-0.5 bg-destructive"></div>
                         </h5>
                         <div className="space-y-3">
                             {unAvailableItems.map(item => (
@@ -88,6 +93,7 @@ const UserCart = ({ userId }: Props) => {
                                     item={item}
                                     removeItem={removeItem}
                                     moveItemToWishlist={moveItemToWishlist}
+                                    translation={translation}
                                 />
                             ))}
                         </div>
@@ -97,6 +103,8 @@ const UserCart = ({ userId }: Props) => {
             <CartOrderSummary
                 cartItems={availableItems}
                 hasUnavailableItems={hasUnavailableItems}
+                lang={lang}
+                translation={translation.cart}
             />
         </div>
     )

@@ -5,14 +5,16 @@ import { Button } from "../ui/Button"
 import { useState } from "react"
 import Dialog from "../ui/Dialog"
 import AddNewAddressForm from "../profile/addresses/AddNewAddressForm"
+import { Translation } from "@/types/translation"
 
 interface Props {
     userName: string
     userPhone: string
     isFirstAddress: boolean
+    translation: Translation["profile"]["addresses"]
 }
 
-const CheckoutAddAddressButton = ({ userName, userPhone, isFirstAddress }: Props) => {
+const CheckoutAddAddressButton = ({ userName, userPhone, isFirstAddress, translation }: Props) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -28,7 +30,7 @@ const CheckoutAddAddressButton = ({ userName, userPhone, isFirstAddress }: Props
                 className="w-full"
                 onClick={open}
             >
-                <FaPlus /> ADD YOUR ADDRESS
+                <FaPlus /> {translation.addYourAddressCaps}
             </Button>
         ): (
             <Button
@@ -36,13 +38,13 @@ const CheckoutAddAddressButton = ({ userName, userPhone, isFirstAddress }: Props
                 className="w-full bg-white border-border"
                 onClick={open}
             >
-                <FaPlus /> Add New Address
+                <FaPlus /> {translation.addNewAddress}
             </Button>
         )}
         <Dialog
             isOpen={isOpen}
             close={close}
-            title={isFirstAddress ? "Add Your Address": "Add New Address"}
+            title={isFirstAddress ? translation.addYourAddress: translation.addNewAddress}
         >
             <AddNewAddressForm
                 userName={userName}
@@ -50,6 +52,7 @@ const CheckoutAddAddressButton = ({ userName, userPhone, isFirstAddress }: Props
                 isFirstAddress={isFirstAddress}
                 close={close}
                 setDefaultChecked={true}
+                translation={translation}
             />
         </Dialog>
         </>

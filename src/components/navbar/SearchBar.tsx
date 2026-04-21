@@ -7,9 +7,13 @@ import SearchSelectCategory from "./SearchSelectCategory"
 import { ChangeEvent, FocusEvent, KeyboardEvent, useEffect, useRef, useState, FormEvent } from "react"
 import { MenuCategory } from "@/types/categories"
 import { useRouter } from "next/navigation"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     topLevelCategories: MenuCategory[]
+    lang: Language
+    translation: Translation["navbar"]["searchBar"]
 }
 
 let timeout: NodeJS.Timeout
@@ -23,7 +27,7 @@ const debouncedSearch = (cb: () => void, time: number) => {
     }, time)
 }
 
-const SearchBar = ({ topLevelCategories }: Props) => {
+const SearchBar = ({ topLevelCategories, lang, translation }: Props) => {
 
     const [isOpen, setIsOpen] = useState(false)
     const inputRef = useRef<HTMLInputElement | null>(null)
@@ -65,7 +69,7 @@ const SearchBar = ({ topLevelCategories }: Props) => {
 
         setSearchQuery(trimedQuery)
         setTempSearchQuery("")
-        router.push(`/search?query=${trimedQuery}&category=${categorySlug}`)
+        router.push(`/${lang}/search?query=${trimedQuery}&category=${categorySlug}`)
 
         setSearchInputFocused(false)
         setActiveSuggestionIndex(0)
@@ -180,6 +184,7 @@ const SearchBar = ({ topLevelCategories }: Props) => {
                     selectedCategory={selectedCategory}
                     setSelectedCategory={setCategory}
                     searchInputFocused={searchInputFocused}
+                    lang={lang}
                 />
                 <Input
                     ref={inputRef}
@@ -187,8 +192,9 @@ const SearchBar = ({ topLevelCategories }: Props) => {
                     name="search"
                     type="search"
                     autoComplete="off"
-                    placeholder="Search for products..."
-                    className="w-full pr-10 h-10 border-l-0 rounded-l-none"
+                    placeholder={translation.searchInput.placeholder}
+                    className="w-full pe-10 h-10 border-s-0 rounded-s-none"
+                    aria-label={translation.searchInput.label}
                     value={tempSearchQuery ? tempSearchQuery : searchQuery}
                     onChange={handleOnChange}
                     onFocus={() => setSearchInputFocused(true)}
@@ -197,8 +203,8 @@ const SearchBar = ({ topLevelCategories }: Props) => {
                 />
                 <Button
                     variant={"primary"}
-                    className="absolute right-0 top-1/2 -translate-y-1/2 w-9 h-10 rounded-none rounded-r-md"
-                    aria-label="Search"
+                    className="absolute end-0 top-1/2 -translate-y-1/2 w-9 h-10 rounded-none rounded-e-md"
+                    aria-label={translation.searchButton.label}
                     type="submit"
                 >
                     <CiSearch size={20} stroke="white" strokeWidth={2} />
@@ -217,7 +223,7 @@ const SearchBar = ({ topLevelCategories }: Props) => {
                             className={`${activeSuggestionIndex === index + 1 ? "bg-gray-100" : ""} relative flex items-center gap-3 p-2 hover:bg-gray-100 cursor-pointer`}
                             onClick={() => handleOnSuggestClick(index)}
                         >
-                            <span className={`${activeSuggestionIndex === index + 1 ? "bg-primary" : "bg-transparent"} absolute h-full w-1.5 left-0 top-0`}></span>
+                            <span className={`${activeSuggestionIndex === index + 1 ? "bg-primary" : "bg-transparent"} absolute h-full w-1.5 start-0 top-0`}></span>
                             <CiSearch size={17} />
                             {suggest}
                         </li>

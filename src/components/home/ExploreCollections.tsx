@@ -2,26 +2,33 @@ import Image from "next/image"
 import Link from "next/link"
 import Heading from "../ui/Heading"
 import { getTopLevelCategories } from "@/server/db/categories"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
-const ExploreCollections = async () => {
+interface Props {
+    lang: Language
+    translation: Translation["home"]["exploreCollections"]
+}
+
+const ExploreCollections = async ({ lang, translation }: Props) => {
 
     const topLevelCategories = await getTopLevelCategories()
 
     return (
         <section className="section-gap">
             <Heading
-                title="Explore Our Collections"
-                subTitle="Discover something new every day."
+                title={translation.title}
+                subTitle={translation.subTitle}
             />
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                 {topLevelCategories.map((category) => (
                     <Link
                         key={category.slug}
-                        href={`/categories/${category.slug}`}
+                        href={`/${lang}/categories/${category.slug}`}
                         className="flex flex-col border-border shadow-sm hover:shadow-lg hover:-translate-y-1 rounded-b-xl transition-all"
                     >
                         <div
-                            className="relative w-full aspect-[3/2] "
+                            className="relative w-full aspect-3/2"
                         >
                             <Image
                                 src={category.thumbnail}

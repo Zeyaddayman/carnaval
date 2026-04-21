@@ -3,30 +3,17 @@
 import { Button } from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
 import { editProfileAction, EditProfileState } from "@/server/actions/profile"
+import { Translation } from "@/types/translation"
 import { useActionState, useEffect } from "react"
 import toast from "react-hot-toast"
-
-const editProfileFields = [
-    {
-        label: "Full name",
-        name: "name",
-        type: "text",
-        placeholder: "Enter your full name"
-    },
-    {
-        label: "Phone number",
-        name: "phone",
-        type: "text",
-        placeholder: "Enter your phone number"
-    }
-]
 
 interface Props {
     profile: {
         name: string
         email: string
         phone: string
-    }
+    },
+    translation: Translation["profile"]["settings"]["personalInformation"]["form"]
 }
 
 const initialState: EditProfileState = {
@@ -36,7 +23,7 @@ const initialState: EditProfileState = {
     formData: undefined
 }
 
-const EditProfileForm =  ({ profile }: Props) => {
+const EditProfileForm =  ({ profile, translation }: Props) => {
 
     const { name, email, phone } = profile
 
@@ -49,6 +36,21 @@ const EditProfileForm =  ({ profile }: Props) => {
     initialState.formData = formData
 
     const [state, action, isPending] = useActionState(editProfileAction, initialState)
+
+    const editProfileFields = [
+        {
+            label: translation.name.label,
+            name: "name",
+            type: "text",
+            placeholder: translation.name.placeholder
+        },
+        {
+            label: translation.phone.label,
+            name: "phone",
+            type: "text",
+            placeholder: translation.phone.placeholder
+        }
+    ]
 
     useEffect(() => {
 
@@ -68,7 +70,7 @@ const EditProfileForm =  ({ profile }: Props) => {
                     className="text-xs text-muted-foreground mb-2"
                     htmlFor={"email"}
                 >
-                    Email
+                    {translation.email.label}
                 </label>
                 <Input
                     type="email"
@@ -105,7 +107,7 @@ const EditProfileForm =  ({ profile }: Props) => {
                 disabled={isPending}
                 className="mt-6 w-fit"
             >
-                Save Changes
+                {isPending ? translation.saving : translation.saveChanges}
             </Button>
         </form>
     )

@@ -103,9 +103,9 @@ export const getProductsByBrand = reactCache(async (slug: Brand["slug"], sortBy:
 
 export const getSearchProducts = reactCache(async (query: string, categorySlug: string, sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
 
-    const searchTearm = query.trim()
+    const searchTerm = query.trim()
 
-    if (!searchTearm) return null
+    if (!searchTerm) return null
 
     const whereOptions = buildProductsFilters(filters)
 
@@ -120,8 +120,8 @@ export const getSearchProducts = reactCache(async (query: string, categorySlug: 
         await db.product.findMany({
             where: {
                 OR: [
-                    { title: { contains: searchTearm, mode: "insensitive" } },
-                    { description: { contains: searchTearm, mode: "insensitive" } }
+                    { title: { contains: searchTerm, mode: "insensitive" } },
+                    { description: { contains: searchTerm, mode: "insensitive" } }
                 ],
                 ...whereOptions,
                 categories: categoryFilter
@@ -135,8 +135,8 @@ export const getSearchProducts = reactCache(async (query: string, categorySlug: 
         db.product.count({
             where: {
                 OR: [
-                    { title: { contains: searchTearm, mode: "insensitive" } },
-                    { description: { contains: searchTearm, mode: "insensitive" } }
+                    { title: { contains: searchTerm, mode: "insensitive" } },
+                    { description: { contains: searchTerm, mode: "insensitive" } }
                 ],
                 ...whereOptions,
                 categories: categoryFilter
@@ -147,7 +147,7 @@ export const getSearchProducts = reactCache(async (query: string, categorySlug: 
     ])
 
     return {
-        searchTearm,
+        searchTerm,
         products,
         categoryName: category?.name,
         categorySlug: category?.slug,

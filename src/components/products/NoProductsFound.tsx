@@ -1,8 +1,16 @@
 import Image from "next/image"
 import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
-const NoProductsFound = ({ clearFiltersLink }: { clearFiltersLink: string }) => {
+interface Props {
+    clearFiltersLink: string
+    lang: Language
+    translation: Translation["products"]["noProductsFound"]
+}
+
+const NoProductsFound = ({ clearFiltersLink, lang, translation }: Props) => {
     return (
         <div className="flex justify-center items-center mt-10">
             <div className="text-center">
@@ -14,20 +22,20 @@ const NoProductsFound = ({ clearFiltersLink }: { clearFiltersLink: string }) => 
                     height={293}
                     priority
                 />
-                <h1 className="text-3xl font-bold mt-5">We Couldn't Find a Match</h1>
-                <p className="text-muted-foreground my-3">Let's clear your filters and start over.</p>
+                <h1 className="text-3xl font-bold mt-5">{translation.title}</h1>
+                <p className="text-muted-foreground my-3">{translation.subTitle}</p>
                 <div className="flex flex-col gap-2">
                     <Link
-                        href={clearFiltersLink}
+                        href={`/${lang}/${clearFiltersLink}`}
                         className={`${buttonVariants({ variant: "primary", size: "lg" })}`}
                     >
-                        Clear Filters
+                        {translation.clearFilters}
                     </Link>
                     <Link
-                        href={"/categories"}
+                        href={`/${lang}/categories`}
                         className={`${buttonVariants({ variant: "secondary", size: "lg" })}`}
                     >
-                        Return to Categories
+                        {translation.returnToCategories}
                     </Link>
                 </div>
             </div>

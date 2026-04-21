@@ -5,62 +5,14 @@ import Dialog from "@/components/ui/Dialog"
 import Input from "@/components/ui/Input"
 import { Address } from "@/generated/prisma"
 import { editAddressAction, EditAddressState } from "@/server/actions/address"
+import { Translation } from "@/types/translation"
 import { useActionState, useEffect, useState } from "react"
 import toast from "react-hot-toast"
 
-const editAddressFields = [
-    {
-        label: "Address label",
-        name: "label",
-        type: "text",
-        placeholder: "e.g. Home, Work, etc.",
-        autoFocus: true
-    },
-    {
-        label: "Full name",
-        name: "name",
-        type: "text",
-        placeholder: "Enter your full name",
-    },
-    {
-        label: "Phone number",
-        name: "phone",
-        type: "text",
-        placeholder: "Enter your phone number",
-    },
-    {
-        label: "Country",
-        name: "country",
-        type: "text",
-        placeholder: "Enter your country",
-        width: "half"
-    },
-    {
-        label: "Governorate",
-        name: "governorate",
-        type: "text",
-        placeholder: "Enter your governorate",
-        width: "half"
-    },
-    {
-        label: "City",
-        name: "city",
-        type: "text",
-        placeholder: "Enter your city",
-        width: "half"
-    },
-    {
-        label: "Street address",
-        name: "streetAddress",
-        type: "text",
-        placeholder: "Enter your street address",
-        width: "half"
-    }
-]
-
 interface Props {
-    address: Address,
+    address: Address
     userHasMoreThanOneAddress: boolean
+    translation: Translation["profile"]["addresses"]
 }
 
 const initialState: EditAddressState = {
@@ -70,7 +22,7 @@ const initialState: EditAddressState = {
     formData: undefined
 }
 
-const EditAddressButton = ({ address, userHasMoreThanOneAddress }: Props) => {
+const EditAddressButton = ({ address, userHasMoreThanOneAddress, translation }: Props) => {
 
     const [isOpen, setIsOpen] = useState(false)
 
@@ -90,6 +42,56 @@ const EditAddressButton = ({ address, userHasMoreThanOneAddress }: Props) => {
         }
     }
 
+    const editAddressFields = [
+        {
+            label: translation.addressForm.addressLabel.label,
+            name: "label",
+            type: "text",
+            placeholder: translation.addressForm.addressLabel.placeholder,
+            autoFocus: true
+        },
+        {
+            label: translation.addressForm.name.label,
+            name: "name",
+            type: "text",
+            placeholder: translation.addressForm.name.placeholder,
+        },
+        {
+            label: translation.addressForm.phone.label,
+            name: "phone",
+            type: "text",
+            placeholder: translation.addressForm.phone.placeholder,
+        },
+        {
+            label: translation.addressForm.country.label,
+            name: "country",
+            type: "text",
+            placeholder: translation.addressForm.country.placeholder,
+            width: "half"
+        },
+        {
+            label: translation.addressForm.governorate.label,
+            name: "governorate",
+            type: "text",
+            placeholder: translation.addressForm.governorate.placeholder,
+            width: "half"
+        },
+        {
+            label: translation.addressForm.city.label,
+            name: "city",
+            type: "text",
+            placeholder: translation.addressForm.city.placeholder,
+            width: "half"
+        },
+        {
+            label: translation.addressForm.streetAddress.label,
+            name: "streetAddress",
+            type: "text",
+            placeholder: translation.addressForm.streetAddress.placeholder,
+            width: "half"
+        }
+    ]
+
     useEffect(() => {
 
         if (state.status && state.message) {
@@ -108,12 +110,12 @@ const EditAddressButton = ({ address, userHasMoreThanOneAddress }: Props) => {
                 variant={"secondary"}
                 onClick={open}
             >
-                Edit
+                {translation.addressCard.edit}
             </Button>
             <Dialog
                 isOpen={isOpen}
                 close={close}
-                title="Edit Address"
+                title={translation.editAddress}
             >
                 <form
                     action={action}
@@ -155,7 +157,7 @@ const EditAddressButton = ({ address, userHasMoreThanOneAddress }: Props) => {
                                 className="text-sm select-none"
                                 htmlFor="default"
                             >
-                                Set as Default Address
+                                {translation.addressForm.setAsDefaultAddress}
                             </label>
                         </div>
                     )}
@@ -165,15 +167,15 @@ const EditAddressButton = ({ address, userHasMoreThanOneAddress }: Props) => {
                             type="reset"
                             onClick={close}
                         >
-                            Cancel
+                            {translation.addressForm.cancel}
                         </Button>
                         <Button
                             variant={"primary"}
                             type="submit"
                             disabled={isPending}
-                            className="min-w-[128px]"
+                            className="min-w-32"
                         >
-                            {isPending ? "Saving..." : "Save Changes"}
+                            {isPending ? translation.addressForm.saving : translation.addressForm.saveChanges}
                         </Button>
                     </div>
                 </form>

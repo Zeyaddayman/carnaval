@@ -1,14 +1,15 @@
 import { ProductsFiltersOptions } from "@/types/products"
+import { Translation } from "@/types/translation"
 
-export const PRODUCTS_SORT_OPTIONS = [
-    { value: "alphabetical", label: "Alphabetical" },
-    { value: "price-asc", label: "Price: Low to High" },
-    { value: "price-desc", label: "Price: High to Low" },
-    { value: "top-rated", label: "Top Rated" },
-    { value: "top-discount", label: "Top Discount" }
-] as const
-
-export const DEFAULT_SORT_OPTION = PRODUCTS_SORT_OPTIONS[0]
+export const getProductsSortOptions = (translation: Translation["products"]["sortOptions"]) => {
+    return [
+        { value: "alphabetical", label: translation.alphabetical },
+        { value: "price-asc", label: translation.priceAsc },
+        { value: "price-desc", label: translation.priceDesc },
+        { value: "top-rated", label: translation.topRated },
+        { value: "top-discount", label: translation.topDiscount }
+    ] as const
+}
 
 export const PRODUCTS_MIN_RATING = 1
 export const PRODUCTS_MAX_RATING = 5

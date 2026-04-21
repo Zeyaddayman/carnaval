@@ -1,19 +1,20 @@
 "use client"
 
 import SelectMenu from "@/components/ui/SelectMenu"
+import { Translation } from "@/types/translation"
 import { useRouter, useSearchParams } from "next/navigation"
 
-const filterOptions = [
-    { value: "all", label: "All" },
-    { value: "pending", label: "Pending" },
-    { value: "completed", label: "Completed" },
-    { value: "cancelled", label: "Cancelled" },
-] as const
-
-const OrdersFilter = ({ filter }: { filter: string }) => {
+const OrdersFilter = ({ filter, translation }: { filter: string, translation: Translation["profile"]["orders"] }) => {
 
     const searchParams = useSearchParams()
     const router = useRouter()
+
+    const filterOptions = [
+        { value: "all", label: translation.statusFilter.all },
+        { value: "pending", label: translation.statusFilter.pending },
+        { value: "completed", label: translation.statusFilter.completed },
+        { value: "cancelled", label: translation.statusFilter.cancelled }
+    ] as const
 
     const setFilter = (option: { value: string, label: string }) => {
         const params = new URLSearchParams(searchParams.toString())
@@ -27,7 +28,7 @@ const OrdersFilter = ({ filter }: { filter: string }) => {
 
     return (
         <SelectMenu
-            title={"Show: "}
+            title={`${translation.show}: `}
             selected={defaultFilterOption}
             setSelected={setFilter}
             options={[...filterOptions]}

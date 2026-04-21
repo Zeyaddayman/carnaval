@@ -1,12 +1,19 @@
 import { Order } from "@/generated/prisma"
+import { Translation } from "@/types/translation"
 
-const OrderStatus = ({ status }: { status: Order["status"] }) => {
+const OrderStatus = ({
+    status,
+    translation
+}: {
+    status: Order["status"],
+    translation: Translation["orderStatus"]
+}) => {
 
     const getStatusDisplay = () => {
         switch (status) {
-            case "CANCELLED": return { style: "bg-destructive text-destructive-foreground", text: "Cancelled" }
-            case "PENDING": return { style: "bg-warning text-warning-foreground", text: "Pending" }
-            case "COMPLETED": return { style: "bg-success text-success-foreground", text: "Completed" }
+            case "CANCELLED": return { style: "bg-destructive text-destructive-foreground", text: translation.cancelled }
+            case "PENDING": return { style: "bg-warning text-warning-foreground", text: translation.pending }
+            case "COMPLETED": return { style: "bg-success text-success-foreground", text: translation.completed }
         }
     }
 

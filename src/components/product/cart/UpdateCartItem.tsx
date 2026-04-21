@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/Button"
 import QuantitySelector from "@/components/ui/QuantitySelector"
+import { Translation } from "@/types/translation"
 import { useEffect, useState } from "react"
 import { FiTrash2 } from "react-icons/fi"
 
@@ -8,9 +9,10 @@ interface Props {
     initialQuantity: number
     updateItem: (quantity: number) => void
     removeItem: () => void
+    translation: Translation["product"]
 }
 
-const UpdateCartItem = ({ limit, initialQuantity, updateItem, removeItem }: Props) => {
+const UpdateCartItem = ({ limit, initialQuantity, updateItem, removeItem, translation }: Props) => {
 
     const [quantity, setQuantity] = useState(initialQuantity)
 
@@ -40,7 +42,7 @@ const UpdateCartItem = ({ limit, initialQuantity, updateItem, removeItem }: Prop
 
     return (
         <div className="flex flex-wrap gap-2 items-center">
-            <p className='text-muted-foreground'>Quantity</p>
+            <p className='text-muted-foreground'>{translation.quantity}</p>
             <Button
                 variant={"basic"}
                 className="w-10"
@@ -68,7 +70,7 @@ const UpdateCartItem = ({ limit, initialQuantity, updateItem, removeItem }: Prop
                     className="flex-1"
                     onClick={handleUpdateItem}
                 >
-                    Update
+                    {translation.update}
                 </Button>
                 <Button
                     variant={"destructiveOutline"}

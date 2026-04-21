@@ -1,14 +1,16 @@
 import { CategoryHierarchy } from "@/types/categories"
+import { Language } from "@/types/i18n"
 import Link from "next/link"
 import { Fragment } from "react"
 
 interface Props {
     categoryHierarchy: CategoryHierarchy
+    lang: Language
 }
 
-const CategoriesChain = ({ categoryHierarchy }: Props) => {
+const CategoriesChain = ({ categoryHierarchy, lang }: Props) => {
     return (
-        <div className="space-x-3 overflow-x-auto whitespace-nowrap pb-2">
+        <div className="overflow-x-auto whitespace-nowrap pb-2">
             {categoryHierarchy.map((category, i) => {
 
                 const isFirstCategory = i <= 1
@@ -16,12 +18,12 @@ const CategoriesChain = ({ categoryHierarchy }: Props) => {
 
                 return <Fragment key={category.name}>
                     <Link
-                        href={category.link}
-                        className={isLastCategory ? "text-foreground font-semibold" : "text-muted-foreground hover:text-foreground"}
+                        href={`/${lang}category.link`}
+                        className={isLastCategory ? "text-foreground font-semibold me-3" : "text-muted-foreground hover:text-foreground ms-3 me-3"}
                     >
                         {isFirstCategory ? category.name : category.nameAsSubcategory}
                     </Link>
-                    {!isLastCategory && <span>&gt;</span>}
+                    {!isLastCategory && <span className="rtl-flip">&gt;</span>}
                 </Fragment>
             })}
         </div>

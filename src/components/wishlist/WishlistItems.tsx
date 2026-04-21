@@ -7,12 +7,17 @@ import WishlistItemsSkeleton from "../skeletons/WishlistItemsSkeleton"
 import EmptyWishlist from "./EmptyWishlist"
 import useAddItemToUserCart from "@/hooks/cart/user-cart/useAddItemToUserCart"
 import useRemoveItemFromUserWishlist from "@/hooks/wishlist/useRemoveItemFromUserWishlist"
+import { Translation } from "@/types/translation"
+import { inject } from "@/utils/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     userId: string
+    lang: Language
+    translation: Translation
 }
 
-const WishlistItems = ({ userId }: Props) => {
+const WishlistItems = ({ userId, lang, translation }: Props) => {
 
     const { data: wishlist, isLoading } = useGetUserWishlistQuery(userId)
 
@@ -23,7 +28,7 @@ const WishlistItems = ({ userId }: Props) => {
 
     if (isLoading) return <WishlistItemsSkeleton />
 
-    if (!wishlist || wishlist.items.length === 0) return <EmptyWishlist />
+    if (!wishlist || wishlist.items.length === 0) return <EmptyWishlist lang={lang} translation={translation.wishlist.emptyWishlist} />
 
     const removeItem = (productId: string) => {
         removeItemFromUserWishlist({ userId, productId })
@@ -39,7 +44,9 @@ const WishlistItems = ({ userId }: Props) => {
 
     return (
         <>
-        <p className="text-muted-foreground mb-3">{wishlist.items.length} items saved</p>
+        <p className="text-muted-foreground mb-3">
+            {inject(translation.wishlist.itemsSaved, { count: wishlist.items.length })}
+        </p>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-5">
             {wishlist.items.map(item => (
                 <WishlistItemCard
@@ -48,6 +55,8 @@ const WishlistItems = ({ userId }: Props) => {
                     userId={userId}
                     removeItem={removeItem}
                     addItemToCart={addItemToCart}
+                    lang={lang}
+                    translation={translation.global}
                 />
             ))}
         </div>

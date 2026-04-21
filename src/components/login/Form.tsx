@@ -9,22 +9,13 @@ import { useRouter } from "next/navigation"
 import { userSessionApi } from "@/redux/features/userSessionApi"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
-const loginFields = [
-    {
-        label: "Email",
-        name: "email",
-        type: "email",
-        placeholder: "Enter your email",
-        autoFocus: true
-    },
-    {
-        label: "Password",
-        name: "password",
-        type: "password",
-        placeholder: "Enter your password"
-    }
-]
+interface Props {
+    lang: Language
+    translation: Translation["auth"]["login"]
+}
 
 const initialState: LoginState = {
     message: "",
@@ -33,7 +24,7 @@ const initialState: LoginState = {
     formData: undefined
 }
 
-const LoginForm = () => {
+const LoginForm = ({ lang, translation }: Props) => {
 
     const localCart = useAppSelector(selectLocalCart)
 
@@ -41,6 +32,22 @@ const LoginForm = () => {
         loginAction.bind(null, localCart.items.toReversed()),
         initialState
     )
+
+    const loginFields = [
+        {
+            label: translation.email.label,
+            name: "email",
+            type: "email",
+            placeholder: translation.email.placeholder,
+            autoFocus: true
+        },
+        {
+            label: translation.password.label,
+            name: "password",
+            type: "password",
+            placeholder: translation.password.placeholder
+        }
+    ]
 
     const dispatch = useAppDispatch()
 
@@ -53,9 +60,9 @@ const LoginForm = () => {
                 toast.success(state.message)
 
                 const searchParams = new URLSearchParams(window.location.search)
-                let redirectPath = searchParams.get("redirect") || "/"
+                let redirectPath = searchParams.get("redirect") || `/${lang}`
 
-                if (redirectPath.startsWith("/auth")) redirectPath = "/"
+                if (redirectPath.startsWith(`/${lang}/auth`)) redirectPath = `/${lang}`
 
                 dispatch(userSessionApi.util.invalidateTags(['user-session']))
 
@@ -104,7 +111,7 @@ const LoginForm = () => {
                 className="w-full mt-5"
                 disabled={isPending}
             >
-                {isPending ? "Logging..." : "Login"}
+                {isPending ? translation.submiting : translation.submit}
             </Button>
         </form>
     )

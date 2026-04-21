@@ -6,8 +6,15 @@ import { FiUser } from "react-icons/fi";
 import { RiAdminLine } from "react-icons/ri";
 import { usePathname } from "next/navigation";
 import { useGetUserSessionQuery } from "@/redux/features/userSessionApi";
+import { Translation } from "@/types/translation";
+import { Language } from "@/types/i18n";
 
-const AuthLinks = () => {
+interface Props {
+    lang: Language
+    translation: Translation["navbar"]["links"]
+}
+
+const AuthLinks = ({ lang, translation }: Props) => {
 
     const { data: session, isLoading } = useGetUserSessionQuery()
 
@@ -21,32 +28,32 @@ const AuthLinks = () => {
             <>
             {session.role === "ADMIN" && (
                 <Link
-                    href={"/admin"}
+                    href={`/${lang}/admin`}
                     className={`${buttonVariants({ variant: "ghost" })}`}
                 >
-                    <RiAdminLine size={20} /> Admin
+                    <RiAdminLine size={20} />
                 </Link>
             )}
             <Link
-                href={"/profile"}
+                href={`/${lang}/profile`}
                 className={`${buttonVariants({ variant: "ghost" })}`}
             >
-                <FiUser size={20} /> Profile
+                <FiUser size={20} />
             </Link>
             </>
         ) : (
             <>
             <Link
-                href={`/auth/login?redirect=${pathname}`}
+                href={`/${lang}/auth/login?redirect=${pathname}`}
                 className={`${buttonVariants({ variant: "primary" })}`}
             >
-                Login
+                {translation.login}
             </Link>
             <Link
-                href={`/auth/register?redirect=${pathname}`}
+                href={`/${lang}/auth/register?redirect=${pathname}`}
                 className={`${buttonVariants({ variant: "secondary" })}`}
             >
-                Register
+                {translation.register}
             </Link>
             </>
         )}

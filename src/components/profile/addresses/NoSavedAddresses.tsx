@@ -1,6 +1,7 @@
+import { Translation } from "@/types/translation"
 import Image from "next/image"
 
-const NoSavedAddresses = () => {
+const NoSavedAddresses = ({ translation }: { translation: Translation["profile"]["addresses"]["noSavedAddresses"] }) => {
     return (
         <div className="flex justify-center items-center mt-10">
             <div className="text-center">
@@ -12,8 +13,8 @@ const NoSavedAddresses = () => {
                     height={202}
                     priority
                 />
-                <h3 className="text-2xl font-bold mt-5">No Saved Addresses Yet!</h3>
-                <p className="text-muted-foreground my-3">Let's add your first address</p>
+                <h3 className="text-2xl font-bold mt-5">{translation.title}</h3>
+                <p className="text-muted-foreground my-3">{translation.subTitle}</p>
             </div>
         </div>
     )

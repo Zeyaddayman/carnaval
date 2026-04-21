@@ -11,13 +11,15 @@ import { usePathname } from "next/navigation"
 import { wishlistItemWithProduct } from "@/types/wishlist"
 import useAddItemToUserWishlist from "@/hooks/wishlist/useAddItemToUserWishlist"
 import useRemoveItemFromUserWishlist from "@/hooks/wishlist/useRemoveItemFromUserWishlist"
+import { Language } from "@/types/i18n"
 
 interface Props {
-    session: UserSession | null,
+    session: UserSession | null
     product: wishlistItemWithProduct["product"]
+    lang: Language
 }
 
-const ToggleWishlistItem = ({ session, product }: Props) => {
+const ToggleWishlistItem = ({ session, product, lang }: Props) => {
 
     const pathname = usePathname()
 
@@ -28,7 +30,7 @@ const ToggleWishlistItem = ({ session, product }: Props) => {
             <div className="space-y-2">
                 <p>You must be logged in</p>
                 <Link
-                    href={`/auth/login?redirect=${pathname}`}
+                    href={`/${lang}/auth/login?redirect=${pathname}`}
                     className={buttonVariants({ variant: "secondary", size: "sm" })}
                     onClick={() => toast.dismissAll()}
                 >

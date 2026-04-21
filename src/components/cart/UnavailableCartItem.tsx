@@ -3,14 +3,16 @@ import Image from "next/image"
 import CartItemInfo from "./CartItemInfo"
 import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
+import { Translation } from "@/types/translation"
 
 interface Props {
     item: CartItemWithProduct
     removeItem: (productId: string) => void
     moveItemToWishlist: (product: CartItemWithProduct["product"]) => void
+    translation: Translation
 }
 
-const UnavailableCartItem = ({ item, removeItem, moveItemToWishlist }: Props) => {
+const UnavailableCartItem = ({ item, removeItem, moveItemToWishlist, translation }: Props) => {
 
     const handleRemoveItem = () => {
         removeItem(item.product.id)
@@ -30,22 +32,26 @@ const UnavailableCartItem = ({ item, removeItem, moveItemToWishlist }: Props) =>
                 height={150}
             />
             <div className="flex-1">
-                <CartItemInfo product={item.product} quantity={item.quantity} />
+                <CartItemInfo
+                    product={item.product}
+                    quantity={item.quantity}
+                    translation={translation.cart.items}
+                />
                 <div className="bg-destructive/70 mt-3 text-destructive-foreground text-sm text-center font-semibold p-2 rounded-full">
-                    Out of stock
+                    {translation.global.outOfStock}
                 </div>
                 <div className="flex gap-2 flex-wrap justify-between items-center mt-5">
                     <Button
                         variant={"destructiveOutline"}
                         onClick={handleRemoveItem}
                     >
-                        <FiTrash2 /> Remove
+                        <FiTrash2 /> {translation.global.remove}
                     </Button>
                     <Button
                         variant={"outline"}
                         onClick={handleMoveToWishlist}
                     >
-                        Move to Wishlist <FiHeart />
+                        {translation.cart.items.moveToWishlist} <FiHeart />
                     </Button>
                 </div>
             </div>

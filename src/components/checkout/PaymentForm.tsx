@@ -8,17 +8,22 @@ import { checkoutAction } from "@/server/actions/checkout"
 import { useRouter } from "next/navigation"
 import { useAppDispatch } from "@/redux/hooks"
 import { userCartApi } from "@/redux/features/userCartApi"
-import { CheckoutItem, PaymentMethod } from "@/types/checkout"
+import { PaymentMethodValue } from "@/types/checkout"
+import { Translation } from "@/types/translation"
+import { inject } from "@/utils/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     clientSecret: string
     paymentIntentId: string
     selectedAddress: Address
     formattedTotal: string
-    paymentMethod: PaymentMethod
+    paymentMethodValue: PaymentMethodValue
+    lang: Language
+    translation: Translation["checkout"]["addressAndPayment"]
 }
 
-const PaymentForm = ({ clientSecret, paymentIntentId, selectedAddress, formattedTotal, paymentMethod }: Props) => {
+const PaymentForm = ({ clientSecret, paymentIntentId, selectedAddress, formattedTotal, paymentMethodValue, lang, translation }: Props) => {
 
     const stripe = useStripe()
     const elements = useElements()
@@ -36,14 +41,14 @@ const PaymentForm = ({ clientSecret, paymentIntentId, selectedAddress, formatted
 
         startPlacingOrder(async () => {
 
-            if (paymentMethod === 'card') {
+            if (paymentMethodValue === 'card') {
 
                 // Validate cart items quantities before confirming payment
                 const res = await fetch(`/api/user/cart/validate-items`)
 
                 if (!res.ok) {
                     toast.error("Some items quantity is no longer available in the cart")
-                    router.push("/cart")
+                    router.push(`/${lang}/cart`)
                     return
                 }
 
@@ -71,7 +76,7 @@ const PaymentForm = ({ clientSecret, paymentIntentId, selectedAddress, formatted
                     const { error } = await stripe.confirmPayment({
                         clientSecret,
                         elements,
-                        confirmParams: { return_url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/checkout/success` }
+                        confirmParams: { return_url: `${process.env.NEXT_PUBLIC_WEBSITE_URL}/${lang}/checkout/success` }
                     })
 
                     if (error) {
@@ -80,22 +85,22 @@ const PaymentForm = ({ clientSecret, paymentIntentId, selectedAddress, formatted
                     }
                 }
             }
-            else if (paymentMethod === 'cash') {
+            else if (paymentMethodValue === 'cash') {
                 try {
                     const { status, message } = await checkoutAction(selectedAddress.label)
 
                     if (message && status === 201) {
                         toast.success(message)
-                        router.push("/profile/orders")
+                        router.push(`/${lang}/checkout/success`)
                     }
                     else {
                         toast.error(message)
-                        router.push("/cart")
+                        router.push(`/${lang}/cart`)
                     }
                 }
                 catch {
                     toast.error("Failed to place the order")
-                    router.push("/cart")
+                    router.push(`/${lang}/cart`)
                 }
                 finally {
                     dispatch(userCartApi.util.invalidateTags(['user-cart']))
@@ -109,19 +114,19 @@ const PaymentForm = ({ clientSecret, paymentIntentId, selectedAddress, formatted
     return (
         <form onSubmit={placeOrder}>
             <PaymentElement
-                className={`${paymentMethod === 'cash' ? "hidden": null}`}
+                className={`${paymentMethodValue === 'cash' ? "hidden": null}`}
                 onReady={() => setPaymentElementMounted(true)}
             />
             <Button
                 variant={"primary"}
                 size={"lg"}
-                disabled={!selectedAddress || isPlacingOrder || (paymentMethod === 'card' && !paymentElementMounted)}
+                disabled={!selectedAddress || isPlacingOrder || (paymentMethodValue === 'card' && !paymentElementMounted)}
                 className="w-full! mt-4"
             >
                 {isPlacingOrder ? (
-                    <>PLACING ORDER...</>
+                    <>{translation.placingOrder}</>
                 ): (
-                    <><FaCheck /> PLACE ORDER ({formattedTotal})</>
+                    <><FaCheck /> {inject(translation.placeOrder, { total: formattedTotal })}</>
                 )}
             </Button>
         </form>

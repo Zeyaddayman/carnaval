@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json([], { status: 200 })
     }
 
-    const searchTearm = query.trim()
+    const searchTerm = query.trim()
 
     const categoryFilter = (categorySlug && categorySlug !== "all") ? { some: { slug: categorySlug } } : undefined
 
@@ -20,8 +20,8 @@ export async function GET(req: NextRequest) {
         let suggestedProducts = await db.product.findMany({
         where: {
             OR: [
-                { title: { contains: searchTearm, mode: 'insensitive' } },
-                { description: { contains: searchTearm, mode: 'insensitive' } }
+                { title: { contains: searchTerm, mode: 'insensitive' } },
+                { description: { contains: searchTerm, mode: 'insensitive' } }
             ],
             categories: categoryFilter
         },

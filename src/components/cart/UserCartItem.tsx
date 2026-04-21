@@ -8,6 +8,8 @@ import CartItemQuantityCounter from "./CartItemQuantityCounter"
 import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
 import useAddItemToUserCart from "@/hooks/cart/user-cart/useAddItemToUserCart"
+import { Translation } from "@/types/translation"
+import { inject } from "@/utils/translation"
 
 
 interface Props {
@@ -17,9 +19,10 @@ interface Props {
     removeItem: (productId: string) => void
     moveItemToWishlist: (product: CartItemWithProduct["product"]) => void
     quantityModified: QuantityModifiedItem | undefined
+    translation: Translation
 }
 
-const UserCartItem = ({ item, initialLimit, userId, removeItem, moveItemToWishlist, quantityModified }: Props) => {
+const UserCartItem = ({ item, initialLimit, userId, removeItem, moveItemToWishlist, quantityModified, translation }: Props) => {
 
     const [limit, setLimit] = useState(initialLimit)
 
@@ -56,23 +59,28 @@ const UserCartItem = ({ item, initialLimit, userId, removeItem, moveItemToWishli
                 height={150}
             />
             <div className="flex-1">
-                <CartItemInfo product={item.product} quantity={item.quantity} />
+                <CartItemInfo
+                    product={item.product}
+                    quantity={item.quantity}
+                    translation={translation.cart.items}
+                />
                 <div className="flex gap-2 flex-wrap justify-between mt-5">
                     <CartItemQuantityCounter
                         initialQuantity={item.quantity}
                         limit={limit}
                         updateQuantity={updateQuantity}
+                        translation={translation.global}
                     />
                     <Button
                         variant={"destructiveOutline"}
                         onClick={handleRemoveItem}
                     >
-                        <FiTrash2 /> Remove
+                        <FiTrash2 /> {translation.global.remove}
                     </Button>
                 </div>
                 {quantityModified && (
                     <p className="mt-2 text-sm p-1 bg-warning/10 text-warning w-fit rounded-md">
-                        Quantity adjusted from {quantityModified.oldQuantity} → {quantityModified.newQuantity} due to stock limits
+                        {inject(translation.cart.warnings.quantityAdjustedFromTo, { oldQuantity: quantityModified.oldQuantity, newQuantity: quantityModified.newQuantity })}
                     </p>
                 )}
                 <Button
@@ -80,7 +88,7 @@ const UserCartItem = ({ item, initialLimit, userId, removeItem, moveItemToWishli
                     onClick={handleMoveToWishlist}
                     className="mt-5"
                 >
-                    Move to Wishlist <FiHeart />
+                    {translation.cart.items.moveToWishlist} <FiHeart />
                 </Button>
             </div>
         </div>

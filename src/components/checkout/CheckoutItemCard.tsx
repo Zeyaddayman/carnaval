@@ -21,7 +21,7 @@ const CheckoutItemCard = ({ item }: Props) => {
             />
             <div className="flex-1">
                 <h5 className="sm:font-semibold mb-2">{item.product.title}</h5>
-                <p className="text-muted-foreground">{item.quantity} x {formattedFinalPrice}</p>
+                <p className="text-muted-foreground">{item.quantity} &times; {formattedFinalPrice}</p>
             </div>
             <p className="sm:text-xl text-foreground">{formattedTotalPrice}</p>
         </div>

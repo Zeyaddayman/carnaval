@@ -10,12 +10,16 @@ import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
 import ProductCartSkeleton from "../skeletons/ProductCartSkeleton"
 import ProductToggleWishlistItemSkeleton from "../skeletons/ProductToggleWishlistItemSkeleton"
 import { fetchProductLimit } from "@/server/utils/product"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     product: ProductDetails
+    lang: Language
+    translation: Translation
 }
 
-const WishlistAndCart = ({ product }: Props) => {
+const WishlistAndCart = ({ product, lang, translation }: Props) => {
 
     const { data: session, isFetching } = useGetUserSessionQuery()
 
@@ -43,8 +47,8 @@ const WishlistAndCart = ({ product }: Props) => {
 
     return (
         <>
-        <div className="bg-muted p-2 w-fit h-fit rounded-full ml-auto">
-            <ToggleWishlistItem session={session || null} product={product} />
+        <div className="bg-muted p-2 w-fit h-fit rounded-full ms-auto">
+            <ToggleWishlistItem session={session || null} product={product} lang={lang} />
         </div>
         {limit > 0 ?
             session ? (
@@ -52,11 +56,18 @@ const WishlistAndCart = ({ product }: Props) => {
                     userId={session.userId}
                     product={product}
                     initialLimit={limit}
+                    lang={lang}
+                    translation={translation.product}
                 />
             ) : (
-                <ProductLocalCart product={product} initialLimit={limit} />
+                <ProductLocalCart
+                    product={product}
+                    initialLimit={limit}
+                    lang={lang}
+                    translation={translation.product}
+                />
             )
-            : <OutOfStock />
+            : <OutOfStock text={translation.global.outOfStock} />
         }
         </>
     )

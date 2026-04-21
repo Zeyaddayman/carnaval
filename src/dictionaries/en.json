@@ -1,0 +1,446 @@
+{
+    "logo": "Carnaval",
+    "navbar": {
+        "links": {
+            "categories": "Categories",
+            "brands": "Brands",
+            "login": "Login",
+            "register": "Register"
+        },
+        "searchBar": {
+            "searchInput": {
+                "label": "Search for products",
+                "placeholder": "Search for products..."
+            },
+            "searchButton": {
+                "label": "Search"
+            }
+        }
+    },
+    "home": {
+        "hero": {
+            "heading": "Discover Your Style at Carnaval",
+            "description": "Explore a world of fashion, electronics, home goods, and more. Find everything you need with ease and confidence",
+            "shopNow": "SHOP NOW"
+        },
+        "exploreCollections": {
+            "title": "Explore Our Collections",
+            "subTitle": "Discover something new every day."
+        }
+    },
+    "auth": {
+        "login": {
+            "title": "Login",
+            "subTitle": "Welcome back. Login to checkout and track your orders",
+            "email": {
+                "label": "Email",
+                "placeholder": "Enter your email"
+            },
+            "password": {
+                "label": "Password",
+                "placeholder": "Enter your password"
+            },
+            "submit": "Login",
+            "submiting": "logging...",
+            "authPrompt": {
+                "message": "New to Carnaval? ",
+                "signUpLinkText": "Register"
+            }
+        },
+        "register": {
+            "title": "Register",
+            "subTitle": "Create your Carnaval account to track orders and get exclusive offers",
+            "name": {
+                "label": "Full name",
+                "placeholder": "Enter your full name"
+            },
+            "phone": {
+                "label": "Phone number",
+                "placeholder": "Enter your phone number"
+            },
+            "email": {
+                "label": "Email",
+                "placeholder": "Enter your email"
+            },
+            "password": {
+                "label": "Password",
+                "placeholder": "Enter your password"
+            },
+            "confirmPassword": {
+                "label": "Confirm password",
+                "placeholder": "Re-enter your password"
+            },
+            "submit": "Register",
+            "submiting": "Registering...",
+            "authPrompt": {
+                "message": "Already have an account? ",
+                "signUpLinkText": "login"
+            }
+        }
+    },
+    "categories": {
+        "title": "All Products Categories",
+        "subTitle": "Browse our extensive collection of products by category.",
+        "exploreAll": "Explore All Products"
+    },
+    "brands": {
+        "title": "Explore Our Brands",
+        "subTitle": "Discover products from your favorite brands.",
+        "products": "products"
+    },
+    "cart": {
+        "title": "Shopping Cart",
+        "items": {
+            "moveToWishlist": "Move to Wishlist",
+            "viewProduct": "View product"
+        },
+        "summary": {
+            "title": "Order Summary",
+            "freeShippingOver": "Free shipping over ",
+            "items": "Items",
+            "subtotal": "Subtotal",
+            "shipping": "Shipping",
+            "freeText": "Free",
+            "total": "Total",
+            "checkout": "CHECKOUT"
+        },
+        "emptyCart": {
+            "title": "Your Cart is Empty!",
+            "subTitle": "Looks like you haven't added anything to your cart yet.",
+            "addItems": "ADD ITEMS"
+        },
+        "warnings": {
+            "unAvailableItems": {
+                "title": "Unavailable items",
+                "description": "Some items are out of stock and must be resolved before checkout."
+            },
+            "modifiedQuantityItems": {
+                "title": "We've updated your cart",
+                "description": "Some item quantities were adjusted due to low stock levels."
+            },
+            "resloveBeforeCheckout": "Please resolve unavailable items before checkout.",
+            "unAvailableItemsText": "Unavailable Items",
+            "quantityAdjustedFromTo": "Quantity adjusted from {{oldQuantity}} → {{newQuantity}} due to stock limits"
+        }
+    },
+    "wishlist": {
+        "title": "Wishlist",
+        "itemsSaved": "{{count}} items saved",
+        "emptyWishlist": {
+            "title": "Your Wishlist is Empty!",
+            "subTitle": "Start adding items you love by tapping on the heart icon .",
+            "addItems": "ADD ITEMS"
+        }
+    },
+    "profile": {
+        "greeting": "Hello, {{name}}",
+        "links": {
+            "accountOverview": "Account Overview",
+            "orders": "Orders",
+            "addresses": "Addresses",
+            "settings": "Settings"
+        },
+        "logout": "Logout",
+        "loggingOut": "Logging out...",
+        "accountOverview": {
+            "title": "Account Overview",
+            "personalInformation": {
+                "title": "Personal Information",
+                "name": "Name",
+                "email": "Email",
+                "phone": "Phone",
+                "editProfile": "Edit Profile"
+            },
+            "ordersSummary": {
+                "title": "Orders Summary",
+                "totalOrders": "Total Orders",
+                "lastOrderDate": "Last Order Date",
+                "pendingOrders": "Pending Orders",
+                "viewOrders": "View Orders"
+            },
+            "shippingAddress": {
+                "title": "Shipping Address",
+                "name": "Name",
+                "phone": "Phone",
+                "manageAddresses": "Manage Addresses"
+            }
+        },
+        "orders": {
+            "title": "Order History",
+            "show": "Show",
+            "table": {
+                "id": "ID",
+                "date": "Date",
+                "items": "Items",
+                "status": "Status",
+                "details": "Details",
+                "view": "View"
+            },
+            "statusFilter": {
+                "all": "All",
+                "pending": "Pending",
+                "completed": "Completed",
+                "cancelled": "Cancelled"
+            },
+            "noOrdersYet": {
+                "title": "No Orders Placed Yet!",
+                "subTitle": "Let's make your first order.",
+                "viewCart": "VIEW CART"
+            }
+        },
+        "orderDetails": {
+            "title": "Order Details",
+            "summary": {
+                "title": "Order Summary",
+                "id": "ORDER ID",
+                "date": "ORDER DATE",
+                "orderStatus": {
+                    "pending": "Pending",
+                    "completed": "Completed",
+                    "cancelled": "Cancelled"
+                },
+                "items": "Items",
+                "subtotal": "Subtotal",
+                "shipping": "Shipping",
+                "freeText": "Free",
+                "total": "Total"
+            },
+            "address": {
+                "title": "Shipping Address",
+                "name": "Name",
+                "phone": "Phone"
+            },
+            "items": {
+                "title": "Items in Order"
+            }
+        },
+        "settings": {
+            "title": "Account Settings",
+            "personalInformation": {
+                "title": "Personal Information",
+                "form": {
+                    "email": {
+                        "label": "Email"
+                    },
+                    "name": {
+                        "label": "Full name",
+                        "placeholder": "Enter your full name"
+                    },
+                    "phone": {
+                        "label": "Phone number",
+                        "placeholder": "Enter your phone number"
+                    },
+                    "saveChanges": "Save Changes",
+                    "saving": "Saving..."
+                }
+            },
+            "passwordAndSecurity": {
+                "title": "Password & Security",
+                "form": {
+                    "currentPassword": {
+                        "label": "Current password",
+                        "placeholder": "Enter your current password"
+                    },
+                    "newPassword": {
+                        "label": "New password",
+                        "placeholder": "Enter your new password"
+                    },
+                    "confirmNewPassword": {
+                        "label": "Confirm new password",
+                        "placeholder": "Re-enter your new password"
+                    },
+                    "updatePassword": "Update Password",
+                    "updating": "Updating..."
+                }
+            }
+        },
+        "addresses": {
+            "title": "Manage Addresses",
+            "addNewAddress": "Add New Address",
+            "addYourAddressCaps": "ADD YOUR ADDRESS",
+            "addYourAddress": "Add Your Address",
+            "addressCard": {
+                "name": "Name",
+                "phone": "Phone",
+                "default": "Default",
+                "edit": "Edit",
+                "delete": "Delete",
+                "deleting": "Deleting...",
+                "setAsDefault": "Set as Default",
+                "setting": "Setting..."
+            },
+            "editAddress": "Edit Address",
+            "addressForm": {
+                "addressLabel": {
+                    "label": "Address label",
+                    "placeholder": "e.g. Home, Work, etc."
+                },
+                "name": {
+                    "label": "Full name",
+                    "placeholder": "Enter your full name"
+                },
+                "phone": {
+                    "label": "Phone number",
+                    "placeholder": "Enter your phone number"
+                },
+                "country": {
+                    "label": "Country",
+                    "placeholder": "Enter your country"
+                },
+                "governorate": {
+                    "label": "Governorate",
+                    "placeholder": "Enter your governorate"
+                },
+                "city": {
+                    "label": "City",
+                    "placeholder": "Enter your city"
+                },
+                "streetAddress": {
+                    "label": "Street Address",
+                    "placeholder": "Enter your street Address"
+                },
+                "setAsDefaultAddress": "Set as Default Address",
+                "addAddress": "Add address",
+                "adding": "Adding...",
+                "saveChanges": "Save Changes",
+                "saving": "Saving...",
+                "cancel": "Cancel"
+            },
+            "noSavedAddresses": {
+                "title": "No Saved Addresses Yet!",
+                "subTitle": "Let's add your first address"
+            }
+        }
+    },
+    "products": {
+        "showingProducts": "Showing {{first}}-{{last}} of {{total}} products",
+        "sortOptions": {
+            "title": "Sort By",
+            "alphabetical": "Alphabetical",
+            "priceAsc": "Price: Low to High",
+            "priceDesc": "Price: High to Low",
+            "topRated": "Top Rated",
+            "topDiscount": "Top Discount"
+        },
+        "filters": {
+            "buttonText": "Filters",
+            "title": "Filter Products",
+            "priceRange": "Price range",
+            "to": "TO",
+            "ratingRange": "Rating range",
+            "onlyStars": "Only {{rating}} stars",
+            "starsOrMore": "{{rating}} Stars or more",
+            "show": "Show",
+            "allProducts": "All products",
+            "onSaleOnly": "On sale only",
+            "clearFilters": "Clear Filters",
+            "applyFilters": "Apply Filters"
+        },
+        "noProductsFound": {
+            "title": "We Couldn't Find a Match",
+            "subTitle": "Let's clear your filters and start over.",
+            "clearFilters": "Clear Filters",
+            "returnToCategories": "Return to Categories"
+        },
+        "categories": {
+            "subcategories": "Subcategories"
+        },
+        "search": {
+            "resultsFor": "Results for",
+            "in": "in "
+        }
+    },
+    "product": {
+        "back": "Back",
+        "quantity": "Quantity",
+        "addToCart": "ADD TO CART",
+        "viewCart": "View cart",
+        "inYourCart": "In Your Cart({{count}})",
+        "update": "Update"
+    },
+    "checkout": {
+        "title": "Checkout",
+        "summary": {
+            "title": "Order Summary",
+            "items": "Items",
+            "subtotal": "Subtotal",
+            "shipping": "Shipping",
+            "total": "Total",
+            "freeText": "Free"
+        },
+        "cart": {
+            "title": "Your Cart",
+            "editCart": "Edit cart"
+        },
+        "addressAndPayment": {
+            "title": "Address & Payment",
+            "manageAddresses": "Manage addresses",
+            "deliveryAddress": "Delivery Address",
+            "name": "Name",
+            "phone": "Phone",
+            "paymentMethod": "Payment Method",
+            "cash": "Cash",
+            "card": "Card",
+            "placeOrder": "PLACE ORDER({{total}})",
+            "placingOrder": "PLACING ORDER..."
+        },
+        "success": {
+            "title": "Order Placed Successfully",
+            "subTitle": "Thanks for your purchase. Your order is on its way.",
+            "viewOrders": "View Orders"
+        }
+    },
+    "footer": {
+        "connectWithUs": "Connect With Us",
+        "copyRight": "© 2025 Carnaval. All rights reserved. Made by",
+        "developer": "Zeyad Ayman"
+    },
+    "orderStatus": {
+        "pending": "Pending",
+        "completed": "Completed",
+        "cancelled": "Cancelled"
+    },
+    "global": {
+        "addToCart": "ADD TO CART",
+        "remove": "Remove",
+        "update": "Update",
+        "inStock": "In Stock",
+        "outOfStock": "Out of Stock",
+        "inYourCart": "In Your Cart"
+    },
+    "metadata": {
+        "main": {
+            "title": {
+                "default": "Carnaval | Your Ultimate Shopping Destination",
+                "template": "%s | Carnaval"
+            },
+            "description": "Discover many products across multiple categories at Carnaval - Your one-stop e-commerce destination for all you need!",
+            "category": "E-commerce",
+            "keywords": ["ecommerce", "shop", "buy", "online store", "products", "shopping", "deals", "discounts", "ashion", "electronics", "home goods", "carnaval"],
+            "openGraph": {
+                "title": "Carnaval | Your Ultimate Shopping Destination",
+                "description": "Discover many products across multiple categories at Carnaval - Your one-stop e-commerce destination for all you need!",
+                "siteName": "Carnaval",
+                "type": "website"
+            }
+        },
+        "categories": {
+            "title": "Shop by Category",
+            "description": "Explore all categories and subcategories at Carnaval. Browse {{topLevelCategoriesNames}}, and more. Find what you love!",
+            "keywords": ["categories", "subcategories", "shop by category", "product categories", "online shopping"],
+            "openGraph": {
+                "title": "Shop by Category | Carnaval",
+                "description": "Explore all categories and subcategories at Carnaval. Browse {{topLevelCategoriesNames}}, and more. Find what you love!"
+            }
+        },
+        "brands": {
+            "title": "Shop by Brand",
+            "description": "Explore products from top brands at Carnaval. Browse {{topBrandsNames}}, and more. Find products from your favorite brands!",
+            "keywords": ["brands", "shop by brand", "top brands", "popular brands", "online shopping"],
+            "openGraph": {
+                "title": "Shop by Brand | Carnaval",
+                "description": "Explore products from top brands at Carnaval. Browse {{topBrandsNames}}, and more. Find products from your favorite brands!"
+            }
+        }
+    }
+}

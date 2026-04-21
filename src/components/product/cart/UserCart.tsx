@@ -9,14 +9,18 @@ import { useEffect, useState } from "react"
 import ProductCartSkeleton from "@/components/skeletons/ProductCartSkeleton"
 import useAddItemToUserCart from "@/hooks/cart/user-cart/useAddItemToUserCart"
 import useRemoveItemFromUserCart from "@/hooks/cart/user-cart/useRemoveItemFromUserCart"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     userId: string
     product: ProductDetails
     initialLimit: number
+    lang: Language
+    translation: Translation["product"]
 }
 
-const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
+const ProductUserCart = ({ userId, product, initialLimit, lang, translation }: Props) => {
 
     const { data, isLoading } = useGetUserCartQuery(userId)
 
@@ -57,18 +61,22 @@ const ProductUserCart = ({ userId, product, initialLimit }: Props) => {
             <div className="space-y-6">
                 <InYourCart
                     quantity={existingProduct.quantity}
+                    lang={lang}
+                    translation={translation}
                 />
                 <UpdateCartItem
                     limit={limit}
                     initialQuantity={existingProduct.quantity}
                     updateItem={addItem}
                     removeItem={removeItem}
+                    translation={translation}
                 />
             </div>
         ): (
             <AddToCart
                 limit={limit}
                 addItem={addItem}
+                translation={translation}
             />
         )}
         </>

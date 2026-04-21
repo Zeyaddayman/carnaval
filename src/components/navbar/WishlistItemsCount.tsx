@@ -19,7 +19,7 @@ const UserWishlistItemsCount = ({ userId }: { userId: string }) => {
     if (isLoading || wishlist?.items.length === 0) return null
 
     return (
-        <span className="absolute w-6 h-6 element-center -top-2 -left-2 bg-primary text-primary-foreground text-xs font-semibold rounded-full">
+        <span className="absolute w-6 h-6 element-center -top-2 -start-2 bg-primary text-primary-foreground text-xs font-semibold rounded-full">
             {wishlist?.items.length}
         </span>
     )

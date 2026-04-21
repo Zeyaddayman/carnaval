@@ -1,58 +1,9 @@
 import { Button } from "@/components/ui/Button"
 import Input from "@/components/ui/Input"
 import { addNewAddressAction, AddNewAddressState } from "@/server/actions/address"
+import { Translation } from "@/types/translation"
 import { useActionState, useEffect } from "react"
 import toast from "react-hot-toast"
-
-const addNewAddressFields = [
-    {
-        label: "Address label",
-        name: "label",
-        type: "text",
-        placeholder: "e.g. Home, Work, etc.",
-        autoFocus: true
-    },
-    {
-        label: "Full name",
-        name: "name",
-        type: "text",
-        placeholder: "Enter your full name",
-    },
-    {
-        label: "Phone number",
-        name: "phone",
-        type: "text",
-        placeholder: "Enter your phone number",
-    },
-    {
-        label: "Country",
-        name: "country",
-        type: "text",
-        placeholder: "Enter your country",
-        width: "half"
-    },
-    {
-        label: "Governorate",
-        name: "governorate",
-        type: "text",
-        placeholder: "Enter your governorate",
-        width: "half"
-    },
-    {
-        label: "City",
-        name: "city",
-        type: "text",
-        placeholder: "Enter your city",
-        width: "half"
-    },
-    {
-        label: "Street Address",
-        name: "streetAddress",
-        type: "text",
-        placeholder: "Enter your street address",
-        width: "half"
-    }
-]
 
 interface Props {
     userName: string,
@@ -60,6 +11,7 @@ interface Props {
     isFirstAddress: boolean
     setDefaultChecked?: boolean
     close: () => void
+    translation: Translation["profile"]["addresses"]
 }
 
 const initialState: AddNewAddressState = {
@@ -69,7 +21,7 @@ const initialState: AddNewAddressState = {
     formData: undefined
 }
 
-const AddNewAddressForm = ({ userName, userPhone, isFirstAddress, setDefaultChecked, close }: Props) => {
+const AddNewAddressForm = ({ userName, userPhone, isFirstAddress, setDefaultChecked, close, translation }: Props) => {
 
     const formData = new FormData()
 
@@ -79,6 +31,56 @@ const AddNewAddressForm = ({ userName, userPhone, isFirstAddress, setDefaultChec
     initialState.formData = formData
 
     const [state, action, isPending] = useActionState(addNewAddressAction, initialState)
+
+    const addNewAddressFields = [
+        {
+            label: translation.addressForm.addressLabel.label,
+            name: "label",
+            type: "text",
+            placeholder: translation.addressForm.addressLabel.placeholder,
+            autoFocus: true
+        },
+        {
+            label: translation.addressForm.name.label,
+            name: "name",
+            type: "text",
+            placeholder: translation.addressForm.name.placeholder,
+        },
+        {
+            label: translation.addressForm.phone.label,
+            name: "phone",
+            type: "text",
+            placeholder: translation.addressForm.phone.placeholder,
+        },
+        {
+            label: translation.addressForm.country.label,
+            name: "country",
+            type: "text",
+            placeholder: translation.addressForm.country.placeholder,
+            width: "half"
+        },
+        {
+            label: translation.addressForm.governorate.label,
+            name: "governorate",
+            type: "text",
+            placeholder: translation.addressForm.governorate.placeholder,
+            width: "half"
+        },
+        {
+            label: translation.addressForm.city.label,
+            name: "city",
+            type: "text",
+            placeholder: translation.addressForm.city.placeholder,
+            width: "half"
+        },
+        {
+            label: translation.addressForm.streetAddress.label,
+            name: "streetAddress",
+            type: "text",
+            placeholder: translation.addressForm.streetAddress.placeholder,
+            width: "half"
+        }
+    ]
 
     useEffect(() => {
         if (state.status && state.message) {
@@ -132,7 +134,7 @@ const AddNewAddressForm = ({ userName, userPhone, isFirstAddress, setDefaultChec
                         className="text-sm select-none"
                         htmlFor="default"
                     >
-                        Set as Default Address
+                        {translation.addressForm.setAsDefaultAddress}
                     </label>
                 </div>
             )}
@@ -142,15 +144,15 @@ const AddNewAddressForm = ({ userName, userPhone, isFirstAddress, setDefaultChec
                     onClick={close}
                     type="button"
                 >
-                    Cancel
+                    {translation.addressForm.cancel}
                 </Button>
                 <Button
                     variant={"primary"}
                     type="submit"
                     disabled={isPending}
-                    className="min-w-[118px]"
+                    className="min-w-29.5"
                 >
-                    {isPending ? "Adding..." : "Add Address"}
+                    {isPending ? translation.addressForm.adding : translation.addressForm.addAddress}
                 </Button>
             </div>
         </form>

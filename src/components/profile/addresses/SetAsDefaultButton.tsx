@@ -2,14 +2,16 @@
 
 import { Button } from "@/components/ui/Button"
 import { setAddressAsDefaultAction } from "@/server/actions/address"
+import { Translation } from "@/types/translation"
 import { useTransition } from "react"
 import toast from "react-hot-toast"
 
 interface Props {
     addressId: string
+    translation: Translation["profile"]["addresses"]["addressCard"]
 }
 
-const SetAsDefaultButton = ({ addressId }: Props) => {
+const SetAsDefaultButton = ({ addressId, translation }: Props) => {
 
     const [isSettingAsDefault, startSettingAsDefault] = useTransition()
 
@@ -33,9 +35,9 @@ const SetAsDefaultButton = ({ addressId }: Props) => {
             variant={"primary"}
             onClick={setAsDefault}
             disabled={isSettingAsDefault}
-            className="min-w-[125px]"
+            className="min-w-31.25"
         >
-            {isSettingAsDefault ? "Setting..." : "Set as Default"}
+            {isSettingAsDefault ? translation.setting : translation.setAsDefault}
         </Button>
     )
 }

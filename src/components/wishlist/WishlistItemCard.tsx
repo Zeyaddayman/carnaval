@@ -12,15 +12,19 @@ import { productHasDiscount } from "@/utils/product"
 import { selectCartItem } from "@/redux/features/userCartApi"
 import { FaCheck } from "react-icons/fa"
 import { useAppSelector } from "@/redux/hooks"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     product: wishlistItemWithProduct["product"]
     userId: string
     removeItem: (productId: string) => void
     addItemToCart: (product: wishlistItemWithProduct["product"]) => void
+    lang: Language
+    translation: Translation["global"]
 }
 
-const WishlistItemCard = ({ product, userId, removeItem, addItemToCart }: Props) => {
+const WishlistItemCard = ({ product, userId, removeItem, addItemToCart, lang, translation }: Props) => {
 
     const cartItem = useAppSelector(selectCartItem(userId, product.id))
 
@@ -44,13 +48,13 @@ const WishlistItemCard = ({ product, userId, removeItem, addItemToCart }: Props)
     return (
         <div className="relative flex flex-col gap-3 p-3 bg-card border border-border rounded-lg">
             <Link
-                href={`/product/${product.id}`}
+                href={`/${lang}/product/${product.id}`}
                 className="w-full flex flex-col flex-1"
             >
                 {inStock ? (
-                    <span className="absolute top-2 right-2 z-10 bg-success text-success-foreground text-sm p-2 rounded-full">In stock</span>
+                    <span className="absolute top-2 start-2 z-10 bg-success text-success-foreground text-sm p-2 rounded-full">{translation.inStock}</span>
                 ) : (
-                    <span className="absolute top-2 right-2 z-10 bg-destructive text-destructive-foreground text-sm p-2 rounded-full">Out of stock</span>
+                    <span className="absolute top-2 start-2 z-10 bg-destructive text-destructive-foreground text-sm p-2 rounded-full">{translation.outOfStock}</span>
                 )}
                 <div
                     className="relative w-full aspect-square"
@@ -83,14 +87,14 @@ const WishlistItemCard = ({ product, userId, removeItem, addItemToCart }: Props)
                 {inStock ? (
                     cartItem ? (
                         <div className="bg-success text-success-foreground h-9 px-4 py-2 text-sm flex gap-2 justify-center items-center rounded-md whitespace-nowrap">
-                            <FaCheck className="shrink-0" /> IN YOUR CART
+                            <FaCheck className="shrink-0" /> {translation.inYourCart}
                         </div>
                     ) : (
                         <Button
                             variant={"primary"}
                             onClick={handleAddItemToCart}
                         >
-                            <BsCartPlusFill /> ADD TO CART
+                            <BsCartPlusFill className="rtl-flip" /> {translation.addToCart}
                         </Button>
                     )
                 ) : (
@@ -101,7 +105,7 @@ const WishlistItemCard = ({ product, userId, removeItem, addItemToCart }: Props)
                     variant={"destructiveOutline"}
                     onClick={handleRemoveItem}
                 >
-                    <FiTrash2 /> Remove
+                    <FiTrash2 /> {translation.remove}
                 </Button>
             </div>
         </div>

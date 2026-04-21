@@ -1,8 +1,15 @@
 import { buttonVariants } from "@/components/ui/Button"
+import { Language } from "@/types/i18n"
+import { Translation } from "@/types/translation"
 import Image from "next/image"
 import Link from "next/link"
 
-const NoOrdersYet = () => {
+interface Props {
+    lang: Language
+    translation: Translation["profile"]["orders"]["noOrdersYet"]
+}
+
+const NoOrdersYet = ({ lang, translation }: Props) => {
     return (
         <div className="flex justify-center items-center mt-10">
             <div className="text-center">
@@ -14,14 +21,14 @@ const NoOrdersYet = () => {
                     height={150}
                     priority
                 />
-                <h1 className="text-2xl font-bold mt-5">No Orders Placed Yet!</h1>
-                <p className="text-muted-foreground my-3">Let's make your first order.</p>
+                <h1 className="text-2xl font-bold mt-5">{translation.title}</h1>
+                <p className="text-muted-foreground my-3">{translation.subTitle}</p>
                 <div className="flex flex-col gap-2">
                     <Link
-                        href={"/cart"}
+                        href={`/${lang}/cart`}
                         className={`${buttonVariants({ variant: "primary", size: "lg" })}`}
                     >
-                        VIEW CART
+                        {translation.viewCart}
                     </Link>
                 </div>
             </div>

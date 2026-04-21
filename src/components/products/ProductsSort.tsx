@@ -1,15 +1,17 @@
 "use client"
 
-import { DEFAULT_SORT_OPTION, PRODUCTS_SORT_OPTIONS } from "@/constants/products"
 import { ProductsSortOptionValue } from "@/types/products"
 import { useRouter, useSearchParams } from "next/navigation"
 import SelectMenu from "../ui/SelectMenu"
+import { getProductsSortOptions } from "@/constants/products"
+import { Translation } from "@/types/translation"
 
 interface Props {
     sort: ProductsSortOptionValue
+    translation: Translation["products"]["sortOptions"]
 }
 
-const ProductsSort = ({ sort }: Props) => {
+const ProductsSort = ({ sort, translation }: Props) => {
 
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -23,14 +25,16 @@ const ProductsSort = ({ sort }: Props) => {
         router.push(`?${params.toString()}`)
     }
 
-    const defaultSortOption = PRODUCTS_SORT_OPTIONS.find(option => option.value === sort) || DEFAULT_SORT_OPTION
+    const productsSortOptions = getProductsSortOptions(translation)
+
+    const defaultSortOption = productsSortOptions.find(option => option.value === sort) || productsSortOptions[0]
 
     return (
         <SelectMenu
-            title="Sort By: "
+            title={`${translation.title}: `}
             selected={defaultSortOption}
             setSelected={setSort}
-            options={[...PRODUCTS_SORT_OPTIONS]}
+            options={[...productsSortOptions]}
         />
     )
 }

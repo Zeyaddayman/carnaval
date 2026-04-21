@@ -1,4 +1,4 @@
-import { PRODUCTS_SORT_OPTIONS } from "@/constants/products"
+import { getProductsSortOptions } from "@/constants/products"
 import { Prisma } from "@/generated/prisma"
 import { cardProductSelector, productDetailsSelector } from "@/server/query-selectors/product"
 
@@ -10,12 +10,12 @@ export type CardProduct = Prisma.ProductGetPayload<{
     select: typeof cardProductSelector
 }>
 
-export type ProductsSortOptionValue = typeof PRODUCTS_SORT_OPTIONS[number]["value"]
-export type ProductsSortOption = typeof PRODUCTS_SORT_OPTIONS[number]
+export type ProductsSortOption = ReturnType<typeof getProductsSortOptions>[number]
+export type ProductsSortOptionValue = ProductsSortOption["value"]
 
 export interface ProductsFiltersOptions {
-    minPrice: number,
-    maxPrice: number,
-    minRating: number,
+    minPrice: number
+    maxPrice: number
+    minRating: number
     onlyOnSale: boolean
 }

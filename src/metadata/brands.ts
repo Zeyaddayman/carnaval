@@ -1,15 +1,19 @@
 import { getBrands } from "@/server/db/brands";
+import { Language } from "@/types/i18n";
+import getTranslation, { inject } from "@/utils/translation";
 import { Metadata } from "next";
 
-const brands = await getBrands()
-const topBrandsNames = brands.slice(0, 20).map(brand => brand.name).join(", ")
+export const getBrandsMetadata = async (lang: Language): Promise<Metadata> => {
 
-export const brandsMetadata: Metadata = {
-    title: 'Shop by Brand',
-    description: `Explore products from top brands at Carnaval. Browse ${topBrandsNames}, and more. Find products from your favorite brands!`,
-    keywords: ['brands', 'shop by brand', 'top brands', 'popular brands', 'online shopping'].concat(topBrandsNames.split(", ")),
-    openGraph: {
-        title: 'Shop by Brand | Carnaval',
-        description: `Explore products from top brands at Carnaval. Browse ${topBrandsNames}, and more. Find products from your favorite brands!`
+    const [{ metadata }, brands] = await Promise.all([getTranslation(lang), getBrands()])
+    const topBrandsNames = brands.slice(0, 20).map(brand => brand.name).join(", ")
+
+    return {
+        ...metadata.brands,
+        description: inject(metadata.brands.description, { topBrandsNames }),
+        openGraph: {
+            ...metadata.brands.openGraph,
+            description: inject(metadata.brands.openGraph.description, { topBrandsNames })
+        }
     }
 }

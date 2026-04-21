@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react"
 import { Button } from "../ui/Button"
 import QuantitySelector from "../ui/QuantitySelector"
+import { Translation } from "@/types/translation"
 
 interface Props {
     initialQuantity: number
     limit: number
     updateQuantity: (quantity: number) => void
+    translation: Translation["global"]
 }
 
-const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity }: Props) => {
+const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity, translation }: Props) => {
 
     const [quantity, setQuantity] = useState<number>(initialQuantity)
 
@@ -36,7 +38,7 @@ const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity }: Pro
         <div className='flex gap-2'>
             <Button
                 variant={"basic"}
-                className="!w-10"
+                className="w-10"
                 disabled={quantity <= 1}
                 onClick={handleMinus}
             >
@@ -49,7 +51,7 @@ const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity }: Pro
             />
             <Button
                 variant={"basic"}
-                className="!w-10"
+                className="w-10"
                 disabled={quantity >= limit}
                 onClick={handlePlus}
             >
@@ -60,7 +62,7 @@ const CartItemQuantityCounter = ({ initialQuantity, limit, updateQuantity }: Pro
                     variant={"secondary"}
                     onClick={handleUpdateQuantity}
                 >
-                    Update
+                    {translation.update}
                 </Button>
             ): (
                 // Placeholder to prevent layout shift

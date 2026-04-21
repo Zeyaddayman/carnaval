@@ -9,40 +9,13 @@ import { useRouter } from "next/navigation"
 import { userSessionApi } from "@/redux/features/userSessionApi"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
+import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
-const registerFields = [
-    {
-        label: "Full name",
-        name: "name",
-        type: "text",
-        placeholder: "Enter your full name",
-        autoFocus: true
-    },
-    {
-        label: "Phone number",
-        name: "phone",
-        type: "text",
-        placeholder: "Enter your phone number"
-    },
-    {
-        label: "Email",
-        name: "email",
-        type: "email",
-        placeholder: "Enter your email"
-    },
-    {
-        label: "Password",
-        name: "password",
-        type: "password",
-        placeholder: "Enter your password"
-    },
-    {
-        label: "Confirm password",
-        name: "confirmPassword",
-        type: "password",
-        placeholder: "Re-enter your password"
-    }
-]
+interface Props {
+    lang: Language
+    translation: Translation["auth"]["register"]
+}
 
 const initialState: RegisterState = {
     message: "",
@@ -51,7 +24,7 @@ const initialState: RegisterState = {
     formData: undefined
 }
 
-const RegisterFrom = () => {
+const RegisterFrom = ({ lang, translation }: Props) => {
 
     const localCart = useAppSelector(selectLocalCart)
 
@@ -59,6 +32,40 @@ const RegisterFrom = () => {
         registerAction.bind(null, localCart.items.toReversed()),
         initialState
     )
+
+    const registerFields = [
+        {
+            label: translation.name.label,
+            name: "name",
+            type: "text",
+            placeholder: translation.name.placeholder,
+            autoFocus: true
+        },
+        {
+            label: translation.phone.label,
+            name: "phone",
+            type: "text",
+            placeholder: translation.phone.placeholder
+        },
+        {
+            label: translation.email.label,
+            name: "email",
+            type: "email",
+            placeholder: translation.email.placeholder
+        },
+        {
+            label: translation.password.label,
+            name: "password",
+            type: "password",
+            placeholder: translation.password.placeholder
+        },
+        {
+            label: translation.confirmPassword.label,
+            name: "confirmPassword",
+            type: "password",
+            placeholder: translation.confirmPassword.placeholder
+        }
+    ]
 
     const dispatch = useAppDispatch()
 
@@ -71,9 +78,9 @@ const RegisterFrom = () => {
                 toast.success(state.message)
 
                 const searchParams = new URLSearchParams(window.location.search)
-                let redirectPath = searchParams.get("redirect") || "/"
+                let redirectPath = searchParams.get("redirect") || `/${lang}`
 
-                if (redirectPath.startsWith("/auth")) redirectPath = "/"
+                if (redirectPath.startsWith(`/${lang}/auth`)) redirectPath = `/${lang}`
 
                 dispatch(userSessionApi.util.invalidateTags(['user-session']))
 
@@ -122,7 +129,7 @@ const RegisterFrom = () => {
                 className="w-full mt-5"
                 disabled={isPending}
             >
-                {isPending ? "Registering..." : "Register"}
+                {isPending ? translation.submiting : translation.submit}
             </Button>
         </form>
     )
