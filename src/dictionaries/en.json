@@ -441,6 +441,86 @@
                 "title": "Shop by Brand | Carnaval",
                 "description": "Explore products from top brands at Carnaval. Browse {{topBrandsNames}}, and more. Find products from your favorite brands!"
             }
+        },
+        "auth": {
+            "login": {
+                "title": "Login to Your Account",
+                "description": "Access your Carnaval account to access orders, wishlist, saved addresses, and personalized shopping experience."
+            },
+            "register": {
+                "title": "Register a New Account",
+                "description": "Create a new account at Carnaval to start shopping, save your favorite products, and enjoy a personalized experience."
+            }
+        },
+        "cart": {
+            "title": "Your Shopping Cart",
+            "description": "Review the items in your shopping cart at Carnaval. Update quantities, remove products, and proceed to checkout for a seamless shopping experience."
+        },
+        "wishlist": {
+            "title": "Your Wishlist",
+            "description": "View and manage your wishlist at Carnaval. and get notified when wishlist items are back in stock."
+        },
+        "categoryProducts": {
+            "title": "{{categoryName}} Products",
+            "description": "Explore our wide range of {{categoryName}} products at Carnaval. Find the best deals and latest trends in {{categoryName}}.",
+            "openGraph": {
+                "title": "{{categoryName}} Products | Carnaval",
+                "description": "Explore our wide range of {{categoryName}} products at Carnaval."
+            }
+        },
+        "brandProducts": {
+            "title": "{{brandName}} Products",
+            "description": "Discover top-quality products from {{brandName}} at Carnaval. Shop the latest collections and exclusive deals on {{brandName}} items.",
+            "openGraph": {
+                "title": "{{brandName}} Products | Carnaval",
+                "description": "Discover top-quality products from {{brandName}} at Carnaval."
+            }
+        },
+        "searchProducts": {
+            "title": "{{searchTerm}} Products",
+            "description": "Discover top-quality products from {{searchTerm}} at Carnaval. Shop the latest collections and exclusive deals on {{searchTerm}} items.",
+            "descriptionWithCat": "Discover top-quality products from {{searchTerm}} in {{categoryName}} at Carnaval. Shop the latest collections and exclusive deals on {{searchTerm}} items.",
+            "openGraph": {
+                "title": "{{searchTerm}} Products | Carnaval",
+                "description": "Discover top-quality products from {{searchTerm}} at Carnaval. Shop the latest collections and exclusive deals on {{searchTerm}} items.",
+                "descriptionWithCat": "Discover top-quality products from {{searchTerm}} in {{categoryName}} at Carnaval. Shop the latest collections and exclusive deals on {{searchTerm}} items."
+            }
+        },
+        "checkout": {
+            "title": "Checkout",
+            "description": "Complete your purchase at Carnaval. Review your cart, enter shipping details, and choose your payment method to finalize your order."
+        },
+        "product": {
+            "price": "Price: {{price}}",
+            "openGraph": {
+                "title": "{{productTitle}} | Carnaval"
+            }
+        },
+        "profile": {
+            "index": {
+                "title": "Your Profile Overview",
+                "description": "View and manage your Carnaval account details, including personal information, order history, and shipping addresses."
+            },
+            "orders": {
+                "title": "Your Order History",
+                "description": "View your orders on Carnaval. Track order status, view details."
+            },
+            "orderDetails": {
+                "title": "Order Details",
+                "description": "View detailed information about your order on Carnaval."
+            },
+            "addresses": {
+                "title": "Manage Your Addresses",
+                "description": "Add, edit, and manage your shipping addresses for a seamless shopping experience on Carnaval."
+            },
+            "settings": {
+                "title": "Account Settings",
+                "description": "Update your personal information, change password, manage your account settings on Carnaval."
+            }
+        },
+        "notFound": {
+            "title": "Not Found",
+            "description": "The page you are looking for does not exist."
         }
     }
 }

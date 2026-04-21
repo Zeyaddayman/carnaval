@@ -20,6 +20,7 @@ const BrandsPage = async ({ params }: PageProps<"/[lang]/brands">) => {
 }
 
 export async function generateMetadata({ params }: PageProps<"/[lang]/brands">) {
+
     const { lang } = await params as { lang: Language }
 
     return await getBrandsMetadata(lang)

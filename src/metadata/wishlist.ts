@@ -1,6 +1,10 @@
+import { Language } from "@/types/i18n";
+import getTranslation from "@/utils/translation";
 import { Metadata } from "next";
 
-export const wishlistMetadata: Metadata = {
-    title: 'Your Wishlist',
-    description: 'View and manage your wishlist at Carnaval. and get notified when wishlist items are back in stock.'
+export const getWishlistMetadata = async (lang: Language): Promise<Metadata> => {
+
+    const { metadata } = await getTranslation(lang)
+
+    return metadata.wishlist
 }

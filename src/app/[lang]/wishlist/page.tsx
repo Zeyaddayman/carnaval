@@ -1,13 +1,11 @@
 import Heading from "@/components/ui/Heading"
 import WishlistItems from "@/components/wishlist/WishlistItems"
 import { i18n } from "@/constants/i18n"
-import { wishlistMetadata } from "@/metadata/wishlist"
+import { getWishlistMetadata } from "@/metadata/wishlist"
 import { isAuthenticated } from "@/server/utils/auth"
 import { Language } from "@/types/i18n"
 import getTranslation from "@/utils/translation"
 import { redirect } from "next/navigation"
-
-export const metadata = wishlistMetadata
 
 const WishlistPage = async ({ params }: PageProps<"/[lang]/wishlist">) => {
 
@@ -35,6 +33,12 @@ const WishlistPage = async ({ params }: PageProps<"/[lang]/wishlist">) => {
             </div>
         </main>
     )
+}
+
+export async function generateMetadata({ params }: PageProps<"/[lang]/wishlist">) {
+    const { lang } = await params as { lang: Language }
+
+    return await getWishlistMetadata(lang)
 }
 
 export function generateStaticParams() {

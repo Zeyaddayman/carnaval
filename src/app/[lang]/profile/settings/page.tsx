@@ -1,13 +1,11 @@
 import ChangePasswordFrom from "@/components/profile/settings/ChangePasswordFrom"
 import EditProfileForm from "@/components/profile/settings/EditProfileForm"
 import Heading from "@/components/ui/Heading"
-import { settingsMetadata } from "@/metadata/settings"
+import { getSettingsMetadata } from "@/metadata/settings"
 import { getProfile } from "@/server/db/profile"
 import { Language } from "@/types/i18n"
 import { Translation } from "@/types/translation"
 import getTranslation from "@/utils/translation"
-
-export const metadata = settingsMetadata
 
 const ProfileSettingsPage = async ({ params }: PageProps<"/[lang]/profile/settings">) => {
 
@@ -56,6 +54,13 @@ const ChangePasswordSection = ({ translation }: { translation: Translation["prof
             />
         </section>
     )
+}
+
+export async function generateMetadata({ params }: PageProps<"/[lang]/profile/settings">) {
+
+    const { lang } = await params as { lang: Language }
+
+    return await getSettingsMetadata(lang)
 }
 
 export default ProfileSettingsPage

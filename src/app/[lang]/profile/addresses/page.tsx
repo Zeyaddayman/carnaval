@@ -2,13 +2,11 @@ import AddNewAddressButton from "@/components/profile/addresses/AddNewAddressBut
 import AddressCard from "@/components/profile/addresses/AddressCard"
 import NoSavedAddresses from "@/components/profile/addresses/NoSavedAddresses"
 import Heading from "@/components/ui/Heading"
-import { addressesMetadata } from "@/metadata/addresses"
+import { getAddressesMetadata } from "@/metadata/addresses"
 import { getUserAddresses } from "@/server/db/address"
 import { getProfile } from "@/server/db/profile"
 import { Language } from "@/types/i18n"
 import getTranslation from "@/utils/translation"
-
-export const metadata = addressesMetadata
 
 const ProfileAddressesPage = async ({ params }: PageProps<"/[lang]/profile/addresses">) => {
 
@@ -48,6 +46,13 @@ const ProfileAddressesPage = async ({ params }: PageProps<"/[lang]/profile/addre
         />
         </>
     )
+}
+
+export async function generateMetadata({ params }: PageProps<"/[lang]/profile/addresses">) {
+
+    const { lang } = await params as { lang: Language }
+
+    return await getAddressesMetadata(lang)
 }
 
 export default ProfileAddressesPage

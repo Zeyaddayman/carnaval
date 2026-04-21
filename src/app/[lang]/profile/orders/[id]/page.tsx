@@ -1,6 +1,6 @@
 import OrderStatus from "@/components/profile/orders/OrderStatus"
 import Heading from "@/components/ui/Heading"
-import { orderMetadata } from "@/metadata/orders"
+import { getOrderMetadata } from "@/metadata/orders"
 import { getOrderDetails } from "@/server/db/orders"
 import { Language } from "@/types/i18n"
 import { formatDate, formatPrice } from "@/utils/formatters"
@@ -8,8 +8,6 @@ import getTranslation from "@/utils/translation"
 import Image from "next/image"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-
-export const metadata = orderMetadata
 
 const OrderDetailsPage = async ({ params }: PageProps<"/[lang]/profile/orders/[id]">) => {
 
@@ -108,6 +106,13 @@ const OrderDetailsPage = async ({ params }: PageProps<"/[lang]/profile/orders/[i
         </div>
         </>
     )
+}
+
+export async function generateMetadata({ params }: PageProps<"/[lang]/profile/orders/[id]">) {
+
+    const { lang } = await params as { lang: Language }
+
+    return await getOrderMetadata(lang)
 }
 
 export default OrderDetailsPage

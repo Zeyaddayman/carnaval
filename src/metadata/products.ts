@@ -1,34 +1,36 @@
+import { Translation } from "@/types/translation"
+import { inject } from "@/utils/translation"
 import { Metadata } from "next"
 
-export const generateCategoryProductsMetadata = (categoryName: string): Metadata => {
+export const getCategoryProductsMetadata = (translation: Translation["metadata"], categoryName: string): Metadata => {
     return {
-        title: `${categoryName} Products`,
-        description: `Explore our wide range of ${categoryName} products at Carnaval. Find the best deals and latest trends in ${categoryName}.`,
+        title: inject(translation.categoryProducts.title, { categoryName }),
+        description: inject(translation.categoryProducts.description, { categoryName }),
         openGraph: {
-            title: `${categoryName} Products | Carnaval`,
-            description: `Explore our wide range of ${categoryName} products at Carnaval.`
+            title: inject(translation.categoryProducts.openGraph.title, { categoryName }),
+            description: inject(translation.categoryProducts.openGraph.description, { categoryName })
         }
     }
 }
 
-export const generateBrandProductsMetadata = (brandName: string): Metadata => {
+export const getBrandProductsMetadata = (translation: Translation["metadata"], brandName: string): Metadata => {
     return {
-        title: `${brandName} Products`,
-        description: `Discover top-quality products from ${brandName} at Carnaval. Shop the latest collections and exclusive deals on ${brandName} items.`,
+        title: inject(translation.brandProducts.title, { brandName }),
+        description: inject(translation.brandProducts.description, { brandName }),
         openGraph: {
-            title: `${brandName} Products | Carnaval`,
-            description: `Discover top-quality products from ${brandName} at Carnaval.`
+            title: inject(translation.brandProducts.openGraph.title, { brandName }),
+            description: inject(translation.brandProducts.openGraph.description, { brandName })
         }
     }
 }
 
-export const generateSearchProductsMetadata = (searchTerm: string, categoryName?: string): Metadata => {
+export const getSearchProductsMetadata = (translation: Translation["metadata"], searchTerm: string, categoryName?: string): Metadata => {
     return {
-        title: `${searchTerm} Products`,
-        description: `Discover top-quality products from ${searchTerm} ${categoryName && `in ${categoryName}`} at Carnaval. Shop the latest collections and exclusive deals on ${searchTerm} items.`,
+        title: inject(translation.searchProducts.title, { searchTerm }),
+        description: categoryName ? inject(translation.searchProducts.descriptionWithCat, { searchTerm, categoryName }) : inject(translation.searchProducts.description, { searchTerm }),
         openGraph: {
-            title: `${searchTerm} Products | Carnaval`,
-            description: `Discover top-quality products from ${searchTerm} ${categoryName && `in ${categoryName}`} at Carnaval.`
+            title: inject(translation.searchProducts.openGraph.title, { searchTerm }),
+            description: categoryName ? inject(translation.searchProducts.openGraph.descriptionWithCat, { searchTerm, categoryName }) : inject(translation.searchProducts.openGraph.description, { searchTerm })
         }
     }
 }

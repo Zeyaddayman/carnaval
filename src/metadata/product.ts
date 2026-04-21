@@ -1,7 +1,10 @@
 import { ProductDetails } from "@/types/products";
+import { Translation } from "@/types/translation";
 import { formatPrice } from "@/utils/formatters";
+import { inject } from "@/utils/translation";
+import { Metadata } from "next";
 
-export const generateProductMetadata = (product: ProductDetails) => {
+export const getProductMetadata = (translation: Translation["metadata"], product: ProductDetails): Metadata => {
 
     const brandName = product.brand && product.brand.name
 
@@ -13,15 +16,15 @@ export const generateProductMetadata = (product: ProductDetails) => {
         ? product.description.slice(0, 147) + '...'
         : product.description
 
-    description += ` Price: ${formatPrice(product.finalPrice)}`
+    description += ` ${inject(translation.product.price, { price: formatPrice(product.finalPrice) })}`
 
     return {
-        title: `${product.title}`,
+        title: product.title,
         description,
         keywords,
         openGraph: {
-            title: `${product.title} | Carnaval`,
-            description: product.description,
+            title: inject(translation.product.openGraph.title, { productTitle: product.title }),
+            description,
             images: product.images.map(url => ({
                 url,
                 alt: product.title

@@ -3,7 +3,8 @@ import CheckoutForm from "@/components/checkout/CheckoutForm"
 import CheckoutItems from "@/components/checkout/CheckoutItems"
 import CheckoutOrderSummary from "@/components/checkout/CheckoutOrderSummary"
 import Heading from "@/components/ui/Heading"
-import { checkoutMetadata } from "@/metadata/checkout"
+import { i18n } from "@/constants/i18n"
+import { getCheckoutMetadata } from "@/metadata/checkout"
 import { getUserAddresses } from "@/server/db/address"
 import { getCheckoutItems } from "@/server/db/checkout"
 import { getProfile } from "@/server/db/profile"
@@ -16,8 +17,6 @@ import { formatPrice } from "@/utils/formatters"
 import getTranslation from "@/utils/translation"
 import Link from "next/link"
 import { redirect } from "next/navigation"
-
-export const metadata = checkoutMetadata
 
 const CheckoutPage = async ({ params }: PageProps<"/[lang]/checkout">) => {
 
@@ -112,6 +111,16 @@ const CheckoutPage = async ({ params }: PageProps<"/[lang]/checkout">) => {
             </div>
         </main>
     )
+}
+
+export async function generateMetadata({ params }: PageProps<"/[lang]/checkout">) {
+    const { lang } = await params as { lang: Language }
+
+    return await getCheckoutMetadata(lang)
+}
+
+export function generateStaticParams() {
+    return i18n.languages.map(lang => ({ lang }))
 }
 
 export default CheckoutPage

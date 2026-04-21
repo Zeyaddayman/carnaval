@@ -4,7 +4,7 @@ import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
 import { Button } from "@/components/ui/Button"
 import { getProductsSortOptions, PRODUCTS_FILTERS } from "@/constants/products"
-import { generateSearchProductsMetadata } from "@/metadata/products"
+import { getSearchProductsMetadata } from "@/metadata/products"
 import { getSearchProducts } from "@/server/db/products"
 import { getSearchProductsMaxPrice, getSearchProductsMinPrice, getSearchProductsMinRating } from "@/server/utils/products-statistics"
 import { Language } from "@/types/i18n"
@@ -191,11 +191,11 @@ export async function generateMetadata({ params, searchParams }: PageProps<"/[la
     const data = await getSearchProducts(query, category, sort, filters, paginationPage)
 
     if (!data) return {
-        title: 'Not Found',
-        description: 'The page you are looking for does not exist.'
+        title: translation.metadata.notFound.title,
+        description: translation.metadata.notFound.description
     }
 
-    return generateSearchProductsMetadata(data.searchTerm, data.categoryName)
+    return getSearchProductsMetadata(translation.metadata, data.searchTerm, data.categoryName)
 }
 
 export default SearchPage

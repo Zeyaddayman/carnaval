@@ -1,12 +1,10 @@
 import LoginForm from "@/components/login/Form"
 import Heading from "@/components/ui/Heading"
 import { i18n } from "@/constants/i18n"
-import { loginMetadata } from "@/metadata/auth"
+import { getLoginMetadata } from "@/metadata/auth"
 import { Language } from "@/types/i18n"
 import getTranslation from "@/utils/translation"
 import Link from "next/link"
-
-export const metadata = loginMetadata
 
 const LoginPage = async ({ params }: PageProps<"/[lang]/auth/login">) => {
 
@@ -32,6 +30,12 @@ const LoginPage = async ({ params }: PageProps<"/[lang]/auth/login">) => {
             </p>
         </div>
     )
+}
+
+export async function generateMetadata({ params }: PageProps<"/[lang]/auth/login">) {
+    const { lang } = await params as { lang: Language }
+
+    return await getLoginMetadata(lang)
 }
 
 export function generateStaticParams() {

@@ -2,13 +2,11 @@ import NoOrdersYet from "@/components/profile/orders/NoOrdersYet"
 import OrdersFilter from "@/components/profile/orders/OrdersFilter"
 import OrdersTable from "@/components/profile/orders/OrdersTable"
 import Heading from "@/components/ui/Heading"
-import { ordersMetadata } from "@/metadata/orders"
+import { getOrdersMetadata } from "@/metadata/orders"
 import { getUserOrders } from "@/server/db/orders"
 import { Language } from "@/types/i18n"
 import { Translation } from "@/types/translation"
 import getTranslation from "@/utils/translation"
-
-export const metadata = ordersMetadata
 
 const ProfileOrdersPage = async ({ params, searchParams }: PageProps<"/[lang]/profile/orders">) => {
 
@@ -66,6 +64,13 @@ const Orders = async ({
         />
         </>
     )
+}
+
+export async function generateMetadata({ params }: PageProps<"/[lang]/profile/orders">) {
+
+    const { lang } = await params as { lang: Language }
+
+    return await getOrdersMetadata(lang)
 }
 
 export default ProfileOrdersPage

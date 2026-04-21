@@ -5,7 +5,7 @@ import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
 import { Button } from "@/components/ui/Button"
 import { getProductsSortOptions, PRODUCTS_FILTERS } from "@/constants/products"
-import { generateBrandProductsMetadata } from "@/metadata/products"
+import { getBrandProductsMetadata } from "@/metadata/products"
 import { getProductsByBrand } from "@/server/db/products"
 import { getBrandProductsMaxPrice, getBrandProductsMinPrice, getBrandProductsMinRating } from "@/server/utils/products-statistics"
 import { Language } from "@/types/i18n"
@@ -182,11 +182,11 @@ export async function generateMetadata({ params, searchParams }: PageProps<"/[la
     const data = await getProductsByBrand(slug, sort, filters, paginationPage)
 
     if (!data) return {
-        title: 'Not Found',
-        description: 'The page you are looking for does not exist.'
+        title: translation.metadata.notFound.title,
+        description: translation.metadata.notFound.description
     }
 
-    return generateBrandProductsMetadata(data.brandName)
+    return getBrandProductsMetadata(translation.metadata, data.brandName)
 }
 
 export default BrandProductsPage

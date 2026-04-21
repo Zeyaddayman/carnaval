@@ -1,6 +1,10 @@
+import { Language } from "@/types/i18n";
+import getTranslation from "@/utils/translation";
 import { Metadata } from "next";
 
-export const addressesMetadata: Metadata = {
-    title: 'Manage Your Addresses',
-    description: 'Add, edit, and manage your shipping addresses for a seamless shopping experience on Carnaval.'
+export const getAddressesMetadata = async (lang: Language): Promise<Metadata> => {
+
+    const { metadata } = await getTranslation(lang)
+
+    return metadata.profile.addresses
 }

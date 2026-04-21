@@ -1,12 +1,10 @@
 import Heading from "@/components/ui/Heading"
 import Link from "next/link"
 import RegisterFrom from "@/components/register/Form"
-import { registerMetadata } from "@/metadata/auth"
+import { getRegisterMetadata } from "@/metadata/auth"
 import getTranslation from "@/utils/translation"
 import { Language } from "@/types/i18n"
 import { i18n } from "@/constants/i18n"
-
-export const metadata = registerMetadata
 
 const RegisterPage = async ({ params }: PageProps<"/[lang]/auth/register">) => {
 
@@ -32,6 +30,12 @@ const RegisterPage = async ({ params }: PageProps<"/[lang]/auth/register">) => {
             </p>
         </div>
     )
+}
+
+export async function generateMetadata({ params }: PageProps<"/[lang]/auth/register">) {
+    const { lang } = await params as { lang: Language }
+
+    return await getRegisterMetadata(lang)
 }
 
 export function generateStaticParams() {

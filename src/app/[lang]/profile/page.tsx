@@ -1,7 +1,6 @@
 import { buttonVariants } from "@/components/ui/Button"
 import Heading from "@/components/ui/Heading"
 import { Address } from "@/generated/prisma"
-import { profileMetadata } from "@/metadata/profile"
 import { getUserDefaultAddress } from "@/server/db/address"
 import { getUserOrdersSummary } from "@/server/db/orders"
 import { getProfile } from "@/server/db/profile"
@@ -10,8 +9,6 @@ import { Translation } from "@/types/translation"
 import { formatDate } from "@/utils/formatters"
 import getTranslation from "@/utils/translation"
 import Link from "next/link"
-
-export const metadata = profileMetadata
 
 const ProfileAccountOverviewPage = async ({ params }: PageProps<"/[lang]/profile">) => {
 

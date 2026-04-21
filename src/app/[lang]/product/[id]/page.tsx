@@ -6,7 +6,7 @@ import WishlistAndCart from "@/components/product/WishlistAndCart"
 import { db } from "@/lib/prisma"
 import { getProduct } from "@/server/db/product"
 import { notFound } from "next/navigation"
-import { generateProductMetadata } from "@/metadata/product"
+import { getProductMetadata } from "@/metadata/product"
 import getTranslation from "@/utils/translation"
 import { Language } from "@/types/i18n"
 import { i18n } from "@/constants/i18n"
@@ -53,22 +53,20 @@ export const generateMetadata = async ({ params }: PageProps<"/[lang]/product/[i
     const [data, translation] = await Promise.all([getProduct(id), getTranslation(lang)])
 
     if (!data) return {
-        title: 'Product Not Found',
-        description: 'The product you are looking for does not exist or has been removed.'
+        title: translation.metadata.notFound.title,
+        description: translation.metadata.notFound.description
     }
 
     const { product } = data
 
-    return generateProductMetadata(product)
+    return getProductMetadata(translation.metadata, product)
 }
 
 export async function generateStaticParams() {
 
     const params: { lang: Language, id: string }[] = []
 
-    const allProducts = await db.product.findMany({
-        select: { id: true }
-    })
+    const allProducts = await db.product.findMany({ select: { id: true } })
 
     i18n.languages.forEach(lang => {
         allProducts.forEach(({ id }) => params.push({ lang, id }))

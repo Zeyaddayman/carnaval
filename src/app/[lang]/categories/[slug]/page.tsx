@@ -6,7 +6,7 @@ import ProductsList from "@/components/products/ProductsList"
 import ProductsSort from "@/components/products/ProductsSort"
 import { Button } from "@/components/ui/Button"
 import { getProductsSortOptions, PRODUCTS_FILTERS } from "@/constants/products"
-import { generateCategoryProductsMetadata } from "@/metadata/products"
+import { getCategoryProductsMetadata } from "@/metadata/products"
 import { getCategoryHierarchy } from "@/server/db/categories"
 import { getProductsByCategory } from "@/server/db/products"
 import { getCategoryProductsMaxPrice, getCategoryProductsMinPrice, getCategoryProductsMinRating } from "@/server/utils/products-statistics"
@@ -199,11 +199,11 @@ export async function generateMetadata({ params, searchParams }: PageProps<"/[la
     const data = await getProductsByCategory(slug, sort, filters, paginationPage)
 
     if (!data) return {
-        title: 'Not Found',
-        description: 'The page you are looking for does not exist.'
+        title: translation.metadata.notFound.title,
+        description: translation.metadata.notFound.description
     }
 
-    return generateCategoryProductsMetadata(data.categoryName)
+    return getCategoryProductsMetadata(translation.metadata, data.categoryName)
 }
 
 export default CategoryProductsPage
