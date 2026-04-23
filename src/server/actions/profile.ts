@@ -1,11 +1,13 @@
 "use server"
 
-import { editProfileSchema } from "@/validations/profile"
+import { getEditProfileSchema } from "@/validations/profile"
 import { isAuthenticated } from "../utils/auth"
 import { db } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { ACCESS_TOKEN_EXPIRY, clearToken, generateAccessToken, setToken } from "../utils/tokens"
 import { formatErrors } from "@/utils/formatters"
+import { getLanguage } from "@/utils/language"
+import getTranslation from "@/utils/translation"
 
 export interface EditProfileState {
     message?: string
@@ -21,6 +23,12 @@ export const editProfileAction = async (
 ): Promise<EditProfileState> => {
 
     const formObject = Object.fromEntries(formData.entries())
+
+    const lang = await getLanguage()
+
+    const translation = await getTranslation(lang)
+
+    const editProfileSchema = getEditProfileSchema(translation.validation)
 
     const result = editProfileSchema.safeParse(formObject)
 

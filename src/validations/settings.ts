@@ -1,14 +1,17 @@
+import { Translation } from "@/types/translation"
 import * as z from "zod"
 
-export const changePasswordSchema = z.object({
-    newPassword: z
-        .string()
-        .min(6, "Password must be at least 6 characters")
-        .max(40, "Password must be at most 40 characters")
-    ,
-    confirmNewPassword: z.string()
+export const getChangePasswordSchema = (translation: Translation["validation"]) => {
+    return z.object({
+        newPassword: z
+            .string()
+            .min(6, translation.passwordMinLength)
+            .max(40, translation.passwordMaxLength)
+        ,
+        confirmNewPassword: z.string()
 
-}).refine((data) => data.newPassword === data.confirmNewPassword, {
-    message: "Password do not match",
-    path: ["confirmNewPassword"]
-})
+    }).refine((data) => data.newPassword === data.confirmNewPassword, {
+        message: translation.passwordMismatch,
+        path: ["confirmNewPassword"]
+    })
+}

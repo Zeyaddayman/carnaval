@@ -4,7 +4,9 @@ import { isAuthenticated } from "../utils/auth"
 import { db } from "@/lib/prisma"
 import bcrypt from "bcrypt"
 import { formatErrors } from "@/utils/formatters"
-import { changePasswordSchema } from "@/validations/settings"
+import { getChangePasswordSchema } from "@/validations/settings"
+import { getLanguage } from "@/utils/language"
+import getTranslation from "@/utils/translation"
 
 export interface ChangePasswordState {
     message?: string
@@ -24,6 +26,12 @@ export const changePasswordAction = async (
         newPassword: formData.get("newPassword"),
         confirmNewPassword: formData.get("confirmNewPassword"),
     }
+
+    const lang = await getLanguage()
+
+    const translation = await getTranslation(lang)
+
+    const changePasswordSchema = getChangePasswordSchema(translation.validation)
 
     const result = changePasswordSchema.safeParse(formObject)
 
@@ -69,7 +77,7 @@ export const changePasswordAction = async (
             return {
                 status: 400,
                 formData,
-                errors: { currentPassword: "Incorrect current password" }
+                errors: { currentPassword: translation.validation.passwordIncorrect }
             }
         }
 

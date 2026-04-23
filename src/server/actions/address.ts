@@ -4,7 +4,9 @@ import { isAuthenticated } from "../utils/auth"
 import { db } from "@/lib/prisma"
 import { revalidatePath } from "next/cache"
 import { formatErrors } from "@/utils/formatters"
-import { addNewAddressSchema, editAddressSchema } from "@/validations/address"
+import { getAddNewAddressSchema, getEditAddressSchema } from "@/validations/address"
+import getTranslation from "@/utils/translation"
+import { getLanguage } from "@/utils/language"
 
 export interface AddNewAddressState {
     message?: string
@@ -20,6 +22,12 @@ export const addNewAddressAction = async (
 ): Promise<AddNewAddressState> => {
 
     const formObject = Object.fromEntries(formData.entries())
+
+    const lang = await getLanguage()
+
+    const translation = await getTranslation(lang)
+
+    const addNewAddressSchema = getAddNewAddressSchema(translation.validation)
 
     const result = addNewAddressSchema.safeParse(formObject)
 
@@ -77,7 +85,7 @@ export const addNewAddressAction = async (
             return {
                 status: 400,
                 formData,
-                errors: { label: "Address with this label already exists" }
+                errors: { label: translation.validation.addressExist }
             }
         }
 
@@ -99,7 +107,7 @@ export const addNewAddressAction = async (
         await db.address.create({
             data: {
                 userId,
-                label,
+                label: label.toLowerCase(),
                 name,
                 phone,
                 country,
@@ -143,6 +151,12 @@ export const editAddressAction = async (
 ): Promise<EditAddressState> => {
 
     const formObject = Object.fromEntries(formData.entries())
+
+    const lang = await getLanguage()
+
+    const translation = await getTranslation(lang)
+
+    const editAddressSchema = getEditAddressSchema(translation.validation)
 
     const result = editAddressSchema.safeParse(formObject)
 
@@ -206,7 +220,7 @@ export const editAddressAction = async (
             return {
                 status: 400,
                 formData,
-                errors: { label: "Address with this label already exists" }
+                errors: { label: translation.validation.addressExist }
             }
         }
 
@@ -265,13 +279,13 @@ export const editAddressAction = async (
         })
 
         return {
-            message: "Address updated successfully",
+            message: "Address edited successfully",
             status: 200
         }
     }
     catch {
         return {
-            message: "Failed to update address",
+            message: "Failed to edit address",
             status: 500
         }
     }

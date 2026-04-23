@@ -124,7 +124,7 @@ export const checkoutAction = async (addressLabel: string) => {
     }
     catch {
         return {
-            message: "An unexpected error occurred",
+            message: "Failed to place order",
             status: 500
         }
     }

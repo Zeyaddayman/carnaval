@@ -1,13 +1,15 @@
 "use server"
 
 import { db } from "@/lib/prisma"
-import { loginSchema, registerSchema } from "@/validations/auth"
+import { getLoginSchema, getRegisterSchema } from "@/validations/auth"
 import bcrypt from "bcrypt"
 import { ACCESS_TOKEN_EXPIRY, clearToken, generateAccessToken, setToken } from "../utils/tokens"
 import { CartItemWithProduct } from "@/types/cart"
 import { mergeCartItems } from "@/utils/cart"
 import { formatErrors } from "@/utils/formatters"
 import { cartItemSelector } from "../query-selectors/cart"
+import { getLanguage } from "@/utils/language"
+import getTranslation from "@/utils/translation"
 
 export interface RegisterState {
     message?: string
@@ -24,6 +26,12 @@ export const registerAction = async (
 ): Promise<RegisterState> => {
 
     const formObject = Object.fromEntries(formData.entries())
+
+    const lang = await getLanguage()
+
+    const translation = await getTranslation(lang)
+
+    const registerSchema = getRegisterSchema(translation.validation)
 
     const result = registerSchema.safeParse(formObject)
 
@@ -105,6 +113,12 @@ export const loginAction = async (
 ): Promise<LoginState> => {
 
     const formObject = Object.fromEntries(formData.entries())
+
+    const lang = await getLanguage()
+
+    const translation = await getTranslation(lang)
+
+    const loginSchema = getLoginSchema(translation.validation)
 
     const result = loginSchema.safeParse(formObject)
 

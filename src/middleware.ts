@@ -34,6 +34,10 @@ export async function middleware(req: NextRequest) {
 
     const pathname = req.nextUrl.pathname
 
+    const requestHeaders = new Headers(req.headers)
+
+    requestHeaders.set('x-pathname', pathname)
+
     const pathnameLang = i18n.languages.find(lang => pathname.startsWith(`/${lang}`))
 
     if (!pathnameLang) {
@@ -48,7 +52,11 @@ export async function middleware(req: NextRequest) {
         cookieStore.set("savedLanguage", pathnameLang)
     }
 
-    return NextResponse.next()
+    return NextResponse.next({
+        request: {
+            headers: requestHeaders
+        }
+    })
 }
 
 export const config = {

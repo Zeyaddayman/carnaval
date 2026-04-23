@@ -10,6 +10,7 @@ import { FiHeart, FiTrash2 } from "react-icons/fi"
 import useAddItemToLocalCart from "@/hooks/cart/local-cart/useAddItemToLocalCart"
 import { Translation } from "@/types/translation"
 import { inject } from "@/utils/translation"
+import { Language } from "@/types/i18n"
 
 
 interface Props {
@@ -18,10 +19,11 @@ interface Props {
     removeItem: (productId: string) => void
     moveItemToWishlist: () => void
     quantityModified: QuantityModifiedItem | undefined
+    lang: Language
     translation: Translation
 }
 
-const LocalCartItem = ({ item, initialLimit, removeItem, moveItemToWishlist, quantityModified, translation }: Props) => {
+const LocalCartItem = ({ item, initialLimit, removeItem, moveItemToWishlist, quantityModified, lang, translation }: Props) => {
 
     const [limit, setLimit] = useState(initialLimit)
 
@@ -61,6 +63,7 @@ const LocalCartItem = ({ item, initialLimit, removeItem, moveItemToWishlist, qua
                 <CartItemInfo
                     product={item.product}
                     quantity={item.quantity}
+                    lang={lang}
                     translation={translation.cart.items}
                 />
                 <div className="flex gap-2 flex-wrap justify-between mt-5">

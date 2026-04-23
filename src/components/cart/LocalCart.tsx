@@ -89,6 +89,7 @@ const LocalCart = ({ lang, translation }: Props) => {
                             removeItem={removeItem}
                             moveItemToWishlist={moveItemToWishlist}
                             quantityModified={quantityModifiedItems[item.id]}
+                            lang={lang}
                             translation={translation}
                         />
                     ))}

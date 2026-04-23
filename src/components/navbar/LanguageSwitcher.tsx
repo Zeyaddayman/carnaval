@@ -19,7 +19,7 @@ const LanguageSwitcher = ({ lang }: { lang: Language }) => {
 
     return (
         <Listbox value={lang} onChange={switchLanguage}>
-            <div className="relative min-w-40 flex-1">
+            <div className="relative min-w-35 flex-1">
                 <ListboxButton className="relative h-9 w-full flex justify-center items-center cursor-default rounded-md bg-input py-3 ps-3 pe-10 text-start border border-border focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-primary sm:text-sm/6">
                     <span className="truncate">{lang}</span>
                     <span className="pointer-events-none absolute inset-y-0 end-0 ms-3 flex items-center pe-2">
