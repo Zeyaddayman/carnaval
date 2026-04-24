@@ -1,14 +1,18 @@
 import { db } from '@/lib/prisma'
 import { wishlistItemSelector } from '@/server/query-selectors/wishlist'
 import { isAuthenticated } from '@/server/utils/auth'
+import { getLanguage } from '@/utils/language'
+import getTranslation from '@/utils/translation'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET() {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
+
+    const translation = await getTranslation(lang)
 
     if (!session) {
-        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ message: translation.messages.auth.unauthorized }, { status: 401 })
     }
 
     const { userId } = session
@@ -24,16 +28,18 @@ export async function GET() {
 
         return NextResponse.json({ items: wishlist }, { status: 200 })
     } catch {
-        return NextResponse.json({ message: 'Failed to get wishlist items' }, { status: 500 })
+        return NextResponse.json({ message: translation.messages.wishlist.getWishlistFailed }, { status: 500 })
     }
 }
 
 export async function POST(req: NextRequest) {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
+
+    const translation = await getTranslation(lang)
 
     if (!session) {
-        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ message: translation.messages.auth.unauthorized }, { status: 401 })
     }
 
     const { userId } = session
@@ -47,7 +53,7 @@ export async function POST(req: NextRequest) {
         })
 
         if (!product) {
-            return NextResponse.json({ message: 'Product not found' }, { status: 404 })
+            return NextResponse.json({ message: translation.messages.product.productNotFound }, { status: 404 })
         }
 
         await db.wishlist.upsert({
@@ -64,19 +70,21 @@ export async function POST(req: NextRequest) {
             update: {}
         })
 
-        return NextResponse.json({ message: 'Item added to wishlist' }, { status: 200 })
+        return NextResponse.json({ message: translation.messages.wishlist.itemAdded }, { status: 200 })
 
     } catch {
-        return NextResponse.json({ message: 'Failed to add item to wishlist' }, { status: 500 })
+        return NextResponse.json({ message: translation.messages.wishlist.itemAddFailed }, { status: 500 })
     }
 }
 
 export async function DELETE(req: NextRequest) {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
+
+    const translation = await getTranslation(lang)
 
     if (!session) {
-        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ message: translation.messages.auth.unauthorized }, { status: 401 })
     }
 
     const { userId } = session
@@ -91,9 +99,9 @@ export async function DELETE(req: NextRequest) {
             }
         })
 
-        return NextResponse.json({ message: 'Wishlist item deleted' }, { status: 200 })
+        return NextResponse.json({ message: translation.messages.wishlist.itemDeleted }, { status: 200 })
 
     } catch {
-        return NextResponse.json({ message: 'Failed to delete wishlist item' }, { status: 500 })
+        return NextResponse.json({ message: translation.messages.wishlist.itemDeleteFailed }, { status: 500 })
     }
 }

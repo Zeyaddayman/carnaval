@@ -4,11 +4,13 @@ import { addItemToLocalCart } from "@/redux/features/localCartSlice"
 import { useAppDispatch } from "@/redux/hooks"
 import { fetchProductLimit } from "@/server/utils/product"
 import { CartItemWithProduct } from "@/types/cart"
+import { Translation } from "@/types/translation"
+import { inject } from "@/utils/translation"
 import { useState } from "react"
 import toast from "react-hot-toast"
 
 
-const useAddItemToLocalCart = () => {
+const useAddItemToLocalCart = (translation: Translation["messages"]["cart"]) => {
 
     const [freshLimit, setFreshLimit] = useState<number | null>(null)
 
@@ -36,7 +38,7 @@ const useAddItemToLocalCart = () => {
                     // Adjust quantity if it exceeds the product limit
                     if (quantity > productLimit) {
 
-                        toast.success(`Only ${productLimit} item(s) are available`)
+                        toast.success(inject(translation.onlyAvailable, { modifiedQuantity: productLimit }))
 
                         newCartItem.quantity = quantity > productLimit ? productLimit : quantity
     

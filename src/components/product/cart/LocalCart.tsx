@@ -15,7 +15,7 @@ interface Props {
     product: ProductDetails
     initialLimit: number
     lang: Language
-    translation: Translation["product"]
+    translation: Translation
 }
 
 const ProductLocalCart = ({ product, initialLimit, lang, translation }: Props) => {
@@ -27,7 +27,7 @@ const ProductLocalCart = ({ product, initialLimit, lang, translation }: Props) =
     const localCart = useAppSelector(selectLocalCart)
     const dispatch = useAppDispatch()
 
-    const { addItemWithLimitCheck, freshLimit } = useAddItemToLocalCart()
+    const { addItemWithLimitCheck, freshLimit } = useAddItemToLocalCart(translation.messages.cart)
 
     useEffect(() => {
         if (!isMounted) setIsMounted(true)
@@ -58,21 +58,21 @@ const ProductLocalCart = ({ product, initialLimit, lang, translation }: Props) =
                 <InYourCart
                     quantity={existingProduct.quantity}
                     lang={lang}
-                    translation={translation}
+                    translation={translation.product}
                 />
                 <UpdateCartItem
                     limit={limit}
                     initialQuantity={existingProduct.quantity}
                     updateItem={addItem}
                     removeItem={removeItem}
-                    translation={translation}
+                    translation={translation.product}
                 />
             </div>
         ): (
             <AddToCart
                 limit={limit}
                 addItem={addItem}
-                translation={translation}
+                translation={translation.product}
             />
         )}
         </>

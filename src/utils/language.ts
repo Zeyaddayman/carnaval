@@ -4,7 +4,7 @@ import { cache as reactCache } from 'react'
 
 export const getLanguage = reactCache(async () => {
 
-    const pathname = ((await headers()).get("x-pathname"))
+    const language = ((await headers()).get("x-language")) || "en" as Language
 
-    return pathname!.split("/")[1] as Language
+    return language
 })

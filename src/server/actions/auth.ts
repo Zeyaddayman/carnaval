@@ -55,7 +55,7 @@ export const registerAction = async (
 
         if (userExist) {
             return {
-                message: "User already exists",
+                message: translation.messages.auth.userExists,
                 status: 409,
                 formData
             }
@@ -87,11 +87,11 @@ export const registerAction = async (
 
         return {
             status: 201,
-            message: "Account created successfully"
+            message: translation.messages.auth.accountCreated
         }
     } catch {
         return {
-            message: "Failed to create account",
+            message: translation.messages.auth.accountCreateFailed,
             status: 500,
             formData
         }
@@ -149,7 +149,7 @@ export const loginAction = async (
 
         if (!user) {
             return {
-                message: "email or password incorrect. Please try again",
+                message: translation.messages.auth.emailOrPasswordIncorrect,
                 status: 401,
                 formData
             }
@@ -159,7 +159,7 @@ export const loginAction = async (
 
         if (!isPasswordValid) {
             return {
-                message: "email or password incorrect. Please try again",
+                message: translation.messages.auth.emailOrPasswordIncorrect,
                 status: 401,
                 formData
             }
@@ -187,11 +187,11 @@ export const loginAction = async (
 
         return {
             status: 200,
-            message: "Logged in successfully"
+            message: translation.messages.auth.loggedIn
         }
     } catch {
         return {
-            message: "Failed to login",
+            message: translation.messages.auth.loginFailed,
             status: 500,
             formData
         }
@@ -199,17 +199,22 @@ export const loginAction = async (
 }
 
 export const logoutAction = async () => {
+
+    const lang = await getLanguage()
+
+    const translation = await getTranslation(lang)
+
     try {
         await clearToken("accessToken")
         return {
             status: 200,
-            message: "Logged out successfully"
+            message: translation.messages.auth.loggedOut
         }
     }
     catch {
         return {
             status: 500,
-            message: "Failed to logout"
+            message: translation.messages.auth.logoutFailed
         }
     }
 }

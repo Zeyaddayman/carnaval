@@ -48,7 +48,7 @@ const WishlistAndCart = ({ product, lang, translation }: Props) => {
     return (
         <>
         <div className="bg-muted p-2 w-fit h-fit rounded-full ms-auto">
-            <ToggleWishlistItem session={session || null} product={product} lang={lang} />
+            <ToggleWishlistItem session={session || null} product={product} lang={lang} translation={translation} />
         </div>
         {limit > 0 ?
             session ? (
@@ -64,7 +64,7 @@ const WishlistAndCart = ({ product, lang, translation }: Props) => {
                     product={product}
                     initialLimit={limit}
                     lang={lang}
-                    translation={translation.product}
+                    translation={translation}
                 />
             )
             : <OutOfStock text={translation.global.outOfStock} />

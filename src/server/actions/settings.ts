@@ -51,7 +51,7 @@ export const changePasswordAction = async (
 
         if (!session) {
             return {
-                message: "Unauthorized",
+                message: translation.messages.auth.unauthorized,
                 status: 401,
                 formData
             }
@@ -65,7 +65,7 @@ export const changePasswordAction = async (
 
         if (!userExist) {
             return {
-                message: "User not found",
+                message: translation.messages.auth.userNotFound,
                 status: 404,
                 formData
             }
@@ -91,13 +91,13 @@ export const changePasswordAction = async (
         })
 
         return {
-            message: "Password changed successfully",
+            message: translation.messages.profile.passwordChanged,
             status: 200,
         }
     }
     catch {
         return {
-            message: "Failed to update password",
+            message: translation.messages.profile.passwordChangeFailed,
             status: 500,
             formData
         }

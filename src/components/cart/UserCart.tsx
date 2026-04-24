@@ -32,7 +32,7 @@ const UserCart = ({ userId, lang, translation }: Props) => {
 
     if (isLoading) return <CartSkeleton />
 
-    if (!data || data.cart.items.length === 0) return <EmptyCart translation={translation.cart.emptyCart} />
+    if (!data || data.cart.items.length === 0) return <EmptyCart lang={lang} translation={translation.cart.emptyCart} />
 
 
     const removeItem = (productId: string) => {
@@ -77,6 +77,7 @@ const UserCart = ({ userId, lang, translation }: Props) => {
                             removeItem={removeItem}
                             moveItemToWishlist={moveItemToWishlist}
                             quantityModified={data.quantityModifiedItems[item.id]}
+                            lang={lang}
                             translation={translation}
                         />
                     ))}
@@ -93,6 +94,7 @@ const UserCart = ({ userId, lang, translation }: Props) => {
                                     item={item}
                                     removeItem={removeItem}
                                     moveItemToWishlist={moveItemToWishlist}
+                                    lang={lang}
                                     translation={translation}
                                 />
                             ))}

@@ -97,7 +97,7 @@ const BrandProductsPage = async ({ params, searchParams }: PageProps<"/[lang]/br
                         pageSize={pagination.pageSize}
                         clearFiltersLink={`brands/${slug}`}
                         lang={lang as Language}
-                        translation={translation.products}
+                        translation={translation}
                     />
                     <Pagination
                         total={pagination.total}

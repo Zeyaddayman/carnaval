@@ -48,7 +48,7 @@ export const editProfileAction = async (
 
         if (!session) {
             return {
-                message: "Unauthorized",
+                message: translation.messages.auth.unauthorized,
                 status: 401,
                 formData
             }
@@ -62,7 +62,7 @@ export const editProfileAction = async (
 
         if (!userExist) {
             return {
-                message: "User not found",
+                message: translation.messages.auth.userNotFound,
                 status: 404,
                 formData
             }
@@ -85,13 +85,13 @@ export const editProfileAction = async (
         await setToken("accessToken", accessToken, { maxAge: ACCESS_TOKEN_EXPIRY })
 
         return {
-            message: "Profile updated successfully",
+            message: translation.messages.profile.profileUpdated,
             status: 200,
         }
     }
     catch {
         return {
-            message: "Failed to update profile",
+            message: translation.messages.profile.profileUpdateFailed,
             status: 500,
             formData
         }

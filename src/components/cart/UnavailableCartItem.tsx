@@ -4,15 +4,17 @@ import CartItemInfo from "./CartItemInfo"
 import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
 import { Translation } from "@/types/translation"
+import { Language } from "@/types/i18n"
 
 interface Props {
     item: CartItemWithProduct
     removeItem: (productId: string) => void
     moveItemToWishlist: (product: CartItemWithProduct["product"]) => void
+    lang: Language
     translation: Translation
 }
 
-const UnavailableCartItem = ({ item, removeItem, moveItemToWishlist, translation }: Props) => {
+const UnavailableCartItem = ({ item, removeItem, moveItemToWishlist, lang, translation }: Props) => {
 
     const handleRemoveItem = () => {
         removeItem(item.product.id)
@@ -35,6 +37,7 @@ const UnavailableCartItem = ({ item, removeItem, moveItemToWishlist, translation
                 <CartItemInfo
                     product={item.product}
                     quantity={item.quantity}
+                    lang={lang}
                     translation={translation.cart.items}
                 />
                 <div className="bg-destructive/70 mt-3 text-destructive-foreground text-sm text-center font-semibold p-2 rounded-full">

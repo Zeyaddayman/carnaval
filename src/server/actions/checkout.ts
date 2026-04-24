@@ -6,14 +6,21 @@ import { revalidatePath } from "next/cache"
 import { getCartItemsCount, getCartSubtotal } from "@/utils/cart"
 import { getShipping, getTotal } from "@/utils"
 import { createOrderItems } from "@/utils/checkout"
+import { getLanguage } from "@/utils/language"
+import getTranslation from "@/utils/translation"
 
 export const checkoutAction = async (addressLabel: string) => {
+
+    const lang = await getLanguage()
+
+    const translation = await getTranslation(lang)
+
     try {
         const session = await isAuthenticated()
 
         if (!session) {
             return {
-                message: "Unauthorized",
+                message: translation.messages.auth.unauthorized,
                 status: 401
             }
         }
@@ -50,14 +57,14 @@ export const checkoutAction = async (addressLabel: string) => {
 
         if (!user) {
             return {
-                message: "User not found",
+                message: translation.messages.auth.userNotFound,
                 status: 404
             }
         }
 
         if (!user.cart || user.cart.items.length === 0) {
             return {
-                message: "No items in cart",
+                message: translation.messages.checkout.noItemsInCart,
                 status: 400
             }
         }
@@ -66,7 +73,7 @@ export const checkoutAction = async (addressLabel: string) => {
 
         if (!orderAddress) {
             return {
-                message: "Order address is required",
+                message: translation.messages.checkout.orderAddressRequired,
                 status: 400
             }
         }
@@ -75,7 +82,7 @@ export const checkoutAction = async (addressLabel: string) => {
 
         if (!isValidQuantities) {
             return {
-                message: "Unavailable items quantity",
+                message: translation.messages.checkout.unavailableItemsQty,
                 status: 400
             }
         }
@@ -118,13 +125,13 @@ export const checkoutAction = async (addressLabel: string) => {
         }
 
         return {
-            message: "Order placed successfully",
+            message: translation.messages.checkout.orderPlaced,
             status: 201
         }
     }
     catch {
         return {
-            message: "Failed to place order",
+            message: translation.messages.checkout.orderPlaceFailed,
             status: 500
         }
     }

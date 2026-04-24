@@ -6,12 +6,16 @@ import { db } from "@/lib/prisma";
 import { createOrderItems } from "@/utils/checkout";
 import { getCartItemsCount, getCartSubtotal } from "@/utils/cart";
 import { getShipping, getTotal } from "@/utils";
+import { getLanguage } from "@/utils/language";
+import getTranslation from "@/utils/translation";
 
 export async function POST(req: NextRequest) {
 
-    const body = await req.text()
+    const [body, lang] = await Promise.all([req.text(), getLanguage()])
 
     const sig = (await headers()).get("Stripe-Signature") as string
+
+    const translation = await getTranslation(lang)
 
     let event: Stripe.Event
 
@@ -22,7 +26,7 @@ export async function POST(req: NextRequest) {
             process.env.STRIPE_SECRET_WEBHOOK_KEY as string
         )
     } catch (error) {
-        return NextResponse.json('Invalid signature', { status: 400 })
+        return NextResponse.json(translation.messages.checkout.stripe.invalidSig, { status: 400 })
     }
 
     if (event.type === "payment_intent.succeeded") {
@@ -58,17 +62,17 @@ export async function POST(req: NextRequest) {
         })
 
         if (!user) {
-            return NextResponse.json('User not found', { status: 404 })
+            return NextResponse.json(translation.messages.auth.userNotFound, { status: 404 })
         }
 
         if (!user.cart || user.cart.items.length === 0) {
-            return NextResponse.json('No items in cart', { status: 400 })
+            return NextResponse.json(translation.messages.cart.noItems, { status: 400 })
         }
 
         const orderAddress = user.addresses[0]
 
         if (!orderAddress) {
-            return NextResponse.json('Address not found', { status: 404 })
+            return NextResponse.json(translation.messages.checkout.orderAddressRequired, { status: 404 })
         }
 
         const { orderItems } = createOrderItems(user.cart.items, userId)

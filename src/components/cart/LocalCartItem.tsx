@@ -27,7 +27,7 @@ const LocalCartItem = ({ item, initialLimit, removeItem, moveItemToWishlist, qua
 
     const [limit, setLimit] = useState(initialLimit)
 
-    const { addItemWithLimitCheck: updateItemQtyWithLimitCheck, freshLimit } = useAddItemToLocalCart()
+    const { addItemWithLimitCheck: updateItemQtyWithLimitCheck, freshLimit } = useAddItemToLocalCart(translation.messages.cart)
 
     useEffect(() => {
         setLimit(initialLimit)

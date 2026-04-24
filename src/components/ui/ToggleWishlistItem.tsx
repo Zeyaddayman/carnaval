@@ -12,14 +12,16 @@ import { wishlistItemWithProduct } from "@/types/wishlist"
 import useAddItemToUserWishlist from "@/hooks/wishlist/useAddItemToUserWishlist"
 import useRemoveItemFromUserWishlist from "@/hooks/wishlist/useRemoveItemFromUserWishlist"
 import { Language } from "@/types/i18n"
+import { Translation } from "@/types/translation"
 
 interface Props {
     session: UserSession | null
     product: wishlistItemWithProduct["product"]
     lang: Language
+    translation: Translation
 }
 
-const ToggleWishlistItem = ({ session, product, lang }: Props) => {
+const ToggleWishlistItem = ({ session, product, lang, translation }: Props) => {
 
     const pathname = usePathname()
 
@@ -28,13 +30,13 @@ const ToggleWishlistItem = ({ session, product, lang }: Props) => {
     const handleToggle = () => {
         toast(
             <div className="space-y-2">
-                <p>You must be logged in</p>
+                <p>{translation.messages.wishlist.youMustLogin}</p>
                 <Link
                     href={`/${lang}/auth/login?redirect=${pathname}`}
                     className={buttonVariants({ variant: "secondary", size: "sm" })}
                     onClick={() => toast.dismissAll()}
                 >
-                    Login
+                    {translation.messages.wishlist.login}
                 </Link>
             </div>
         )

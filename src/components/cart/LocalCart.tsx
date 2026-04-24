@@ -55,13 +55,13 @@ const LocalCart = ({ lang, translation }: Props) => {
     const moveItemToWishlist = () => {
         toast(
             <div className="space-y-2">
-                <p>You must be logged in</p>
+                <p>{translation.messages.wishlist.youMustLogin}</p>
                 <Link
                     href={`/${lang}/auth/login?redirect=/${lang}/cart`}
                     className={buttonVariants({ variant: "secondary", size: "sm" })}
                     onClick={() => toast.dismissAll()}
                 >
-                    Login
+                    {translation.messages.wishlist.login}
                 </Link>
             </div>
         )
@@ -106,6 +106,7 @@ const LocalCart = ({ lang, translation }: Props) => {
                                     item={item}
                                     removeItem={removeItem}
                                     moveItemToWishlist={moveItemToWishlist}
+                                    lang={lang}
                                     translation={translation}
                                 />
                             ))}

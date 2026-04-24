@@ -36,32 +36,34 @@ export async function middleware(req: NextRequest) {
 
     const requestHeaders = new Headers(req.headers)
 
-    requestHeaders.set('x-pathname', pathname)
-
     const pathnameLang = i18n.languages.find(lang => pathname.startsWith(`/${lang}`))
 
     if (!pathnameLang) {
         const language = await getLanguage(req)
 
-        return NextResponse.redirect(new URL(`/${language}/${pathname}`, req.url))
+        requestHeaders.set('x-language', language)
+
+        if (!pathname.startsWith("/api")) {
+
+            return NextResponse.redirect(new URL(`/${language}/${pathname}`, req.url))
+        }
     }
     else {
-
         const cookieStore = await cookies()
+
+        requestHeaders.set('x-language', pathnameLang)
 
         cookieStore.set("savedLanguage", pathnameLang)
     }
 
     return NextResponse.next({
-        request: {
-            headers: requestHeaders
-        }
+        request: { headers: requestHeaders, }
     })
 }
 
 export const config = {
     // Matcher ignoring `/_next/`, `/api/`, ..etc
     matcher: [
-        '/((?!api|_next/static|_next/image|images|favicon.ico|robots.txt|sitemap.xml).*)'
+        '/((?!_next/static|_next/image|images|favicon.ico|robots.txt|sitemap.xml).*)'
     ]
 }

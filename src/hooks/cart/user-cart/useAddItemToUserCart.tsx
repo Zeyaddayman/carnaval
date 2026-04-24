@@ -24,7 +24,7 @@ const useAddItemToUserCart = () => {
             setFreshLimit(addItemResponse.limit)
 
             if (addItemResponse.modifiedQuantity) {
-                toast.success(`Only ${addItemResponse.modifiedQuantity} item(s) are available`)
+                toast.success(addItemResponse.message)
             }
         }
 

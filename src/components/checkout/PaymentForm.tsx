@@ -20,7 +20,7 @@ interface Props {
     formattedTotal: string
     paymentMethodValue: PaymentMethodValue
     lang: Language
-    translation: Translation["checkout"]["addressAndPayment"]
+    translation: Translation
 }
 
 const PaymentForm = ({ clientSecret, paymentIntentId, selectedAddress, formattedTotal, paymentMethodValue, lang, translation }: Props) => {
@@ -124,9 +124,9 @@ const PaymentForm = ({ clientSecret, paymentIntentId, selectedAddress, formatted
                 className="w-full! mt-4"
             >
                 {isPlacingOrder ? (
-                    <>{translation.placingOrder}</>
+                    <>{translation.checkout.addressAndPayment.placingOrder}</>
                 ): (
-                    <><FaCheck /> {inject(translation.placeOrder, { total: formattedTotal })}</>
+                    <><FaCheck /> {inject(translation.checkout.addressAndPayment.placeOrder, { total: formattedTotal })}</>
                 )}
             </Button>
         </form>

@@ -104,7 +104,7 @@ const CheckoutForm = ({ clientSecret, paymentIntentId, addresses, defaultAddress
                     formattedTotal={formattedTotal}
                     paymentMethodValue={selectedPaymentMethod.value}
                     lang={lang}
-                    translation={translation.checkout.addressAndPayment}
+                    translation={translation}
                 />
             </Elements>
         </div>

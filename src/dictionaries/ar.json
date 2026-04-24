@@ -390,6 +390,11 @@
             "viewOrders": "عرض الطلبات"
         }
     },
+    "notFound": {
+        "title": "الصفحة غير موجودة",
+        "subTitle": "عذراً، الصفحة التي تبحث عنها غير موجودة حالياً.",
+        "returnHome": "العودة للرئيسية"
+    },
     "footer": {
         "connectWithUs": "تواصل معنا",
         "copyRight": "© 2025 كرنفال. جميع الحقوق محفوظة. تم التطوير بواسطة",
@@ -540,32 +545,69 @@
         "streetAddressRequired": "عنوان الشارع مطلوب"
     },
     "messages": {
-        "userExists": "هذا المستخدم موجود بالفعل",
-        "accountCreated": "تم إنشاء الحساب بنجاح",
-        "accountCreateFailed": "فشل إنشاء الحساب",
-        "emailOrPasswordIncorrect": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى",
-        "loggedIn": "تم تسجيل الدخول بنجاح",
-        "loginFailed": "فشل تسجيل الدخول",
-        "loggedOut": "تم تسجيل الخروج بنجاح",
-        "logoutFailed": "فشل تسجيل الخروج",
-        "unauthorized": "غير مصرح لك بالوصول",
-        "userNotFound": "المستخدم غير موجود",
-        "profileUpdated": "تم تحديث الملف الشخصي بنجاح",
-        "updatedProfileFailed": "فشل تحديث الملف الشخصي",
-        "passwordChanged": "تم تغيير كلمة المرور بنجاح",
-        "passwordChangeFailed": "فشل تحديث كلمة المرور",
-        "addressAdded": "تم إضافة العنوان بنجاح",
-        "addressAddFailed": "فشل إضافة العنوان",
-        "addressEdited": "تم تعديل العنوان بنجاح",
-        "addressEditFailed": "فشل تعديل العنوان",
-        "addressDeleted": "تم حذف العنوان بنجاح",
-        "addressDeleteFailed": "فشل حذف العنوان",
-        "addressSetAsDefault": "تم تعيين العنوان كافتراضي بنجاح",
-        "addressSetAsDefaultFailed": "فشل تحديث العنوان",
-        "noItemsInCart": "لا توجد منتجات في العربة",
-        "orderAddressRequired": "يجب اختيار عنوان لتوصيل الطلب",
-        "unavailableItemsQty": "الكمية المطلوبة غير متوفرة لبعض المنتجات",
-        "orderPlaced": "تم تقديم طلبك بنجاح",
-        "orderPlaceFailed": "فشل تقديم الطلب"
+        "auth": {
+            "userExists": "هذا المستخدم موجود بالفعل",
+            "accountCreated": "تم إنشاء الحساب بنجاح",
+            "accountCreateFailed": "فشل إنشاء الحساب",
+            "emailOrPasswordIncorrect": "البريد الإلكتروني أو كلمة المرور غير صحيحة. يرجى المحاولة مرة أخرى",
+            "loggedIn": "تم تسجيل الدخول بنجاح",
+            "loginFailed": "فشل تسجيل الدخول",
+            "loggedOut": "تم تسجيل الخروج بنجاح",
+            "logoutFailed": "فشل تسجيل الخروج",
+            "unauthorized": "غير مصرح لك بالوصول",
+            "userNotFound": "المستخدم غير موجود"
+        },
+        "profile": {
+            "profileUpdated": "تم تحديث الملف الشخصي بنجاح",
+            "profileUpdateFailed": "فشل تحديث الملف الشخصي",
+            "passwordChanged": "تم تغيير كلمة المرور بنجاح",
+            "passwordChangeFailed": "فشل تحديث كلمة المرور"
+        },
+        "address": {
+            "addressAdded": "تم إضافة العنوان بنجاح",
+            "addressAddFailed": "فشل إضافة العنوان",
+            "addressEdited": "تم تعديل العنوان بنجاح",
+            "addressEditFailed": "فشل تعديل العنوان",
+            "addressDeleted": "تم حذف العنوان بنجاح",
+            "addressDeleteFailed": "فشل حذف العنوان",
+            "addressSetAsDefault": "تم تعيين العنوان كافتراضي بنجاح",
+            "addressSetAsDefaultFailed": "فشل تحديث العنوان"
+        },
+        "checkout": {
+            "noItemsInCart": "لا توجد منتجات في العربة",
+            "orderAddressRequired": "يجب اختيار عنوان لتوصيل الطلب",
+            "unavailableItemsQty": "الكمية المطلوبة غير متوفرة لبعض المنتجات",
+            "orderPlaced": "تم تقديم طلبك بنجاح",
+            "orderPlaceFailed": "فشل تقديم الطلب",
+            "stripe": {
+                "invalidSig": "توقيع غير صالح",
+                "metadataUpdated": "تم تحديث البيانات الوصفية بنجاح",
+                "metadataUpdateFailed": "فشل تحديث البيانات الوصفية"
+            }
+        },
+        "cart": {
+            "getCartFailed": "فشل تحميل محتويات العربة",
+            "itemAdded": "تم إضافة المنتج إلى العربة",
+            "onlyAvailable": "متوفر {{modifiedQuantity}} قطع فقط من هذا المنتج",
+            "itemAddFailed": "فشل إضافة المنتج إلى العربة",
+            "itemDeleted": "تم حذف المنتج من العربة",
+            "itemDeleteFailed": "فشل حذف المنتج من العربة",
+            "noItems": "العربة فارغة",
+            "validQuantities": "جميع الكميات متوفرة",
+            "invalidQuantities": "كميات بعض المنتجات غير صالحة"
+        },
+        "product": {
+            "productNotFound": "المنتج غير موجود",
+            "productOutStock": "هذا المنتج غير متوفر حالياً"
+        },
+        "wishlist": {
+            "youMustLogin": "يرجى تسجيل الدخول أولاً",
+            "login": "تسجيل الدخول",
+            "getWishlistFailed": "فشل تحميل قائمة الأمنيات",
+            "itemAdded": "تم إضافة المنتج إلى قائمة الأمنيات",
+            "itemAddFailed": "فشل إضافة المنتج إلى قائمة الأمنيات",
+            "itemDeleted": "تم حذف المنتج من قائمة الأمنيات",
+            "itemDeleteFailed": "فشل حذف المنتج من قائمة الأمنيات"
+        }
     }
 }

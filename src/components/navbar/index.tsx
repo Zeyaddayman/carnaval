@@ -4,7 +4,7 @@ import LinksMenu from "./LinksMenu"
 import SearchBar from "./SearchBar"
 import { getTopLevelCategories } from "@/server/db/categories"
 import { getBrands } from "@/server/db/brands"
-import LanguageSwitcher from "./LanguageSwitcher"
+import SelectLanguage from "./SelectLanguage"
 import { Translation } from "@/types/translation"
 import { Language } from "@/types/i18n"
 
@@ -23,7 +23,7 @@ const Navbar = async ({ lang, translation }: { lang: Language, translation: Tran
                     {translation.logo}
                 </Link>
                 <div className="flex items-center gap-3">
-                    <LanguageSwitcher lang={lang} />
+                    <SelectLanguage lang={lang} />
                     <SearchBar
                         topLevelCategories={topLevelCategories}
                         lang={lang}

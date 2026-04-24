@@ -4,13 +4,17 @@ import { isAuthenticated } from '@/server/utils/auth'
 import { NextRequest, NextResponse } from 'next/server'
 import { getProductLimit } from '@/utils/product'
 import { modifyCartItemsQuantities } from '@/server/utils/cart'
+import { getLanguage } from '@/utils/language'
+import getTranslation, { inject } from '@/utils/translation'
 
 export async function GET() {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
+    
+    const translation = await getTranslation(lang)
 
     if (!session) {
-        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ message: translation.messages.auth.unauthorized }, { status: 401 })
     }
 
     const { userId } = session
@@ -35,16 +39,18 @@ export async function GET() {
 
         return NextResponse.json({ cart, quantityModifiedItems }, { status: 200 })
     } catch {
-        return NextResponse.json({ message: 'Failed to get user cart' }, { status: 500 })
+        return NextResponse.json({ message: translation.messages.cart.getCartFailed }, { status: 500 })
     }
 }
 
 export async function POST(req: NextRequest) {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
+
+    const translation = await getTranslation(lang)
 
     if (!session) {
-        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ message: translation.messages.auth.unauthorized }, { status: 401 })
     }
 
     const { userId } = session
@@ -59,11 +65,11 @@ export async function POST(req: NextRequest) {
         })
 
         if (!product) {
-            return NextResponse.json({ message: 'Product not found' }, { status: 404 })
+            return NextResponse.json({ message: translation.messages.product.productNotFound }, { status: 404 })
         }
 
         if (product.stock <= 0) {
-            return NextResponse.json({ message: 'Product is out of stock' }, { status: 422 })
+            return NextResponse.json({ message: translation.messages.product.productOutStock }, { status: 422 })
         }
 
         const limit = getProductLimit(product.stock, product.limit)
@@ -96,7 +102,7 @@ export async function POST(req: NextRequest) {
 
         return NextResponse.json(
             {
-                message: 'Item added to cart',
+                message: modifiedQuantity === quantity ? translation.messages.cart.itemAdded : inject(translation.messages.cart.onlyAvailable, { modifiedQuantity }),
                 limit,
                 modifiedQuantity: modifiedQuantity !== quantity ? modifiedQuantity : null
             },
@@ -104,16 +110,18 @@ export async function POST(req: NextRequest) {
         )
 
     } catch {
-        return NextResponse.json({ message: 'Failed to add item to cart' }, { status: 500 })
+        return NextResponse.json({ message: translation.messages.cart.itemAddFailed }, { status: 500 })
     }
 }
 
 export async function DELETE(req: NextRequest) {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
+
+    const translation = await getTranslation(lang)
 
     if (!session) {
-        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+        return NextResponse.json({ message: translation.messages.auth.unauthorized }, { status: 401 })
     }
 
     const { userId } = session
@@ -136,9 +144,9 @@ export async function DELETE(req: NextRequest) {
             }
         })
 
-        return NextResponse.json({ message: 'Cart item deleted' }, { status: 200 })
+        return NextResponse.json({ message: translation.messages.cart.itemDeleted }, { status: 200 })
 
     } catch {
-        return NextResponse.json({ message: 'Failed to delete cart item' }, { status: 500 })
+        return NextResponse.json({ message: translation.messages.cart.itemDeleteFailed }, { status: 500 })
     }
 }

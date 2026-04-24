@@ -49,7 +49,7 @@ export const addNewAddressAction = async (
 
         if (!session) {
             return {
-                message: "Unauthorized",
+                message: translation.messages.auth.unauthorized,
                 status: 401,
                 formData
             }
@@ -64,7 +64,7 @@ export const addNewAddressAction = async (
 
         if (!userExist) {
             return {
-                message: "User not found",
+                message: translation.messages.auth.userNotFound,
                 status: 404,
                 formData
             }
@@ -119,13 +119,13 @@ export const addNewAddressAction = async (
         })
 
         return {
-            message: "Address added successfully",
+            message: translation.messages.address.addressAdded,
             status: 201
         }
     }
     catch {
         return {
-            message: "Failed to add address",
+            message: translation.messages.address.addressAddFailed,
             status: 500,
             formData
         }
@@ -178,7 +178,7 @@ export const editAddressAction = async (
 
         if (!session) {
             return {
-                message: "Unauthorized",
+                message: translation.messages.auth.unauthorized,
                 status: 401,
                 formData
             }
@@ -198,7 +198,7 @@ export const editAddressAction = async (
 
         if (!user) {
             return {
-                message: "User not found",
+                message: translation.messages.auth.userNotFound,
                 status: 404,
                 formData
             }
@@ -279,13 +279,13 @@ export const editAddressAction = async (
         })
 
         return {
-            message: "Address edited successfully",
+            message: translation.messages.address.addressEdited,
             status: 200
         }
     }
     catch {
         return {
-            message: "Failed to edit address",
+            message: translation.messages.address.addressEditFailed,
             status: 500
         }
     }
@@ -296,11 +296,13 @@ export const editAddressAction = async (
 
 export const deleteAddressAction = async (addressId: string) => {
 
-    const session = await isAuthenticated()
+    const lang = await getLanguage()
+
+    const [session, translation] = await Promise.all([isAuthenticated(), getTranslation(lang)])
 
     if (!session) {
         return {
-            message: "Unauthorized",
+            message: translation.messages.auth.unauthorized,
             status: 401
         }
     }
@@ -315,7 +317,7 @@ export const deleteAddressAction = async (addressId: string) => {
 
         if (!userExist) {
             return {
-                message: "User not found",
+                message: translation.messages.auth.userNotFound,
                 status: 404,
             }
         }
@@ -350,13 +352,13 @@ export const deleteAddressAction = async (addressId: string) => {
         }
 
         return {
-            message: "Address deleted successfully",
+            message: translation.messages.address.addressDeleted,
             status: 200
         }
     }
     catch {
         return {
-            message: "Failed to delete address",
+            message: translation.messages.address.addressDeleteFailed,
             status: 500
         }
     }
@@ -367,11 +369,13 @@ export const deleteAddressAction = async (addressId: string) => {
 
 export const setAddressAsDefaultAction = async (addressId: string) => {
 
-    const session = await isAuthenticated()
+    const lang = await getLanguage()
+
+    const [session, translation] = await Promise.all([isAuthenticated(), getTranslation(lang)])
 
     if (!session) {
         return {
-            message: "Unauthorized",
+            message: translation.messages.auth.unauthorized,
             status: 401
         }
     }
@@ -386,7 +390,7 @@ export const setAddressAsDefaultAction = async (addressId: string) => {
 
         if (!userExist) {
             return {
-                message: "User not found",
+                message: translation.messages.auth.userNotFound,
                 status: 404,
             }
         }
@@ -405,13 +409,13 @@ export const setAddressAsDefaultAction = async (addressId: string) => {
         })
 
         return {
-            message: "Address set as default successfully",
+            message: translation.messages.address.addressSetAsDefault,
             status: 200
         }
     }
     catch {
         return {
-            message: "Failed to update address",
+            message: translation.messages.address.addressSetAsDefaultFailed,
             status: 500
         }
     }

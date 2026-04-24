@@ -1,4 +1,4 @@
-import { CartItemWithProduct, QuantityModifiedItem } from "@/types/cart";
+import { CartItemWithProduct } from "@/types/cart";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AddCartItemResponse, CartError, CartResponse, RemoveCartItemResponse } from "../types/cart-response";
 
