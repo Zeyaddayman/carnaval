@@ -1,16 +1,27 @@
 'use client';
 
 import { usePathname, useRouter } from 'next/navigation';
-import { LanguagesMenu } from '@/constants/i18n';
+import { i18n, LanguagesMenu } from '@/constants/i18n';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { HiMiniChevronUpDown } from 'react-icons/hi2';
 import { BiCheck } from 'react-icons/bi';
 import { Language } from "@/generated/prisma";
+import { useEffect } from 'react';
 
 const SelectLanguage = ({ lang }: { lang: Language }) => {
 
     const router = useRouter()
     const pathname = usePathname()
+
+    useEffect(() => {
+        // prefetch current page with every possible language for instant change
+        i18n.languages.forEach(lang => {
+
+            const pathWithoutLang = pathname.split("/").slice(2).join("/")
+
+            router.prefetch(`/${lang}/${pathWithoutLang}`)
+        })
+    }, [pathname])
 
     const selectedLanguage = LanguagesMenu.find(langOption => langOption.value === lang)!
 

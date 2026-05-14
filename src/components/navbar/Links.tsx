@@ -35,6 +35,7 @@ const Links = ({ topLevelCategories, brands, lang, translation }: Props) => {
                         <Link
                             href={`/${lang}/categories/${category.slug}`}
                             className="block text-foreground hover:text-primary mb-3 font-semibold transition"
+                            prefetch={false}
                         >
                             {category.name}
                         </Link>
@@ -60,6 +61,7 @@ const Links = ({ topLevelCategories, brands, lang, translation }: Props) => {
                         <Link
                             href={`/${lang}/brands/${brand.slug}`}
                             className="block py-2 hover:text-primary font-semibold transition"
+                            prefetch={false}
                         >
                             {brand.name}
                         </Link>
@@ -94,6 +96,7 @@ const Subcategories = ({ subcategories, lang }: { subcategories: MenuCategory["s
                     key={subcategory.slug}
                     href={`/${lang}/categories/${subcategory.slug}`}
                     className="text-xs text-muted-foreground hover:text-primary transition-colors"
+                    prefetch={false}
                 >
                     {subcategory.nameAsSubcategory}
                 </Link>
