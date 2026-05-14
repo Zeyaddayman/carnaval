@@ -619,6 +619,10 @@
             "itemAddFailed": "Failed to add item to wishlist",
             "itemDeleted": "Wishlist item deleted",
             "itemDeleteFailed": "Failed to delete wishlist item"
+        },
+        "connection": {
+            "connectionLost": "You are currently offline.",
+            "connectionRestored": "Your internet connection was restored."
         }
     }
 }

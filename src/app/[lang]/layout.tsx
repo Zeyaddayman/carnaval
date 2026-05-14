@@ -8,6 +8,7 @@ import { getMainMetadata } from "@/metadata";
 import { i18n, LANGUAGES } from "@/constants/i18n";
 import { Language } from "@/generated/prisma";
 import getTranslation from "@/utils/translation";
+import OfflineAlert from "@/components/ui/OfflineAlert";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -44,13 +45,14 @@ export default async function RootLayout({
           />
           {children}
           <Footer translation={translation.footer} />
+          <OfflineAlert translation={translation.messages.connection} />
           <Toaster
             position="bottom-center"
             toastOptions={{
               duration: 5000,
               removeDelay: 1000,
               style: {
-                padding: "20px"
+                padding: "15px"
               }
             }}
           />
