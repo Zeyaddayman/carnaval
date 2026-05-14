@@ -10,7 +10,7 @@ import { getCheckoutItems } from "@/server/db/checkout"
 import { getProfile } from "@/server/db/profile"
 import { isAuthenticated } from "@/server/utils/auth"
 import { createPaymentIntent } from "@/server/utils/checkout"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { getShipping, getTotal } from "@/utils"
 import { getCartItemsCount, getCartSubtotal } from "@/utils/cart"
 import { formatPrice } from "@/utils/formatters"
@@ -33,7 +33,7 @@ const CheckoutPage = async ({ params }: PageProps<"/[lang]/checkout">) => {
         params
     ])
 
-    if (!items || items.length === 0) redirect('/cart')
+    if (!items || items.length === 0) redirect(`/${lang}/cart`)
 
     const translation = await getTranslation(lang as Language)
 

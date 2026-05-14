@@ -1,14 +1,15 @@
+import { CategoryHierarchy } from "@/types/categories";
 import { ProductDetails } from "@/types/products";
 import { Translation } from "@/types/translation";
 import { formatPrice } from "@/utils/formatters";
 import { inject } from "@/utils/translation";
 import { Metadata } from "next";
 
-export const getProductMetadata = (translation: Translation["metadata"], product: ProductDetails): Metadata => {
+export const getProductMetadata = (translation: Translation["metadata"], product: ProductDetails, categoryHierarchy: CategoryHierarchy): Metadata => {
 
     const brandName = product.brand && product.brand.name
 
-    const keywords = [product.title].concat(product.categories.map(category => category.name))
+    const keywords = [product.title].concat(categoryHierarchy.map(category => category.name))
 
     if (brandName) keywords.push(brandName)
 

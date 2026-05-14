@@ -3,7 +3,7 @@ import WishlistItems from "@/components/wishlist/WishlistItems"
 import { i18n } from "@/constants/i18n"
 import { getWishlistMetadata } from "@/metadata/wishlist"
 import { isAuthenticated } from "@/server/utils/auth"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import getTranslation from "@/utils/translation"
 import { redirect } from "next/navigation"
 
@@ -11,11 +11,11 @@ const WishlistPage = async ({ params }: PageProps<"/[lang]/wishlist">) => {
 
     const session = await isAuthenticated()
 
-    if (!session) {
-        redirect('/auth/login?redirect=/wishlist')
-    }
-
     const { lang } = await params as { lang: Language }
+
+    if (!session) {
+        redirect(`/${lang}/auth/login?redirect=/${lang}/wishlist`)
+    }
 
     const translation = await getTranslation(lang)
 

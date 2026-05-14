@@ -1,4 +1,4 @@
-import { Language } from '@/types/i18n'
+import { Language } from "@/generated/prisma"
 import { cache as reactCache } from 'react'
 
 const dictionaries = {

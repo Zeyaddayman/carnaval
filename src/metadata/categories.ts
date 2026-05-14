@@ -1,11 +1,11 @@
 import { getTopLevelCategories } from "@/server/db/categories";
-import { Language } from "@/types/i18n";
+import { Language } from "@/generated/prisma";
 import getTranslation, { inject } from "@/utils/translation";
 import { Metadata } from "next";
 
 export const getCategoriesMetadata = async (lang: Language): Promise<Metadata> => {
 
-    const [{ metadata }, topLevelCategories] = await Promise.all([getTranslation(lang), getTopLevelCategories()])
+    const [{ metadata }, topLevelCategories] = await Promise.all([getTranslation(lang), getTopLevelCategories(lang)])
     
     const topLevelCategoriesNames = topLevelCategories.map(category => category.name).join(", ")
 

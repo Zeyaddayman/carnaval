@@ -1,7 +1,7 @@
 import ProfileSidebar from "@/components/profile/ProfileSidebar"
 import { getProfileMetadata } from "@/metadata/profile"
 import { isAuthenticated } from "@/server/utils/auth"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import getTranslation from "@/utils/translation"
 import { redirect } from "next/navigation"
 

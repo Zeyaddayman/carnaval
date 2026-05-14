@@ -3,7 +3,7 @@ import EditProfileForm from "@/components/profile/settings/EditProfileForm"
 import Heading from "@/components/ui/Heading"
 import { getSettingsMetadata } from "@/metadata/settings"
 import { getProfile } from "@/server/db/profile"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { Translation } from "@/types/translation"
 import getTranslation from "@/utils/translation"
 

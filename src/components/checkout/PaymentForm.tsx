@@ -11,7 +11,7 @@ import { userCartApi } from "@/redux/features/userCartApi"
 import { PaymentMethodValue } from "@/types/checkout"
 import { Translation } from "@/types/translation"
 import { inject } from "@/utils/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     clientSecret: string

@@ -9,7 +9,7 @@ import { InYourCart } from "./InYourCart"
 import { useEffect, useState } from "react"
 import useAddItemToLocalCart from "@/hooks/cart/local-cart/useAddItemToLocalCart"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     product: ProductDetails

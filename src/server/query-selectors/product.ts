@@ -1,8 +1,8 @@
 import { Prisma } from "@/generated/prisma";
+import { Language } from "@/generated/prisma";
 
-export const cardProductSelector = {
+export const cardProductSelector = (lang: Language) => ({
     id: true,
-    title: true,
     thumbnail: true,
     price: true,
     discountPercentage: true,
@@ -10,17 +10,26 @@ export const cardProductSelector = {
     rating: true,
     stock: true,
     limit: true,
+    translation: {
+        where: {
+            OR: [ { lang }, { lang: "en" } ]
+        },
+        select: { title: true, lang: true }
+    },
     brand: {
         select: {
-            name: true
+            translation: {
+                where: {
+                    OR: [ { lang }, { lang: "en" } ]
+                },
+                select: { name: true, lang: true }
+            }
         }
     }
-} satisfies Prisma.ProductSelect
+}) satisfies Prisma.ProductSelect
 
-export const productDetailsSelector = {
+export const productDetailsSelector = (lang: Language) => ({
     id: true,
-    title: true,
-    description: true,
     thumbnail: true,
     price: true,
     discountPercentage: true,
@@ -29,14 +38,38 @@ export const productDetailsSelector = {
     stock: true,
     limit: true,
     images: true,
+    translation: {
+        where: {
+            OR: [ { lang }, { lang: "en" } ]
+        },
+        select: { title: true, description: true, lang: true }
+    },
     categories: {
         select: {
-            name: true,
             slug: true,
-            nameAsSubcategory: true
+            translation: {
+                where: {
+                    OR: [
+                        { lang },
+                        { lang: "en" }
+                    ]
+                },
+                select: {
+                    lang: true,
+                    name: true,
+                    nameAsSubcategory: true
+                }
+            }
         }
     },
     brand: {
-        select: { name: true }
+        select: {
+            translation: {
+                where: {
+                    OR: [ { lang }, { lang: "en" } ]
+                },
+                select: { name: true, lang: true }
+            }
+        }
     }
-} satisfies Prisma.ProductSelect
+}) satisfies Prisma.ProductSelect

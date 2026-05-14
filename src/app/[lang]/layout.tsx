@@ -6,7 +6,7 @@ import { Toaster } from "react-hot-toast";
 import StoreProvider from "@/providers/StoreProvider";
 import { getMainMetadata } from "@/metadata";
 import { i18n, LANGUAGES } from "@/constants/i18n";
-import { Language } from "@/types/i18n";
+import { Language } from "@/generated/prisma";
 import getTranslation from "@/utils/translation";
 
 const inter = Inter({

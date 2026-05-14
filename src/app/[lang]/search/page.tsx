@@ -7,7 +7,7 @@ import { getProductsSortOptions, PRODUCTS_FILTERS } from "@/constants/products"
 import { getSearchProductsMetadata } from "@/metadata/products"
 import { getSearchProducts } from "@/server/db/products"
 import { getSearchProductsMaxPrice, getSearchProductsMinPrice, getSearchProductsMinRating } from "@/server/utils/products-statistics"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { ProductsSortOptionValue } from "@/types/products"
 import { Translation } from "@/types/translation"
 import { getValidatedFilters } from "@/utils/filters"
@@ -23,7 +23,7 @@ interface SearchParams {
 
 const SearchPage = async ({ params, searchParams }: PageProps<"/[lang]/search">) => {
 
-    const [{ lang }, resolvedSearchParams] = await Promise.all([params, searchParams]) as [ { lang: string }, SearchParams ]
+    const [{ lang }, resolvedSearchParams] = await Promise.all([params, searchParams]) as [ { lang: Language }, SearchParams ]
 
     const {
         query = "",
@@ -33,17 +33,17 @@ const SearchPage = async ({ params, searchParams }: PageProps<"/[lang]/search">)
 
     } = resolvedSearchParams
 
-    const translation = await getTranslation(lang as Language)
+    const translation = await getTranslation(lang)
 
     const productsSortOptions = getProductsSortOptions(translation.products.sortOptions)
 
-    const sort: ProductsSortOptionValue = productsSortOptions.find(option => option.value === sortParam)?.value || "alphabetical"
+    const sort: ProductsSortOptionValue = productsSortOptions.find(option => option.value === sortParam)?.value || "recommended"
 
     const paginationPage = !isNaN(Number(pageParam)) ? Number(pageParam) : 1
 
     const filters = getValidatedFilters(resolvedSearchParams as SearchParams)
 
-    const data = await getSearchProducts(query, category, sort, filters, paginationPage)
+    const data = await getSearchProducts(query, category, sort, filters, paginationPage, lang)
 
     if (!data) return notFound()
 
@@ -91,7 +91,7 @@ const SearchPage = async ({ params, searchParams }: PageProps<"/[lang]/search">)
                         >
                             <Filters
                                 searchParams={resolvedSearchParams}
-                                lang={lang as Language}
+                                lang={lang}
                                 translation={translation.products.filters}
                             />
                         </Suspense>
@@ -107,7 +107,7 @@ const SearchPage = async ({ params, searchParams }: PageProps<"/[lang]/search">)
                         limit={pagination.limit}
                         pageSize={pagination.pageSize}
                         clearFiltersLink={`categories/${categorySlug ? categorySlug : ""}`}
-                        lang={lang as Language}
+                        lang={lang}
                         translation={translation}
                     />
                     <Pagination
@@ -168,7 +168,7 @@ const Filters = async ({
 
 export async function generateMetadata({ params, searchParams }: PageProps<"/[lang]/search">) {
 
-    const [{ lang }, resolvedSearchParams] = await Promise.all([params, searchParams]) as [{ lang: string }, SearchParams]
+    const [{ lang }, resolvedSearchParams] = await Promise.all([params, searchParams]) as [{ lang: Language }, SearchParams]
 
     const {
         query = "",
@@ -178,17 +178,17 @@ export async function generateMetadata({ params, searchParams }: PageProps<"/[la
 
     } = resolvedSearchParams
 
-    const translation = await getTranslation(lang as Language)
+    const translation = await getTranslation(lang)
 
     const productsSortOptions = getProductsSortOptions(translation.products.sortOptions)
 
-    const sort: ProductsSortOptionValue = productsSortOptions.find(option => option.value === sortParam)?.value || "alphabetical"
+    const sort: ProductsSortOptionValue = productsSortOptions.find(option => option.value === sortParam)?.value || "recommended"
 
     const paginationPage = !isNaN(Number(pageParam)) ? Number(pageParam) : 1
 
     const filters = getValidatedFilters(resolvedSearchParams)
 
-    const data = await getSearchProducts(query, category, sort, filters, paginationPage)
+    const data = await getSearchProducts(query, category, sort, filters, paginationPage, lang)
 
     if (!data) return {
         title: translation.metadata.notFound.title,

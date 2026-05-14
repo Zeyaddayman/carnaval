@@ -1,4 +1,4 @@
-import { Language } from "@/types/i18n";
+import { Language } from "@/generated/prisma";
 import { Translation } from "@/types/translation";
 import { inject } from "@/utils/translation";
 import Link from "next/link";

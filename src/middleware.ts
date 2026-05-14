@@ -3,7 +3,7 @@ import Negotiator from "negotiator"
 import { match as matchLanguage } from "@formatjs/intl-localematcher"
 import { i18n } from "./constants/i18n"
 import { cookies } from "next/headers"
-import { Language } from "./types/i18n"
+import { Language } from "./generated/prisma"
 
 async function getLanguage(req: NextRequest): Promise<Language> {
 

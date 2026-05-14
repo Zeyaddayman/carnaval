@@ -1,7 +1,7 @@
 import ExploreCollections from "@/components/home/ExploreCollections"
 import Hero from "@/components/home/Hero"
 import { i18n } from "@/constants/i18n"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import getTranslation from "@/utils/translation"
 
 export default async function Home({ params }: PageProps<"/[lang]">) {

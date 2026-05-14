@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { buttonVariants } from "../ui/Button"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     lang: Language

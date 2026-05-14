@@ -10,7 +10,7 @@ import ProductCartSkeleton from "@/components/skeletons/ProductCartSkeleton"
 import useAddItemToUserCart from "@/hooks/cart/user-cart/useAddItemToUserCart"
 import useRemoveItemFromUserCart from "@/hooks/cart/user-cart/useRemoveItemFromUserCart"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     userId: string

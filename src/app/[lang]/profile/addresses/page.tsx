@@ -5,7 +5,7 @@ import Heading from "@/components/ui/Heading"
 import { getAddressesMetadata } from "@/metadata/addresses"
 import { getUserAddresses } from "@/server/db/address"
 import { getProfile } from "@/server/db/profile"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import getTranslation from "@/utils/translation"
 
 const ProfileAddressesPage = async ({ params }: PageProps<"/[lang]/profile/addresses">) => {

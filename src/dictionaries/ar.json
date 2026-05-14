@@ -14,7 +14,8 @@
             },
             "searchButton": {
                 "label": "بحث"
-            }
+            },
+            "all": "الكل"
         }
     },
     "home": {
@@ -316,7 +317,7 @@
         "showingProducts": "عرض {{first}}-{{last}} من أصل {{total}} منتج",
         "sortOptions": {
             "title": "ترتيب حسب",
-            "alphabetical": "أبجدياً",
+            "recommended": "موصى به",
             "priceAsc": "السعر: من الأقل إلى الأعلى",
             "priceDesc": "السعر: من الأعلى إلى الأقل",
             "topRated": "الأعلى تقييماً",
@@ -343,7 +344,11 @@
             "returnToCategories": "العودة للفئات"
         },
         "categories": {
-            "subcategories": "الفئات الفرعية"
+            "subcategories": "الفئات الفرعية",
+            "categoriesText": "الفئات"
+        },
+        "brands": {
+            "brandsText": "العلامات التجارية"
         },
         "search": {
             "resultsFor": "نتائج البحث عن ",
@@ -395,6 +400,11 @@
         "subTitle": "عذراً، الصفحة التي تبحث عنها غير موجودة حالياً.",
         "returnHome": "العودة للرئيسية"
     },
+    "error": {
+        "title": "عذراً، حدث خطأ ما!",
+        "home": "الرئيسية",
+        "tryAgain": "إعادة المحاولة"
+    },
     "footer": {
         "connectWithUs": "تواصل معنا",
         "copyRight": "© 2025 كرنفال. جميع الحقوق محفوظة. تم التطوير بواسطة",
@@ -411,7 +421,8 @@
         "update": "تحديث",
         "inStock": "متوفر",
         "outOfStock": "نفدت الكمية",
-        "inYourCart": "في السلة"
+        "inYourCart": "في السلة",
+        "by": "من"
     },
     "metadata": {
         "main": {

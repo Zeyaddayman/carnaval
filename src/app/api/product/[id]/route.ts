@@ -12,12 +12,16 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
 
     const product = await db.product.findUnique({
         where: { id: productId },
-        select: cardProductSelector
+        select: cardProductSelector(lang)
     })
 
     if (!product) {
         return NextResponse.json({ message: translation.messages.product.productNotFound }, { status: 404 })
     }
 
-    return NextResponse.json(product, { status: 200 })
+    const brandTranslation = product.brand?.translation.find(trans => trans.lang === lang) || product.brand?.translation.find(trans => trans.lang === "en")
+
+    const finalProduct = { ...product, brand: brandTranslation ? { name: brandTranslation.name } : null }
+
+    return NextResponse.json(finalProduct, { status: 200 })
 }

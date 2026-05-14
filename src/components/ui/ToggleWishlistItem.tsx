@@ -11,7 +11,7 @@ import { usePathname } from "next/navigation"
 import { wishlistItemWithProduct } from "@/types/wishlist"
 import useAddItemToUserWishlist from "@/hooks/wishlist/useAddItemToUserWishlist"
 import useRemoveItemFromUserWishlist from "@/hooks/wishlist/useRemoveItemFromUserWishlist"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { Translation } from "@/types/translation"
 
 interface Props {

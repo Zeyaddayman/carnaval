@@ -12,7 +12,7 @@ import toast from "react-hot-toast"
 import { useTransition } from "react"
 import { useAppDispatch } from "@/redux/hooks"
 import { userSessionApi } from "@/redux/features/userSessionApi"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { Translation } from "@/types/translation"
 import { inject } from "@/utils/translation"
 

@@ -1,6 +1,3 @@
-import { Prisma } from "@/generated/prisma"
-import { brandWithProductsCountSelector } from "@/server/query-selectors/brand"
+import { getBrands } from "@/server/db/brands"
 
-export type BrandWithProductsCount = Prisma.BrandGetPayload<{
-    select: typeof brandWithProductsCountSelector
-}>
+export type BrandWithProductsCount = Awaited<ReturnType<typeof getBrands>>[number]

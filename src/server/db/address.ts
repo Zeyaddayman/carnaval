@@ -1,13 +1,14 @@
 import { redirect } from "next/navigation"
 import { isAuthenticated } from "../utils/auth"
 import { db } from "@/lib/prisma"
+import { getLanguage } from "@/utils/language"
 
 export const getUserAddresses = async () => {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
 
     if (!session) {
-        redirect("/auth/login?redirect=/profile")
+        redirect(`/${lang}/auth/login?redirect=/${lang}/profile`)
     }
 
     const { userId } = session
@@ -25,10 +26,10 @@ export const getUserAddresses = async () => {
 
 export const getUserDefaultAddress = async () => {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
 
     if (!session) {
-        redirect("/auth/login?redirect=/profile")
+        redirect(`/${lang}/auth/login?redirect=/${lang}/profile`)
     }
 
     const { userId } = session

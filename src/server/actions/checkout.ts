@@ -101,7 +101,7 @@ export const checkoutAction = async (addressLabel: string) => {
                 governorate: orderAddress.governorate,
                 city: orderAddress.city,
                 streetAddress: orderAddress.streetAddress,
-                products: {
+                items: {
                     createMany: { data: orderItems }
                 },
                 itemsCount,

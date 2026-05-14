@@ -17,13 +17,13 @@ export async function GET(req: NextRequest) {
     const categoryFilter = (categorySlug && categorySlug !== "all") ? { some: { slug: categorySlug } } : undefined
 
     try {
-        let suggestedProducts = await db.product.findMany({
+        let suggestedProducts = await db.productTranslation.findMany({
         where: {
             OR: [
                 { title: { contains: searchTerm, mode: 'insensitive' } },
                 { description: { contains: searchTerm, mode: 'insensitive' } }
             ],
-            categories: categoryFilter
+            product: { categories: categoryFilter }
         },
         select: {
             title: true

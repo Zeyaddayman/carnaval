@@ -10,7 +10,7 @@ import { FiHeart, FiTrash2 } from "react-icons/fi"
 import useAddItemToUserCart from "@/hooks/cart/user-cart/useAddItemToUserCart"
 import { Translation } from "@/types/translation"
 import { inject } from "@/utils/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 
 interface Props {
@@ -65,7 +65,7 @@ const UserCartItem = ({ item, initialLimit, userId, removeItem, moveItemToWishli
                     product={item.product}
                     quantity={item.quantity}
                     lang={lang}
-                    translation={translation.cart.items}
+                    translation={translation}
                 />
                 <div className="flex gap-2 flex-wrap justify-between mt-5">
                     <CartItemQuantityCounter

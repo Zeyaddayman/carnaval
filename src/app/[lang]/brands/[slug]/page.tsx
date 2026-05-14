@@ -8,7 +8,7 @@ import { getProductsSortOptions, PRODUCTS_FILTERS } from "@/constants/products"
 import { getBrandProductsMetadata } from "@/metadata/products"
 import { getProductsByBrand } from "@/server/db/products"
 import { getBrandProductsMaxPrice, getBrandProductsMinPrice, getBrandProductsMinRating } from "@/server/utils/products-statistics"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { ProductsSortOptionValue } from "@/types/products"
 import { Translation } from "@/types/translation"
 import { getValidatedFilters } from "@/utils/filters"
@@ -24,10 +24,12 @@ interface SearchParams {
 const BrandProductsPage = async ({ params, searchParams }: PageProps<"/[lang]/brands/[slug]">) => {
 
     const [
-        { slug, lang },
+        resolvedParams,
         resolvedSearchParams
 
     ] = await Promise.all([params, searchParams])
+
+    const { slug, lang } = resolvedParams as { slug: string, lang: Language }
 
     const {
         page: pageParam = "1",
@@ -35,18 +37,18 @@ const BrandProductsPage = async ({ params, searchParams }: PageProps<"/[lang]/br
 
     } = resolvedSearchParams
 
-    const translation = await getTranslation(lang as Language)
+    const translation = await getTranslation(lang)
 
     const productsSortOptions = getProductsSortOptions(translation.products.sortOptions)
 
-    const sort: ProductsSortOptionValue = productsSortOptions.find(option => option.value === sortParam)?.value || "alphabetical"
+    const sort: ProductsSortOptionValue = productsSortOptions.find(option => option.value === sortParam)?.value || "recommended"
 
     const paginationPage = !isNaN(Number(pageParam)) ? Number(pageParam) : 1
 
     const filters = getValidatedFilters(resolvedSearchParams as SearchParams)
 
 
-    const data = await getProductsByBrand(slug, sort, filters, paginationPage)
+    const data = await getProductsByBrand(slug, sort, filters, paginationPage, lang)
 
     if (!data) return notFound()
 
@@ -61,7 +63,12 @@ const BrandProductsPage = async ({ params, searchParams }: PageProps<"/[lang]/br
     return (
         <main>
             <div className="container">
-                <BrandProductsHeading name={brandName} slug={slug} lang={lang as Language} />
+                <BrandProductsHeading
+                    name={brandName}
+                    slug={slug}
+                    lang={lang}
+                    brandsText={translation.products.brands.brandsText}
+                />
                 <div className="mt-3">
                     <div className="flex justify-between flex-col sm:flex-row sm:items-center flex-wrap mb-3 gap-3">
                         <Suspense
@@ -80,7 +87,7 @@ const BrandProductsPage = async ({ params, searchParams }: PageProps<"/[lang]/br
                             <Filters
                                 slug={slug}
                                 searchParams={resolvedSearchParams as SearchParams}
-                                lang={lang as Language}
+                                lang={lang}
                                 translation={translation.products.filters}
                             />
                         </Suspense>
@@ -96,7 +103,7 @@ const BrandProductsPage = async ({ params, searchParams }: PageProps<"/[lang]/br
                         limit={pagination.limit}
                         pageSize={pagination.pageSize}
                         clearFiltersLink={`brands/${slug}`}
-                        lang={lang as Language}
+                        lang={lang}
                         translation={translation}
                     />
                     <Pagination
@@ -158,10 +165,12 @@ const Filters = async ({
 export async function generateMetadata({ params, searchParams }: PageProps<"/[lang]/brands/[slug]">) {
 
     const [
-        { slug, lang },
+        resolvedParams,
         resolvedSearchParams
 
     ] = await Promise.all([params, searchParams])
+
+    const { slug, lang } = resolvedParams as { slug: string, lang: Language } 
 
     const {
         page: pageParam = "1",
@@ -169,17 +178,17 @@ export async function generateMetadata({ params, searchParams }: PageProps<"/[la
 
     } = resolvedSearchParams
 
-    const translation = await getTranslation(lang as Language)
+    const translation = await getTranslation(lang)
 
     const productsSortOptions = getProductsSortOptions(translation.products.sortOptions)
 
-    const sort: ProductsSortOptionValue = productsSortOptions.find(option => option.value === sortParam)?.value || "alphabetical"
+    const sort: ProductsSortOptionValue = productsSortOptions.find(option => option.value === sortParam)?.value || "recommended"
 
     const paginationPage = !isNaN(Number(pageParam)) ? Number(pageParam) : 1
 
     const filters = getValidatedFilters(resolvedSearchParams as SearchParams)
 
-    const data = await getProductsByBrand(slug, sort, filters, paginationPage)
+    const data = await getProductsByBrand(slug, sort, filters, paginationPage, lang)
 
     if (!data) return {
         title: translation.metadata.notFound.title,

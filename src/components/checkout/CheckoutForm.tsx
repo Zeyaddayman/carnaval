@@ -11,7 +11,7 @@ import { getPaymentMethods } from "@/constants/checkout"
 import { BsCash } from "react-icons/bs"
 import { CiCreditCard1 } from "react-icons/ci"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     clientSecret: string

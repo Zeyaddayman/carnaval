@@ -6,7 +6,7 @@ import { formatPrice, formatRating } from "@/utils/formatters"
 import { isAuthenticated } from "@/server/utils/auth"
 import ToggleWishlistItem from "../ui/ToggleWishlistItem"
 import { productHasDiscount } from "@/utils/product"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { Translation } from "@/types/translation"
 
 interface Props {
@@ -47,7 +47,9 @@ const ProductCard = async ({ product, translation, lang }: Props) => {
                     />
                 </div>
                 <h3 className="text-card-foreground sm:text-lg sm:font-semibold mt-2 mb-1">{product.title}</h3>
-                {product.brand && <p className="text-muted-foreground text-sm">by <span>{product.brand.name}</span></p>}
+                {product.brand && <p className="text-muted-foreground text-sm">
+                    {translation.global.by}: <span>{product.brand.name}</span>
+                </p>}
 
                 <div className="flex gap-2 items-center my-3">
                     <RatingStars rating={product.rating} />

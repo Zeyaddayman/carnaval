@@ -4,7 +4,7 @@ import OrdersTable from "@/components/profile/orders/OrdersTable"
 import Heading from "@/components/ui/Heading"
 import { getOrdersMetadata } from "@/metadata/orders"
 import { getUserOrders } from "@/server/db/orders"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { Translation } from "@/types/translation"
 import getTranslation from "@/utils/translation"
 

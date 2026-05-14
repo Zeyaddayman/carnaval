@@ -3,13 +3,14 @@ import { isAuthenticated } from "../utils/auth"
 import { db } from "@/lib/prisma"
 import { Prisma } from "@/generated/prisma"
 import { orderDetailsSelector, tableOrderSelector } from "../query-selectors/order"
+import { getLanguage } from "@/utils/language"
 
 export const getUserOrders = async (filter: string ) => {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
 
     if (!session) {
-        redirect("/auth/login?redirect=/checkout")
+        redirect(`/${lang}/auth/login?redirect=/${lang}/checkout`)
     }
 
     const { userId } = session
@@ -39,30 +40,44 @@ export const getUserOrders = async (filter: string ) => {
 
 export const getOrderDetails = async (id: string) => {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
 
     if (!session) {
-        redirect("/auth/login?redirect=/checkout")
+        redirect(`/${lang}/auth/login?redirect=/${lang}/checkout`)
     }
 
     const { userId } = session
 
     const order = await db.order.findUnique({
         where: { id, userId },
-        select: orderDetailsSelector
+        select: orderDetailsSelector(lang)
     })
 
     if (!order) return null
 
-    return order
+    const orderItems = order.items.map(item => {
+
+        const productTranslation = item.product.translation.find(trans => trans.lang === lang) || item.product.translation.find(trans => trans.lang === "en")!
+
+        return {
+            ...item,
+            product: {
+                id: item.product.id,
+                thumbnail: item.product.thumbnail,
+                title: productTranslation.title
+            }
+        }
+    })
+
+    return { ...order, items: orderItems }
 }
 
 export const getUserOrdersSummary = async () => {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
 
     if (!session) {
-        redirect("/auth/login?redirect=/checkout")
+        redirect(`/${lang}/auth/login?redirect=/${lang}/checkout`)
     }
 
     const { userId } = session

@@ -2,7 +2,7 @@ import Link from "next/link"
 import CheckoutItemCard from "./CheckoutItemCard"
 import { CheckoutItem } from "@/types/checkout"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     items: CheckoutItem[]

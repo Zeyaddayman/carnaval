@@ -1,5 +1,6 @@
 import { buttonVariants } from "@/components/ui/Button"
-import { Language } from "@/types/i18n"
+import { i18n } from "@/constants/i18n"
+import { Language } from "@/generated/prisma"
 import getTranslation from "@/utils/translation"
 import Image from "next/image"
 import Link from "next/link"
@@ -35,6 +36,10 @@ const NotFound = async ({ params }: PageProps<"/[lang]">) => {
             </div>
         </main>
     )
+}
+
+export function generateStaticParams() {
+    return i18n.languages.map(lang => ({ lang }))
 }
 
 export default NotFound

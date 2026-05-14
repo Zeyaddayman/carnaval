@@ -4,7 +4,7 @@ import CartItemInfo from "./CartItemInfo"
 import { Button } from "../ui/Button"
 import { FiHeart, FiTrash2 } from "react-icons/fi"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     item: CartItemWithProduct
@@ -38,7 +38,7 @@ const UnavailableCartItem = ({ item, removeItem, moveItemToWishlist, lang, trans
                     product={item.product}
                     quantity={item.quantity}
                     lang={lang}
-                    translation={translation.cart.items}
+                    translation={translation}
                 />
                 <div className="bg-destructive/70 mt-3 text-destructive-foreground text-sm text-center font-semibold p-2 rounded-full">
                     {translation.global.outOfStock}

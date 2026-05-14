@@ -4,7 +4,7 @@ import OrderStatus from "./OrderStatus"
 import { formatDate } from "@/utils/formatters"
 import { TableOrder } from "@/types/order"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 const OrdersTable = ({
     orders,

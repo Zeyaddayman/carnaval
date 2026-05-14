@@ -9,7 +9,7 @@ import useAddItemToUserCart from "@/hooks/cart/user-cart/useAddItemToUserCart"
 import useRemoveItemFromUserWishlist from "@/hooks/wishlist/useRemoveItemFromUserWishlist"
 import { Translation } from "@/types/translation"
 import { inject } from "@/utils/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     userId: string

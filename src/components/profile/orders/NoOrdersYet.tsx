@@ -1,5 +1,5 @@
 import { buttonVariants } from "@/components/ui/Button"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { Translation } from "@/types/translation"
 import Image from "next/image"
 import Link from "next/link"

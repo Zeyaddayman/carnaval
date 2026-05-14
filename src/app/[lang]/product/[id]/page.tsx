@@ -8,7 +8,7 @@ import { getProduct } from "@/server/db/product"
 import { notFound } from "next/navigation"
 import { getProductMetadata } from "@/metadata/product"
 import getTranslation from "@/utils/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { i18n } from "@/constants/i18n"
 
 export const revalidate = 3600
@@ -17,7 +17,7 @@ const productPage = async ({ params }: PageProps<"/[lang]/product/[id]">) => {
 
     const { id, lang } = await params as { id: string, lang: Language }
 
-    const [data, translation] = await Promise.all([getProduct(id), getTranslation(lang)])
+    const [data, translation] = await Promise.all([getProduct(id, lang), getTranslation(lang)])
 
     if (!data) return notFound()
 
@@ -33,7 +33,7 @@ const productPage = async ({ params }: PageProps<"/[lang]/product/[id]">) => {
                 <div className="flex flex-col lg:flex-row gap-5 mt-5">
                     <ProductImagesPreview images={product.images} />
                     <div className="flex-1 space-y-6">
-                        <ProductInfo product={product} />
+                        <ProductInfo product={product} translation={translation.global} />
                         <WishlistAndCart
                             product={product}
                             lang={lang}
@@ -50,16 +50,16 @@ export const generateMetadata = async ({ params }: PageProps<"/[lang]/product/[i
 
     const { id, lang } = await params as { id: string, lang: Language }
 
-    const [data, translation] = await Promise.all([getProduct(id), getTranslation(lang)])
+    const [data, translation] = await Promise.all([getProduct(id, lang), getTranslation(lang)])
 
     if (!data) return {
         title: translation.metadata.notFound.title,
         description: translation.metadata.notFound.description
     }
 
-    const { product } = data
+    const { product, categoryHierarchy } = data
 
-    return getProductMetadata(translation.metadata, product)
+    return getProductMetadata(translation.metadata, product, categoryHierarchy)
 }
 
 export async function generateStaticParams() {

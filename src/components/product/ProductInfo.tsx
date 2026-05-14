@@ -2,12 +2,14 @@ import { ProductDetails } from "@/types/products"
 import RatingStars from "../ui/RatingStars"
 import { formatPrice, formatRating } from "@/utils/formatters"
 import { productHasDiscount } from "@/utils/product"
+import { Translation } from "@/types/translation"
 
 interface Props {
     product: ProductDetails
+    translation: Translation["global"]
 }
 
-const ProductInfo = ({ product }: Props) => {
+const ProductInfo = ({ product, translation }: Props) => {
 
     const hasDiscount = productHasDiscount(product.discountPercentage)
 
@@ -22,7 +24,9 @@ const ProductInfo = ({ product }: Props) => {
                 <h2 className="text-foreground text-3xl lg:text-4xl font-bold">
                     {product.title}
                 </h2>
-                {product.brand && <p className="text-muted-foreground">by {product.brand.name}</p>}
+                {product.brand && <p className="text-muted-foreground">
+                    {translation.by}: {product.brand.name}
+                </p>}
             </div>
             <p className="my-4 text-foreground">
                 {product.description}

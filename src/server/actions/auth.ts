@@ -141,7 +141,7 @@ export const loginAction = async (
             include: {
                 cart: {
                     select: {
-                        items: { select: cartItemSelector }
+                        items: { select: cartItemSelector(lang) }
                     }
                 }
             }
@@ -165,7 +165,21 @@ export const loginAction = async (
             }
         }
 
-        const mergedCartItems = mergeCartItems(localCartItems, user.cart?.items || [])
+        const userCartItems = user.cart?.items.map(item => {
+            const brandTranslation = item.product.brand?.translation.find(trans => trans.lang === lang) || item.product.brand?.translation.find(trans => trans.lang === "en")
+            const productTranslation = item.product.translation.find(trans => trans.lang === lang) || item.product.translation.find(trans => trans.lang === "en")!
+
+            return {
+                ...item,
+                product: {
+                    ...item.product,
+                    title: productTranslation.title,
+                    brand: brandTranslation ? { name: brandTranslation.name } : null
+                }
+            }
+        })
+
+        const mergedCartItems = mergeCartItems(localCartItems, userCartItems || [])
 
         await db.cart.upsert({
             where: { userId: user.id },

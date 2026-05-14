@@ -6,8 +6,9 @@ import { subcategorySelector } from "../query-selectors/category"
 import { cardProductSelector } from "../query-selectors/product"
 import { buildProductsFilters, buildProductsSort } from "../utils/products"
 import { cache as reactCache } from "react"
+import { Language } from "@/generated/prisma"
 
-export const getProductsByCategory = reactCache(async (slug: Category["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
+export const getProductsByCategory = reactCache(async (slug: Category["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number, lang: Language) => {
 
     const whereOptions = buildProductsFilters(filters)
 
@@ -20,8 +21,16 @@ export const getProductsByCategory = reactCache(async (slug: Category["slug"], s
         db.category.findUnique({
             where: { slug },
             select: { 
-                name: true, 
-                subcategories: { select: subcategorySelector }
+                translation: {
+                    where: {
+                        OR: [
+                            { lang },
+                            { lang: "en" }
+                        ]
+                    },
+                    select: { name: true, lang: true }
+                },
+                subcategories: { select: subcategorySelector(lang) }
             }
         }),
 
@@ -30,7 +39,7 @@ export const getProductsByCategory = reactCache(async (slug: Category["slug"], s
                 ...whereOptions,
                 categories: { some: { slug } }
             },
-            select: cardProductSelector,
+            select: cardProductSelector(lang),
             orderBy: orderByOptions,
             take: PROUDCTS_PAGE_LIMIT,
             skip
@@ -43,10 +52,35 @@ export const getProductsByCategory = reactCache(async (slug: Category["slug"], s
 
     if (!category) return null
 
+    const categoryTranslation = category.translation.find(trans => trans.lang === lang) || category.translation.find(trans => trans.lang === "en")!
+
+    const finalProducts = products.map(product => {
+
+        const brandTranslation = product.brand?.translation.find(trans => trans.lang === lang) || product.brand?.translation.find(trans => trans.lang === "en")
+        const productTranslation = product.translation.find(trans => trans.lang === lang) || product.translation.find(trans => trans.lang === "en")!
+
+        return {
+            ...product,
+            title: productTranslation.title,
+            brand: brandTranslation ? { name: brandTranslation.name } : null,
+        }
+    })
+
+    const subcategories = category.subcategories.map(subcat => {
+
+        const translation = subcat.translation.find(trans => trans.lang === lang) || subcat.translation.find(trans => trans.lang === "en")!
+
+        return {
+            slug: subcat.slug,
+            name: translation.name,
+            _count: subcat._count
+        }
+    })
+
     return {
-        categoryName: category.name,
-        products,
-        subcategories: category.subcategories,
+        categoryName: categoryTranslation.name,
+        products: finalProducts,
+        subcategories,
         pagination: {
             total: count,
             page,
@@ -56,7 +90,7 @@ export const getProductsByCategory = reactCache(async (slug: Category["slug"], s
     }
 })
 
-export const getProductsByBrand = reactCache(async (slug: Brand["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
+export const getProductsByBrand = reactCache(async (slug: Brand["slug"], sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number, lang: Language) => {
 
     const whereOptions = buildProductsFilters(filters)
 
@@ -68,7 +102,14 @@ export const getProductsByBrand = reactCache(async (slug: Brand["slug"], sortBy:
 
         db.brand.findUnique({
             where: { slug },
-            select: {  name: true }
+            select: {
+                translation: {
+                    where: {
+                        OR: [ { lang }, { lang: "en" } ]
+                    },
+                    select: { name: true, lang: true }
+                }
+            }
         }),
 
         await db.product.findMany({
@@ -76,7 +117,7 @@ export const getProductsByBrand = reactCache(async (slug: Brand["slug"], sortBy:
                 ...whereOptions,
                 brand: { slug }
             },
-            select: cardProductSelector,
+            select: cardProductSelector(lang),
             orderBy: orderByOptions,
             take: PROUDCTS_PAGE_LIMIT,
             skip
@@ -89,9 +130,23 @@ export const getProductsByBrand = reactCache(async (slug: Brand["slug"], sortBy:
 
     if (!brand) return null
 
+    const brandTranslation = brand.translation.find(trans => trans.lang === lang) || brand.translation.find(trans => trans.lang === "en")!
+
+    const finalProducts = products.map(product => {
+
+        const brandTranslation = product.brand?.translation.find(trans => trans.lang === lang) || product.brand?.translation.find(trans => trans.lang === "en")
+        const productTranslation = product.translation.find(trans => trans.lang === lang) || product.translation.find(trans => trans.lang === "en")!
+
+        return {
+            ...product,
+            title: productTranslation.title,
+            brand: brandTranslation ? { name: brandTranslation.name } : null,
+        }
+    })
+
     return {
-        brandName: brand.name,
-        products,
+        brandName: brandTranslation.name,
+        products: finalProducts,
         pagination: {
             total: count,
             page,
@@ -101,7 +156,7 @@ export const getProductsByBrand = reactCache(async (slug: Brand["slug"], sortBy:
     }
 })
 
-export const getSearchProducts = reactCache(async (query: string, categorySlug: string, sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number) => {
+export const getSearchProducts = reactCache(async (query: string, categorySlug: string, sortBy: ProductsSortOptionValue, filters: ProductsFiltersOptions, page: number, lang: Language) => {
 
     const searchTerm = query.trim()
 
@@ -115,41 +170,75 @@ export const getSearchProducts = reactCache(async (query: string, categorySlug: 
 
     const skip = (page - 1) * PROUDCTS_PAGE_LIMIT
 
-    const [products, count, category] = await Promise.all([
+    const [productsTranslation, count, category] = await Promise.all([
 
-        await db.product.findMany({
+        db.productTranslation.findMany({
             where: {
                 OR: [
                     { title: { contains: searchTerm, mode: "insensitive" } },
                     { description: { contains: searchTerm, mode: "insensitive" } }
                 ],
-                ...whereOptions,
-                categories: categoryFilter
             },
-            select: cardProductSelector,
-            orderBy: orderByOptions,
-            take: PROUDCTS_PAGE_LIMIT,
-            skip
+            select: { id: true },
         }),
 
-        db.product.count({
+        db.productTranslation.count({
             where: {
                 OR: [
                     { title: { contains: searchTerm, mode: "insensitive" } },
                     { description: { contains: searchTerm, mode: "insensitive" } }
                 ],
-                ...whereOptions,
-                categories: categoryFilter
             }
         }),
 
-        categoryFilter ? db.category.findUnique({ where: { slug: categorySlug } }) : null
+        categoryFilter ?
+            db.category.findUnique({
+                where: { slug: categorySlug },
+                select: {
+                    translation: {
+                        where: {
+                            OR: [ { lang }, { lang: "en" } ]
+                        },
+                        select: { name: true, lang: true }
+                    },
+                    slug: true
+                }
+            })
+            : null
     ])
+
+    const productsIds = productsTranslation.map(product => product.id)
+
+    const products = await db.product.findMany({
+        where: {
+            id: { in: productsIds },
+            ...whereOptions,
+            categories: categoryFilter
+        },
+        select: cardProductSelector(lang),
+        orderBy: orderByOptions,
+        take: PROUDCTS_PAGE_LIMIT,
+        skip
+    })
+
+    const finalProducts = products.map(product => {
+
+        const brandTranslation = product.brand?.translation.find(trans => trans.lang === lang) || product.brand?.translation.find(trans => trans.lang === "en")
+        const productTranslation = product.translation.find(trans => trans.lang === lang) || product.translation.find(trans => trans.lang === "en")!
+
+        return {
+            ...product,
+            title: productTranslation.title,
+            brand: brandTranslation ? { name: brandTranslation.name } : null,
+        }
+    })
+
+    const categoryTranslation = category?.translation.find(trans => trans.lang === lang) || category?.translation.find(trans => trans.lang === "en") || null
 
     return {
         searchTerm,
-        products,
-        categoryName: category?.name,
+        products: finalProducts,
+        categoryName: categoryTranslation?.name,
         categorySlug: category?.slug,
         pagination: {
             total: count,

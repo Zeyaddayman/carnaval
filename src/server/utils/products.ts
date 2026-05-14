@@ -28,8 +28,8 @@ export function buildProductsSort(sortBy: ProductsSortOptionValue) {
     let orderByOptions: Prisma.ProductOrderByWithRelationInput = {}
 
     switch (sortBy) {
-        case "alphabetical":
-            orderByOptions = { title: "asc" }
+        case "recommended":
+            orderByOptions = { orderItems: { _count: "desc" } }
             break
         case "price-asc":
             orderByOptions = { finalPrice: "asc" }
@@ -44,7 +44,7 @@ export function buildProductsSort(sortBy: ProductsSortOptionValue) {
             orderByOptions = { discountPercentage: { sort: "desc", nulls: "last" } }
             break
         default:
-            orderByOptions = { title: "asc" }
+            orderByOptions = { orderItems: { _count: "desc" } }
     }
 
     return orderByOptions

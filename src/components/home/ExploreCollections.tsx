@@ -3,7 +3,7 @@ import Link from "next/link"
 import Heading from "../ui/Heading"
 import { getTopLevelCategories } from "@/server/db/categories"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     lang: Language
@@ -12,7 +12,7 @@ interface Props {
 
 const ExploreCollections = async ({ lang, translation }: Props) => {
 
-    const topLevelCategories = await getTopLevelCategories()
+    const topLevelCategories = await getTopLevelCategories(lang)
 
     return (
         <section className="section-gap">
@@ -39,7 +39,7 @@ const ExploreCollections = async ({ lang, translation }: Props) => {
                                 loading="lazy"
                             />
                         </div>
-                        <p className="text-center text-xl font-bold p-3 bg-card text-card-foreground">{category.name}</p>
+                        <h4 className="text-center text-xl font-bold p-3 bg-card text-card-foreground">{category.name}</h4>
                     </Link>
                 ))}
             </div>

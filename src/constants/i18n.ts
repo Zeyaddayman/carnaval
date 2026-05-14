@@ -1,6 +1,8 @@
-import { i18nType, Language, LanguageKey } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
+import { i18nType, LanguageKey } from "@/types/i18n"
 
-export const LANGUAGES = {
+
+export const LANGUAGES: { [key: string]: Language } = {
     arabic: "ar",
     english: "en"
 

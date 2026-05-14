@@ -154,12 +154,23 @@ export const getSearchProductsMinPrice = async (query: string, categorySlug: str
         whereOptions.discountPercentage = { not: null, gt: 0 }
     }
 
-    const result = await db.product.aggregate({
+    const productsTranslations = await db.productTranslation.findMany({
         where: {
             OR: [
                 { title: { contains: searchTerm, mode: "insensitive" } },
                 { description: { contains: searchTerm, mode: "insensitive" } }
             ],
+        },
+        select: {
+            id: true
+        }
+    })
+
+    const productsIds = productsTranslations.map(({ id }) => id)
+
+    const result = await db.product.aggregate({
+        where: {
+            id: { in: productsIds },
             ...whereOptions
         },
         _min: {
@@ -189,12 +200,23 @@ export const getSearchProductsMaxPrice = async (query: string, categorySlug: str
         whereOptions.discountPercentage = { not: null, gt: 0 }
     }
 
-    const result = await db.product.aggregate({
+    const productsTranslations = await db.productTranslation.findMany({
         where: {
             OR: [
                 { title: { contains: searchTerm, mode: "insensitive" } },
                 { description: { contains: searchTerm, mode: "insensitive" } }
             ],
+        },
+        select: {
+            id: true
+        }
+    })
+
+    const productsIds = productsTranslations.map(({ id }) => id)
+
+    const result = await db.product.aggregate({
+        where: {
+            id: { in: productsIds },
             ...whereOptions
         },
         _max: {
@@ -211,12 +233,23 @@ export const getSearchProductsMinRating = async (query: string, categorySlug: st
 
     const categoryFilter = categorySlug && categorySlug !== "all" ? { some: { slug: categorySlug } } : undefined
 
-    const result = await db.product.aggregate({
-        where: { 
+    const productsTranslations = await db.productTranslation.findMany({
+        where: {
             OR: [
                 { title: { contains: searchTerm, mode: "insensitive" } },
                 { description: { contains: searchTerm, mode: "insensitive" } }
             ],
+        },
+        select: {
+            id: true
+        }
+    })
+
+    const productsIds = productsTranslations.map(({ id }) => id)
+
+    const result = await db.product.aggregate({
+        where: {
+            id: { in: productsIds },
             categories: categoryFilter,
             stock: { gt: 0 }
         },

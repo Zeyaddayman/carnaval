@@ -26,18 +26,31 @@ export async function GET() {
             update: {},
             select: {
                 items: {
-                    select: cartItemSelector,
+                    select: cartItemSelector(lang),
                     orderBy: { createdAt: 'desc' }
                 }
             }
         })
 
+        const finalCartItems = cart.items.map(item => {
+            const brandTranslation = item.product.brand?.translation.find(trans => trans.lang === lang) || item.product.brand?.translation.find(trans => trans.lang === "en")
+            const productTranslation = item.product.translation.find(trans => trans.lang === lang) || item.product.translation.find(trans => trans.lang === "en")!
+
+            return {
+                ...item,
+                product: {
+                    ...item.product,
+                    title: productTranslation.title,
+                    brand: brandTranslation ? { name: brandTranslation.name } : null
+                }
+            }
+        })
+
         // Check if any cart item quantities need to be modified based on stock/limit
-        const { newCartItems, quantityModifiedItems } = await modifyCartItemsQuantities(cart.items)
+        const { cartItems, quantityModifiedItems } = await modifyCartItemsQuantities(finalCartItems)
 
-        cart.items = newCartItems
 
-        return NextResponse.json({ cart, quantityModifiedItems }, { status: 200 })
+        return NextResponse.json({ cart: { ...cart, items: cartItems }, quantityModifiedItems }, { status: 200 })
     } catch {
         return NextResponse.json({ message: translation.messages.cart.getCartFailed }, { status: 500 })
     }

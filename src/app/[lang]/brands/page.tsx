@@ -1,7 +1,7 @@
 import ProductsBrands from "@/components/brands/ProductsBrands"
 import { i18n } from "@/constants/i18n"
 import { getBrandsMetadata } from "@/metadata/brands"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import getTranslation from "@/utils/translation"
 
 const BrandsPage = async ({ params }: PageProps<"/[lang]/brands">) => {

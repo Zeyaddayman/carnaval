@@ -1,5 +1,5 @@
 import { CategoryHierarchy } from "@/types/categories"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import Link from "next/link"
 import { Fragment } from "react"
 
@@ -18,12 +18,12 @@ const CategoriesChain = ({ categoryHierarchy, lang }: Props) => {
 
                 return <Fragment key={category.name}>
                     <Link
-                        href={`/${lang}category.link`}
-                        className={isLastCategory ? "text-foreground font-semibold me-3" : "text-muted-foreground hover:text-foreground ms-3 me-3"}
+                        href={`/${lang}${category.link}`}
+                        className={isLastCategory ? "text-foreground font-semibold ms-3" : `text-muted-foreground hover:text-foreground me-3 ${i !== 0 ? "ms-3" : ""}`}
                     >
                         {isFirstCategory ? category.name : category.nameAsSubcategory}
                     </Link>
-                    {!isLastCategory && <span className="rtl-flip">&gt;</span>}
+                    {!isLastCategory && <span>&gt;</span>}
                 </Fragment>
             })}
         </div>

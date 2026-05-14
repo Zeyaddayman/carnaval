@@ -1,11 +1,11 @@
 import { getBrands } from "@/server/db/brands";
-import { Language } from "@/types/i18n";
+import { Language } from "@/generated/prisma";
 import getTranslation, { inject } from "@/utils/translation";
 import { Metadata } from "next";
 
 export const getBrandsMetadata = async (lang: Language): Promise<Metadata> => {
 
-    const [{ metadata }, brands] = await Promise.all([getTranslation(lang), getBrands()])
+    const [{ metadata }, brands] = await Promise.all([getTranslation(lang), getBrands(lang)])
     const topBrandsNames = brands.slice(0, 20).map(brand => brand.name).join(", ")
 
     return {

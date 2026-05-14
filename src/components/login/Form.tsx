@@ -10,7 +10,7 @@ import { userSessionApi } from "@/redux/features/userSessionApi"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     lang: Language

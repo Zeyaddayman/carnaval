@@ -1,25 +1,56 @@
 import { Prisma } from "@/generated/prisma";
+import { Language } from "@/generated/prisma";
 
-export const menuCategorySelector = {
-    name: true,
+export const getMenuCategorySelector = (lang: Language) => ({
     slug: true,
     thumbnail: true,
     subcategories: {
         select: {
-            name: true,
             slug: true,
             thumbnail: true,
-            nameAsSubcategory: true
+            translation: {
+                where: {
+                    OR: [
+                        { lang },
+                        { lang: "en" }
+                    ]
+                },
+                select: {
+                    lang: true,
+                    name: true,
+                    nameAsSubcategory: true
+                }
+            }
+        }
+    },
+    translation: {
+        where: {
+            OR: [
+                { lang },
+                { lang: "en" }
+            ]
+        },
+        select: {
+            lang: true,
+            name: true
         }
     }
-} satisfies Prisma.CategorySelect
+}) satisfies Prisma.CategorySelect
 
-export const subcategorySelector = {
-    name: true,
+export const subcategorySelector = (lang: Language) => ({
     slug: true,
+    translation: {
+        where: {
+            OR: [
+                { lang },
+                { lang: "en" }
+            ]
+        },
+        select: { name: true, lang: true }
+    },
     _count: {
         select: {
             products: true
         }
     }
-} satisfies Prisma.CategorySelect
+}) satisfies Prisma.CategorySelect

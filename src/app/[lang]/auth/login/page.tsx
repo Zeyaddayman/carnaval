@@ -2,7 +2,7 @@ import LoginForm from "@/components/login/Form"
 import Heading from "@/components/ui/Heading"
 import { i18n } from "@/constants/i18n"
 import { getLoginMetadata } from "@/metadata/auth"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import getTranslation from "@/utils/translation"
 import Link from "next/link"
 

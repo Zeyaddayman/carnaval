@@ -2,8 +2,6 @@
 
 import { useEffect, useState } from "react"
 import ToggleWishlistItem from "../ui/ToggleWishlistItem"
-import ProductLocalCart from "./cart/LocalCart"
-import ProductUserCart from "./cart/UserCart"
 import OutOfStock from "./OutOfStock"
 import { ProductDetails } from "@/types/products"
 import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
@@ -11,7 +9,9 @@ import ProductCartSkeleton from "../skeletons/ProductCartSkeleton"
 import ProductToggleWishlistItemSkeleton from "../skeletons/ProductToggleWishlistItemSkeleton"
 import { fetchProductLimit } from "@/server/utils/product"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
+import ProductUserCart from "./cart/UserCart"
+import ProductLocalCart from "./cart/LocalCart"
 
 interface Props {
     product: ProductDetails

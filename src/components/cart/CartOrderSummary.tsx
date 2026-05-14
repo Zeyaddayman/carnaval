@@ -9,7 +9,7 @@ import { getCartItemsCount, getCartSubtotal } from "@/utils/cart"
 import { getShipping, getTotal } from "@/utils"
 import { formatPrice } from "@/utils/formatters"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     cartItems: CartItemWithProduct[]

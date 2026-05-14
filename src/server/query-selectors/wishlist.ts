@@ -1,8 +1,9 @@
 import { Prisma } from "@/generated/prisma";
 import { cardProductSelector } from "./product";
+import { Language } from "@/generated/prisma";
 
-export const wishlistItemProductSelector = cardProductSelector satisfies Prisma.ProductSelect
+export const wishlistItemProductSelector = cardProductSelector
 
-export const wishlistItemSelector = {
-    product: { select: wishlistItemProductSelector }
-} satisfies Prisma.WishlistSelect
+export const wishlistItemSelector = (lang: Language) => ({
+    product: { select: wishlistItemProductSelector(lang) }
+}) satisfies Prisma.WishlistSelect

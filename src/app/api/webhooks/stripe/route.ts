@@ -91,7 +91,7 @@ export async function POST(req: NextRequest) {
                 governorate: orderAddress.governorate,
                 city: orderAddress.city,
                 streetAddress: orderAddress.streetAddress,
-                products: {
+                items: {
                     createMany: { data: orderItems }
                 },
                 itemsCount,

@@ -5,7 +5,7 @@ import { AddWishlistItemResponse, RemoveWishlistItemResponse, WishlistError, Wis
 
 export const userWishlistApi = createApi({
     reducerPath: 'userWishlistApi',
-    baseQuery: fetchBaseQuery({baseUrl: '/api/'}),
+    baseQuery: fetchBaseQuery({ baseUrl: '/api/' }),
     tagTypes: ['user-wishlist'],
 
     refetchOnMountOrArgChange: true,

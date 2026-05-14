@@ -13,7 +13,7 @@ import { selectCartItem } from "@/redux/features/userCartApi"
 import { FaCheck } from "react-icons/fa"
 import { useAppSelector } from "@/redux/hooks"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     product: wishlistItemWithProduct["product"]
@@ -68,7 +68,9 @@ const WishlistItemCard = ({ product, userId, removeItem, addItemToCart, lang, tr
                     />
                 </div>
                 <h3 className="text-card-foreground sm:text-lg sm:font-semibold mt-2 mb-1">{product.title}</h3>
-                {product.brand && <p className="text-muted-foreground text-sm">by <span>{product.brand.name}</span></p>}
+                {product.brand && <p className="text-muted-foreground text-sm">
+                    {translation.by}: <span>{product.brand.name}</span>
+                </p>}
                 <div className="flex gap-2 items-center my-3">
                     <RatingStars rating={product.rating} />
                     <span className="text-muted-foreground text-sm">{productRating}</span>

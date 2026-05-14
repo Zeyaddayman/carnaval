@@ -4,13 +4,13 @@ import Link from "next/link"
 import { formatPrice, formatRating } from "@/utils/formatters"
 import { productHasDiscount } from "@/utils/product"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     product: CartItemWithProduct["product"]
     quantity: number
     lang: Language
-    translation: Translation["cart"]["items"]
+    translation: Translation
 }
 
 const CartItemInfo = ({ product, quantity, lang, translation }: Props) => {
@@ -27,7 +27,9 @@ const CartItemInfo = ({ product, quantity, lang, translation }: Props) => {
         <div className="flex gap-2 justify-between">
             <div>
                 <h5 className="font-semibold">{product.title}</h5>
-                {product.brand && <p className="text-muted-foreground text-sm">by: {product.brand.name}</p>}
+                {product.brand && <p className="text-muted-foreground text-sm">
+                    {translation.global.by}: {product.brand.name}
+                </p>}
                 <div className="flex gap-2 items-center my-2">
                     <RatingStars rating={product.rating} />
                     <span className="text-foreground text-sm">{productRating}</span>
@@ -36,7 +38,7 @@ const CartItemInfo = ({ product, quantity, lang, translation }: Props) => {
                     className="underline text-sm"
                     href={`/${lang}/product/${product.id}`}
                 >
-                    {translation.viewProduct}
+                    {translation.cart.items.viewProduct}
                 </Link>
             </div>
             <div className="flex flex-col justify-center">

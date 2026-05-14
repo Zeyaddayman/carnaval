@@ -5,7 +5,7 @@ import { LanguagesMenu } from '@/constants/i18n';
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from '@headlessui/react';
 import { HiMiniChevronUpDown } from 'react-icons/hi2';
 import { BiCheck } from 'react-icons/bi';
-import { Language } from '@/types/i18n';
+import { Language } from "@/generated/prisma";
 
 const SelectLanguage = ({ lang }: { lang: Language }) => {
 
@@ -31,7 +31,7 @@ const SelectLanguage = ({ lang }: { lang: Language }) => {
 
                 <ListboxOptions
                     transition
-                    className={`absolute max-h-60 w-full z-30 mt-1 overflow-auto rounded-md bg-input py-1 text-base shadow-lg border-2 border-border focus:outline-none data-closed:data-leave:opacity-0 data-leave:transition data-leave:duration-100 data-leave:ease-in sm:text-sm`}
+                    className={`absolute max-h-60 w-full z-40 mt-1 overflow-auto rounded-md bg-input py-1 text-base shadow-lg border-2 border-border focus:outline-none data-closed:data-leave:opacity-0 data-leave:transition data-leave:duration-100 data-leave:ease-in sm:text-sm`}
                 >
                     {LanguagesMenu.map(langOption => (
                         <ListboxOption

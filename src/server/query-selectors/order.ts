@@ -1,4 +1,4 @@
-import { Prisma } from "@/generated/prisma";
+import { Language, Prisma } from "@/generated/prisma";
 
 export const tableOrderSelector = {
     id: true,
@@ -8,7 +8,7 @@ export const tableOrderSelector = {
     status: true
 } satisfies Prisma.OrderSelect
 
-export const orderDetailsSelector = {
+export const orderDetailsSelector = (lang: Language) => ({
     count: true,
     status: true,
     createdAt: true,
@@ -22,17 +22,22 @@ export const orderDetailsSelector = {
     governorate: true,
     city: true,
     streetAddress: true,
-    products: {
+    items: {
         select: {
             price: true,
             quantity: true,
             product: {
                 select: {
                     id: true,
-                    title: true,
+                    translation: {
+                        where: {
+                            OR: [ { lang }, { lang: "en" } ]
+                        },
+                        select: { title: true, lang: true }
+                    },
                     thumbnail: true
                 }
             }
         }
     }
-} satisfies Prisma.OrderSelect
+}) satisfies Prisma.OrderSelect

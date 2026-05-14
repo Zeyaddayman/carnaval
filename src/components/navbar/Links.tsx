@@ -8,7 +8,7 @@ import WishlistItemsCount from "./WishlistItemsCount"
 import { MenuCategory } from "@/types/categories"
 import { BrandWithProductsCount } from "@/types/brands"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     topLevelCategories: MenuCategory[]

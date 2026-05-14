@@ -1,14 +1,15 @@
 import { Brand } from "@/generated/prisma"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import Link from "next/link"
 
 interface Props {
-    name: Brand["name"]
+    name: string
     slug: Brand["slug"]
     lang: Language
+    brandsText: string
 }
 
-const BrandProductsHeading = ({ name, slug, lang }: Props) => {
+const BrandProductsHeading = ({ name, slug, lang, brandsText }: Props) => {
     return (
         <section className="border-2 border-border px-3 py-5 space-y-3 rounded-lg">
             <div className="flex flex-wrap items-center gap-2 md:gap-3">
@@ -16,7 +17,7 @@ const BrandProductsHeading = ({ name, slug, lang }: Props) => {
                     href={`/${lang}/brands`}
                     className={"text-muted-foreground hover:text-foreground"}
                 >
-                    Brands
+                    {brandsText}
                 </Link>
                 <span>&gt;</span>
                 <Link

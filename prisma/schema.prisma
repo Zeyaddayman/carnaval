@@ -19,7 +19,7 @@ model User {
   addresses       Address[]
   cart            Cart?
   orders          Order[]
-  orderedProducts OrderProduct[]
+  orderedProducts OrderItem[]
   Wishlist        Wishlist[]
 }
 
@@ -75,53 +75,86 @@ model Wishlist {
 }
 
 model Product {
-  id                 String         @id @default(cuid())
-  title              String         @unique
-  description        String
-  brandId            String?
-  price              Float
-  discountPercentage Float?
-  rating             Float
-  stock              Int
-  limit              Int?
-  images             String[]
-  thumbnail          String
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
-  finalPrice         Float
-  CartItems          CartItem[]
-  orderItems         OrderProduct[]
-  brand              Brand?         @relation(fields: [brandId], references: [id])
-  Wishlist           Wishlist[]
-  categories         Category[]     @relation("ProductCategories")
+  id                  String         @id @default(cuid())
+  brandId             String?
+  price               Float
+  discountPercentage  Float?
+  rating              Float
+  stock               Int
+  limit               Int?
+  images              String[]
+  thumbnail           String
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+  finalPrice          Float
+  CartItems           CartItem[]
+  orderItems          OrderItem[]
+  brand               Brand?         @relation(fields: [brandId], references: [id])
+  Wishlist            Wishlist[]
+  categories          Category[]     @relation("ProductCategories")
+  translation         ProductTranslation[]
+}
+
+model ProductTranslation {
+  id                String     @id @default(uuid())
+  lang              Language
+  title             String     
+  description       String
+  productId         String
+
+  product           Product    @relation(fields: [productId], references: [id])
+
+  @@unique([productId, lang])
 }
 
 model Category {
-  id                String     @id @default(uuid())
-  name              String     @unique
-  slug              String     @unique
-  nameAsSubcategory String
+  id                String                @id @default(uuid())
+  slug              String                @unique
   thumbnail         String
-  parentCategoryId          String?
-  createdAt         DateTime   @default(now())
-  updatedAt         DateTime   @updatedAt
-  parentCategory    Category?  @relation("CategoryToCategory", fields: [parentCategoryId], references: [id])
-  subcategories     Category[] @relation("CategoryToCategory")
-  brands            Brand[]    @relation("BrandToCategory")
-  products          Product[]  @relation("ProductCategories")
+  parentCategoryId  String?
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
+  parentCategory    Category?             @relation("CategoryToCategory", fields: [parentCategoryId], references: [id])
+  subcategories     Category[]            @relation("CategoryToCategory")
+  brands            Brand[]               @relation("BrandToCategory")
+  products          Product[]             @relation("ProductCategories")
+  translation       CategoryTranslation[]
 
   @@index([slug])
 }
 
+model CategoryTranslation {
+  id                String     @id @default(uuid())
+  lang              Language
+  name              String
+  nameAsSubcategory String
+  categoryId        String
+
+  category          Category  @relation(fields: [categoryId], references: [id])
+
+  @@unique([categoryId, lang])
+}
+
 model Brand {
-  id         String     @id @default(uuid())
-  name       String     @unique
-  slug       String     @unique
-  thumbnail  String?
-  products   Product[]
-  categories Category[] @relation("BrandToCategory")
+  id           String             @id @default(uuid())
+  slug         String             @unique
+  thumbnail    String?
+  products     Product[]
+  categories   Category[]         @relation("BrandToCategory")
+  translation  BrandTranslation[]
 
   @@index([slug])
+}
+
+model BrandTranslation {
+  id                String     @id @default(uuid())
+  lang              Language
+  name              String
+  brandId           String
+
+  brand             Brand      @relation(fields: [brandId], references: [id])
+
+  @@unique([brandId, lang])
 }
 
 model Order {
@@ -143,10 +176,10 @@ model Order {
   subtotal      Float
   count         Int            @default(autoincrement())
   user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  products      OrderProduct[]
+  items         OrderItem[]
 }
 
-model OrderProduct {
+model OrderItem {
   id        String  @id @default(cuid())
   quantity  Int
   orderId   String
@@ -167,4 +200,9 @@ enum OrderStatus {
   CANCELLED
   PENDING
   COMPLETED
+}
+
+enum Language {
+  en
+  ar
 }

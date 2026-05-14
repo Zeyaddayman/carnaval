@@ -7,7 +7,7 @@ import { RiAdminLine } from "react-icons/ri";
 import { usePathname } from "next/navigation";
 import { useGetUserSessionQuery } from "@/redux/features/userSessionApi";
 import { Translation } from "@/types/translation";
-import { Language } from "@/types/i18n";
+import { Language } from "@/generated/prisma";
 
 interface Props {
     lang: Language

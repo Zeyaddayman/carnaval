@@ -14,7 +14,8 @@
             },
             "searchButton": {
                 "label": "Search"
-            }
+            },
+            "all": "All"
         }
     },
     "home": {
@@ -316,7 +317,7 @@
         "showingProducts": "Showing {{first}}-{{last}} of {{total}} products",
         "sortOptions": {
             "title": "Sort By",
-            "alphabetical": "Alphabetical",
+            "recommended": "Recommended",
             "priceAsc": "Price: Low to High",
             "priceDesc": "Price: High to Low",
             "topRated": "Top Rated",
@@ -343,7 +344,11 @@
             "returnToCategories": "Return to Categories"
         },
         "categories": {
-            "subcategories": "Subcategories"
+            "subcategories": "Subcategories",
+            "categoriesText": "Categories"
+        },
+        "brands": {
+            "brandsText": "Brands"
         },
         "search": {
             "resultsFor": "Results for",
@@ -395,6 +400,11 @@
         "subTitle": "The page you are looking for does not exist.",
         "returnHome": "Return Home"
     },
+    "error": {
+        "title": "Something Went Wrong!",
+        "home": "Home",
+        "tryAgain": "Try Again"
+    },
     "footer": {
         "connectWithUs": "Connect With Us",
         "copyRight": "© 2025 Carnaval. All rights reserved. Made by",
@@ -411,7 +421,8 @@
         "update": "Update",
         "inStock": "In Stock",
         "outOfStock": "Out of Stock",
-        "inYourCart": "In Your Cart"
+        "inYourCart": "In Your Cart",
+        "by": "by"
     },
     "metadata": {
         "main": {

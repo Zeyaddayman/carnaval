@@ -37,5 +37,5 @@ export async function modifyCartItemsQuantities(cartItems: CartItemWithProduct[]
         return item
     }))
 
-    return { newCartItems, quantityModifiedItems }
+    return { cartItems: newCartItems, quantityModifiedItems }
 }

@@ -2,7 +2,7 @@ import OrderStatus from "@/components/profile/orders/OrderStatus"
 import Heading from "@/components/ui/Heading"
 import { getOrderMetadata } from "@/metadata/orders"
 import { getOrderDetails } from "@/server/db/orders"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { formatDate, formatPrice } from "@/utils/formatters"
 import getTranslation from "@/utils/translation"
 import Image from "next/image"
@@ -79,7 +79,7 @@ const OrderDetailsPage = async ({ params }: PageProps<"/[lang]/profile/orders/[i
                     {translation.profile.orderDetails.items.title}
                 </h5>
                 <div className="overflow-x-auto">
-                    {order.products.map(item => (
+                    {order.items.map(item => (
                         <div
                             key={item.product.id}
                             className="flex justify-between items-center py-1 gap-2 not-last:border-b not-last:border-border"

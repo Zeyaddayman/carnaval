@@ -13,7 +13,7 @@ import { CiDiscount1 } from "react-icons/ci"
 import { TbRosetteDiscountCheck } from "react-icons/tb"
 import { Translation } from "@/types/translation"
 import { inject } from "@/utils/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     initialFilters: ProductsFiltersOptions

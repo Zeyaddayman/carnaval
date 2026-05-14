@@ -4,7 +4,7 @@ import { PiShootingStarLight } from "react-icons/pi"
 import NoProductsFound from "./NoProductsFound"
 import { Translation } from "@/types/translation"
 import { inject } from "@/utils/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     products: CardProduct[]

@@ -1,4 +1,4 @@
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import CategoriesChain from "./CategoriesChain"
 import { CategoryHierarchy } from "@/types/categories"
 

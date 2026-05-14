@@ -3,7 +3,7 @@ import Link from "next/link"
 import RegisterFrom from "@/components/register/Form"
 import { getRegisterMetadata } from "@/metadata/auth"
 import getTranslation from "@/utils/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 import { i18n } from "@/constants/i18n"
 
 const RegisterPage = async ({ params }: PageProps<"/[lang]/auth/register">) => {

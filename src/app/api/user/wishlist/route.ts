@@ -23,10 +23,24 @@ export async function GET() {
             orderBy: {
                 createdAt: 'desc'
             },
-            select: wishlistItemSelector
+            select: wishlistItemSelector(lang)
         })
 
-        return NextResponse.json({ items: wishlist }, { status: 200 })
+        const finalItems = wishlist.map(item => {
+            const brandTranslation = item.product.brand?.translation.find(trans => trans.lang === lang) || item.product.brand?.translation.find(trans => trans.lang === "en")
+            const productTranslation = item.product.translation.find(trans => trans.lang === lang) || item.product.translation.find(trans => trans.lang === "en")!
+
+            return {
+                ...item,
+                product: {
+                    ...item.product,
+                    title: productTranslation.title,
+                    brand: brandTranslation ? { name: brandTranslation.name } : null
+                }
+            }
+        })
+
+        return NextResponse.json({ items: finalItems }, { status: 200 })
     } catch {
         return NextResponse.json({ message: translation.messages.wishlist.getWishlistFailed }, { status: 500 })
     }

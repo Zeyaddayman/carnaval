@@ -1,36 +1,35 @@
 "use client"
 
-import { MenuCategory } from "@/types/categories"
-import { Language } from "@/types/i18n"
+import { MenuOption } from "@/types"
+import { Language } from "@/generated/prisma"
 import { Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react"
 import { usePathname } from "next/navigation"
 import { useEffect } from "react"
 import { BiCheck } from "react-icons/bi"
 import { HiMiniChevronUpDown } from "react-icons/hi2"
 
-type CategoryOption = {
-    label: string
-    value: string
-}
-
 interface Props {
-    topLevelCategories: MenuCategory[]
-    categories: CategoryOption[]
-    setCategories: (categories: CategoryOption[]) => void
-    selectedCategory: CategoryOption
-    setSelectedCategory: (category: CategoryOption) => void
+    topCategoriesMenu: MenuOption[]
+    allCategoriesMenu: MenuOption[]
+    categories: MenuOption[]
+    setCategories: (categories: MenuOption[]) => void
+    selectedCategory: MenuOption
+    setSelectedCategory: (category: MenuOption) => void
     searchInputFocused: boolean
     lang: Language
+    allText: string
 }
 
 const SearchSelectCategory = ({
-    topLevelCategories,
+    topCategoriesMenu,
+    allCategoriesMenu,
     categories,
     setCategories,
     selectedCategory,
     setSelectedCategory,
     searchInputFocused,
-    lang
+    lang,
+    allText
 
 }: Props) => {
 
@@ -39,24 +38,19 @@ const SearchSelectCategory = ({
     useEffect(() => {
 
         if (pathname.startsWith(`/${lang}/categories/`)) {
+
             const categorySlug = pathname.split("/")[3]
 
-            if (!categories.find(cat => cat.value === categorySlug)) {
-                const topCategoriesWithItsSubs: { label: string, value: string }[] = []
+            if (!topCategoriesMenu.find(cat => cat.value === categorySlug)) {
 
-                topLevelCategories.forEach(cat => {
-                    topCategoriesWithItsSubs.push({ label: cat.name, value: cat.slug })
-                    cat.subcategories.forEach(subcat => topCategoriesWithItsSubs.push({ label: subcat.name, value: subcat.slug }))
-                })
-
-                const category = topCategoriesWithItsSubs.find(cat => cat.value === categorySlug)
+                const category = allCategoriesMenu.find(cat => cat.value === categorySlug)
 
                 if (category) {
 
                     const newCategories = [
                         { label: category.label, value: category.value },
-                        { label: "All", value: "all" },
-                        ...topLevelCategories.map(cat => ({ label: cat.name, value: cat.slug }))
+                        { label: allText, value: "all" },
+                        ...topCategoriesMenu
                     ]
 
                     setCategories(newCategories)
@@ -65,20 +59,15 @@ const SearchSelectCategory = ({
 
             }
             else {
-                const newCategories = [
-                    { label: "All", value: "all" },
-                    ...topLevelCategories.map(cat => ({ label: cat.name, value: cat.slug }))
-                ]
+
+                const newCategories = [ { label: allText, value: "all" }, ...topCategoriesMenu ]
 
                 setCategories(newCategories)
                 setSelectedCategory(newCategories.find(cat => cat.value === categorySlug)!)
             }
         }
         else {
-            const newCategories = [
-                { label: "All", value: "all" },
-                ...topLevelCategories.map(cat => ({ label: cat.name, value: cat.slug }))
-            ]
+            const newCategories = [ { label: allText, value: "all" }, ...topCategoriesMenu ]
 
             setCategories(newCategories)
             setSelectedCategory(newCategories[0])

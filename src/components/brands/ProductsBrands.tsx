@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Heading from "../ui/Heading"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     lang: Language
@@ -12,7 +12,7 @@ interface Props {
 
 const ProductsBrands = async ({ lang, translation }: Props) => {
 
-    const brands = await getBrands()
+    const brands = await getBrands(lang)
 
     return (
         <section>

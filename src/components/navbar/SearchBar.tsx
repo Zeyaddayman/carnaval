@@ -5,13 +5,14 @@ import Input from "../ui/Input"
 import { Button } from "../ui/Button"
 import SearchSelectCategory from "./SearchSelectCategory"
 import { ChangeEvent, FocusEvent, KeyboardEvent, useEffect, useRef, useState, FormEvent } from "react"
-import { MenuCategory } from "@/types/categories"
 import { useRouter } from "next/navigation"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
+import { MenuOption } from "@/types"
 
 interface Props {
-    topLevelCategories: MenuCategory[]
+    topCategoriesMenu: MenuOption[]
+    allCategoriesMenu: MenuOption[]
     lang: Language
     translation: Translation["navbar"]["searchBar"]
 }
@@ -27,7 +28,7 @@ const debouncedSearch = (cb: () => void, time: number) => {
     }, time)
 }
 
-const SearchBar = ({ topLevelCategories, lang, translation }: Props) => {
+const SearchBar = ({ topCategoriesMenu, allCategoriesMenu, lang, translation }: Props) => {
 
     const [isOpen, setIsOpen] = useState(false)
     const inputRef = useRef<HTMLInputElement | null>(null)
@@ -38,8 +39,8 @@ const SearchBar = ({ topLevelCategories, lang, translation }: Props) => {
     const [searchSuggestions, setSearchSuggestions] = useState<string[]>([])
 
     const [categories, setCategories] = useState<{ label: string; value: string }[]>([
-        { label: "All", value: "all" },
-        ...topLevelCategories.map(cat => ({ label: cat.name, value: cat.slug }))
+        { label: translation.all, value: "all" },
+        ...topCategoriesMenu
     ])
     const [selectedCategory, setSelectedCategory] = useState(categories[0])
 
@@ -103,7 +104,7 @@ const SearchBar = ({ topLevelCategories, lang, translation }: Props) => {
 
                 setSearchSuggestions(data)
             }
-        }, 400)
+        }, 500)
     }
 
     const handleOnKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -178,13 +179,15 @@ const SearchBar = ({ topLevelCategories, lang, translation }: Props) => {
                 onSubmit={handleOnSubmit}
             >
                 <SearchSelectCategory
-                    topLevelCategories={topLevelCategories}
+                    topCategoriesMenu={topCategoriesMenu}
+                    allCategoriesMenu={allCategoriesMenu}
                     categories={categories}
                     setCategories={setCategories}
                     selectedCategory={selectedCategory}
                     setSelectedCategory={setCategory}
                     searchInputFocused={searchInputFocused}
                     lang={lang}
+                    allText={translation.all}
                 />
                 <Input
                     ref={inputRef}

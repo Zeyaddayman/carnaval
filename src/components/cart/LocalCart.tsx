@@ -16,7 +16,7 @@ import { getProductLimit } from "@/utils/product"
 import CartHasUnavailableItemsMsg from "./CartHasUnavailableItemsMsg"
 import CartHasModifiedQuantityItemsMsg from "./CartHasModifiedQuantityItemsMsg"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
 
 interface Props {
     lang: Language

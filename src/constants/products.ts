@@ -3,7 +3,7 @@ import { Translation } from "@/types/translation"
 
 export const getProductsSortOptions = (translation: Translation["products"]["sortOptions"]) => {
     return [
-        { value: "alphabetical", label: translation.alphabetical },
+        { value: "recommended", label: translation.recommended },
         { value: "price-asc", label: translation.priceAsc },
         { value: "price-desc", label: translation.priceDesc },
         { value: "top-rated", label: translation.topRated },

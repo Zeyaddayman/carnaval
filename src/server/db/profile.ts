@@ -2,15 +2,15 @@ import { cache as reactCache } from "react"
 import { db } from "@/lib/prisma"
 import { isAuthenticated } from "../utils/auth"
 import { redirect } from "next/navigation"
+import { getLanguage } from "@/utils/language"
 
 export const getProfile = reactCache(async () => {
 
-    const session = await isAuthenticated()
+    const [session, lang] = await Promise.all([isAuthenticated(), getLanguage()])
 
     if (!session) {
-        redirect("/auth/login?redirect=/profile")
+        redirect(`/${lang}/auth/login?redirect=/${lang}/profile`)
     }
-
     const { userId } = session
 
     const user = await db.user.findUnique({

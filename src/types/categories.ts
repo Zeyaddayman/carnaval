@@ -1,8 +1,5 @@
-import { Prisma } from "@/generated/prisma";
-import { menuCategorySelector } from "@/server/query-selectors/category";
+import { getTopLevelCategories } from "@/server/db/categories";
 
 export type CategoryHierarchy = { name: string; nameAsSubcategory: string; link: string }[]
 
-export type MenuCategory = Prisma.CategoryGetPayload<{
-    select: typeof menuCategorySelector
-}>
+export type MenuCategory = Awaited<ReturnType<typeof getTopLevelCategories>>[number]

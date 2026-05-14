@@ -6,7 +6,8 @@ import { getTopLevelCategories } from "@/server/db/categories"
 import { getBrands } from "@/server/db/brands"
 import SelectLanguage from "./SelectLanguage"
 import { Translation } from "@/types/translation"
-import { Language } from "@/types/i18n"
+import { Language } from "@/generated/prisma"
+import { MenuOption } from "@/types"
 
 const Navbar = async ({ lang, translation }: { lang: Language, translation: Translation }) => {
 
@@ -14,7 +15,19 @@ const Navbar = async ({ lang, translation }: { lang: Language, translation: Tran
         topLevelCategories,
         brands,
 
-    ] = await Promise.all([getTopLevelCategories(), getBrands()])
+    ] = await Promise.all([getTopLevelCategories(lang), getBrands(lang)])
+
+    const topCategoriesMenu: MenuOption[] = []
+    const allCategoriesMenu: MenuOption[] = []
+
+    topLevelCategories.forEach(topCat => {
+        topCategoriesMenu.push({ label: topCat.name, value: topCat.slug })
+        allCategoriesMenu.push({ label: topCat.name, value: topCat.slug })
+
+        topCat.subcategories.forEach(subCat => {
+            allCategoriesMenu.push({ label: subCat.name, value: subCat.slug })
+        })
+    })
 
     return (
         <nav role="navigation" className="bg-bar shadow-sm border-b border-border">
@@ -25,7 +38,8 @@ const Navbar = async ({ lang, translation }: { lang: Language, translation: Tran
                 <div className="flex items-center gap-3">
                     <SelectLanguage lang={lang} />
                     <SearchBar
-                        topLevelCategories={topLevelCategories}
+                        topCategoriesMenu={topCategoriesMenu}
+                        allCategoriesMenu={allCategoriesMenu}
                         lang={lang}
                         translation={translation.navbar.searchBar}
                     />
