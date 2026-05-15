@@ -29,6 +29,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json(translation.messages.checkout.stripe.invalidSig, { status: 400 })
     }
 
+    console.log(event.type)
+
     if (event.type === "payment_intent.succeeded") {
 
         const { userId, addressLabel } = (event.data.object as Stripe.PaymentIntent).metadata

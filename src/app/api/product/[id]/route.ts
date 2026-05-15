@@ -20,8 +20,20 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ id: 
     }
 
     const brandTranslation = product.brand?.translation.find(trans => trans.lang === lang) || product.brand?.translation.find(trans => trans.lang === "en")
+    const productTranslation = product.translation.find(trans => trans.lang === lang) || product.translation.find(trans => trans.lang === "en")!
 
-    const finalProduct = { ...product, brand: brandTranslation ? { name: brandTranslation.name } : null }
+    const finalProduct = {
+        id: product.id,
+        thumbnail: product.thumbnail,
+        title: productTranslation.title,
+        price: product.price,
+        discountPercentage: product.discountPercentage,
+        finalPrice: product.finalPrice,
+        rating: product.rating,
+        stock: product.stock,
+        limit: product.limit,
+        brand: brandTranslation ? { name: brandTranslation.name } : null
+    }
 
     return NextResponse.json(finalProduct, { status: 200 })
 }

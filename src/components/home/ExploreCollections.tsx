@@ -39,7 +39,7 @@ const ExploreCollections = async ({ lang, translation }: Props) => {
                                 loading="lazy"
                             />
                         </div>
-                        <h4 className="text-center text-xl font-bold p-3 bg-card text-card-foreground">{category.name}</h4>
+                        <h3 className="text-center text-xl font-bold p-3 bg-card text-card-foreground">{category.name}</h3>
                     </Link>
                 ))}
             </div>

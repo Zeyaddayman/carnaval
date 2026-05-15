@@ -161,12 +161,10 @@ export const getSearchProductsMinPrice = async (query: string, categorySlug: str
                 { description: { contains: searchTerm, mode: "insensitive" } }
             ],
         },
-        select: {
-            id: true
-        }
+        select: { productId: true }
     })
 
-    const productsIds = productsTranslations.map(({ id }) => id)
+    const productsIds = productsTranslations.map(({ productId }) => productId)
 
     const result = await db.product.aggregate({
         where: {
@@ -207,12 +205,10 @@ export const getSearchProductsMaxPrice = async (query: string, categorySlug: str
                 { description: { contains: searchTerm, mode: "insensitive" } }
             ],
         },
-        select: {
-            id: true
-        }
+        select: { productId: true }
     })
 
-    const productsIds = productsTranslations.map(({ id }) => id)
+    const productsIds = productsTranslations.map(({ productId }) => productId)
 
     const result = await db.product.aggregate({
         where: {
@@ -240,12 +236,10 @@ export const getSearchProductsMinRating = async (query: string, categorySlug: st
                 { description: { contains: searchTerm, mode: "insensitive" } }
             ],
         },
-        select: {
-            id: true
-        }
+        select: { productId: true }
     })
 
-    const productsIds = productsTranslations.map(({ id }) => id)
+    const productsIds = productsTranslations.map(({ productId }) => productId)
 
     const result = await db.product.aggregate({
         where: {

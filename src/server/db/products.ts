@@ -60,9 +60,16 @@ export const getProductsByCategory = reactCache(async (slug: Category["slug"], s
         const productTranslation = product.translation.find(trans => trans.lang === lang) || product.translation.find(trans => trans.lang === "en")!
 
         return {
-            ...product,
+            id: product.id,
+            thumbnail: product.thumbnail,
             title: productTranslation.title,
-            brand: brandTranslation ? { name: brandTranslation.name } : null,
+            price: product.price,
+            discountPercentage: product.discountPercentage,
+            finalPrice: product.finalPrice,
+            rating: product.rating,
+            stock: product.stock,
+            limit: product.limit,
+            brand: brandTranslation ? { name: brandTranslation.name } : null
         }
     })
 
@@ -138,9 +145,16 @@ export const getProductsByBrand = reactCache(async (slug: Brand["slug"], sortBy:
         const productTranslation = product.translation.find(trans => trans.lang === lang) || product.translation.find(trans => trans.lang === "en")!
 
         return {
-            ...product,
+            id: product.id,
+            thumbnail: product.thumbnail,
             title: productTranslation.title,
-            brand: brandTranslation ? { name: brandTranslation.name } : null,
+            price: product.price,
+            discountPercentage: product.discountPercentage,
+            finalPrice: product.finalPrice,
+            rating: product.rating,
+            stock: product.stock,
+            limit: product.limit,
+            brand: brandTranslation ? { name: brandTranslation.name } : null
         }
     })
 
@@ -179,7 +193,7 @@ export const getSearchProducts = reactCache(async (query: string, categorySlug: 
                     { description: { contains: searchTerm, mode: "insensitive" } }
                 ],
             },
-            select: { id: true },
+            select: { productId: true },
         }),
 
         db.productTranslation.count({
@@ -207,7 +221,7 @@ export const getSearchProducts = reactCache(async (query: string, categorySlug: 
             : null
     ])
 
-    const productsIds = productsTranslation.map(product => product.id)
+    const productsIds = productsTranslation.map(({ productId }) => productId)
 
     const products = await db.product.findMany({
         where: {
@@ -227,9 +241,16 @@ export const getSearchProducts = reactCache(async (query: string, categorySlug: 
         const productTranslation = product.translation.find(trans => trans.lang === lang) || product.translation.find(trans => trans.lang === "en")!
 
         return {
-            ...product,
+            id: product.id,
+            thumbnail: product.thumbnail,
             title: productTranslation.title,
-            brand: brandTranslation ? { name: brandTranslation.name } : null,
+            price: product.price,
+            discountPercentage: product.discountPercentage,
+            finalPrice: product.finalPrice,
+            rating: product.rating,
+            stock: product.stock,
+            limit: product.limit,
+            brand: brandTranslation ? { name: brandTranslation.name } : null
         }
     })
 

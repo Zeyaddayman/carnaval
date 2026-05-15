@@ -34,6 +34,8 @@ export async function middleware(req: NextRequest) {
 
     const pathname = req.nextUrl.pathname
 
+    if (pathname.startsWith("/api/webhooks")) return NextResponse.next()
+
     const requestHeaders = new Headers(req.headers)
 
     const pathnameLang = i18n.languages.find(lang => pathname.startsWith(`/${lang}`))
