@@ -34,7 +34,7 @@ const debouncedSearch = (cb: () => void, time: number) => {
 
 const SearchBar = ({ topCategoriesMenu, allCategoriesMenu, lang, translation }: Props) => {
 
-    const [isOpen, setIsOpen] = useState(true)
+    const [isOpen, setIsOpen] = useState(false)
     const inputRef = useRef<HTMLInputElement | null>(null)
     const [searchInputFocused, setSearchInputFocused] = useState(false)
     const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0)
