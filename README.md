@@ -20,6 +20,10 @@
 * **🔗 Seamless Merging:** Automatically transfers items from the local cart to the user's account upon **Login/Register**.
 * **🛡️ Real-time Stock Validation:** Inventory checks that automatically adjust quantities to prevent over-ordering.
 
+### 🌍 Localization (i18n)
+* **🧭 Middleware Redirection:** Detects the user's preferred language via request headers on first visit when no explicit language is provided, then persists the choice and routes to the appropriate locale path.
+* **🗂️ Database Field Selection:** Dynamically selects and serves the correct language content from database fields based on the active locale.
+
 ### 💖 Wishlist
 Save favorite items to a personal list for future shopping.
 
