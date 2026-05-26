@@ -28,7 +28,7 @@ const CartPage = async ({ params }: PageProps<"/[lang]/cart">) => {
                         translation={translation}
                     />
                 ): (
-                    <LocalCart lang={lang} translation={translation} />
+                    <LocalCart lang={lang} translation={translation} key={lang} />
                 )}
             </div>
         </main>

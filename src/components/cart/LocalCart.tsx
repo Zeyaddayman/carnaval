@@ -3,7 +3,7 @@
 import CartOrderSummary from "./CartOrderSummary"
 import { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
-import { removeItemFromLocalCart, selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
+import { hydrateCartItems, removeItemFromLocalCart, selectLocalCart, setLocalCartItems } from "@/redux/features/localCartSlice"
 import LocalCartItem from "./LocalCartItem"
 import UnavailableCartItem from "./UnavailableCartItem"
 import toast from "react-hot-toast"
@@ -29,13 +29,14 @@ const LocalCart = ({ lang, translation }: Props) => {
 
     const localCart = useAppSelector(selectLocalCart)
 
-    const { freshLocalCartItems, quantityModifiedItems } = useGetFreshLocalCartItems(localCart.items)
+    const { freshLocalCartItems, quantityModifiedItems } = useGetFreshLocalCartItems(localCart.items, isMounted)
 
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         if (!isMounted) setIsMounted(true)
-    }, [])
+        dispatch(hydrateCartItems())
+    }, [lang])
 
     // Update local cart items with fresh data from server
     useEffect(() => {

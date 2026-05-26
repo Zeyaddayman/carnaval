@@ -1,6 +1,6 @@
 "use client"
 
-import { removeItemFromLocalCart, selectLocalCart } from "@/redux/features/localCartSlice"
+import { hydrateCartItems, removeItemFromLocalCart, selectLocalCart } from "@/redux/features/localCartSlice"
 import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { ProductDetails } from "@/types/products"
 import AddToCart from "./AddToCart"
@@ -31,7 +31,8 @@ const ProductLocalCart = ({ product, initialLimit, lang, translation }: Props) =
 
     useEffect(() => {
         if (!isMounted) setIsMounted(true)
-    }, [])
+        dispatch(hydrateCartItems())
+    }, [lang])
 
     // Sync limit with latest database value
     useEffect(() => {

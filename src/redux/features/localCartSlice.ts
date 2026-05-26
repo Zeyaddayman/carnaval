@@ -36,6 +36,11 @@ export const localCartSlice = createSlice({
 
             localStorage.setItem("localCart", JSON.stringify(state.items))
         },
+        hydrateCartItems: (state) => {
+            const localCart = window.localStorage.getItem("localCart")
+
+            if (localCart) state.items = JSON.parse(localCart)
+        },
         setLocalCartItems: (state, action: PayloadAction<CartItemWithProduct[]>) => {
             state.items = action.payload
 
@@ -47,7 +52,8 @@ export const localCartSlice = createSlice({
 export const {
     addItemToLocalCart,
     removeItemFromLocalCart,
-    setLocalCartItems
+    setLocalCartItems,
+    hydrateCartItems
 
 } = localCartSlice.actions
 

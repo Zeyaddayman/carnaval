@@ -59,6 +59,12 @@ export const productDetailsSelector = (lang: Language) => ({
                     name: true,
                     nameAsSubcategory: true
                 }
+            },
+            subcategories: {
+                select: { slug: true }
+            },
+            parentCategory: {
+                select: { slug: true }
             }
         }
     },

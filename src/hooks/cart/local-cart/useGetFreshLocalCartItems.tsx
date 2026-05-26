@@ -4,9 +4,10 @@ import { CartItemWithProduct, QuantityModifiedItem } from "@/types/cart"
 import { getProductLimit } from "@/utils/product"
 import { useEffect, useState } from "react"
 
-const useGetFreshLocalCartItems = (localCartItems: CartItemWithProduct[] ) => {
+const useGetFreshLocalCartItems = (localCartItems: CartItemWithProduct[], isMounted: boolean) => {
 
     const [freshLocalCartItems, setFreshLocalCartItems] = useState<CartItemWithProduct[] | null>(null)
+    const [isDataFetched, setIsDataFetched] = useState(false)
 
     const [quantityModifiedItems, setQuantityModifiedItems] = useState<{ [id: string]: QuantityModifiedItem }>({})
 
@@ -56,9 +57,12 @@ const useGetFreshLocalCartItems = (localCartItems: CartItemWithProduct[] ) => {
             setQuantityModifiedItems(quantityModifiedItems)
         }
 
-        updateCartItems()
+        if (isMounted && !isDataFetched) {
+            updateCartItems()
+            setIsDataFetched(true)
+        }
 
-    }, [])
+    }, [localCartItems, isMounted])
 
     return { freshLocalCartItems, quantityModifiedItems }
 }

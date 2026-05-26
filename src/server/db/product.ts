@@ -7,6 +7,7 @@ import { productDetailsSelector } from "../query-selectors/product";
 import { Language } from "@/generated/prisma";
 import getTranslation from "@/utils/translation";
 import { ProductDetails } from "@/types/products";
+import { getProductCategoryHierarchy } from "../utils/product";
 
 export const getProduct = reactCache(async (id: Product["id"], lang: Language) => nextCache(
     async (): Promise<{ product: ProductDetails, categoryHierarchy: CategoryHierarchy  } | null> => {
@@ -38,22 +39,7 @@ export const getProduct = reactCache(async (id: Product["id"], lang: Language) =
             brand: brandTranslation ? { name: brandTranslation.name } : null
         }
 
-        const productCategories = product.categories.map(cat => {
-
-            const translation = cat.translation.find(trans => trans.lang === lang) || cat.translation.find(trans => trans.lang === "en")!
-
-            return {
-                slug: cat.slug,
-                name: translation.name,
-                nameAsSubcategory: translation.nameAsSubcategory
-            }
-        })
-
-        const categoryHierarchy: CategoryHierarchy = productCategories.map(category => ({
-            name: category.name,
-            nameAsSubcategory: category.nameAsSubcategory,
-            link: `/categories/${category.slug}`,
-        }))
+        const categoryHierarchy = getProductCategoryHierarchy(product.categories, lang)
 
         categoryHierarchy.push({
             name: translation.products.categories.categoriesText,

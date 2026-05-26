@@ -74,7 +74,7 @@ const Links = ({ topLevelCategories, brands, lang, translation }: Props) => {
             className={`${buttonVariants({ variant: "ghost" })} relative`}
         >
             <span><FiShoppingCart className="rtl-flip" size={20} /></span>
-            <CartItemsCount />
+            <CartItemsCount lang={lang} />
         </Link>
         <Link
             href={`/${lang}/wishlist`}

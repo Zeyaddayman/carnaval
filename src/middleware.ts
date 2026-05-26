@@ -34,8 +34,6 @@ export async function middleware(req: NextRequest) {
 
     const pathname = req.nextUrl.pathname
 
-    if (pathname.startsWith("/api/webhooks")) return NextResponse.next()
-
     const requestHeaders = new Headers(req.headers)
 
     const pathnameLang = i18n.languages.find(lang => pathname.startsWith(`/${lang}`))
@@ -59,13 +57,13 @@ export async function middleware(req: NextRequest) {
     }
 
     return NextResponse.next({
-        request: { headers: requestHeaders, }
+        request: { headers: requestHeaders }
     })
 }
 
 export const config = {
-    // Matcher ignoring `/_next/`, `/api/`, ..etc
+    // Matcher ignoring `/_next/`, `/images/`, ..etc
     matcher: [
-        '/((?!_next/static|_next/image|images|favicon.ico|robots.txt|sitemap.xml).*)'
+        '/((?!_next/static|_next/image|images|favicon.ico|api/webhooks|robots.txt|sitemap.xml).*)'
     ]
 }

@@ -3,12 +3,16 @@
 import { CiSearch } from "react-icons/ci"
 import Input from "../ui/Input"
 import { Button } from "../ui/Button"
-import SearchSelectCategory from "./SearchSelectCategory"
 import { ChangeEvent, FocusEvent, KeyboardEvent, useEffect, useRef, useState, FormEvent } from "react"
 import { useRouter } from "next/navigation"
 import { Translation } from "@/types/translation"
 import { Language } from "@/generated/prisma"
 import { MenuOption } from "@/types"
+import dynamic from "next/dynamic"
+
+const SearchSelectCategory = dynamic(() => import("./SearchSelectCategory"), {
+    ssr: false
+})
 
 interface Props {
     topCategoriesMenu: MenuOption[]
@@ -30,7 +34,7 @@ const debouncedSearch = (cb: () => void, time: number) => {
 
 const SearchBar = ({ topCategoriesMenu, allCategoriesMenu, lang, translation }: Props) => {
 
-    const [isOpen, setIsOpen] = useState(false)
+    const [isOpen, setIsOpen] = useState(true)
     const inputRef = useRef<HTMLInputElement | null>(null)
     const [searchInputFocused, setSearchInputFocused] = useState(false)
     const [activeSuggestionIndex, setActiveSuggestionIndex] = useState(0)

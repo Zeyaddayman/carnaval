@@ -1,18 +1,23 @@
 "use client"
 
-import { selectLocalCart } from "@/redux/features/localCartSlice"
+import { Language } from "@/generated/prisma"
+import { hydrateCartItems, selectLocalCart } from "@/redux/features/localCartSlice"
 import { useGetUserCartQuery } from "@/redux/features/userCartApi"
 import { useGetUserSessionQuery } from "@/redux/features/userSessionApi"
-import { useAppSelector } from "@/redux/hooks"
+import { useAppDispatch, useAppSelector } from "@/redux/hooks"
 import { useEffect, useState } from "react"
 
-const CartItemsCount = () => {
+interface Props {
+    lang: Language
+}
+
+const CartItemsCount = ({ lang }: Props) => {
 
     const { data: session, isLoading } = useGetUserSessionQuery()
 
     if (isLoading) return null
 
-    return session ? <UserCartItemsCount userId={session.userId} /> : <LocalCartItemsCount />
+    return session ? <UserCartItemsCount userId={session.userId} /> : <LocalCartItemsCount lang={lang} />
 }
 
 const UserCartItemsCount = ({ userId }: { userId: string }) => {
@@ -29,14 +34,16 @@ const UserCartItemsCount = ({ userId }: { userId: string }) => {
     )
 }
 
-const LocalCartItemsCount = () => {
+const LocalCartItemsCount = ({ lang }: { lang: Language }) => {
     const { items } = useAppSelector(selectLocalCart)
 
     const [isMounted, setIsMounted] = useState(false)
-    
+    const dispatch = useAppDispatch()
+
     useEffect(() => {
         if (!isMounted) setIsMounted(true)
-    }, [])
+        dispatch(hydrateCartItems())
+    }, [lang])
 
     if (!isMounted || items.length === 0) return null
 
