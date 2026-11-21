@@ -1,3 +1,4 @@
+import BrandsCarousel from "@/components/home/BrandsCarousel"
 import ExploreCollections from "@/components/home/ExploreCollections"
 import Hero from "@/components/home/Hero"
 import { i18n } from "@/constants/i18n"
@@ -14,6 +15,7 @@ export default async function Home({ params }: PageProps<"/[lang]">) {
         <main>
             <div className="container">
                 <Hero lang={lang} translation={translation.home.hero} />
+                <BrandsCarousel lang={lang} />
                 <ExploreCollections lang={lang} translation={translation.home.exploreCollections} />
             </div>
         </main>
